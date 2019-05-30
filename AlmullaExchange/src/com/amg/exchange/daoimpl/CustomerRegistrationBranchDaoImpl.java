@@ -1,0 +1,160 @@
+package com.amg.exchange.daoimpl;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
+
+import com.amg.exchange.dao.ICustomerRegistrationBranchDao;
+import com.amg.exchange.model.Amlstatus;
+import com.amg.exchange.model.CityMaster;
+import com.amg.exchange.model.CompanyMaster;
+import com.amg.exchange.model.ContactDetail;
+import com.amg.exchange.model.CountryMaster;
+import com.amg.exchange.model.CountryMasterDesc;
+import com.amg.exchange.model.Customer;
+import com.amg.exchange.model.CustomerEmploymentInfo;
+import com.amg.exchange.model.CustomerIdProof;
+import com.amg.exchange.model.CustomerLogin;
+import com.amg.exchange.model.DistrictMaster;
+import com.amg.exchange.model.DocumentImg;
+import com.amg.exchange.model.NationalityMaster;
+import com.amg.exchange.model.RuleComponent;
+import com.amg.exchange.model.StateMaster;
+
+@Repository
+public class CustomerRegistrationBranchDaoImpl<T> extends CustomHibernateDaoSupport implements ICustomerRegistrationBranchDao<T>{
+
+	@Override
+	public void save(T entity) {
+		getSession().save(entity);
+		
+	}
+
+	@Override
+	public void update(T entity) {
+		getSession().update(entity);
+		
+	}
+
+	@Override
+	public void delete(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<T> findByName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<T> findById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<T> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findAll(DetachedCriteria criteria) {
+
+		return criteria.getExecutableCriteria(getSession()).list();	
+	}
+	
+	@Override
+	public List<NationalityMaster> getNationality() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<CityMaster> getCity(BigDecimal districtId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<CountryMaster> getCountry() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<StateMaster> getState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<CompanyMaster> getCompany(BigDecimal countryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<StateMaster> getState(BigDecimal countryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<DistrictMaster> getDistrict(BigDecimal stateId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void saveCustomer(Customer customer) {
+		System.out.println("Primary key : "+customer.getCustomerId()+ "Middle Name : "+customer.getMiddleName());
+		getSession().saveOrUpdate(customer);
+		
+	}
+
+	@Override
+	public void saveCustomerIdProof(CustomerIdProof proof) {
+		if(proof.getCustProofId().intValue()==0) {
+			getSession().save(proof);
+		} else {
+			getSession().saveOrUpdate(proof);
+		}
+		
+	}
+
+	@Override
+	public void saveImage(DocumentImg document) {
+		getSession().saveOrUpdate(document);
+		
+	}
+
+	@Override
+	public void saveContactDetails(ContactDetail contactDetail) {
+		getSession().saveOrUpdate(contactDetail);
+		
+	}
+
+	@Override
+	public void saveCustomerEmploymentInfo(CustomerEmploymentInfo customerEmp) {
+		getSession().saveOrUpdate(customerEmp);
+		
+	}
+
+	@Override
+	public CustomerIdProof getCustomerIdProof(String idNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
+}

@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</h:head>
+
+<h:body>
+	<f:view>
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<ui:include src="#{facesBean.menu}"></ui:include>
+		<table align="left" width="100%" style="height: 100%;">
+			<tr>
+				<td align="left" valign="top" style="height: 100%;"><div
+						id="left" class="leftColumn">
+						<div style="display: none; width: 150px;" id="leftCol">
+							<p:accordionPanel>
+								<p:tab title="My Profile"
+									titleStyle="background: url(../images/menu_icon5.png) no-repeat scroll 6px 8px;  border-top:none !important;">
+									<h:outputLink value="../login/forgotpassword.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Change Password" />
+									</h:outputLink>
+									<h:outputLink value="../login/login.xhtml" target="_self"
+										styleClass="left_menu" style=" border-bottom:none !important;">
+										<h:outputText value="Logout" />
+									</h:outputLink>
+
+								</p:tab>
+								<p:tab title="About"
+									titleStyle="background: url(../images/menu_icon1.png) no-repeat scroll 6px 8px;">
+
+									<h:outputLink value="http://www.almullagroup.com/"
+										target="_blank" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Al Mulla Group" />
+									</h:outputLink>
+									<h:outputLink
+										value="http://www.almullagroup.com/finance/exchange.aspx"
+										target="_blank" styleClass="left_menu">
+										<h:outputText value="Exchange" />
+									</h:outputLink>
+									<h:outputLink
+										value="http://www.almullagroup.com/finance/finance.aspx"
+										target="_blank" styleClass="left_menu">
+										<h:outputText value="Finance" />
+									</h:outputLink>
+									<h:outputLink value="http://www.autoalmulla.com/index.php/"
+										target="_blank" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Automobiles" />
+									</h:outputLink>
+
+								</p:tab>
+								<p:tab title="Services"
+									titleStyle="background: url(../images/menu_icon2.png) no-repeat scroll 6px 8px;">
+									<h:outputLink value="../registration/custmanualbranchreg.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Individual" />
+									</h:outputLink>
+									<h:outputLink
+										value="../registration/corporateregistration.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Non Individual" />
+									</h:outputLink>
+
+								</p:tab>
+								<p:tab title="Branch"
+									titleStyle="background: url(../images/menu_icon3.png) no-repeat scroll 6px 8px;">
+
+									<h:outputLink value="../search/searchcustomer.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Search Customer" />
+									</h:outputLink>
+									<h:outputLink value="../registration/branchhome.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Branch Home" />
+									</h:outputLink>
+
+
+								</p:tab>
+								<p:tab title="Rule Engine"
+									titleStyle="background: url(../images/menu_icon4.png) no-repeat scroll 6px 8px;">
+
+									<h:outputLink value="../ruleengine/businesscomponent.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Business Component" />
+									</h:outputLink>
+
+									<h:outputLink value="../ruleengine/businesscomponentconf.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Business Component Config" />
+									</h:outputLink>
+
+								</p:tab>
+							</p:accordionPanel>
+						</div>
+					</div></td>
+
+				<td class="rightColumn" valign="top"><h:panelGroup
+						layout="block" class="container">
+						<h:panelGroup layout="block" class="main_div">
+							<div class="menu_button">
+								<img style="cursor: pointer; position: relative; left: 15px;"
+									id="HideHandle" name="HideHandle"
+									src="../images/toggle_plus.png" alt=""
+									onclick='hideLeftCol("leftCol");closeMenus();' />
+							</div>
+							<h1>
+								<h:outputText value="#{msg['lbl.nomineeregistration']}" />
+							</h1>
+							<h:panelGroup layout="block" class="table_bg">
+								<h:form style="padding:0!important;">
+									<p:panel styleClass="shadow" id="mainPanel">
+
+										<h2><h:outputText value="#{msg['lbl.nomineeinformation']}"/></h2>
+
+										<div class="ui-grid-e ui-responsive">
+											<div class="ui-block-a" style="padding-top: 20px;">
+												<h:outputText value="#{msg['lbl.entercivilid']}" />
+											</div>
+											<div class="ui-block-b">
+												<p:inputText id="civilID"
+													value="#{nomineeRegistration.civilID}">
+													<p:ajax event="blur" update="mainPanel"
+														listener="#{nomineeRegistration.getCustomerDetails}" />
+												</p:inputText>
+											</div>
+											<div class="ui-block-c">
+												<p:graphicImage value="../images/reader_icon.jpg" title="Card Reader" style="margin-top:-15px;" />
+											</div>
+											<div class="ui-block-d">
+												
+											</div>
+											<div class="ui-block-e"></div>
+											<div class="ui-block-f"></div>
+
+										</div>
+										<div class="clearfix"></div>
+
+										<div class="ui-grid-a ui-responsive">
+											<div class="ui-block-a" style="padding-top: 20px;">
+												<h:outputText value="#{msg['lbl.title']}" />
+											</div>
+											<div class="ui-block-b">
+												<p:inputText id="tittle"
+													value="#{nomineeRegistration.tittle}" />
+											</div>
+
+										</div>
+										<div class="clearfix"></div>
+
+
+
+										<div class="ui-grid-e ui-responsive">
+											<div class="ui-block-a">
+												<h:outputText value="#{msg['lbl.firstname']}" />
+											</div>
+											<div class="ui-block-b">
+												<p:inputText id="firstName"
+													value="#{nomineeRegistration.firstName}" />
+											</div>
+											<div class="ui-block-c">
+												<h:outputText value="#{msg['lbl.midname']}" />
+											</div>
+											<div class="ui-block-d">
+												<p:inputText id="middleName"
+													value="#{nomineeRegistration.middleName}" />
+											</div>
+											<div class="ui-block-e"></div>
+											<div class="ui-block-f"></div>
+										</div>
+										<div class="clearfix"></div>
+
+										<div class="ui-grid-e ui-responsive">
+											<div class="ui-block-a">
+												<h:outputText value="#{msg['lbl.lastname']}" />
+											</div>
+											<div class="ui-block-b">
+												<p:inputText id="lastname"
+													value="#{nomineeRegistration.lastName}" />
+											</div>
+											<div class="ui-block-c">
+												<h:outputText value="#{msg['lbl.shortname']}" />
+											</div>
+											<div class="ui-block-d">
+												<p:inputText id="shortName"
+													value="#{nomineeRegistration.shortName}" />
+											</div>
+											<div class="ui-block-e"></div>
+											<div class="ui-block-f"></div>
+										</div>
+										<div class="clearfix"></div>
+
+
+
+										<div class="ui-grid-e ui-responsive">
+											<div class="ui-block-a">
+												<h:outputText value="#{msg['lbl.firstnameL']}" />
+											</div>
+											<div class="ui-block-b">
+												<p:inputText id="firstNameLocal"
+													value="#{nomineeRegistration.firstNameLocal}" />
+											</div>
+											<div class="ui-block-c">
+												<h:outputText value="#{msg['lbl.middlenameL']}" />
+											</div>
+											<div class="ui-block-d">
+												<p:inputText id="middleNameLocal"
+													value="#{nomineeRegistration.middleNameLocal}" />
+											</div>
+											<div class="ui-block-e"></div>
+											<div class="ui-block-f"></div>
+										</div>
+										<div class="clearfix"></div>
+
+										<div class="ui-grid-e ui-responsive">
+											<div class="ui-block-a">
+												<h:outputText value="#{msg['lbl.lastnameL']}" />
+											</div>
+											<div class="ui-block-b">
+												<p:inputText id="lastNameLocal"
+													value="#{nomineeRegistration.lastNameLocal}" />
+											</div>
+											<div class="ui-block-c">
+												<h:outputText value="#{msg['lbl.shortnameL']}" />
+											</div>
+											<div class="ui-block-d">
+												<p:inputText id="shortNameLocal"
+													value="#{nomineeRegistration.shortNameLocal}" />
+											</div>
+											<div class="ui-block-e"></div>
+											<div class="ui-block-f"></div>
+										</div>
+										<div class="clearfix"></div>
+
+
+										<div class="ui-grid-e ui-responsive">
+											<div class="ui-block-a">
+												<h:outputText value="#{lbl.nationality}" />
+											</div>
+											<div class="ui-block-b">
+												<p:selectOneMenu id="nationality"
+													value="#{nomineeRegistration.nationality}" requiredMessage="Select Country">
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+													<f:selectItems value="#{nomineeRegistration.countryNameList}" var="c" itemLabel="#{c.countryName}" itemValue="#{c.countryMasterId}"/>
+													</p:selectOneMenu>
+											</div>
+											<div class="ui-block-c">
+												<h:outputText value="#{msg['lbl.gender']}" />
+											</div>
+											<div class="ui-block-d">
+												<p:inputText id="gender"
+													value="#{nomineeRegistration.gender}" />
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+
+
+
+										<div class="ui-grid-e ui-responsive">
+											<div class="ui-block-a">
+												<h:outputText value="#{msg['lbl.dob']}" />
+											</div>
+											<div class="ui-block-b">
+												<p:calendar id="dob" value="#{nomineeRegistration.dob}" />
+											</div>
+											<div class="ui-block-c">
+												<h:outputText value="#{msg['lbl.mobile']}" />
+											</div>
+											<div class="ui-block-d">
+												<p:inputText id="mobile"
+													value="#{nomineeRegistration.mobileNo}" />
+											</div>
+											<div class="ui-block-e"></div>
+											<div class="ui-block-f"></div>
+										</div>
+										<div class="clearfix"></div>
+
+										<div class="ui-grid-a ui-responsive">
+											<div class="ui-block-a" style="padding-top: 20px;">
+												<h:outputText value="#{msg['lbl.email']}" />
+											</div>
+											<div class="ui-block-b">
+												<p:inputText id="email" value="#{nomineeRegistration.email}" />
+											</div>
+
+										</div>
+										<div class="clearfix"></div>
+
+										<div class="ui-grid-e ui-responsive">
+											<div class="ui-block-a">
+												<h:outputText value="#{msg['lbl.effectivedate']}" />
+											</div>
+											<div class="ui-block-b">
+												<p:calendar id="effectiveDate"
+													value="#{nomineeRegistration.effectiveDate}" />
+											</div>
+											<div class="ui-block-c">
+												<h:outputText value="#{msg['lbl.enddate']}" />
+											</div>
+											<div class="ui-block-d">
+												<p:calendar id="endeDate"
+													value="#{nomineeRegistration.endDate}" />
+											</div>
+											<div class="ui-block-e"></div>
+											<div class="ui-block-f"></div>
+										</div>
+
+
+									<!-- 	<div class="clearfix"></div>
+													
+													<div class="ui-grid-a ui-responsive">
+														<div class="ui-block-a" style="padding-top:20px;">
+															<h:outputText value="File Upload" />
+														</div>
+														<div class="ui-block-b">
+															<p:calendar />
+														</div>
+														
+													</div>				 -->
+
+										<div class="clearfix"></div>
+
+
+										<div class="ui-grid-e ui-responsive">
+											<div class="ui-block-a">
+												<h:outputText value="#{msg['lbl.customersign']}" />
+											</div>
+											<div class="ui-block-b">
+												<textarea id="resize"  style="resize:none;"></textarea>
+											</div>
+											<div class="ui-block-c">
+												<h:outputText value="#{msg['lbl.nomineesign']}" />
+											</div>
+											<div class="ui-block-d">
+												<textarea id="resize"  style="resize:none;"></textarea>
+											</div>
+											<div class="ui-block-e"></div>
+											<div class="ui-block-f"></div>
+										</div>
+
+
+										<div class="clearfix"></div>
+									</p:panel>
+									
+									<h:panelGroup layout="block" styleClass="shadow_button_1">
+										<p:commandButton value="#{msg['lbl.cancel']}"
+											action="#{nomineeRegistration.cancelNomineeDetail}"
+											style="margin-right:10px;" immediate="true" ajax="false">
+										</p:commandButton>
+
+										<p:commandButton value="#{msg['lbl.clear']}"
+											action="#{nomineeRegistration.resetNominee}"
+											style="margin-right:10px;" update="mainPanel" process="@this">
+										</p:commandButton>
+										<p:commandButton value="#{msg['lbl.submit']}"
+											action="#{nomineeRegistration.saveNomineeDetail}"
+											ajax="false">
+										</p:commandButton>
+
+										<div class="clearfix"></div>
+									</h:panelGroup>
+									
+									<!-- Data Table Start -->
+									<h:panelGroup layout="block" styleClass="button_align">
+
+										<p:dataTable value="#{nomineeRegistration.nomineeList}"
+											editable="true" var="nominee" emptyMessage="No Branch Found"
+											rowClasses="order-table-odd-row,order-table-even-row"
+											>
+
+
+										<!-- 		<p:column headerText="Civil ID"
+											sortBy="#{nominee.civilID}" >
+											#{nominee.civilID}
+										</p:column> -->
+											<p:column headerText="#{msg['lbl.effectivedate']}"
+												sortBy="#{nominee.effectiveDate}">
+											#{nominee.effectiveDate}
+										</p:column>
+											<p:column headerText="#{msg['lbl.enddate']}" sortBy="#{nominee.endDate}">
+											#{nominee.endDate}
+										</p:column>
+											<p:column>
+
+												<f:facet name="header" ><h:outputText value="#{msg['lbl.delete']}"/></f:facet>
+
+												<h:commandLink value="#{msg['lbl.delete']}"
+													action="#{nomineeRegistration.deleteNominee(nominee)}"  update="mainPanel"/>
+
+											</p:column>
+
+										</p:dataTable>
+
+										<div class="clearfix"></div>
+									</h:panelGroup>
+
+
+								</h:form>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+					</h:panelGroup></td>
+			</tr>
+		</table>
+		<div class="clearfix"></div>
+		<ui:include src="#{facesBean.footer}"></ui:include>
+	</f:view>
+</h:body>
+</html>

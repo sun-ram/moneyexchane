@@ -1,0 +1,3963 @@
+package com.amg.exchange.bean;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Level;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.servlet.http.Part;
+import javax.sql.rowset.serial.SerialException;
+
+import org.apache.log4j.Logger;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import com.amg.exchange.model.Amlstatus;
+import com.amg.exchange.model.BussComponentConfDetail;
+import com.amg.exchange.model.CityMaster;
+import com.amg.exchange.model.CityMasterDesc;
+import com.amg.exchange.model.CompanyMaster;
+import com.amg.exchange.model.ContactDetail;
+import com.amg.exchange.model.ContactType;
+import com.amg.exchange.model.CorporateBusinessNature;
+import com.amg.exchange.model.CountryMaster;
+import com.amg.exchange.model.CountryMasterDesc;
+import com.amg.exchange.model.CustCorporateAddlDetail;
+import com.amg.exchange.model.Customer;
+import com.amg.exchange.model.CustomerEmploymentInfo;
+import com.amg.exchange.model.CustomerIdProof;
+import com.amg.exchange.model.CustomerType;
+import com.amg.exchange.model.DistrictMaster;
+import com.amg.exchange.model.DistrictMasterDesc;
+import com.amg.exchange.model.DocumentImg;
+import com.amg.exchange.model.IdentityType;
+import com.amg.exchange.model.LanguageType;
+import com.amg.exchange.model.RuleBusinessNature;
+import com.amg.exchange.model.RuleObjective;
+import com.amg.exchange.model.StateMaster;
+import com.amg.exchange.model.StateMasterDesc;
+import com.amg.exchange.service.ICorporateRegService;
+import com.amg.exchange.service.IGeneralService;
+import com.amg.exchange.util.CollectionUtil;
+import com.amg.exchange.util.SessionStateManage;
+
+@SuppressWarnings({ "unused"})
+@Component("corpregisterBean")
+@Scope("session")
+public class CorpRegisterManageBean<T> implements Serializable {
+
+	private Logger log=Logger.getLogger(CorpRegisterManageBean.class);
+	private static final long serialVersionUID = 1L;
+	
+	@Autowired
+	ICorporateRegService<T> corpRegService;
+
+	@Autowired
+	IGeneralService<T> generalService;
+	
+	
+
+	private String crno;
+
+	private String compName;
+
+	private String compNameL;
+
+	private Date compRegDate;
+	
+	private Date dateAdderForReg = new Date();
+
+	private boolean disableDate = false;
+	
+	private boolean disableAML = true;
+	
+	private String email;
+	
+	private BigDecimal location;
+	
+	private Part part;
+	
+	private BigDecimal languageId ;
+	
+	private List<CountryMaster> countryCodeWithId;
+	
+	private List<StateMaster> stateCodeWithId;
+
+	// private Integer tel;
+
+	// contact Details
+	private BigDecimal contType;
+
+	private String area;
+
+	private BigDecimal countryId;
+
+	private String street;
+
+	private String block;
+
+	private String tel;
+
+	private String flat;
+	
+	private BigDecimal stateId;
+
+	private BigDecimal distId;
+    
+    private BigDecimal cityId;
+    
+    private Boolean contactTypeVisibility = false;
+    
+    private Boolean countryVisibility = false;
+   
+    private Boolean stateVisibility = false;
+    
+    private Boolean districtVisibility = false;
+    
+    private Boolean cityVisibility = false;
+    
+    private Boolean areaVisibility = false;
+     
+    private Boolean streetVisibility = false;
+    
+    private Boolean blockVisibility = false;
+    
+    private Boolean telephoneVisibility = false;
+    
+    private Boolean flatVisibility = false;
+    
+    private Boolean duplicateContact = false;
+    
+    private Boolean contactListSizeVisibility = false;
+   
+	// Company Identity Document
+	private String idno;
+
+	private BigDecimal idtype;
+
+	private Date idExpDate;
+
+	private Part coPart;
+	
+	private String iDNoStatus;
+	
+	private String expDateAdder;
+	
+	private Boolean coIdVisibility = false;
+	
+	private Boolean coIdTypeVisibility = false;
+	
+	private Boolean coExpDateVisibility = false;
+	
+	private Boolean coDublicateVisibility = false;
+	
+	private Boolean coUploadFileVisibility = false;
+	
+	private Boolean identityListVisibility  = false;
+
+	// Partners Details
+	private String partName;
+
+	private String pidno;
+
+	private BigDecimal pidtype;
+
+	private Date pidExpDate;
+
+	private Part ppart;
+	
+	private List<CustomerIdProof>  partnerIdNoList;
+	
+	private String pIdNoStatus;
+	
+    private Boolean partnerIdVisibility = false;
+	
+	private Boolean partnerIdTypeVisibility = false;
+	
+	private Boolean partnerExpDateVisibility = false;
+	
+	private Boolean partnerDublicateVisibility = false;
+	
+	private Boolean partnerNameVisibility = false;
+	
+	private Boolean partnerUploadFileVisibility = false;
+
+	// Authorized Signatories
+
+	private String name;
+
+	private String sidno;
+
+	private BigDecimal sidtype;
+
+	private Date sidExpDate;
+
+	private Date effDate;
+
+	private Date endDate;
+	
+	private Date effectiveMinDate = new Date();
+
+	private Part spart;
+	
+	private List<CustomerIdProof>  authorSigIdNoList;
+	
+	private String sigIdNoStatus;
+	
+    private Boolean  authourisedIdVisibility = false;
+	
+	private Boolean  authourisedTypeVisibility = false;
+	
+	private Boolean  authourisedExpDateVisibility = false;
+	
+	private Boolean  authourisedDublicateVisibility = false;
+	
+	private Boolean  authourisedOwnerNameVisibility = false;
+	
+	private Boolean  authourisedEffDateVisibility = false;
+	
+	private Boolean  authourisedEndDateVisibility = false;
+	
+	private Boolean authorUploadFileVisibility = false;
+	
+	private Boolean authourisedListVisibility = false;
+
+	//
+	
+	private BigDecimal primaryObjId;
+
+	private BigDecimal seconObj;
+	
+	private Boolean primayObjVisibility = false;
+	
+	private Boolean secondaryObjVisibility = false;
+	
+	private Boolean secondaryObjDuplicate = false;
+	
+	private Boolean secondaryListVisibility = false;
+	
+	
+	
+
+	private BigDecimal bussNature;
+
+	private String obj;
+	
+	private Boolean primaySecondaryBussnessVisibility = false;
+	
+	private Boolean natureBussineesVisibility = false;
+	
+	private Boolean bussenessDuplicateVisibility = false;
+	
+	private Boolean busenessListVisibility = false;
+	
+	private String DATE_FORMAT = "dd/MM/yyyy";
+	// Company Identity Document
+    private boolean isImageSave=true;
+	private List<CustomerIdProof> viewCustomerIdProof = new ArrayList<CustomerIdProof>();
+	
+	//image upload and download
+	private UploadedFile identityfile;
+	private UploadedFile  partnerfile;
+	private UploadedFile  autherfile;
+	private StreamedContent downloadFile;  
+
+	//for customer type
+	String partnerCustomer = FacesContext.getCurrentInstance().
+			getExternalContext().getRequestParameterMap().get("partnerCust");
+	String ownerCustomer = FacesContext.getCurrentInstance().
+			getExternalContext().getRequestParameterMap().get("ownerCust");
+	String corporateCustomer = FacesContext.getCurrentInstance().
+			getExternalContext().getRequestParameterMap().get("corporateCust");
+
+	private BigDecimal image_id;
+
+	private boolean enabledSignatoriesDataTable;
+
+	private boolean enableddPartnerDataTable;
+
+	private boolean enabledddCompanyDataTable;
+
+	private boolean enableSecondaryObjDataTable;
+
+	private boolean enableBussineesDataTable;
+	
+	private boolean companyRegisterIdStatus = false;
+	
+	private boolean PartnerRegisterIdStatus = false;
+	
+	private boolean authorRegisterIdStatus = false;
+	
+	//Hard Coded Values
+	private BigDecimal bdCompanyIdType = new BigDecimal(2);
+	private BigDecimal bdAuthorizedIdType = new BigDecimal(3);
+	private BigDecimal bdPartnerIdType = new BigDecimal(4);
+	
+	Map<BigDecimal,String> mapCountryList = new HashMap<BigDecimal, String>();
+	Map<BigDecimal,String> mapDistrictList = new HashMap<BigDecimal, String>();
+	Map<BigDecimal,String> mapStateList = new HashMap<BigDecimal, String>();
+	Map<BigDecimal,String> mapCityList = new HashMap<BigDecimal, String>();
+	Map<BigDecimal,String> mapIdentityList = new HashMap<BigDecimal, String>();
+	Map<BigDecimal,String> mapCorporateBussineesList = new HashMap<BigDecimal, String>();
+	
+	Map<BigDecimal,String> mapPartnerDetailsList = new HashMap<BigDecimal, String>();
+	Map<BigDecimal,String> mapAuthorSiganatureList = new HashMap<BigDecimal, String>();
+	Map<BigDecimal,String> mapObjectiveList = new HashMap<BigDecimal, String>();
+	
+	private List<AddContactDetailBean> contactListDelete = new ArrayList<AddContactDetailBean>();
+	private List<AddPartnerDetailBean> partnerListDeleted = new ArrayList<AddPartnerDetailBean>();
+	private List<AddAuthSignatoriesBean> authorisedListDeleted = new ArrayList<AddAuthSignatoriesBean>();
+	private final ArrayList<AddCoIdentityDetailBean> identityListDeleted = new ArrayList<AddCoIdentityDetailBean>();
+	private List<AddSecondaryObjectiveBean> secondryObjectiveListDeleted = new ArrayList<AddSecondaryObjectiveBean>();
+	private List<AddNatureofBussnessBean> bussenessNatureListDeleted = new ArrayList<AddNatureofBussnessBean>();	
+
+	private BigDecimal customerId;
+
+	private String id;
+	
+	private UIComponent tableForm;
+
+	private List<Customer> empList;
+
+	private String statusMessage;
+	
+	private String AMLStatus;
+
+	private List<Amlstatus> coAMLList;
+
+	private boolean coAMLPass = false;
+	
+	private boolean coAMLFail = false;
+	
+	private boolean coAMLCommon = true;
+	
+	private boolean coValdtBtn = true;
+	
+	private boolean coSave = true;
+	
+	private boolean readOnly = false;
+	
+	
+	private String userName=FacesContext.getCurrentInstance()
+			.getExternalContext().getSessionMap().get("userName")
+			.toString();
+
+	//private String userName="AlMulla";
+	private BigDecimal customerTypeId;
+	
+	private ContactDetail contdetail = null;
+	private List<CustomerIdProof> coIdentyList;
+	private CorporateBusinessNature corpBussnsNature = null;
+	private RuleBusinessNature ruleBussNature = null;
+	private CustCorporateAddlDetail custCorpAddDetail = null;
+	private CustomerIdProof custmrIdProof = null;
+	private IdentityType identityType = null;
+	private Customer cust = null;
+	private CountryMaster countryMstr = null;
+	private CompanyMaster companyMstr = null;
+	private CustomerType custmrType = null;
+	private LanguageType langType = null;
+	private RuleObjective  ruleObjective = null;
+	private StateMaster stateMaster = null;
+	private DistrictMaster districtMaster = null;
+	private CountryMaster  countryMaster = null;
+	private ContactType  contactType = null;
+	private CityMaster   cityMaster = null;
+	
+
+    private List<CountryBean> countryList = new  ArrayList<CountryBean>();
+    
+    private List<RuleObjective> rulObjectList ;
+
+	private List<ContactType> contactTypeList;
+    
+    private  Map<BigDecimal, String>  contactTypeMap   = new  HashMap<BigDecimal,String>();
+    
+    private List<RuleBusinessNature> bussinessNatureList;
+	
+	private Map<BigDecimal,String>	countryMap = new  HashMap<BigDecimal,String>();
+	
+	private  Map<BigDecimal, String>  secondryObjMap   = new  HashMap<BigDecimal,String>();
+	
+	private  Map<BigDecimal, String>  contacttypeHashaMap   = new  HashMap<BigDecimal,String>();
+
+	private  Map<BigDecimal, String>  bussinessNatureHashaMap   = new  HashMap<BigDecimal,String>();
+	
+	private List<StateMasterDesc> lstState;
+	
+	private List<CityMasterDesc>lstCity;
+	
+	private List<StateBean> stateBeanList =  new ArrayList<StateBean>();
+	
+	private List<DistrictMasterDesc> distmasterList = new ArrayList<DistrictMasterDesc>();
+	
+	private List<DistrictBean> distBeanList = new  ArrayList<DistrictBean>();
+	
+	private List<CityBean>    cityBeanList = new ArrayList<CityBean>();
+	
+	private  List<IdentityType> lstCompanyIdentityType = new ArrayList<IdentityType>();
+	private  List<IdentityType> lstPartnerIdentityType = new ArrayList<IdentityType>();
+	private  List<IdentityType> lstAuthorizedIdentityType = new ArrayList<IdentityType>();
+
+	private  List<IdentityType> identTypList = new ArrayList<IdentityType>();
+	
+	private Map<BigDecimal,String> cityHashaMap = new HashMap<BigDecimal,String>();
+	
+    private Map<BigDecimal,String> stateHashaMap = new HashMap<BigDecimal,String>();
+    
+    private Map<BigDecimal,String> companyIdentityTypeHashaMap = new HashMap<BigDecimal,String>();
+    
+    private  Map<BigDecimal,String> partnerIdentityTypeHashaMap = new HashMap<BigDecimal,String>();
+    
+    private  Map<BigDecimal,String> authorizedIdentityTypeHashaMap = new HashMap<BigDecimal,String>();
+    
+    private Map<BigDecimal,String> hashMapdistrict = new HashMap<BigDecimal, String>();
+    
+    private List<Customer> customerList;
+    
+
+    Map<String, BussComponentConfDetail> mapComponentBehavior = new HashMap<String,BussComponentConfDetail>();
+
+    
+    DocumentImg document = new DocumentImg();
+	
+	
+	//TODO : Getter & Setter Part
+    
+  
+    public UploadedFile getIdentityfile() {
+    	return identityfile;
+    }
+    public Date getEffectiveMinDate() {
+		return effectiveMinDate;
+	}
+	public void setEffectiveMinDate(Date effectiveMinDate) {
+		this.effectiveMinDate = effectiveMinDate;
+	}
+	public Boolean getIdentityListVisibility() {
+		return identityListVisibility;
+	}
+	public void setIdentityListVisibility(Boolean identityListVisibility) {
+		this.identityListVisibility = identityListVisibility;
+	}
+	public Boolean getAuthourisedListVisibility() {
+		return authourisedListVisibility;
+	}
+	public void setAuthourisedListVisibility(Boolean authourisedListVisibility) {
+		this.authourisedListVisibility = authourisedListVisibility;
+	}
+	public Boolean getSecondaryListVisibility() {
+		return secondaryListVisibility;
+	}
+	public void setSecondaryListVisibility(Boolean secondaryListVisibility) {
+		this.secondaryListVisibility = secondaryListVisibility;
+	}
+	public Boolean getBusenessListVisibility() {
+		return busenessListVisibility;
+	}
+	public void setBusenessListVisibility(Boolean busenessListVisibility) {
+		this.busenessListVisibility = busenessListVisibility;
+	}
+	public Boolean getContactListSizeVisibility() {
+		return contactListSizeVisibility;
+	}
+	public void setContactListSizeVisibility(Boolean contactListSizeVisibility) {
+		this.contactListSizeVisibility = contactListSizeVisibility;
+	}
+	public boolean isDisableAML() {
+		return disableAML;
+	}
+	public void setDisableAML(boolean disableAML) {
+		this.disableAML = disableAML;
+	}
+	public Boolean getPartnerUploadFileVisibility() {
+		return partnerUploadFileVisibility;
+	}
+	public void setPartnerUploadFileVisibility(Boolean partnerUploadFileVisibility) {
+		this.partnerUploadFileVisibility = partnerUploadFileVisibility;
+	}
+	public Boolean getAuthorUploadFileVisibility() {
+		return authorUploadFileVisibility;
+	}
+	public void setAuthorUploadFileVisibility(Boolean authorUploadFileVisibility) {
+		this.authorUploadFileVisibility = authorUploadFileVisibility;
+	}
+	public Boolean getCoUploadFileVisibility() {
+		return coUploadFileVisibility;
+	}
+	public void setCoUploadFileVisibility(Boolean coUploadFileVisibility) {
+		this.coUploadFileVisibility = coUploadFileVisibility;
+	}
+	public void setIdentityfile(UploadedFile identityfile) {
+    	this.identityfile = identityfile;
+    }
+    public UploadedFile getPartnerfile() {
+    	return partnerfile;
+    }
+    public void setPartnerfile(UploadedFile partnerfile) {
+    	this.partnerfile = partnerfile;
+    }
+    public UploadedFile getAutherfile() {
+    	return autherfile;
+    }
+    public void setAutherfile(UploadedFile autherfile) {
+    	this.autherfile = autherfile;
+    }
+    
+	public Boolean getAuthourisedIdVisibility() {
+		return authourisedIdVisibility;
+	}
+	public boolean isCompanyRegisterIdStatus() {
+		return companyRegisterIdStatus;
+	}
+	public void setCompanyRegisterIdStatus(boolean companyRegisterIdStatus) {
+		this.companyRegisterIdStatus = companyRegisterIdStatus;
+	}
+	public boolean isPartnerRegisterIdStatus() {
+		return PartnerRegisterIdStatus;
+	}
+	public void setPartnerRegisterIdStatus(boolean partnerRegisterIdStatus) {
+		PartnerRegisterIdStatus = partnerRegisterIdStatus;
+	}
+	public boolean isAuthorRegisterIdStatus() {
+		return authorRegisterIdStatus;
+	}
+	public void setAuthorRegisterIdStatus(boolean authorRegisterIdStatus) {
+		this.authorRegisterIdStatus = authorRegisterIdStatus;
+	}
+	public boolean isDisableDate() {
+		return disableDate;
+	}
+	public void setDisableDate(boolean disableDate) {
+		this.disableDate = disableDate;
+	}
+	public Date getDateAdderForReg() {
+		return dateAdderForReg;
+	}
+	public void setDateAdderForReg(Date dateAdderForReg) {
+		this.dateAdderForReg = dateAdderForReg;
+	}
+	public Boolean getNatureBussineesVisibility() {
+		return natureBussineesVisibility;
+	}
+	public void setNatureBussineesVisibility(Boolean natureBussineesVisibility) {
+		this.natureBussineesVisibility = natureBussineesVisibility;
+	}
+	public Boolean getSecondaryObjDuplicate() {
+		return secondaryObjDuplicate;
+	}
+	public void setSecondaryObjDuplicate(Boolean secondaryObjDuplicate) {
+		this.secondaryObjDuplicate = secondaryObjDuplicate;
+	}
+	public Boolean getPrimayObjVisibility() {
+		return primayObjVisibility;
+	}
+	public void setPrimayObjVisibility(Boolean primayObjVisibility) {
+		this.primayObjVisibility = primayObjVisibility;
+	}
+	public Boolean getSecondaryObjVisibility() {
+		return secondaryObjVisibility;
+	}
+	public void setSecondaryObjVisibility(Boolean secondaryObjVisibility) {
+		this.secondaryObjVisibility = secondaryObjVisibility;
+	}
+	public Boolean getPrimaySecondaryBussnessVisibility() {
+		return primaySecondaryBussnessVisibility;
+	}
+	public void setPrimaySecondaryBussnessVisibility(
+			Boolean primaySecondaryBussnessVisibility) {
+		this.primaySecondaryBussnessVisibility = primaySecondaryBussnessVisibility;
+	}
+	public Boolean getBussenessDuplicateVisibility() {
+		return bussenessDuplicateVisibility;
+	}
+	public void setBussenessDuplicateVisibility(Boolean bussenessDuplicateVisibility) {
+		this.bussenessDuplicateVisibility = bussenessDuplicateVisibility;
+	}
+	public void setAuthourisedIdVisibility(Boolean authourisedIdVisibility) {
+		this.authourisedIdVisibility = authourisedIdVisibility;
+	}
+	public Boolean getAuthourisedTypeVisibility() {
+		return authourisedTypeVisibility;
+	}
+	public void setAuthourisedTypeVisibility(Boolean authourisedTypeVisibility) {
+		this.authourisedTypeVisibility = authourisedTypeVisibility;
+	}
+	public Boolean getAuthourisedExpDateVisibility() {
+		return authourisedExpDateVisibility;
+	}
+	public void setAuthourisedExpDateVisibility(Boolean authourisedExpDateVisibility) {
+		this.authourisedExpDateVisibility = authourisedExpDateVisibility;
+	}
+	public Boolean getAuthourisedDublicateVisibility() {
+		return authourisedDublicateVisibility;
+	}
+	public void setAuthourisedDublicateVisibility(
+			Boolean authourisedDublicateVisibility) {
+		this.authourisedDublicateVisibility = authourisedDublicateVisibility;
+	}
+	public Boolean getAuthourisedOwnerNameVisibility() {
+		return authourisedOwnerNameVisibility;
+	}
+	public void setAuthourisedOwnerNameVisibility(
+			Boolean authourisedOwnerNameVisibility) {
+		this.authourisedOwnerNameVisibility = authourisedOwnerNameVisibility;
+	}
+	public Boolean getAuthourisedEffDateVisibility() {
+		return authourisedEffDateVisibility;
+	}
+	public void setAuthourisedEffDateVisibility(Boolean authourisedEffDateVisibility) {
+		this.authourisedEffDateVisibility = authourisedEffDateVisibility;
+	}
+	public Boolean getAuthourisedEndDateVisibility() {
+		return authourisedEndDateVisibility;
+	}
+	public void setAuthourisedEndDateVisibility(Boolean authourisedEndDateVisibility) {
+		this.authourisedEndDateVisibility = authourisedEndDateVisibility;
+	}
+	public IGeneralService<T> getiGeneralService() {
+		return generalService;
+	}
+	public Boolean getPartnerIdVisibility() {
+		return partnerIdVisibility;
+	}
+	public void setPartnerIdVisibility(Boolean partnerIdVisibility) {
+		this.partnerIdVisibility = partnerIdVisibility;
+	}
+	public Boolean getPartnerIdTypeVisibility() {
+		return partnerIdTypeVisibility;
+	}
+	public void setPartnerIdTypeVisibility(Boolean partnerIdTypeVisibility) {
+		this.partnerIdTypeVisibility = partnerIdTypeVisibility;
+	}
+	public Boolean getPartnerExpDateVisibility() {
+		return partnerExpDateVisibility;
+	}
+	public void setPartnerExpDateVisibility(Boolean partnerExpDateVisibility) {
+		this.partnerExpDateVisibility = partnerExpDateVisibility;
+	}
+	public Boolean getPartnerDublicateVisibility() {
+		return partnerDublicateVisibility;
+	}
+	public void setPartnerDublicateVisibility(Boolean partnerDublicateVisibility) {
+		this.partnerDublicateVisibility = partnerDublicateVisibility;
+	}
+	public Boolean getPartnerNameVisibility() {
+		return partnerNameVisibility;
+	}
+	public void setPartnerNameVisibility(Boolean partnerNameVisibility) {
+		this.partnerNameVisibility = partnerNameVisibility;
+	}
+
+
+	public Boolean getDuplicateContact() {
+		return duplicateContact;
+	}
+
+
+	public void setDuplicateContact(Boolean duplicateContact) {
+		this.duplicateContact = duplicateContact;
+	}
+
+
+	public Boolean getDistrictVisibility() {
+		return districtVisibility;
+	}
+
+	public void setDistrictVisibility(Boolean districtVisibility) {
+		this.districtVisibility = districtVisibility;
+	}
+
+	public Boolean getCityVisibility() {
+		return cityVisibility;
+	}
+
+	public void setCityVisibility(Boolean cityVisibility) {
+		this.cityVisibility = cityVisibility;
+	}
+
+	public Boolean getAreaVisibility() {
+		return areaVisibility;
+	}
+
+	public void setAreaVisibility(Boolean areaVisibility) {
+		this.areaVisibility = areaVisibility;
+	}
+
+
+	public Boolean getStreetVisibility() {
+		return streetVisibility;
+	}
+
+	public void setStreetVisibility(Boolean streetVisibility) {
+		this.streetVisibility = streetVisibility;
+	}
+
+	public Boolean getBlockVisibility() {
+		return blockVisibility;
+	}
+
+	public void setBlockVisibility(Boolean blockVisibility) {
+		this.blockVisibility = blockVisibility;
+	}
+
+	public Boolean getTelephoneVisibility() {
+		return telephoneVisibility;
+	}
+
+	public void setTelephoneVisibility(Boolean telephoneVisibility) {
+		this.telephoneVisibility = telephoneVisibility;
+	}
+
+	public Boolean getFlatVisibility() {
+		return flatVisibility;
+	}
+
+	public void setFlatVisibility(Boolean flatVisibility) {
+		this.flatVisibility = flatVisibility;
+	}
+
+	public Boolean getContactTypeVisibility() {
+		return contactTypeVisibility;
+	}
+
+	public void setContactTypeVisibility(Boolean contactTypeVisibility) {
+		this.contactTypeVisibility = contactTypeVisibility;
+	}
+
+	public Boolean getCountryVisibility() {
+		return countryVisibility;
+	}
+
+	public void setCountryVisibility(Boolean countryVisibility) {
+		this.countryVisibility = countryVisibility;
+	}
+
+	public Boolean getStateVisibility() {
+		return stateVisibility;
+	}
+
+	public void setStateVisibility(Boolean stateVisibility) {
+		this.stateVisibility = stateVisibility;
+	}
+	public Boolean getCoDublicateVisibility() {
+		return coDublicateVisibility;
+	}
+
+	public void setCoDublicateVisibility(Boolean coDublicateVisibility) {
+		this.coDublicateVisibility = coDublicateVisibility;
+	}
+
+	public Boolean getCoIdVisibility() {
+		return coIdVisibility;
+	}
+
+	public void setCoIdVisibility(Boolean coIdVisibility) {
+		this.coIdVisibility = coIdVisibility;
+	}
+	public Boolean getCoIdTypeVisibility() {
+		return coIdTypeVisibility;
+	}
+	public void setCoIdTypeVisibility(Boolean coIdTypeVisibility) {
+		this.coIdTypeVisibility = coIdTypeVisibility;
+	}
+	public Boolean getCoExpDateVisibility() {
+		return coExpDateVisibility;
+	}
+
+	public void setCoExpDateVisibility(Boolean coExpDateVisibility) {
+		this.coExpDateVisibility = coExpDateVisibility;
+	}
+
+	public Map<BigDecimal, String> getMapPartnerDetailsList() {
+		return mapPartnerDetailsList;
+	}
+
+	public void setMapPartnerDetailsList(
+			Map<BigDecimal, String> mapPartnerDetailsList) {
+		this.mapPartnerDetailsList = mapPartnerDetailsList;
+	}
+
+	public Map<BigDecimal, String> getMapAuthorSiganatureList() {
+		return mapAuthorSiganatureList;
+	}
+
+	public void setMapAuthorSiganatureList(
+			Map<BigDecimal, String> mapAuthorSiganatureList) {
+		this.mapAuthorSiganatureList = mapAuthorSiganatureList;
+	}
+
+	public Map<BigDecimal, String> getMapObjectiveList() {
+		return mapObjectiveList;
+	}
+
+	public void setMapObjectiveList(Map<BigDecimal, String> mapObjectiveList) {
+		this.mapObjectiveList = mapObjectiveList;
+	}
+
+	public Map<BigDecimal, String> getMapCountryList() {
+		return mapCountryList;
+	}
+
+	public void setMapCountryList(Map<BigDecimal, String> mapCountryList) {
+		this.mapCountryList = mapCountryList;
+	}
+
+	public Map<BigDecimal, String> getMapDistrictList() {
+		return mapDistrictList;
+	}
+
+	public void setMapDistrictList(Map<BigDecimal, String> mapDistrictList) {
+		this.mapDistrictList = mapDistrictList;
+	}
+
+	public Map<BigDecimal, String> getMapStateList() {
+		return mapStateList;
+	}
+    
+	public void setMapStateList(Map<BigDecimal, String> mapStateList) {
+		this.mapStateList = mapStateList;
+	}
+
+	public Map<BigDecimal, String> getMapCityList() {
+		return mapCityList;
+	}
+
+	public void setMapCityList(Map<BigDecimal, String> mapCityList) {
+		this.mapCityList = mapCityList;
+	}
+
+	public List<IdentityType> getLstCompanyIdentityType() {
+		lstCompanyIdentityType = new ArrayList<IdentityType>();
+		BigDecimal countryId = new BigDecimal(120);  
+		lstCompanyIdentityType.addAll(getiGeneralService().getIdentityTypes(getLanguageId(), countryId, bdCompanyIdType));
+		for(IdentityType identityType:lstCompanyIdentityType) {
+			companyIdentityTypeHashaMap.put( identityType.getIdentityTypeId(),  identityType.getIdentityType());
+		}
+		return lstCompanyIdentityType;
+	}
+
+	public void setLstCompanyIdentityType(List<IdentityType> lstCompanyIdentityType) {
+		this.lstCompanyIdentityType = lstCompanyIdentityType;
+	}
+
+	public List<IdentityType> getLstPartnerIdentityType() {
+		BigDecimal countryId = new BigDecimal(120);
+		lstPartnerIdentityType = new ArrayList<IdentityType>();
+		lstPartnerIdentityType.addAll(getiGeneralService().getIdentityTypes(getLanguageId(), countryId, bdPartnerIdType));
+		for(IdentityType identityType:lstPartnerIdentityType) {
+			partnerIdentityTypeHashaMap.put( identityType.getIdentityTypeId(),  identityType.getIdentityType());
+		}
+		return lstPartnerIdentityType;
+	}
+
+	public void setLstPartnerIdentityType(List<IdentityType> lstPartnerIdentityType) {
+		this.lstPartnerIdentityType = lstPartnerIdentityType;
+	}
+
+	public List<IdentityType> getLstAuthorizedIdentityType() {
+		BigDecimal countryId = new BigDecimal(120);
+		lstAuthorizedIdentityType = new ArrayList<IdentityType>();
+		lstAuthorizedIdentityType.addAll(getiGeneralService().getIdentityTypes(getLanguageId(), countryId, bdAuthorizedIdType));
+		for(IdentityType identityType:lstAuthorizedIdentityType) {
+			authorizedIdentityTypeHashaMap.put( identityType.getIdentityTypeId(),  identityType.getIdentityType());
+		}
+		return lstAuthorizedIdentityType;
+	}
+
+	public void setLstAuthorizedIdentityType(
+			List<IdentityType> lstAuthorizedIdentityType) {
+		this.lstAuthorizedIdentityType = lstAuthorizedIdentityType;
+	}
+
+	public BigDecimal getCustomerTypeId() {
+		return customerTypeId;
+	}
+
+	public void setCustomerTypeId(BigDecimal customerTypeId) {
+		this.customerTypeId = customerTypeId;
+	}
+
+	public void setiGeneralService(IGeneralService<T> iGeneralService) {
+		this.generalService = iGeneralService;
+	}
+
+	public ICorporateRegService<T> getCorpRegService() {
+		return corpRegService;
+	}
+
+	public void setCorpRegService(ICorporateRegService<T> corpRegService) {
+		this.corpRegService = corpRegService;
+	}
+	
+	public BigDecimal getLanguageId() {
+		return languageId;
+	}
+
+	public void setLanguageId(BigDecimal bigDecimal) {
+		this.languageId = bigDecimal;
+	}
+	
+	public String getiDNoStatus() {
+		return iDNoStatus;
+	}
+
+	public void setiDNoStatus(String iDNoStatus) {
+		this.iDNoStatus = iDNoStatus;
+	}
+
+
+	public BigDecimal getLocation() {
+		return location;
+	}
+
+	public void setLocation( BigDecimal location) {
+		this.location = location;
+	}
+
+	public Map<BigDecimal, String> getSecondryObjMap() {
+    return secondryObjMap;
+	}
+
+	public void setSecondryMap(Map<BigDecimal, String> secondryMap) {
+		
+		
+		this.secondryObjMap = secondryMap;
+	}
+	
+	private boolean enableContactDataTable;
+
+	public boolean isEnableContactDataTable() {
+		return enableContactDataTable;
+	}
+
+	public void setEnableContactDataTable(boolean enableContactDataTable) {
+		this.enableContactDataTable = enableContactDataTable;
+	}
+	
+	 public List<ContactType> getContactTypeList() {
+			return contactTypeList;
+	 }
+
+	 public void setContactTypeList(List<ContactType> contactTypeList) {
+			this.contactTypeList = contactTypeList;
+	 }
+
+	public boolean isEnabledSignatoriesDataTable() {
+		return enabledSignatoriesDataTable;
+	}
+
+	public void setEnabledSignatoriesDataTable(boolean enabledSignatoriesDataTable) {
+		this.enabledSignatoriesDataTable = enabledSignatoriesDataTable;
+	}
+
+	public boolean isEnableddPartnerDataTable() {
+		return enableddPartnerDataTable;
+	}
+
+	public void setEnableddPartnerDataTable(boolean enableddPartnerDataTable) {
+		this.enableddPartnerDataTable = enableddPartnerDataTable;
+	}
+
+	public boolean isEnabledddCompanyDataTable() {
+		return enabledddCompanyDataTable;
+	}
+
+	public void setEnabledddCompanyDataTable(boolean enabledddCompanyDataTable) {
+		this.enabledddCompanyDataTable = enabledddCompanyDataTable;
+	}
+
+	public boolean isEnableSecondaryObjDataTable() {
+		return enableSecondaryObjDataTable;
+	}
+
+	public void setEnableSecondaryObjDataTable(boolean enableSecondaryObjDataTable) {
+		this.enableSecondaryObjDataTable = enableSecondaryObjDataTable;
+	}
+
+	public boolean isEnableBussineesDataTable() {
+		return enableBussineesDataTable;
+	}
+
+	public void setEnableBussineesDataTable(boolean enableBussineesDataTable) {
+		this.enableBussineesDataTable = enableBussineesDataTable;
+	}
+	public String getpIdNoStatus() {
+		return pIdNoStatus;
+	}
+
+	public void setpIdNoStatus(String pIdNoStatus) {
+		this.pIdNoStatus = pIdNoStatus;
+	}
+
+	public String getSigIdNoStatus() {
+		return sigIdNoStatus;
+	}
+
+	public void setSigIdNoStatus(String sigIdNoStatus) {
+		this.sigIdNoStatus = sigIdNoStatus;
+	}
+
+	private Boolean booUpdate;
+
+	
+	public BigDecimal getState() {
+		return stateId;
+	}
+
+	public void setState(BigDecimal state) {
+		this.stateId = state;
+	}
+
+	public BigDecimal getDist() {
+		return distId;
+	}
+
+	public void setDist(BigDecimal dist) {
+		this.distId = dist;
+	}
+
+	public BigDecimal getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(BigDecimal stateId) {
+		this.stateId = stateId;
+	}
+
+	public BigDecimal getDistId() {
+		return distId;
+	}
+
+	public void setDistId(BigDecimal distId) {
+		this.distId = distId;
+	}
+	public List<Amlstatus> getCoAMLList() {
+		return coAMLList;
+	}
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public BigDecimal getCustomerId() {
+		return customerId;
+	}
+
+	public BigDecimal getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(BigDecimal cityId) {
+		this.cityId = cityId;
+	}
+
+	public void setCustomerId(BigDecimal bigDecimal) {
+		this.customerId = bigDecimal;
+	}
+
+	public List<Customer> getCutList() {
+		return cutList;
+	}
+
+	private List<Customer> cutList;
+
+	public boolean isCoAMLCommon() {
+		return coAMLCommon;
+	}
+
+	public void setCoAMLCommon(boolean coAMLCommon) {
+		this.coAMLCommon = coAMLCommon;
+	}
+
+	private final ArrayList<AddContactDetailBean> contactList = new ArrayList<AddContactDetailBean>();
+    
+	public ArrayList<AddContactDetailBean> getContactList() {
+		return contactList;
+	}
+
+	private final ArrayList<AddCoIdentityDetailBean> identityList = new ArrayList<AddCoIdentityDetailBean>();
+
+	public ArrayList<AddCoIdentityDetailBean> getIdentityList() {
+		return identityList;
+	}
+
+	private final ArrayList<AddPartnerDetailBean> partnerList = new ArrayList<AddPartnerDetailBean>();
+
+	public ArrayList<AddPartnerDetailBean> getPartnerList() {
+		return partnerList;
+	}
+
+	private final ArrayList<AddNatureofBussnessBean> bussnessList = new ArrayList<AddNatureofBussnessBean>();
+
+	public ArrayList<AddNatureofBussnessBean> getBussnessList() {
+		return bussnessList;
+	}
+
+	private final ArrayList<AddAuthSignatoriesBean> authorisedList = new ArrayList<AddAuthSignatoriesBean>();
+
+	public ArrayList<AddAuthSignatoriesBean> getAuthorisedList() {
+		return authorisedList;
+	}
+
+	private final ArrayList<AddSecondaryObjectiveBean> secondaryList = new ArrayList<AddSecondaryObjectiveBean>();
+
+	public ArrayList<AddSecondaryObjectiveBean> getSecondaryList() {
+		return secondaryList;
+	}
+	public   Map<BigDecimal, String>  getCountryMap() {
+		return countryMap;
+	}
+
+	public void setCountryMap(Map<BigDecimal, String> countryMap) {
+		this.countryMap = countryMap;
+	}
+
+	public List<Customer> getCutList(String id) {
+		cutList = new ArrayList<Customer>();
+	//	cutList.addAll(getCorpRegService().getAllData(id));
+		return cutList;
+	}
+
+	public void setCutList(List<Customer> cutList) {
+		this.cutList = cutList;
+	}
+
+	public void setCountryList(List<CountryBean> countryList) {
+		this.countryList = countryList;
+	}
+	public String getCrno() {
+		return crno;
+	}
+
+	public void setCrno(String crno) {
+		this.crno = crno;
+	}
+
+	public String getCompName() {
+		return compName;
+	}
+
+	public void setCompName(String compName) {
+		this.compName = compName;
+	}
+
+	public String getCompNameL() {
+		return compNameL;
+	}
+
+	public void setCompNameL(String compNameL) {
+		this.compNameL = compNameL;
+	}
+
+	public Date getCompRegDate() {
+		return compRegDate;
+	}
+
+	public void setCompRegDate(Date compRegDate) {
+		this.compRegDate = compRegDate;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public String getFlat() {
+		return flat;
+	}
+
+	public void setFlat(String flat) {
+		this.flat = flat;
+	}
+
+	public BigDecimal getContType() {
+		return contType;
+	}
+
+	public void setContType(BigDecimal contType) {
+		this.contType = contType;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public BigDecimal getCountryId() {
+		return countryId;
+	}
+
+	public void setCountryId(BigDecimal country) {
+		this.countryId = country;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public String getBlock() {
+		return block;
+	}
+
+	public void setBlock(String block) {
+		this.block = block;
+	}
+	public String getIdno() {
+		return idno;
+	}
+
+	public void setIdno(String idno) {
+		this.idno = idno;
+	}
+
+	public BigDecimal getIdtype() {
+		return idtype;
+	}
+
+	public void setIdtype(BigDecimal idtype) {
+		this.idtype = idtype;
+	}
+
+	public Date getIdExpDate() {
+		return idExpDate;
+	}
+
+	public void setIdExpDate(Date idExpDate) {
+		this.idExpDate = idExpDate;
+	}
+
+	public String getPartName() {
+		return partName;
+	}
+
+	public void setPartName(String partName) {
+		this.partName = partName;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Date getEffDate() {
+		return effDate;
+	}
+
+	public void setEffDate(Date effDate) {
+		this.effDate = effDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public BigDecimal getSeconObj() {
+		return seconObj;
+	}
+
+	public void setSeconObj(BigDecimal seconObj) {
+		this.seconObj = seconObj;
+	}
+
+	public BigDecimal getBussNature() {
+		return bussNature;
+	}
+
+	public void setBussNature(BigDecimal string) {
+		this.bussNature = string;
+	}
+
+	public String getObj() {
+		return obj;
+	}
+
+	public void setObj(String obj) {
+		this.obj = obj;
+	}
+
+	public List<Customer> getEmpList() {
+		return empList;
+	}
+
+	public void setEmpList(List<Customer> empList) {
+		this.empList = empList;
+	}
+
+	public String getStatusMessage() {
+		return statusMessage;
+	}
+
+	public void setStatusMessage(String statusMessage) {
+		this.statusMessage = statusMessage;
+	}
+
+	public String getPidno() {
+		return pidno;
+	}
+
+	public void setPidno(String pidno) {
+		this.pidno = pidno;
+	}
+
+	public BigDecimal getPidtype() {
+		return pidtype;
+	}
+
+	public void setPidtype(BigDecimal pidtype) {
+		this.pidtype = pidtype;
+	}
+
+	public Date getPidExpDate() {
+		return pidExpDate;
+	}
+
+	public void setPidExpDate(Date pidExpDate) {
+		this.pidExpDate = pidExpDate;
+	}
+
+	public Part getPpart() {
+		return ppart;
+	}
+
+	public void setPpart(Part ppart) {
+		this.ppart = ppart;
+	}
+
+	public String getSidno() {
+		return sidno;
+	}
+
+	public void setSidno(String sidno) {
+		this.sidno = sidno;
+	}
+
+	public BigDecimal getSidtype() {
+		return sidtype;
+	}
+
+	public void setSidtype(BigDecimal sidtype) {
+		this.sidtype = sidtype;
+	}
+
+	public Date getSidExpDate() {
+		return sidExpDate;
+	}
+
+	public void setSidExpDate(Date sidExpDate) {
+		this.sidExpDate = sidExpDate;
+	}
+
+	public Part getSpart() {
+		return spart;
+	}
+
+	public void setSpart(Part spart) {
+		this.spart = spart;
+	}
+
+	public UIComponent getTableForm() {
+		return tableForm;
+	}
+
+	public void setTableForm(UIComponent tableForm) {
+		this.tableForm = tableForm;
+	}
+
+	public Boolean getBooUpdate() {
+		return booUpdate;
+	}
+
+	public void setBooUpdate(Boolean booUpdate) {
+		this.booUpdate = booUpdate;
+	}
+
+	public String getAMLStatus() {
+		return AMLStatus;
+	}
+
+	public void setAMLStatus(String aMLStatus) {
+		AMLStatus = aMLStatus;
+	}
+
+	public boolean isCoAMLPass() {
+		return coAMLPass;
+	}
+
+	public void setCoAMLPass(boolean coAMLPass) {
+		this.coAMLPass = coAMLPass;
+	}
+
+	public boolean isCoAMLFail() {
+		return coAMLFail;
+	}
+
+	public void setCoAMLFail(boolean coAMLFail) {
+		this.coAMLFail = coAMLFail;
+	}
+
+	public boolean isCoValdtBtn() {
+		return coValdtBtn;
+	}
+
+	public void setCoValdtBtn(boolean coValdtBtn) {
+		this.coValdtBtn = coValdtBtn;
+	}
+
+	public boolean isCoSave() {
+		return coSave;
+	}
+
+	public void setCoSave(boolean coSave) {
+		this.coSave = coSave;
+	}
+
+	public List<Amlstatus> getCoAMLList(String compName) {
+		coAMLList = new ArrayList<Amlstatus>();
+		coAMLList.addAll(getCorpRegService().getAMLStatusList(compName));
+		return coAMLList;
+	}
+	public   List<IdentityType> getPIdentityTypeList() {
+		return identTypList;
+	}
+	public   List<IdentityType> getAuthorIdentityTypeList() {
+		return identTypList;
+	}
+
+	public Map<BigDecimal, String> getCityHashaMap() {
+		return cityHashaMap;
+	}
+
+	public void setCityHashaMap(Map<BigDecimal, String> cityHashaMap) {
+		this.cityHashaMap = cityHashaMap;
+	}
+
+	public Map<BigDecimal, String> getStateHashaMap() {
+		return stateHashaMap;
+	}
+
+	public void setStateHashaMap(Map<BigDecimal, String> stateHashaMap) {
+		this.stateHashaMap = stateHashaMap;
+	}
+	
+	public String getExpDateAdder() {
+		return expDateAdder;
+	}
+
+	public void setExpDateAdder(String expDateAdder) {
+		this.expDateAdder = expDateAdder;
+	}
+	public Part getPart() {
+		return part;
+	}
+
+	public void setPart(Part part) {
+		this.part = part;
+	}
+
+	public List<IdentityType> getIdentTypList() {
+		return identTypList;
+	}
+
+	public void setIdentTypList(List<IdentityType> identTypList) {
+		this.identTypList = identTypList;
+	}
+
+	public void setCoAMLList(List<Amlstatus> coAMLList) {
+		this.coAMLList = coAMLList;
+	}
+	List<CountryBean> countrybean = new ArrayList<CountryBean>();
+	public List<CountryBean> getCountryList1() {
+		return countrybean;
+	}
+	public BigDecimal getPrimaryObjId() {
+		return primaryObjId;
+	}
+
+	public void setPrimaryObjId(BigDecimal primaryObjId) {
+		this.primaryObjId = primaryObjId;
+	}
+	public Map<BigDecimal, String> getMapCorporateBussineesList() {
+		return mapCorporateBussineesList;
+	}
+
+	public void setMapCorporateBussineesList(
+			Map<BigDecimal, String> mapCorporateBussineesList) {
+		this.mapCorporateBussineesList = mapCorporateBussineesList;
+	}
+
+	public Map<BigDecimal, String> getMapSecoundryList() {
+		return mapSecoundryList;
+	}
+
+	public void setMapSecoundryList(Map<BigDecimal, String> mapSecoundryList) {
+		this.mapSecoundryList = mapSecoundryList;
+	}
+
+	Map<BigDecimal,String> mapSecoundryList = new HashMap<BigDecimal, String>();
+
+	public Map<BigDecimal, String> getMapIdentityList() {
+		return mapIdentityList;
+	}
+
+	public void setMapIdentityList(Map<BigDecimal, String> mapIdentityList) {
+		this.mapIdentityList = mapIdentityList;
+	}
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+
+	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
+	}
+	
+	public BigDecimal getImage_id() {
+		return image_id;
+	}
+	public void setImage_id(BigDecimal image_id) {
+		this.image_id = image_id;
+	}
+
+	//TODO : Other Methods
+	public void checkCompanyAMLStatus() {
+		//System.out.println("inside check method");
+		try{
+			List<Amlstatus> coList = getCoAMLList(getCompName());
+		//	System.out.println("the size of list is" + coList.size());
+			if (coList.get(0).getRemStatus().equalsIgnoreCase("pass")) {
+				setAMLStatus("pass");
+				setCoAMLCommon(true);
+				setCoAMLPass(true);
+				setReadOnly(true);
+				setDisableDate(true);
+				setCoAMLFail(false);
+				setCoValdtBtn(false);
+				setDisableAML(false);
+			} else {
+	
+				setAMLStatus("fail");
+				setCoAMLFail(true);
+				setCoAMLCommon(false);
+				setCoAMLPass(false);
+				
+			}
+		}catch(ArrayIndexOutOfBoundsException aiobexp) {
+			aiobexp.printStackTrace();
+		}
+	}
+    /*
+     * code to check get language id from the session
+     * 
+     */
+	
+
+	/*
+	 * method to save Company
+	 */
+	public String saveData()  {
+		
+		System.out.println("Save");
+		
+		if(secondaryList.size() == 0) {
+			  setContactListSizeVisibility(false);
+            setSecondaryListVisibility(true);
+            setSecondaryObjDuplicate(false);
+            setBusenessListVisibility(false);
+            setPrimayObjVisibility(false);
+			  setSecondaryObjVisibility(false);
+			return "";
+		}else if(contactList.size() == 0 ) {
+			setContactListSizeVisibility(true);
+			setSecondaryListVisibility(false);
+			setBusenessListVisibility(false);
+			setDuplicateContact(false);
+			setContactTypeVisibility(false);
+			setCountryVisibility(false);
+			setStateVisibility(false);
+			setDistrictVisibility(false);
+			setCityVisibility(false);
+			setAreaVisibility(false);
+			setStreetVisibility(false);
+			setBlockVisibility(false);
+			setTelephoneVisibility(false);
+			setFlatVisibility(false);
+			return "";
+		}else if(bussnessList.size() == 0) {
+			setContactListSizeVisibility(false);
+            setSecondaryListVisibility(false);
+			setBusenessListVisibility(true);
+			setBussenessDuplicateVisibility(false);
+			setPrimaySecondaryBussnessVisibility(false);
+			setNatureBussineesVisibility(false);
+			return "";
+		}
+		else {
+		cust = new Customer();
+		ruleObjective = new RuleObjective();
+		try {
+
+			if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")) {
+				setLanguageId(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().
+																				equalsIgnoreCase("ar") ? new BigDecimal(2) : new BigDecimal(1));
+			}
+			
+			ruleObjective.setObjectiveId(getPrimaryObjId());
+			langType = new LanguageType();
+			langType.setLanguageId((getLanguageId()));
+			cust.setFsLanguageType(langType);
+			cust.setFsRuleObjective(ruleObjective);
+			cust.setCompanyName(getCompName());
+			cust.setCompanyNameLocal(getCompNameL());
+			cust.setEmail(getEmail());
+			cust.setCrNo(getCrno());
+			cust.setDateOfBirth(compRegDate);
+			cust.setActivatedDate(new Date());
+			cust.setActivatedInd("1");
+			cust.setAmlStatusUpdatedBy(userName);
+			cust.setCreatedBy(userName);
+			cust.setCreationDate(new Date());
+			cust.setAmlStatusLastUpdated(new Date());
+			countryMstr = new CountryMaster();
+			countryMstr.setCountryId(getLocation());
+			cust.setFsCountryMasterByCountryId(countryMstr);
+			cust.setFsCountryMasterByNationality(countryMstr);
+			custmrType = new CustomerType();
+			custmrType.setCustomerTypeId(bdCompanyIdType);
+			cust.setFsCustomerType(custmrType);
+			cust.setAmlStatus(getAMLStatus());
+			cust.setCustomerId(getCustomerId());
+			corpRegService.updateCorpCustomer(cust);
+			setCustomerId(cust.getCustomerId());
+			/*
+			 * if (!isCoSave()) { }
+			 */
+		} catch (NullPointerException npexp) {
+			npexp.printStackTrace();
+		} catch (Exception ioexp) {
+			ioexp.printStackTrace();
+		}
+		saveContact(cust);
+		saveSecondaryObjective();
+		saveBussnessNature();
+		return "success";
+		}
+	}
+	public void saveContact(Customer cust) {
+
+		try {
+			for (AddContactDetailBean addContact : contactList) {
+				contdetail = new ContactDetail();
+				cust.setCustomerId(getCustomerId());
+				contdetail.setFsCustomer(cust);
+				langType = new LanguageType();
+				countryMaster = new CountryMaster();
+				stateMaster = new StateMaster();
+				districtMaster = new DistrictMaster();
+				cityMaster = new CityMaster();
+
+				contactType = new ContactType();
+
+				contactType.setContactTypeId(addContact.getContactTypeId());
+				countryMaster.setCountryId(addContact.getCountryId());
+				stateMaster.setStateId(addContact.getStateId());
+				districtMaster.setDistrictId(addContact.getDistrictId());
+				cityMaster.setCityId(addContact.getCityId());
+				contdetail.setFsContactType(contactType);
+				contdetail.setFsCountryMaster(countryMaster);
+				contdetail.setFsDistrictMaster(districtMaster);
+				contdetail.setFsStateMaster(stateMaster);
+				contdetail.setFsCityMaster(cityMaster);
+				langType.setLanguageId(getLanguageId());
+				contdetail.setFsLanguageType(langType);
+				contdetail.setAlterEmailId(getEmail());
+				contdetail.setArea(addContact.getArea());
+				contdetail.setBlock(addContact.getBlock());
+				contdetail.setStreet(addContact.getStreet());
+				contdetail.setFlat(addContact.getFlat());
+				contdetail.setAlterEmailId(getEmail());// doubt
+				contdetail.setApproved(userName);// doubt
+				contdetail.setTelephone(addContact.getTel());
+				contdetail.setContactDetailId(addContact
+						.getContactDetailsId());
+				contdetail.setCreatedBy(userName);
+				contdetail.setCreationDate(new Date());
+				contdetail.setUpdatedBy(userName);
+				contdetail.setLastUpdated(new Date());
+				if (addContact.isObjstatus() == true
+						&& addContact.isModified() == true) {
+					contdetail.setCreatedBy(userName);
+					contdetail.setCreationDate(new Date());
+					contdetail.setActiveStatus("1");
+					getCorpRegService().saveCorporateContDtl(contdetail);
+				}
+
+				if (addContact.isModified() == true
+						&& addContact.isObjstatus() == false) {
+					contdetail.setUpdatedBy(userName);
+					contdetail.setLastUpdated(new Date());
+					contdetail.setActiveStatus("0");
+					getCorpRegService().updateContact(contdetail,
+							contdetail.getContactDetailId());
+				}
+			}
+			for (AddContactDetailBean addContact : contactListDelete) {
+				contdetail = new ContactDetail();
+				cust.setCustomerId(getCustomerId());
+				contdetail.setFsCustomer(cust);
+				langType = new LanguageType();
+				countryMaster = new CountryMaster();
+				stateMaster = new StateMaster();
+				districtMaster = new DistrictMaster();
+				cityMaster = new CityMaster();
+				contactType = new ContactType();
+				contactType.setContactTypeId(addContact.getContactTypeId());
+				countryMaster.setCountryId(addContact.getCountryId());
+				stateMaster.setStateId(addContact.getStateId());
+				districtMaster.setDistrictId(addContact.getDistrictId());
+				cityMaster.setCityId(addContact.getCityId());
+				contdetail.setFsContactType(contactType);
+				contdetail.setFsCountryMaster(countryMaster);
+				contdetail.setFsDistrictMaster(districtMaster);
+				contdetail.setFsStateMaster(stateMaster);
+				contdetail.setFsCityMaster(cityMaster);
+				langType.setLanguageId(getLanguageId());
+				contdetail.setFsLanguageType(langType);
+				contdetail.setAlterEmailId(getEmail());
+				contdetail.setArea(addContact.getArea());
+				contdetail.setBlock(addContact.getBlock());
+				contdetail.setStreet(addContact.getStreet());
+				contdetail.setFlat(addContact.getFlat());
+				contdetail.setAlterEmailId(getEmail());// doubt
+				contdetail.setApproved(userName);// doubt
+				contdetail.setTelephone(getTel());
+				contdetail.setContactDetailId(addContact
+						.getContactDetailsId());
+				contdetail.setActiveStatus("0");
+				contdetail.setCreatedBy(userName);
+				contdetail.setCreationDate(new Date());
+				contdetail.setUpdatedBy(userName);
+				contdetail.setLastUpdated(new Date());
+				contdetail.setUpdatedBy(userName);
+				contdetail.setLastUpdated(new Date());
+
+				getCorpRegService().updateContact(contdetail,
+						contdetail.getContactDetailId());
+				// }
+			}
+		} catch (NullPointerException npexp) {
+			npexp.printStackTrace();
+		} catch (Exception ioexp) {
+			ioexp.printStackTrace();
+		}
+	}
+	@SuppressWarnings("unchecked")
+	public void saveSecondaryObjective() {
+		try {
+			for (AddSecondaryObjectiveBean addobjective : secondaryList) {
+				cust = new Customer();
+				cust.setCustomerId(getCustomerId());
+				custCorpAddDetail = new CustCorporateAddlDetail();
+				ruleObjective = new RuleObjective();
+				ruleObjective.setObjectiveId(addobjective
+						.getSecondaryObjectId());
+				langType = new LanguageType();
+				langType.setLanguageId(getLanguageId());
+				custCorpAddDetail.setFsLanguageType(langType);
+				custCorpAddDetail.setFsCustomer(cust);
+				custCorpAddDetail.setFsRuleObjective(ruleObjective);
+				custCorpAddDetail.setCreatedBy(userName);
+				custCorpAddDetail.setCreationDate(new Date());
+				custCorpAddDetail.setAddlStatus("1");
+				custCorpAddDetail.setCorpAddlId(addobjective
+						.getCorporateAddentionalDetailId());
+				if (addobjective.isModified() == true
+						&& addobjective.isObjStatus() == true) {
+					corpRegService.save((T) custCorpAddDetail);
+				}
+			}
+			for (AddSecondaryObjectiveBean addobjective : secondryObjectiveListDeleted) {
+				cust = new Customer();
+				cust.setCustomerId(getCustomerId());
+				custCorpAddDetail = new CustCorporateAddlDetail();
+				ruleObjective = new RuleObjective();
+				ruleObjective.setObjectiveId(addobjective
+						.getSecondaryObjectId());
+				langType = new LanguageType();
+				langType.setLanguageId(getLanguageId());
+				custCorpAddDetail.setFsLanguageType(langType);
+				custCorpAddDetail.setFsCustomer(cust);
+				custCorpAddDetail.setFsRuleObjective(ruleObjective);
+				custCorpAddDetail.setCreatedBy(userName);
+				custCorpAddDetail.setCreationDate(new Date());
+				custCorpAddDetail.setAddlStatus("1");
+				custCorpAddDetail.setCorpAddlId(addobjective
+						.getCorporateAddentionalDetailId());
+				custCorpAddDetail.setUpdatedBy(userName);
+				custCorpAddDetail.setLastUpdated(new Date());
+				custCorpAddDetail.setAddlStatus("0");
+				corpRegService.updateSecondaryObjective(custCorpAddDetail,
+						getCustomerId());
+
+			}
+		} catch (NullPointerException npexp) {
+			npexp.printStackTrace();
+		} catch (Exception ioexp) {
+			ioexp.printStackTrace();
+		}
+	}
+
+	public void saveBussnessNature() {
+		corpBussnsNature = new CorporateBusinessNature();
+		ruleBussNature = new RuleBusinessNature();
+		try {
+			for (AddNatureofBussnessBean addnature : bussnessList) {
+				ruleBussNature.setNatureOfBusinessId(addnature
+						.getBussNatureId());
+				corpBussnsNature.setObjectiveType(addnature.getObj());
+				corpBussnsNature.setFsRuleBusinessNature(ruleBussNature);
+				cust = new Customer();
+				cust.setCustomerId(getCustomerId());
+				corpBussnsNature.setFsCustomer(cust);
+				corpBussnsNature.setCreatedBy(userName);
+				corpBussnsNature.setCreationDate(new Date());
+				corpBussnsNature.setBusinessStatus("1");
+				corpBussnsNature.setCorporateBusinessId(addnature
+						.getNatureOfBussinessId());
+				if (addnature.isModified() == true
+						&& addnature.isObjStatus() == true) {
+					corpRegService.saveBussnessNature(corpBussnsNature);
+				}
+			}
+			for (AddNatureofBussnessBean addnature : bussenessNatureListDeleted) {
+				ruleBussNature.setNatureOfBusinessId(addnature
+						.getBussNatureId());
+				corpBussnsNature.setObjectiveType(addnature.getObj());
+				corpBussnsNature.setFsRuleBusinessNature(ruleBussNature);
+				cust = new Customer();
+				cust.setCustomerId(getCustomerId());
+				corpBussnsNature.setFsCustomer(cust);
+				corpBussnsNature.setCreatedBy(userName);
+				corpBussnsNature.setCreationDate(new Date());
+				corpBussnsNature.setCorporateBusinessId(addnature
+						.getNatureOfBussinessId());
+				corpBussnsNature.setLastUpdated(new Date());
+				corpBussnsNature.setUpdatedBy(userName);
+				corpBussnsNature.setBusinessStatus("0");
+				corpRegService.updateBussnessNature(corpBussnsNature,
+						getCustomerId());
+			}
+
+		} catch (NullPointerException npexp) {
+			npexp.printStackTrace();
+		} catch (Exception ioexp) {
+			ioexp.printStackTrace();
+		}
+	}
+	
+	public String saveAdditionalDetails() {
+		if(identityList.size() == 0) {
+			setIdentityListVisibility(true);
+			setCoIdVisibility(false);
+			setCoIdTypeVisibility(false);
+			setCoExpDateVisibility(false);
+			setCompanyRegisterIdStatus(false);
+			setCoUploadFileVisibility(false);
+			setCoDublicateVisibility(false);
+			setAuthourisedListVisibility(false);
+			return "";
+		}
+		else if (authorisedList.size() == 0) {
+			setAuthourisedListVisibility(true);
+			
+			setAuthourisedIdVisibility(false);
+			setAuthourisedOwnerNameVisibility(false);
+			setAuthourisedTypeVisibility(false);
+			setAuthourisedEffDateVisibility(false);
+			setAuthourisedExpDateVisibility(false);
+			setAuthourisedEndDateVisibility(false);
+			setAuthourisedDublicateVisibility(false);
+			setAuthorRegisterIdStatus(false);
+			setAuthorUploadFileVisibility(false);
+			setIdentityListVisibility(false);
+			return "";
+		}
+		else {
+		saveCompanyIdentityDocument();
+		savePartnerDetail();
+		saveAuthourizeSignatoriesDetail();
+		
+		return "success";
+		}
+	}
+	
+	public void saveCompanyIdentityDocument() {
+		
+		
+		try {
+			for (AddCoIdentityDetailBean addIdentity : identityList) {
+				custmrIdProof = new CustomerIdProof();
+				cust = new Customer();
+				cust.setCustomerId(getCustomerId());
+				custmrIdProof.setFsCustomer(cust);
+				langType = new LanguageType();
+				langType.setLanguageId(getLanguageId());
+				custmrIdProof.setFsLanguageType(langType);
+				identityType = new IdentityType();
+				identityType.setIdentityTypeId(addIdentity.getIdTypeId());
+				custmrIdProof.setFsIdentityType(identityType);
+				custmrType = new CustomerType();
+				custmrType.setCustomerTypeId(bdCompanyIdType);
+				custmrIdProof.setFsCustomerType(custmrType);
+				custmrIdProof.setName(getCompName());
+				custmrIdProof.setIdentityInt(addIdentity.getIdno());
+				Date idExpDate = new SimpleDateFormat("dd/MM/yyyy").parse(addIdentity.getIdExpDate());
+				custmrIdProof.setIdentityExpiryDate(idExpDate);
+				
+				DocumentImg imgDoc = new DocumentImg();
+				imgDoc.setImgId(addIdentity.getImageId());
+				custmrIdProof.setFsDocumentImg(imgDoc);
+				
+				custmrIdProof.setApprovedBy(userName);
+				custmrIdProof.setApprovedDate(new Date());
+				custmrIdProof.setCreatedBy(userName);
+				custmrIdProof.setCreationDate(new Date());
+				custmrIdProof.setCustProofId(addIdentity.getCustomerIdProofId());
+				 
+				System.out.println(addIdentity.isObjstatus() + "------------------"+addIdentity.isModified());
+				
+				if (addIdentity.isObjstatus() == true && addIdentity.isModified() == true) {
+					custmrIdProof.setIdentityStatus("1");
+					System.out.println("Calling methode for saving ::::::::::::::::::::::::::::::::::::::::: ");
+					getCorpRegService().saveCoIdentityDoc(custmrIdProof);
+				}
+			}
+			
+				for (AddCoIdentityDetailBean addIdentity : identityListDeleted) {
+					System.out.println("the delete record company document is"+identityListDeleted.size());
+					
+					custmrIdProof = new CustomerIdProof();
+					
+					cust = new Customer();
+					cust.setCustomerId(getCustomerId());
+					custmrIdProof.setFsCustomer(cust);
+					
+					langType = new LanguageType();
+					langType.setLanguageId(getLanguageId());
+					custmrIdProof.setFsLanguageType(langType);
+					
+					identityType = new IdentityType();
+					identityType.setIdentityTypeId(addIdentity.getIdTypeId());
+					custmrIdProof.setFsIdentityType(identityType);
+					
+					custmrType = new CustomerType();
+					custmrType.setCustomerTypeId(bdCompanyIdType);
+					custmrIdProof.setFsCustomerType(custmrType);
+					
+					custmrIdProof.setName(getCompName());
+					custmrIdProof.setIdentityInt(addIdentity.getIdno());
+					Date idExpDate = new SimpleDateFormat("dd/MM/yyyy").parse(addIdentity.getIdExpDate());
+					custmrIdProof.setIdentityExpiryDate(idExpDate);
+					DocumentImg imgDoc = new DocumentImg();
+					imgDoc.setImgId(addIdentity.getImageId());
+					custmrIdProof.setFsDocumentImg(imgDoc);
+					
+					custmrIdProof.setApprovedBy(userName);
+					custmrIdProof.setApprovedDate(new Date());
+					custmrIdProof.setUpdatedBy(userName);
+					custmrIdProof.setLastUpdatedDate(new Date());
+					custmrIdProof.setCreatedBy(userName);
+					custmrIdProof.setCreationDate(new Date());
+					custmrIdProof.setIdentityStatus("0");
+					custmrIdProof.setCustProofId(addIdentity.getCustomerIdProofId());
+					System.out.println("addIdentity.getCustomerIdProofId()=============================================== "+addIdentity.getCustomerIdProofId());
+					corpRegService.updateCompanyIdentityDocument(
+					custmrIdProof, custmrIdProof.getCustProofId());
+				}
+			} catch (NullPointerException npexp) {
+					npexp.printStackTrace();
+			} catch (java.text.ParseException exp) {
+					exp.printStackTrace();
+			} catch (Exception ioexp) {
+					ioexp.printStackTrace();
+			}
+		}
+		public void savePartnerDetail() {
+			try {
+			for (AddPartnerDetailBean addPartner : partnerList) {
+			cust = new Customer();
+			cust.setCustomerId(getCustomerId());
+			custmrIdProof = new CustomerIdProof();
+			custmrIdProof.setFsCustomer(cust);
+			langType = new LanguageType();
+			langType.setLanguageId(getLanguageId());
+			custmrIdProof.setFsLanguageType(langType);
+			custmrType = new CustomerType();
+			identityType = new IdentityType();// doubt
+			identityType.setIdentityTypeId(addPartner.getpIdTypeId());
+			custmrIdProof.setFsIdentityType(identityType);
+			custmrType.setCustomerTypeId(bdPartnerIdType);
+			custmrIdProof.setFsCustomerType(custmrType);
+			custmrIdProof.setName(addPartner.getPartName());
+			
+			DocumentImg imgDoc = new DocumentImg();
+			imgDoc.setImgId(addPartner.getImageId());
+			custmrIdProof.setFsDocumentImg(imgDoc);
+			
+			custmrIdProof.setApprovedBy(userName);
+			custmrIdProof.setApprovedDate(new Date());
+			custmrIdProof.setCreatedBy(userName);
+			custmrIdProof.setCreationDate(new Date());
+			custmrIdProof.setIdentityInt(addPartner.getPidno());
+			custmrIdProof.setCustProofId(addPartner.getCustomerIdProofId());
+			Date pidExpDate = new SimpleDateFormat("dd/MM/yyyy")
+			.parse(addPartner.getPidExpDate());
+			custmrIdProof.setIdentityExpiryDate(pidExpDate);
+			custmrIdProof.setIdentityStatus("1");
+			if (addPartner.isModified() == true
+			&& addPartner.isObjStatus() == true) {
+			corpRegService.savePartnerDtl(custmrIdProof);
+			}
+			}
+			for (AddPartnerDetailBean addPartner : partnerListDeleted) {
+				System.out.println("the partner deleted is "+partnerListDeleted.size());
+			cust = new Customer();
+			cust.setCustomerId(getCustomerId());
+			custmrIdProof = new CustomerIdProof();
+			custmrIdProof.setFsCustomer(cust);
+			langType = new LanguageType();
+			langType.setLanguageId(getLanguageId());
+			custmrIdProof.setFsLanguageType(langType);
+			custmrType = new CustomerType();
+			identityType = new IdentityType();
+			identityType.setIdentityTypeId(addPartner.getpIdTypeId());
+			custmrIdProof.setFsIdentityType(identityType);
+			custmrType.setCustomerTypeId(bdPartnerIdType);
+			custmrIdProof.setFsCustomerType(custmrType);
+			custmrIdProof.setName(addPartner.getPartName());
+			
+			DocumentImg imgDoc = new DocumentImg();
+			imgDoc.setImgId(addPartner.getImageId());
+			custmrIdProof.setFsDocumentImg(imgDoc);
+			
+			custmrIdProof.setApprovedBy(userName);
+			custmrIdProof.setApprovedDate(new Date());
+			custmrIdProof.setUpdatedBy(userName);
+			custmrIdProof.setLastUpdatedDate(new Date());
+			custmrIdProof.setCreatedBy(userName);
+			custmrIdProof.setCreationDate(new Date());
+			custmrIdProof.setIdentityInt(addPartner.getPidno());
+			custmrIdProof.setCustProofId(addPartner.getCustomerIdProofId());
+			custmrIdProof.setIdentityStatus("0");
+			Date pidExpDate = new SimpleDateFormat("dd/MM/yyyy")
+			.parse(addPartner.getPidExpDate());
+			custmrIdProof.setIdentityExpiryDate(pidExpDate);
+			corpRegService.updatePartnerDetail(custmrIdProof,
+			custmrIdProof.getCustProofId());
+			}
+			} catch (NullPointerException npexp) {
+			npexp.printStackTrace();
+			} catch (java.text.ParseException e) {
+
+			e.printStackTrace();
+			} catch (Exception ioexp) {
+			ioexp.printStackTrace();
+			}
+		}
+
+		public void saveAuthourizeSignatoriesDetail() {
+			try {
+			for (AddAuthSignatoriesBean addSignatories : authorisedList) {
+			cust = new Customer();
+			cust.setCustomerId(getCustomerId());
+			custmrIdProof = new CustomerIdProof();
+			custmrIdProof.setFsCustomer(cust);
+			langType = new LanguageType();
+			langType.setLanguageId(getLanguageId());
+			custmrIdProof.setFsLanguageType(langType);
+			custmrType = new CustomerType();
+			identityType = new IdentityType();
+			identityType.setIdentityTypeId(addSignatories.getsIdTypeId());
+			custmrIdProof.setFsIdentityType(identityType);
+			custmrType.setCustomerTypeId(bdAuthorizedIdType);
+			custmrIdProof.setFsCustomerType(custmrType);
+			custmrIdProof.setName(addSignatories.getName());
+			
+			DocumentImg imgDoc = new DocumentImg();
+			imgDoc.setImgId(addSignatories.getImageId());
+			custmrIdProof.setFsDocumentImg(imgDoc);
+			
+			custmrIdProof.setApprovedBy(userName);
+			custmrIdProof.setApprovedDate(new Date());
+			custmrIdProof.setCreatedBy(userName);
+			custmrIdProof.setCreationDate(new Date());
+			custmrIdProof.setIdentityInt(addSignatories.getSidno());
+			custmrIdProof.setCustProofId(addSignatories
+			.getCustomerIdProofId());
+			Date effDate = new SimpleDateFormat("dd/MM/yyyy")
+			.parse(addSignatories.getEffDate());
+			Date endDate = new SimpleDateFormat("dd/MM/yyyy")
+			.parse(addSignatories.getEndDate());
+			Date sidExpDate = new SimpleDateFormat("dd/MM/yyyy")
+			.parse(addSignatories.getSidExpDate());
+			custmrIdProof.setIdentityExpiryDate(sidExpDate);
+			custmrIdProof.setIdentityEffDate(effDate);
+			custmrIdProof.setIdentityEndDate(endDate);
+			custmrIdProof.setIdentityStatus("1");
+			if (addSignatories.isModified() == true
+			&& addSignatories.isObjStatus() == true) {
+			corpRegService.saveAuthouSigDoc(custmrIdProof);
+			}
+			}
+			for (AddAuthSignatoriesBean addSignatories : authorisedListDeleted) {
+			cust = new Customer();
+			cust.setCustomerId(getCustomerId());
+			custmrIdProof = new CustomerIdProof();
+			custmrIdProof.setFsCustomer(cust);
+			langType = new LanguageType();
+			langType.setLanguageId(getLanguageId());
+			custmrIdProof.setFsLanguageType(langType);
+			custmrType = new CustomerType();
+			identityType = new IdentityType();
+			identityType.setIdentityTypeId(addSignatories.getsIdTypeId());
+			custmrIdProof.setFsIdentityType(identityType);
+			custmrType.setCustomerTypeId(bdAuthorizedIdType);
+			custmrIdProof.setFsCustomerType(custmrType);
+			custmrIdProof.setName(addSignatories.getName());
+			
+			DocumentImg imgDoc = new DocumentImg();
+			imgDoc.setImgId(addSignatories.getImageId());
+			custmrIdProof.setFsDocumentImg(imgDoc);
+			
+			custmrIdProof.setApprovedBy(userName);
+			custmrIdProof.setApprovedDate(new Date());
+			custmrIdProof.setUpdatedBy(userName);
+			custmrIdProof.setLastUpdatedDate(new Date());
+			custmrIdProof.setCreatedBy(userName);
+			custmrIdProof.setCreationDate(new Date());
+			custmrIdProof.setIdentityInt(addSignatories.getSidno());
+			custmrIdProof.setCustProofId(addSignatories
+			.getCustomerIdProofId());
+			Date effDate = new SimpleDateFormat("dd/MM/yyyy")
+			.parse(addSignatories.getEffDate());
+			Date endDate = new SimpleDateFormat("dd/MM/yyyy")
+			.parse(addSignatories.getEndDate());
+			Date sidExpDate = new SimpleDateFormat("dd/MM/yyyy")
+			.parse(addSignatories.getSidExpDate());
+			custmrIdProof.setIdentityExpiryDate(sidExpDate);
+			custmrIdProof.setIdentityEffDate(effDate);
+			custmrIdProof.setIdentityEndDate(endDate);
+			custmrIdProof.setIdentityStatus("0");
+			corpRegService.updateAutourSignatoriesDetail(custmrIdProof,
+			custmrIdProof.getCustProofId());
+			}
+			} catch (NullPointerException npexp) {
+			npexp.printStackTrace();
+			} catch (java.text.ParseException exp) {
+			exp.printStackTrace();
+			} catch (Exception ioexp) {
+			ioexp.printStackTrace();
+			}
+		}	
+		/*
+		 * method to validate contact details,primary secondary,bussiness nature
+		 * 
+		 */
+	   public void validateDataTables() {
+		   if(contactList.size() == 0) {
+			   
+		   }
+	   }
+     /*
+      * method to fill company identity document in dataTable at the time of fetching
+      */
+	
+	
+	private void setCompanyIdProofDetail(){
+		System.out.println("In company ID proof");
+		try{
+		identityList.clear();
+		AddCoIdentityDetailBean addCoIdentityDetailBean = new AddCoIdentityDetailBean(); 
+		for(CustomerIdProof customerIdProof : getCorpRegService().getCustomerIdProof(getLanguageId(), getCustomerId(), bdCompanyIdType)){
+			System.out.println("Exp Date :"+customerIdProof.getIdentityExpiryDate());
+			addCoIdentityDetailBean = new AddCoIdentityDetailBean(customerIdProof.getIdentityInt(), customerIdProof.getFsIdentityType().getIdentityType(),
+					new SimpleDateFormat("dd/MM/yyyy").format(customerIdProof.getIdentityExpiryDate()), false, false, customerIdProof.getFsIdentityType().getIdentityTypeId(),
+							customerIdProof.getFsDocumentImg().getImgId());
+			addCoIdentityDetailBean.setCustomerIdProofId(customerIdProof.getCustProofId());
+			identityList.add(addCoIdentityDetailBean);
+		}
+		
+		System.out.println("Size : "+identityList.size());
+		
+		}catch(NullPointerException npexp){
+			npexp.printStackTrace();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	/*
+     * method to fill company partner details  in dataTable at the time of fetching
+     */
+	private void setPartnerIdProofDetail(){
+		try{
+		partnerList.clear();
+		System.out.println("partner details are");
+		AddPartnerDetailBean  addPartnerDetailBean = new AddPartnerDetailBean(); 
+		for(CustomerIdProof customerIdProof : getCorpRegService().getCustomerIdProof(getLanguageId(), getCustomerId(), bdPartnerIdType)){
+			addPartnerDetailBean = new AddPartnerDetailBean();
+			
+			addPartnerDetailBean.setPartName(customerIdProof.getName());
+			addPartnerDetailBean.setPidno(customerIdProof.getIdentityInt());
+			addPartnerDetailBean.setPidtype(customerIdProof.getFsIdentityType().getIdentityType());
+			addPartnerDetailBean.setPidExpDate(new SimpleDateFormat("dd/MM/yyyy").format(customerIdProof.getIdentityExpiryDate()));
+			addPartnerDetailBean.setModified(false);
+			addPartnerDetailBean.setObjStatus(false);
+			addPartnerDetailBean.setImageId(customerIdProof.getFsDocumentImg().getImgId());
+			addPartnerDetailBean.setpIdTypeId(customerIdProof.getFsIdentityType().getIdentityTypeId());
+			addPartnerDetailBean.setCustomerIdProofId(customerIdProof.getCustProofId());
+			addPartnerDetailBean.setLstPartnerIdentityList(getiGeneralService().getIdentityTypes(getLanguageId(),getLocation(),bdPartnerIdType ));
+			partnerList.add(addPartnerDetailBean);
+			
+		}
+		System.out.println("the partner list size is"+partnerList.size());
+		}catch(NullPointerException npexp){
+			npexp.printStackTrace();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	/*
+     * method to fill Authorized Signature  document(owner details) in dataTable at the time of fetching
+     */
+	private void setAuthroizedIdProofDetail(){
+	 try {
+		authorisedList.clear();
+		AddAuthSignatoriesBean   addAuthSignatoriesBean  = new AddAuthSignatoriesBean (); 
+		for(CustomerIdProof customerIdProof : getCorpRegService().getCustomerIdProof(getLanguageId(), getCustomerId(), bdAuthorizedIdType)){
+			addAuthSignatoriesBean = new AddAuthSignatoriesBean();
+			
+			addAuthSignatoriesBean.setName(customerIdProof.getName());
+			addAuthSignatoriesBean.setSidno(customerIdProof.getIdentityInt());
+			addAuthSignatoriesBean.setSidtype(customerIdProof.getFsIdentityType().getIdentityType());
+			addAuthSignatoriesBean.setEffDate(new SimpleDateFormat("dd/MM/yyyy").format(customerIdProof.getIdentityEffDate()));//exception
+			addAuthSignatoriesBean.setEndDate(new SimpleDateFormat("dd/MM/yyyy").format(customerIdProof.getIdentityEndDate()));
+			addAuthSignatoriesBean.setSidExpDate(new SimpleDateFormat("dd/MM/yyyy").format(customerIdProof.getIdentityExpiryDate()));
+			addAuthSignatoriesBean.setModified(false);
+			addAuthSignatoriesBean.setObjStatus(false);
+			System.out.println();
+			addAuthSignatoriesBean.setImageId(customerIdProof.getFsDocumentImg().getImgId());
+			addAuthSignatoriesBean.setsIdTypeId(customerIdProof.getFsIdentityType().getIdentityTypeId());
+			addAuthSignatoriesBean.setCustomerIdProofId(customerIdProof.getCustProofId());
+			addAuthSignatoriesBean.setLstaAuthourizedIdentityList(getiGeneralService().getIdentityTypes(getLanguageId(),getLocation(),bdAuthorizedIdType ));
+			authorisedList.add(addAuthSignatoriesBean);
+		}
+	 }catch(NullPointerException nexp){
+		 nexp.printStackTrace();
+	 }catch(Exception exp) {
+		 exp.printStackTrace();
+	 }
+	 
+	}
+	/*
+     * method to fill contact details in dataTable at the time of fetching
+     */
+	private void setCustomerContactDetails(){
+		try{
+		contactList.clear();
+		AddContactDetailBean addcont = new AddContactDetailBean();
+		for (ContactDetail cdetail : getCorpRegService().getContactDetail(
+				getCustomerId())) {
+			addcont = new AddContactDetailBean(cdetail.getFsContactType()
+					.getContactType(), cdetail.getArea(),
+					mapCountryList.get(cdetail.getFsCountryMaster()
+							.getCountryId()), cdetail.getStreet(),
+					cdetail.getBlock(), cdetail.getTelephone(),
+					cdetail.getFlat(), mapStateList.get(cdetail
+							.getFsStateMaster().getStateId()),
+					mapDistrictList.get(cdetail.getFsDistrictMaster()
+							.getDistrictId()), mapCityList.get(cdetail
+							.getFsCityMaster().getCityId()), false, false,
+					cdetail.getFsContactType().getContactTypeId(), cdetail
+							.getFsCountryMaster().getCountryId(), cdetail
+							.getFsStateMaster().getStateId(), cdetail
+							.getFsDistrictMaster().getDistrictId(), cdetail
+							.getFsCityMaster().getCityId(), cdetail
+							.getContactDetailId());
+			addcont.setLstCountryList(getiGeneralService().getCountryList(
+					getLanguageId()));
+			addcont.setLstStateList(getiGeneralService().getStateList(
+					getLanguageId(),
+					cdetail.getFsCountryMaster().getCountryId()));
+			addcont.setLstDistrictList(getiGeneralService().getDistrictList(
+					getLanguageId(),
+					cdetail.getFsCountryMaster().getCountryId(),
+					cdetail.getFsStateMaster().getStateId()));
+			addcont.setLstCityList(getiGeneralService().getCityList(
+					getLanguageId(),
+					cdetail.getFsCountryMaster().getCountryId(),
+					cdetail.getFsStateMaster().getStateId(),
+					cdetail.getFsDistrictMaster().getDistrictId()));
+			contactList.add(addcont);
+		//	System.out.println("the contact size is" + contactList.size());
+		}
+		}catch(NullPointerException npexp){
+			npexp.printStackTrace();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	/*
+     * method to fill secoundryObjective  in dataTable at the time of fetching
+     */
+	private void setSecondaryObjectiveDetails(){
+		try {
+			secondaryList.clear();
+			for (CustCorporateAddlDetail custCorporateAddlDetail : getCorpRegService()
+					.getCustomerCorporateAdditionalDetail(getLanguageId(),
+							getCustomerId())) {
+				AddSecondaryObjectiveBean addSecondaryObjectiveBean = new AddSecondaryObjectiveBean(
+						custCorporateAddlDetail.getFsRuleObjective()
+								.getObjectiveDesc(), false, false,
+						custCorporateAddlDetail.getFsRuleObjective()
+								.getObjectiveId());
+				addSecondaryObjectiveBean
+						.setCorporateAddentionalDetailId(custCorporateAddlDetail
+								.getCorpAddlId());
+				addSecondaryObjectiveBean
+						.setLstSecoundryObjective(getCorpRegService()
+								.getObjectiveList());
+				secondaryList.add(addSecondaryObjectiveBean);
+			}
+		} catch (NullPointerException npexp) {
+			npexp.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	/*
+     * method to fill Corporate Business nature in dataTable at the time of fetching
+     */
+	private void setNatureOfBusinessDetails(){
+		try{
+		bussnessList.clear();
+		AddNatureofBussnessBean addNatureofBussnessBean = new AddNatureofBussnessBean(); 
+		for (CorporateBusinessNature corporateBusinessNature : getCorpRegService().getCorporateBusinessNatureDetails(getCustomerId())) {
+			
+			addNatureofBussnessBean = new AddNatureofBussnessBean();
+			addNatureofBussnessBean.setBussNature(corporateBusinessNature.getFsRuleBusinessNature().getNatureOfBusinessDesc());
+			addNatureofBussnessBean.setObj(corporateBusinessNature.getObjectiveType());
+			
+			addNatureofBussnessBean.setModified(false);
+			addNatureofBussnessBean.setObjStatus(false);
+			addNatureofBussnessBean.setBussNatureId(corporateBusinessNature.getFsRuleBusinessNature().getNatureOfBusinessId());
+			addNatureofBussnessBean.setNatureOfBussinessId(corporateBusinessNature.getCorporateBusinessId());
+			addNatureofBussnessBean.setLstBussineesNature(getCorpRegService().getCorpBussinessNature());
+			bussnessList.add(addNatureofBussnessBean);
+			
+		}
+		}catch(NullPointerException npexp){
+			npexp.printStackTrace();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//Get country list and store into local map object :: Added by Justin Vincent :: Date -> 2014-Apr-28
+	private void fillCountryList(){
+		
+		if(mapCountryList.size()==0){
+			mapCountryList.clear();
+		//	System.out.println("the laguageId"+getLanguageId());
+			for(CountryMasterDesc countryMasterDesc : getiGeneralService().getCountryList(getLanguageId())){
+				mapCountryList.put(countryMasterDesc.getFsCountryMaster().getCountryId(), countryMasterDesc.getCountryName());
+			}
+			
+		}
+	}
+
+	//Get state list and store into local map object :: Added by Justin Vincent :: Date -> 2014-Apr-28
+	private void fillStateList(){
+		
+		if(mapStateList.size()==0){
+			mapStateList.clear();
+			for(StateMasterDesc stateMasterDesc : getiGeneralService().getStateList(languageId)){
+				mapStateList.put(stateMasterDesc.getFsStateMaster().getStateId(), stateMasterDesc.getStateName());
+			}
+		}
+	}
+	
+	//Get district list and store into local map object :: Added by Justin Vincent :: Date -> 2014-Apr-28
+	private void fillDistrictList(){
+		
+		if(mapDistrictList.size()==0){
+			mapDistrictList.clear();
+			for(DistrictMasterDesc districtMasterDesc : getiGeneralService().getDistrictList(getLanguageId())){
+				mapDistrictList.put(districtMasterDesc.getFsDistrictMaster().getDistrictId(), districtMasterDesc.getDistrict());
+			}
+		}
+	}
+	
+	//Get city list and store into local map object :: Added by Justin Vincent :: Date -> 2014-Apr-28
+	private void fillCityList(){
+		
+		if(mapCityList.size()==0){
+			mapCityList.clear();
+			for(CityMasterDesc cityMasterDesc : getiGeneralService().getCityList(getLanguageId())){
+				mapCityList.put(cityMasterDesc.getFsCityMaster().getCityId(), cityMasterDesc.getCityName());
+			}
+		}
+	}
+	//Get company identity List and store into local map object ::added by hakeem :: date -->2014-apr-30
+     private void fillIdentityList() {
+    	 if(mapIdentityList.size() == 0) {
+    		 for(IdentityType identityType:getiGeneralService().getIdentityTypes(getLanguageId(), getLocation())) {
+    			 mapIdentityList.put(identityType.getIdentityTypeId(), identityType.getIdentityType());
+    		 }
+    	 }
+     }
+     private void fillSecoundryList() {
+    	 if(mapSecoundryList.size() == 0) {
+    		 for(RuleObjective ruleObjective:getCorpRegService().getObjectiveList()) {
+    			 mapSecoundryList.put(ruleObjective.getObjectiveId(), ruleObjective.getObjectiveDesc());
+    		 }
+    	 }
+     }
+     private void fillBussinesNatureList() {
+    	 if(mapCorporateBussineesList.size() == 0) {
+    		 for(RuleBusinessNature ruleBusinessNature:getCorpRegService().getCorpBussinessNature()) {
+    			 mapCorporateBussineesList.put(ruleBusinessNature.getNatureOfBusinessId(), ruleBusinessNature.getNatureOfBusinessDesc());
+    		 }
+    		 for (Map.Entry<BigDecimal, String> entry :mapCorporateBussineesList.entrySet()) {
+    				/*System.out.println("Key : " + entry.getKey() + " Value : "
+    					+ entry.getValue());*/
+    			}
+    	 }
+     }
+     /*
+      * method to fetch the company registration details with cr no.
+      * 
+      */
+	public void fetchData() {
+		/*
+		 * method to get the registration status  of the company
+		 */
+	try {	
+		customerList = new ArrayList<Customer>();
+		customerList.addAll(getCorpRegService().getCompanyRegistrationStatus(getCrno()));
+	//	System.out.println("the size of fetch is"+customerList.size());
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(new Date());
+		cal.add(Calendar.DAY_OF_MONTH,+ 90);
+		Date today90 = cal.getTime();
+		
+		//Load country, state, district and city list :: Added by Justin Vincent :: Date -> 2014-Apr-28
+		fillCountryList();
+		fillStateList();
+		fillDistrictList();
+		fillCityList();
+		
+		//load identity type
+		 fillIdentityList();
+		 fillBussinesNatureList();
+		 fillSecoundryList();
+		
+		SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");
+		String finalDate = form.format(today90);
+        setExpDateAdder(finalDate);
+		SimpleDateFormat  smpDate = new SimpleDateFormat("dd/MM/yyyy");
+
+		if (customerList.size() > 0) {
+			int cust_id = 0;
+			setReadOnly(true);
+			for (Customer customer : customerList) {
+				setCrno(customer.getCrNo());
+				setCompName(customer.getCompanyName());
+				setCompNameL(customer.getCompanyNameLocal());
+				setEmail(customer.getEmail());
+				setCustomerId(customer.getCustomerId());
+				setAMLStatus(customer.getAmlStatus());
+				setCompRegDate(customer.getDateOfBirth());
+				setLocation(customer.getFsCountryMasterByCountryId().getCountryId());
+				setPrimaryObjId(customer.getFsRuleObjective().getObjectiveId());
+			}
+			setEnableContactDataTable(true);
+			setEnabledddCompanyDataTable(true);
+			setEnableddPartnerDataTable(true);
+			setEnabledSignatoriesDataTable(true);
+			setEnableSecondaryObjDataTable(true);
+			setEnableBussineesDataTable(true);
+
+			setCustomerContactDetails();
+			setCompanyIdProofDetail();
+			setPartnerIdProofDetail();
+			setAuthroizedIdProofDetail();
+			setSecondaryObjectiveDetails();
+			setNatureOfBusinessDetails();
+			setCoAMLCommon(true);
+			setCoAMLPass(true);
+			setCoAMLFail(false);
+			setCoValdtBtn(false);
+			setCoSave(false);
+			setBooUpdate(true);
+			setDisableDate(true);
+			setReadOnly(true);
+		} else {
+			setBooUpdate(false);
+		}
+	}catch(Exception e){
+		e.printStackTrace();
+	}
+		
+	}
+
+	/*
+	 * public String addContactTable(){ AddContact addContact = new
+	 * AddContact(this.contType, this.area, this.country, this.street,
+	 * this.block, this.flat, this.tel); contactList.add(addContact);
+	 * tableForm.setRendered(true); return null; }
+	 */
+
+	public void addContactDataTable() {
+	    	Boolean booDuplicate = false;
+	    	System.out.println("inside contact details");
+			if(viewBehaviorBean("Contact Type", "true").equalsIgnoreCase("true") && this.contType == null || this.contType.equals(new BigDecimal(0))){
+				setContactTypeVisibility(true);
+				
+				setCountryVisibility(false);
+				setStateVisibility(false);
+				setDistrictVisibility(false);
+				setCityVisibility(false);
+				setAreaVisibility(false);
+				setStreetVisibility(false);
+				setBlockVisibility(false);
+				setTelephoneVisibility(false);
+				setFlatVisibility(false);
+				setDuplicateContact(false);
+				setContactListSizeVisibility(false);
+			}  else if (viewBehaviorBean("Country", "true").equalsIgnoreCase("true") && this.countryId == null || this.countryId.equals(new BigDecimal(0))) {
+				setCountryVisibility(true);
+				
+				setContactTypeVisibility(false);
+				setStateVisibility(false);
+				setDistrictVisibility(false);
+				setCityVisibility(false);
+				setAreaVisibility(false);
+				setStreetVisibility(false);
+				setBlockVisibility(false);
+				setTelephoneVisibility(false);
+				setFlatVisibility(false);
+				setDuplicateContact(false);
+				setContactListSizeVisibility(false);
+			} else if (viewBehaviorBean("State", "true").equalsIgnoreCase("true") && this.stateId == null || this.stateId.equals(new BigDecimal(0))) {
+				setStateVisibility(true);
+				
+				setContactTypeVisibility(false);
+				setCountryVisibility(false);
+				setDistrictVisibility(false);
+				setCityVisibility(false);
+				setAreaVisibility(false);
+				setStreetVisibility(false);
+				setBlockVisibility(false);
+				setTelephoneVisibility(false);
+				setFlatVisibility(false);
+				setDuplicateContact(false);
+				setContactListSizeVisibility(false);
+		    } else if(viewBehaviorBean("District", "true").equalsIgnoreCase("true") && this.distId  == null || this.distId .equals(new BigDecimal(0))) {
+				setDistrictVisibility(true);
+				
+				setContactTypeVisibility(false);
+				setCountryVisibility(false);
+				setStateVisibility(false);
+				setCityVisibility(false);
+				setAreaVisibility(false);
+				setStreetVisibility(false);
+				setBlockVisibility(false);
+				setTelephoneVisibility(false);
+				setFlatVisibility(false);
+				setDuplicateContact(false);
+				setContactListSizeVisibility(false);
+			} else if(viewBehaviorBean("City", "true").equalsIgnoreCase("true") && this.cityId  == null || this.cityId .equals(new BigDecimal(0))) {
+				setCityVisibility(true);
+				
+				setContactTypeVisibility(false);
+				setCountryVisibility(false);
+				setStateVisibility(false);
+				setDistrictVisibility(false);
+				setAreaVisibility(false);
+				setStreetVisibility(false);
+				setBlockVisibility(false);
+				setTelephoneVisibility(false);
+				setFlatVisibility(false);
+				setDuplicateContact(false);
+				setContactListSizeVisibility(false);
+			} else if (viewBehaviorBean("Area", "true").equalsIgnoreCase("true") && this.area == null || this.area.equalsIgnoreCase("")) {
+				setAreaVisibility(true);
+				
+				setContactTypeVisibility(false);
+				setCountryVisibility(false);
+				setStateVisibility(false);
+				setDistrictVisibility(false);
+				setCityVisibility(false);
+				setStreetVisibility(false);
+				setBlockVisibility(false);
+				setTelephoneVisibility(false);
+				setFlatVisibility(false);
+				setDuplicateContact(false);
+				setContactListSizeVisibility(false);
+			 }else if (viewBehaviorBean("Street", "true").equalsIgnoreCase("true") && this.street == null || this.street.equalsIgnoreCase("")) {
+				setStreetVisibility(true);
+				
+				setContactTypeVisibility(false);
+				setCountryVisibility(false);
+				setStateVisibility(false);
+				setDistrictVisibility(false);
+				setCityVisibility(false);
+				setBlockVisibility(false);
+				setTelephoneVisibility(false);
+				setFlatVisibility(false);
+				setAreaVisibility(false);
+				setDuplicateContact(false);
+				setContactListSizeVisibility(false);
+			} else if(viewBehaviorBean("Block", "true").equalsIgnoreCase("true") && this.block == null || this.block.equalsIgnoreCase("")) {
+				setBlockVisibility(true);
+				
+				setContactTypeVisibility(false);
+				setCountryVisibility(false);
+				setStateVisibility(false);
+				setDistrictVisibility(false);
+				setCityVisibility(false);
+				setAreaVisibility(false);
+				setStreetVisibility(false);
+				setTelephoneVisibility(false);
+				setFlatVisibility(false);
+				setDuplicateContact(false);
+				setContactListSizeVisibility(false);
+			} else if(viewBehaviorBean("Telephone Number", "true").equalsIgnoreCase("true") && this.tel == null || this.tel.equalsIgnoreCase("")) {
+				setTelephoneVisibility(true);
+				
+				setContactTypeVisibility(false);
+				setCountryVisibility(false);
+				setStateVisibility(false);
+				setDistrictVisibility(false);
+				setCityVisibility(false);
+				setAreaVisibility(false);
+				setStreetVisibility(false);
+				setBlockVisibility(false);
+				setFlatVisibility(false);
+				setDuplicateContact(false);
+				setContactListSizeVisibility(false);
+			}else if(Integer.parseInt(viewBehaviorBean("Telephone Number","MAX_VALUE")) != this.tel.length()) {
+                setTelephoneVisibility(false);
+				
+				setContactTypeVisibility(false);
+				setCountryVisibility(false);
+				setStateVisibility(false);
+				setDistrictVisibility(false);
+				setCityVisibility(false);
+				setAreaVisibility(false);
+				setStreetVisibility(false);
+				setBlockVisibility(false);
+				setFlatVisibility(false);
+				setDuplicateContact(false);
+				setContactListSizeVisibility(false);
+			}else if(viewBehaviorBean("Flat", "true").equalsIgnoreCase("true") &&  this.flat == null || this.flat.equalsIgnoreCase("")) {
+				setFlatVisibility(true);
+				
+				setContactTypeVisibility(false);
+				setCountryVisibility(false);
+				setStateVisibility(false);
+				setDistrictVisibility(false);
+				setCityVisibility(false);
+				setAreaVisibility(false);
+				setStreetVisibility(false);
+				setBlockVisibility(false);
+				setTelephoneVisibility(false);
+				setDuplicateContact(false);
+				setContactListSizeVisibility(false);
+			} else {
+						
+					//	System.out.println("Size : "+contactList.size());
+						
+						for (AddContactDetailBean element : contactList) {
+							if(this.contType.equals(element.getContactTypeId()) && this.countryId.equals(element.getCountryId()) && this.distId.equals(element.getDistrictId()) && this.cityId.equals(element.getCityId()) &&
+									this.area.equalsIgnoreCase(element.getArea()) && 
+									this.stateId.equals(element.getStateId())&&
+									this.street.equalsIgnoreCase(element.getStreet()) && 
+									this.flat.equalsIgnoreCase(element.getFlat()) &&
+									this.tel.equalsIgnoreCase(element.getTel()) &&
+									this.block.equalsIgnoreCase(element.getBlock())
+									){
+								System.out.println("the dublicate contact details");
+								booDuplicate = true;
+								break;
+							}
+						}
+						if(!booDuplicate){
+							//Logger.getLogger(this.getClass()).log(Level.INFO,"country"+getCountryId());
+							AddContactDetailBean addContact = new AddContactDetailBean(
+									contactTypeMap.get(this.contType), this.area,
+									countryMap.get(this.countryId), this.street, this.block,
+									this.tel, this.flat, stateHashaMap.get(this.stateId),
+									hashMapdistrict.get(this.distId),
+									cityHashaMap.get(this.cityId), true, true, this.contType,
+									this.countryId, this.stateId, this.distId, this.cityId, new BigDecimal(0));
+						        	addContact.setLstCountryList(getiGeneralService().getCountryList(getLanguageId()));
+					                addContact.setLstStateList(getiGeneralService().getStateList(getLanguageId(), addContact.getCountryId()));
+					                addContact.setLstDistrictList(getiGeneralService().getDistrictList(getLanguageId(), addContact.getCountryId(), addContact.getStateId()));
+					                addContact.setLstCityList(getiGeneralService().getCityList(getLanguageId(), addContact.getCountryId(), addContact.getStateId(), addContact.getDistrictId()));
+									contactList.add(addContact);
+									setEnableContactDataTable(true);
+									setContactTypeVisibility(false);
+									setCountryVisibility(false);
+									setStateVisibility(false);
+									setDistrictVisibility(false);
+									setCityVisibility(false);
+									setAreaVisibility(false);
+									setStreetVisibility(false);
+									setBlockVisibility(false);
+									setTelephoneVisibility(false);
+									setFlatVisibility(false);
+									setDuplicateContact(false);
+									setContactListSizeVisibility(false);
+									setCountryId(new BigDecimal(0));
+									setContType(new BigDecimal(0));
+									setStateId(new BigDecimal(0));
+									setDistId(new BigDecimal(0));
+									setCityId(new BigDecimal(0));
+									setArea("");
+									setStreet("");
+									setBlock("");
+									setTel("");
+									setFlat("");
+						
+									setEnableContactDataTable(true);
+						} else {
+						//	System.out.println("the duplicate value is");
+							setDuplicateContact(true);
+							setContactTypeVisibility(false);
+							setCountryVisibility(false);
+							setStateVisibility(false);
+							setDistrictVisibility(false);
+							setCityVisibility(false);
+							setAreaVisibility(false);
+							setStreetVisibility(false);
+							setBlockVisibility(false);
+							setTelephoneVisibility(false);
+							setFlatVisibility(false);
+							setContactListSizeVisibility(false);
+						 }
+			}
+		
+	    	
+	    }
+	    
+	//}
+	/*
+	 * method to change the status of modified and setting the pk values to update
+	 */
+	/*public void modified(AddContactDetailBean obj) {
+		obj.setModified(true);
+		
+		obj.setLstCountryList(getiGeneralService().getCountryList(getLanguageId()));
+		obj.setLstStateList(getiGeneralService().getStateList(getLanguageId(), obj.getCountryId()));
+		obj.setLstDistrictList(getiGeneralService().getDistrictList(getLanguageId(), obj.getCountryId(), obj.getStateId()));
+		obj.setLstCityList(getiGeneralService().getCityList(getLanguageId(), obj.getCountryId(), obj.getStateId(), obj.getDistrictId()));
+
+		obj.setContType(contactTypeMap.containsKey(obj.getContactTypeId())?contactTypeMap.get(obj.getContactTypeId()):"");
+		obj.setCountry(mapCountryList.containsKey(obj.getCountryId())?mapCountryList.get(obj.getCountryId()):"");
+		obj.setState(mapStateList.containsKey(obj.getStateId())?mapStateList.get(obj.getStateId()):"");
+		obj.setDist(mapDistrictList.containsKey(obj.getDistrictId())?mapDistrictList.get(obj.getDistrictId()):"");
+		obj.setCity(mapCityList.containsKey(obj.getCityId())?mapCityList.get(obj.getCityId()):"");
+		//setRequiredContact(true);
+	}*/
+
+	/*public void modifiedIdentity(AddCoIdentityDetailBean  obj) {
+		obj.setModified(true);
+		SessionStateManage sessionManage = new SessionStateManage();
+		String count = sessionManage.getSessionValue("countryId").toString();
+		
+	//	System.out.println("the laguage id is"+getLanguageId()+"the countryId is"+new BigDecimal(count)+"the bdCompanyIdType is"+bdCompanyIdType);
+		obj.setLstIdentityList(getiGeneralService().getIdentityTypes(getLanguageId(),new BigDecimal(count),bdCompanyIdType ));
+		for(IdentityType idnt:obj.getLstIdentityList()){
+			mapIdentityList.put(idnt.getIdentityTypeId(), idnt.getIdentityType());
+		}
+		System.out.println("the size in modification method"+obj.getLstIdentityList().size());
+		System.out.println("kkskkskkssk"+mapIdentityList.get(obj.getIdTypeId()));
+		System.out.println("the value is ");
+		
+		obj.setIdtype(mapIdentityList.containsKey(obj.getIdTypeId()) ? mapIdentityList
+				.get(obj.getIdTypeId()) : "");
+		
+	//	System.out.println("the value of value change is"+obj.getIdtype());
+		
+		
+	}*/
+	
+	/*public void modifiedPrtDtl(AddPartnerDetailBean obj) {
+		obj.setModified(true);
+		SessionStateManage sessionManage = new SessionStateManage();
+		String count = sessionManage.getSessionValue("countryId").toString();
+		
+	//	System.out.println("the laguage id is"+getLanguageId()+"the countryId is"+new BigDecimal(count)+"the bdCompanyIdType is"+bdPartnerIdType);
+		obj.setLstPartnerIdentityList(getiGeneralService().getIdentityTypes(getLanguageId(),new BigDecimal(count),bdPartnerIdType ));
+		for(IdentityType idnt:obj.getLstPartnerIdentityList()){
+			mapIdentityList.put(idnt.getIdentityTypeId(), idnt.getIdentityType());
+		}
+		System.out.println("the size in modification method"+obj.getLstPartnerIdentityList().size());
+		System.out.println("kkskkskkssk"+mapIdentityList.get(obj.getpIdTypeId()));
+		System.out.println("the value is ");
+		
+		obj.setPidtype(mapIdentityList.containsKey(obj.getpIdTypeId()) ? mapIdentityList
+				.get(obj.getpIdTypeId()) : "");
+		
+	//	System.out.println("the value of value change is"+obj.getPidtype());
+		
+		
+	}
+
+	public void modifiedBussNutr(AddNatureofBussnessBean obj) {
+		obj.setModified(true);
+		obj.setModified(true);
+		obj.setLstBussineesNature(getCorpRegService().getCorpBussinessNature());
+		for(RuleBusinessNature ruleBusinessNature:obj.getLstBussineesNature()){
+			mapCorporateBussineesList.put(ruleBusinessNature.getNatureOfBusinessId(), ruleBusinessNature.getNatureOfBusinessDesc());
+		}
+		System.out.println("the size in modification method"+obj.getLstBussineesNature().size());
+		System.out.println("kkskkskkssk"+mapCorporateBussineesList.get(obj.getBussNatureId()));
+		System.out.println("the value is ");
+		
+		obj.setBussNature(mapCorporateBussineesList.containsKey(obj.getBussNatureId()) ? mapCorporateBussineesList
+				.get(obj.getBussNatureId()) : "");
+		
+	//	System.out.println("the value of value change is"+obj.getBussNature());
+		
+	}
+	public void modifiedSecndryObj(AddSecondaryObjectiveBean obj) {
+		obj.setModified(true);
+		obj.setLstSecoundryObjective(getCorpRegService().getObjectiveList());
+		for(RuleObjective ruleObjective:obj.getLstSecoundryObjective()){
+			mapSecoundryList.put(ruleObjective.getObjectiveId(), ruleObjective.getObjectiveDesc());
+		}
+		 for (Map.Entry<BigDecimal, String> entry :mapCorporateBussineesList.entrySet()) {
+				System.out.println("Key : " + entry.getKey() + " Value : "
+					+ entry.getValue());
+			}
+		System.out.println("the size in modification method"+obj.getLstSecoundryObjective().size());
+		System.out.println("kkskkskkssk"+mapSecoundryList.get(obj.getSecondaryObjectId()));
+		System.out.println("the value is ");
+		
+		obj.setSeconObj(mapSecoundryList.containsKey(obj.getSecondaryObjectId()) ? mapSecoundryList
+				.get(obj.getSecondaryObjectId()) : "");
+		
+	//	System.out.println("the value of value change is"+obj.getSeconObj());
+	}
+	
+	public void modifiedSigntr(AddAuthSignatoriesBean obj) {
+		obj.setModified(true);
+		SessionStateManage sessionManage = new SessionStateManage();
+		String count = sessionManage.getSessionValue("countryId").toString();
+		
+	//	System.out.println("the laguage id is"+getLanguageId()+"the countryId is"+new BigDecimal(count)+"the bdCompanyIdType is"+bdCompanyIdType);
+		obj.setLstaAuthourizedIdentityList(getiGeneralService().getIdentityTypes(getLanguageId(),new BigDecimal(count),bdCompanyIdType ));
+		for(IdentityType idnt:obj.getLstaAuthourizedIdentityList()){
+			mapIdentityList.put(idnt.getIdentityTypeId(), idnt.getIdentityType());
+		}
+		System.out.println("the size in modification method"+obj.getLstaAuthourizedIdentityList().size());
+		System.out.println("kkskkskkssk"+mapIdentityList.get(obj.getsIdTypeId()));
+		System.out.println("the value is ");
+		
+		obj.setSidtype(mapIdentityList.containsKey(obj.getsIdTypeId()) ? mapIdentityList
+				.get(obj.getsIdTypeId()) : "");
+		
+	//	System.out.println("the value of value change is"+obj.getSidtype());
+		
+		
+	}*/
+
+	public void addActionidentity() {
+
+		try {
+			setCompanyRegisterIdStatus(false);
+			List<CustomerIdProof> lstCompanyIdentityList = getCorpRegService().getIdNoAvailabilityStatus(getIdno(), bdCompanyIdType);
+			
+			if (lstCompanyIdentityList.size() > 0) {
+				setCompanyRegisterIdStatus(true);
+				setCoIdVisibility(false);
+				
+				setCoIdTypeVisibility(false);
+				setCoExpDateVisibility(false);
+				setCoUploadFileVisibility(false);
+				setCoDublicateVisibility(false);
+			} else {
+				/**
+				 * Document upload 
+				 */
+				
+			
+				
+				boolean booDuplicate = false;
+
+				if (viewBehaviorBean("Id Number", "true").equalsIgnoreCase("true") && this.idno == null || this.idno.equalsIgnoreCase("")) {
+					setCoIdVisibility(true);
+	
+					setCoIdTypeVisibility(false);
+					setCoExpDateVisibility(false);
+					setCompanyRegisterIdStatus(false);
+					setCoUploadFileVisibility(false);
+					setCoDublicateVisibility(false);
+					setIdentityListVisibility(false);
+				} else if (viewBehaviorBean("Id Type", "true").equalsIgnoreCase("true") && this.idtype == null
+						|| this.idtype.equals(new BigDecimal(0))) {
+					setCoIdTypeVisibility(true);
+					
+					setCoIdVisibility(false);
+					setCoExpDateVisibility(false);
+					setCompanyRegisterIdStatus(false);
+					setCoUploadFileVisibility(false);
+					setCoDublicateVisibility(false);
+					setIdentityListVisibility(false);
+				} else if (this.idExpDate == null
+						|| this.idExpDate.toString().equalsIgnoreCase("")) {
+					setCoExpDateVisibility(true);
+					
+					setCoIdVisibility(false);
+					setCoIdTypeVisibility(false);
+					setCompanyRegisterIdStatus(false);
+					setCoUploadFileVisibility(false);
+					setCoDublicateVisibility(false);
+					setIdentityListVisibility(false);
+				}/*else if (getIdentityfile().getSize()==0) {
+					setCoUploadFileVisibility(true);
+					setCoExpDateVisibility(false);
+					setCoIdVisibility(false);
+					setCoIdTypeVisibility(false);
+					setCompanyRegisterIdStatus(false);
+					setCoDublicateVisibility(false);
+				}*/else {
+					String fileName = getIdentityfile().getFileName();
+					if(fileName.contains(".doc") || fileName.contains(".docx") || fileName.contains(".jpg") || fileName.contains(".jpeg") || 
+										fileName.contains(".png") || fileName.contains(".pdf")) {
+					SimpleDateFormat smpDate = new SimpleDateFormat(
+							"dd/MM/yyyy");
+
+					String idExpToStr = smpDate.format(getIdExpDate());
+					for (AddCoIdentityDetailBean element : identityList) {
+						if (this.idtype.equals(element.getIdTypeId())
+							&& this.idno.equalsIgnoreCase(element.getIdno())
+							&& idExpToStr.equalsIgnoreCase(
+									element.getIdExpDate())) {
+						booDuplicate = true;
+						break;
+					}
+				}
+				
+				if (!booDuplicate) {
+					System.out.println("calling to application to upload");
+					System.out.println("th"+getIdentityfile().getFileName());
+					String imagename=getIdentityfile().getFileName();
+					BigDecimal customerId=getCustomerId();
+					if(getIdentityfile().getSize()==0){
+						System.out.println("the size is 0");
+					}
+				
+					saveDocument(imagename,customerId,getIdentityfile());
+					System.out.println("the values of size is"+getIdentityfile().getSize());
+					System.out.println("th"+getIdentityfile().getFileName());
+                    
+					AddCoIdentityDetailBean identity = new AddCoIdentityDetailBean(
+							this.idno, companyIdentityTypeHashaMap.get(this.idtype),
+							idExpToStr, true, true, this.idtype, image_id);
+			
+					identity.setLstIdentityList(getCorpRegService().getIdentityTypes(
+							getLanguageId(), bdCompanyIdType));
+					
+					identityList.add(identity);
+                    
+					setEnabledddCompanyDataTable(true);
+					setCoIdVisibility(false);
+					setCoIdTypeVisibility(false);
+					setCoExpDateVisibility(false);
+					setIdno("");
+					setIdtype(new BigDecimal(0));
+					setIdExpDate(null);
+					setCompanyRegisterIdStatus(false);
+					setCoUploadFileVisibility(false);
+					setCoDublicateVisibility(false);
+					setIdentityListVisibility(false);
+				}else {
+					
+					setCoDublicateVisibility(true);
+					setCompanyRegisterIdStatus(false);
+					setCoIdVisibility(false);
+					setCoIdTypeVisibility(false);
+					setCoExpDateVisibility(false);
+					setCoUploadFileVisibility(false);
+					setIdentityListVisibility(false);
+				 }
+			}else {
+				setCoUploadFileVisibility(true);
+				setCoExpDateVisibility(false);
+				setCoIdVisibility(false);
+				setCoIdTypeVisibility(false);
+				setCompanyRegisterIdStatus(false);
+				setCoDublicateVisibility(false);
+				setIdentityListVisibility(false);
+			}
+			}
+			}
+		} catch (NullPointerException npexp) {
+			npexp.printStackTrace();
+		} catch (Exception exp) {
+			exp.printStackTrace();
+		}
+	}
+	
+    /*
+     * 
+     * method add partner details in dataTable
+     */
+	public void addActionPartner() {
+		try {
+			setPartnerRegisterIdStatus(false);
+		List<CustomerIdProof> lstPartnerIdentityList = getCorpRegService()
+				.getIdNoAvailabilityStatus(getPidno(), bdPartnerIdType);
+		
+		if (lstPartnerIdentityList.size() > 0) {
+			setPartnerRegisterIdStatus(true);
+			setPartnerExpDateVisibility(false);
+			setPartnerNameVisibility(false);
+			setPartnerIdTypeVisibility(false);
+			setPartnerIdVisibility(false);
+			setPartnerUploadFileVisibility(false);
+			setPartnerDublicateVisibility(false);
+		} else {
+			
+			  boolean booDuplicate = false;
+				
+				if(viewBehaviorBean("Id Number", "true").equalsIgnoreCase("true") &&  this.pidno == null || this.pidno.equalsIgnoreCase("")){
+					setPartnerExpDateVisibility(false);
+					setPartnerNameVisibility(false);
+					setPartnerIdTypeVisibility(false);
+					setPartnerIdVisibility(true);
+					setPartnerRegisterIdStatus(false);
+					setPartnerUploadFileVisibility(false);
+					setPartnerDublicateVisibility(false);
+				} else if (viewBehaviorBean("Partner Name", "true").equalsIgnoreCase("true") && this.partName == null || this.partName.equalsIgnoreCase("")) {
+					setPartnerExpDateVisibility(false);
+					setPartnerNameVisibility(true);
+					setPartnerIdTypeVisibility(false);
+					setPartnerIdVisibility(false);
+					setPartnerRegisterIdStatus(false);
+					setPartnerUploadFileVisibility(false);
+					setPartnerDublicateVisibility(false);
+				} else if (viewBehaviorBean("Id Type", "true").equalsIgnoreCase("true") &&  this.pidtype == null || this.pidtype.equals(new BigDecimal(0))) {
+					setPartnerExpDateVisibility(false);
+					setPartnerNameVisibility(false);
+					setPartnerIdTypeVisibility(true);
+					setPartnerIdVisibility(false);
+					setPartnerRegisterIdStatus(false);
+					setPartnerUploadFileVisibility(false);
+					setPartnerDublicateVisibility(false);
+				}  else if (this.pidExpDate == null || this.pidExpDate.toString().equalsIgnoreCase("")) {
+					setPartnerExpDateVisibility(true);
+					setPartnerNameVisibility(false);
+					setPartnerIdTypeVisibility(false);
+					setPartnerIdVisibility(false);
+					setPartnerRegisterIdStatus(false);
+					setPartnerUploadFileVisibility(false);
+					setPartnerDublicateVisibility(false);
+				} /*else if (getPartnerfile().getSize()==0) {
+					setPartnerExpDateVisibility(false);
+					setPartnerNameVisibility(false);
+					setPartnerIdTypeVisibility(false);
+					setPartnerIdVisibility(false);
+					setPartnerRegisterIdStatus(false);
+					setPartnerUploadFileVisibility(true);
+					setPartnerDublicateVisibility(false);
+				}*/else {
+					String fileName = getPartnerfile().getFileName();
+					if(fileName.contains(".doc") || fileName.contains(".docx") || fileName.contains(".jpg") || fileName.contains(".jpeg") || 
+										fileName.contains(".png") || fileName.contains(".pdf")) {
+					SimpleDateFormat smpDate = new SimpleDateFormat("dd/MM/yyyy");
+					String pidExpDate = smpDate.format(this.pidExpDate);
+					//System.out.println("the date is" + pidExpDate);
+				for(AddPartnerDetailBean element:	partnerList) {
+				if(this.pidtype.equals(element.getpIdTypeId()) && 
+						this.pidno.equalsIgnoreCase(element.getPidno()) && 
+						pidExpDate.equalsIgnoreCase(element.getPidExpDate()) && 
+								this.partName.equalsIgnoreCase(element.getPartName())) {
+				//	System.out.println("Matched");
+					
+					booDuplicate = true;
+					break;
+				}
+				}
+				
+				if(!booDuplicate){
+					String imagename=partnerfile.getFileName();
+					BigDecimal customerId=getCustomerId();
+				
+					saveDocument(imagename,customerId,getPartnerfile());
+				//	System.out.println("the date is" + pidExpDate);
+					AddPartnerDetailBean partner = new AddPartnerDetailBean(this.partName,
+							this.pidno, partnerIdentityTypeHashaMap.get(this.pidtype),
+							pidExpDate, true, true, this.pidtype,image_id);
+					partner.setLstPartnerIdentityList(getCorpRegService()
+							.getIdentityTypes(getLanguageId(), bdPartnerIdType));
+					partnerList.add(partner);
+					setEnableddPartnerDataTable(true);
+				//	System.out.println("addd adasskfl");
+					setPartnerExpDateVisibility(false);
+					setPartnerNameVisibility(false);
+					setPartnerIdTypeVisibility(false);
+					setPartnerIdVisibility(false);
+					setPartnerDublicateVisibility(false);
+					setPartnerRegisterIdStatus(false);
+					setPartnerUploadFileVisibility(false);
+					setPartName("");
+					setPidno("");
+					setPidtype(new BigDecimal(0));
+					setPidExpDate(null);
+				}else {
+					setPartnerDublicateVisibility(true);
+					setPartnerExpDateVisibility(false);
+					setPartnerNameVisibility(false);
+					setPartnerIdTypeVisibility(false);
+					setPartnerIdVisibility(false);
+					setPartnerRegisterIdStatus(false);
+					setPartnerUploadFileVisibility(false);
+				 }
+				}else {
+					setPartnerExpDateVisibility(false);
+					setPartnerNameVisibility(false);
+					setPartnerIdTypeVisibility(false);
+					setPartnerIdVisibility(false);
+					setPartnerRegisterIdStatus(false);
+					setPartnerUploadFileVisibility(true);
+					setPartnerDublicateVisibility(false);
+					
+				}
+				}
+		}	
+		    } catch (NullPointerException npexp) {
+			npexp.printStackTrace();
+		} catch (Exception exp) {
+			exp.printStackTrace();
+		}
+		}
+    /*
+     * method to add Authorized signatures 
+     */
+	public void addActionAuthorized() {
+		try {
+		setAuthorRegisterIdStatus(false);
+		List<CustomerIdProof> lstAuthorizedIdentityList = getCorpRegService()
+				.getIdNoAvailabilityStatus(getSidno(), bdAuthorizedIdType);
+		if (lstAuthorizedIdentityList.size() > 0) {
+			setAuthorRegisterIdStatus(true);
+			setAuthourisedIdVisibility(false);
+			setAuthourisedOwnerNameVisibility(false);
+			setAuthourisedTypeVisibility(false);
+			setAuthourisedEffDateVisibility(false);
+			setAuthourisedExpDateVisibility(false);
+			setAuthourisedEndDateVisibility(false);
+			setAuthorUploadFileVisibility(false);
+		} else {
+			
+			/**
+			 * Document upload 
+			 */
+			
+		
+			 boolean booDuplicate = false;
+				
+				if(viewBehaviorBean("Id Number", "true").equalsIgnoreCase("true") && this.sidno == null || this.sidno.equalsIgnoreCase("")){
+					setAuthourisedIdVisibility(true);
+					setAuthourisedOwnerNameVisibility(false);
+					setAuthourisedTypeVisibility(false);
+					setAuthourisedEffDateVisibility(false);
+					setAuthourisedExpDateVisibility(false);
+					setAuthourisedEndDateVisibility(false);
+					setAuthorUploadFileVisibility(false);
+					setAuthorRegisterIdStatus(false);
+					setAuthourisedListVisibility(false);
+				} else if (viewBehaviorBean("Owner Name", "true").equalsIgnoreCase("true") && this.name == null || this.name.equalsIgnoreCase("")) {
+					setAuthourisedIdVisibility(false);
+					setAuthourisedOwnerNameVisibility(true);
+					setAuthourisedTypeVisibility(false);
+					setAuthourisedEffDateVisibility(false);
+					setAuthourisedExpDateVisibility(false);
+					setAuthourisedEndDateVisibility(false);
+					setAuthorRegisterIdStatus(false);
+					setAuthorUploadFileVisibility(false);
+					setAuthourisedListVisibility(false);
+				} else if (viewBehaviorBean("Id Type", "true").equalsIgnoreCase("true") && this.sidtype == null || this.sidtype.equals(new BigDecimal(0))) {
+					setAuthourisedIdVisibility(false);
+					setAuthourisedOwnerNameVisibility(false);
+					setAuthourisedTypeVisibility(true);
+					setAuthourisedEffDateVisibility(false);
+					setAuthourisedExpDateVisibility(false);
+					setAuthourisedEndDateVisibility(false);
+					setAuthorRegisterIdStatus(false);
+					setAuthorUploadFileVisibility(false);
+					setAuthourisedListVisibility(false);
+				} else if (this.effDate == null || this.effDate.toString().equalsIgnoreCase("")) {
+				    setAuthourisedIdVisibility(false);
+					setAuthourisedOwnerNameVisibility(false);
+					setAuthourisedTypeVisibility(false);
+					setAuthourisedEffDateVisibility(true);
+					setAuthourisedExpDateVisibility(false);
+					setAuthourisedEndDateVisibility(false);
+					setAuthorRegisterIdStatus(false);
+					setAuthorUploadFileVisibility(false);
+					setAuthourisedListVisibility(false);
+			  } else if (this.sidExpDate == null || this.sidExpDate.toString().equalsIgnoreCase("")) {
+					setAuthourisedIdVisibility(false);
+					setAuthourisedOwnerNameVisibility(false);
+					setAuthourisedTypeVisibility(false);
+					setAuthourisedEffDateVisibility(false);
+					setAuthourisedExpDateVisibility(true);
+					setAuthourisedEndDateVisibility(false);
+					setAuthorRegisterIdStatus(false);
+					setAuthorUploadFileVisibility(false);
+					setAuthourisedListVisibility(false);
+				}
+				  else if (this.endDate == null || this.endDate.toString().equalsIgnoreCase("")) {
+					    setAuthourisedIdVisibility(false);
+						setAuthourisedOwnerNameVisibility(false);
+						setAuthourisedTypeVisibility(false);
+						setAuthourisedEffDateVisibility(false);
+						setAuthourisedExpDateVisibility(false);
+						setAuthourisedEndDateVisibility(true);
+						setAuthorRegisterIdStatus(false);
+						setAuthorUploadFileVisibility(false);
+						setAuthourisedListVisibility(false);
+				  } /*else if (getAutherfile().getSize() == 0) {
+					  
+					    setAuthourisedIdVisibility(false);
+						setAuthourisedOwnerNameVisibility(false);
+						setAuthourisedTypeVisibility(false);
+						setAuthourisedEffDateVisibility(false);
+						setAuthourisedExpDateVisibility(false);
+						setAuthourisedEndDateVisibility(false);
+						setAuthorRegisterIdStatus(false);
+						setAuthorUploadFileVisibility(true);
+						System.out.println("the authour file required is"+getAuthorUploadFileVisibility());
+				  }*/else {	
+					  String fileName = getAutherfile().getFileName();
+						if(fileName.contains(".doc") || fileName.contains(".docx") || fileName.contains(".jpg") || fileName.contains(".jpeg") || 
+											fileName.contains(".png") || fileName.contains(".pdf")) {
+							
+							
+							System.out.println("Entered in if");
+							
+					  SimpleDateFormat smpDate = new SimpleDateFormat("dd/MM/yyyy");
+
+					//	System.out.println("the value of sidtype is" + this.sidtype);
+						String sigEfftDate = smpDate.format(this.effDate);
+						String endDate = smpDate.format(this.endDate);
+						String expDate = smpDate.format(this.sidExpDate);
+				for(AddAuthSignatoriesBean element:	authorisedList) {
+				if(this.sidtype.equals(element.getsIdTypeId()) && endDate.equalsIgnoreCase(element.getEndDate()) && sigEfftDate.equalsIgnoreCase(element.getEffDate()) &&
+						this.sidno.equalsIgnoreCase(element.getSidno()) && 
+						expDate.equalsIgnoreCase(element.getSidExpDate()) && 
+								this.name.equalsIgnoreCase(element.getName())) {
+					booDuplicate = true;
+					break;
+				}
+				}
+				  
+				if(!booDuplicate){
+					String imagename=getAutherfile().getFileName();
+					BigDecimal customerId=getCustomerId();
+				
+					saveDocument(imagename,customerId,getAutherfile());
+					AddAuthSignatoriesBean authorized = new AddAuthSignatoriesBean(
+							this.name, this.sidno,
+							authorizedIdentityTypeHashaMap.get(this.sidtype), sigEfftDate,
+							endDate, expDate, true, true, this.sidtype,image_id);
+					authorized.setLstaAuthourizedIdentityList(getCorpRegService()
+							.getIdentityTypes(getLanguageId(), bdAuthorizedIdType));
+					authorisedList.add(authorized);
+					setEnabledSignatoriesDataTable(true);
+					setAuthourisedIdVisibility(false);
+					setAuthourisedOwnerNameVisibility(false);
+					setAuthourisedTypeVisibility(false);
+					setAuthourisedEffDateVisibility(false);
+					setAuthourisedExpDateVisibility(false);
+					setAuthourisedEndDateVisibility(false);
+					setAuthourisedDublicateVisibility(false);
+					setAuthorRegisterIdStatus(false);
+					setAuthorUploadFileVisibility(false);
+					setAuthourisedListVisibility(false);
+					setName("");
+					setSidno("");
+					setSidtype(new BigDecimal(0));
+					setSidExpDate(null);
+					setEndDate(null);
+					setEffDate(null);
+				}else {
+					setAuthourisedDublicateVisibility(true);
+					setAuthorRegisterIdStatus(false);
+					setAuthourisedIdVisibility(false);
+					setAuthourisedOwnerNameVisibility(false);
+					setAuthourisedTypeVisibility(false);
+					setAuthourisedEffDateVisibility(false);
+					setAuthourisedExpDateVisibility(false);
+					setAuthourisedEndDateVisibility(false);
+					setAuthorRegisterIdStatus(false);
+					setAuthorUploadFileVisibility(false);
+					setAuthourisedListVisibility(false);
+				 }
+						}else {
+							
+							
+							System.out.println("Enter in else");
+							 setAuthourisedIdVisibility(false);
+								setAuthourisedOwnerNameVisibility(false);
+								setAuthourisedTypeVisibility(false);
+								setAuthourisedEffDateVisibility(false);
+								setAuthourisedExpDateVisibility(false);
+								setAuthourisedEndDateVisibility(false);
+								setAuthorRegisterIdStatus(false);
+								setAuthorUploadFileVisibility(true);
+								setAuthourisedListVisibility(false);
+						}
+				  }
+		}	
+		    } catch (NullPointerException npexp) {
+			npexp.printStackTrace();
+		} catch (Exception exp) {
+			exp.printStackTrace();
+		}
+		}
+		
+        
+	
+
+	public void addSecondaryObjective() {
+		try {
+		 boolean booDuplicate = false;
+			
+			/*if(this.primaryObjId == null || this.primaryObjId.equals(new BigDecimal(0))){
+				setPrimayObjVisibility(true);
+				setSecondaryObjVisibility(false);
+				setSecondaryObjDuplicate(false);
+			} else*/ if (viewBehaviorBean("Secondary Objective", "true").equalsIgnoreCase("true") && this.seconObj == null || this.seconObj.equals(new BigDecimal(0))) {
+				setPrimayObjVisibility(false);
+				setSecondaryObjVisibility(true);
+				setSecondaryObjDuplicate(false);
+				setSecondaryListVisibility(false);
+			} else {
+        for(AddSecondaryObjectiveBean element:secondaryList) {
+     	   
+        
+        if(this.seconObj.toString().equalsIgnoreCase(element.getSecondaryObjectId().toString())) {
+				//System.out.println("Matched");
+				
+				booDuplicate = true;
+				break;
+			}
+			}
+			
+			if(!booDuplicate){
+
+				
+				AddSecondaryObjectiveBean secondobj = new AddSecondaryObjectiveBean(
+						secondryObjMap.get(this.seconObj), true, true, this.seconObj);
+				secondobj.setLstSecoundryObjective(getCorpRegService().getObjectiveList());
+				secondaryList.add(secondobj);
+				setEnableSecondaryObjDataTable(true);
+				setPrimayObjVisibility(false);
+				setSecondaryObjVisibility(false);
+				setSecondaryObjDuplicate(false);
+				setSeconObj(new BigDecimal(0));
+				setSecondaryListVisibility(false);
+			}else {
+				//System.out.println("the duplicate value is");
+				setSecondaryObjDuplicate(true);
+				setPrimayObjVisibility(false);
+				setSecondaryObjVisibility(false);
+				setSecondaryListVisibility(false);
+			 }
+			}
+		}catch (NullPointerException npexp) {
+			npexp.printStackTrace();
+		} catch (Exception exp) {
+			exp.printStackTrace();
+		}
+	}
+
+	public void AddNatureofBussness() {
+		try {
+		 boolean booDuplicate = false;
+			
+			if(viewBehaviorBean("Business Nature", "true").equalsIgnoreCase("true") &&  this.bussNature == null || this.bussNature.equals(new BigDecimal(0))){
+				setNatureBussineesVisibility(true);
+				setPrimaySecondaryBussnessVisibility(false);
+				setBussenessDuplicateVisibility(false);
+				setBusenessListVisibility(false);
+			} else if (viewBehaviorBean("Primary/Secondary Objective", "true").equalsIgnoreCase("true") && this.obj == null || this.obj.equalsIgnoreCase("")) {
+				setPrimaySecondaryBussnessVisibility(true);
+				setNatureBussineesVisibility(false);
+				setBussenessDuplicateVisibility(false);
+				setBusenessListVisibility(false);
+			} else {
+             for(AddNatureofBussnessBean element:bussnessList) {
+  	   
+     
+     if(this.bussNature.equals(element.getBussNatureId()) && this.obj.equalsIgnoreCase(element.getObj())) {
+				
+				booDuplicate = true;
+				break;
+			}
+			}
+			
+			if(!booDuplicate){
+
+				
+				AddNatureofBussnessBean bussness = new AddNatureofBussnessBean(
+						bussinessNatureHashaMap.get(this.bussNature), this.obj, true,
+						true, this.bussNature);
+				bussness.setLstBussineesNature(getCorpRegService().getCorpBussinessNature());
+				bussnessList.add(bussness);
+				setEnableBussineesDataTable(true);
+				setBussenessDuplicateVisibility(false);
+				setPrimaySecondaryBussnessVisibility(false);
+				setNatureBussineesVisibility(false);
+				setBusenessListVisibility(false);
+				setBussNature(new BigDecimal(0));
+				setObj("");
+			}else {
+				setBussenessDuplicateVisibility(true);
+				setPrimaySecondaryBussnessVisibility(false);
+				setNatureBussineesVisibility(false);
+				setBusenessListVisibility(false);
+			 }
+			}
+		}catch (NullPointerException npexp) {
+			npexp.printStackTrace();
+		} catch (Exception exp) {
+			exp.printStackTrace();
+		}
+	}
+	
+	/*
+	* 
+	* method to delete the contact detail record from manageBean
+	*/
+	public void removeContactDetail(AddContactDetailBean bean) {
+		System.out.println("inside remove contact details beaan");
+	contactList.remove(bean);
+	if (bean.getContactDetailsId() != new BigDecimal(0)) {
+	contactListDelete.add(bean);
+	}
+	}
+	/*
+	* 
+	* method to delete the secondary objective record from manageBean
+	*/
+	public void removeSecondaryObjective(AddSecondaryObjectiveBean bean) {
+	secondaryList.remove(bean);
+	if (bean.getCorporateAddentionalDetailId() != new BigDecimal(0)) {
+	secondryObjectiveListDeleted.add(bean);
+	}
+	}
+	/*
+	* 
+	* method to delete the Buseness Nature record from manageBean
+	*/
+	public void removeBusenessNature(AddNatureofBussnessBean bean) {
+	bussnessList.remove(bean);
+	if (bean.getNatureOfBussinessId() != new BigDecimal(0)) {
+	bussenessNatureListDeleted.add(bean);
+	}
+	}
+	/*
+	* 
+	* method to delete the Authour  record from manageBean
+	*/
+	public void removeAuthourSignatory(AddAuthSignatoriesBean bean) {
+	authorisedList.remove(bean);
+	if (bean.getCustomerIdProofId() != new BigDecimal(0)) {
+	authorisedListDeleted.add(bean);
+	}
+	System.out.println("the record that has to be delete authourised"+authorisedListDeleted.size());
+	}
+	/*
+	* 
+	* method to delete the partner details record from manageBean
+	*/
+	public void removePartnerDetails(AddPartnerDetailBean bean) {
+	partnerList.remove(bean);
+	if (bean.getCustomerIdProofId() != new BigDecimal(0)) {
+	partnerListDeleted.add(bean);
+	}
+	System.out.println("the record that has to be delete partner"+partnerListDeleted.size());
+	}
+	/*
+	* 
+	* method to delete the company document record from manageBean
+	*/
+	public String removeCompanyDocument(AddCoIdentityDetailBean bean) {
+	System.out.println("inside remove method");
+	identityList.remove(bean);
+	if (bean.getCustomerIdProofId() != new BigDecimal(0)) {
+	identityListDeleted.add(bean);
+	}
+	System.out.println("the record that has to be delete partner"+identityListDeleted.size());
+	return "";
+	}
+	
+	public String cancel() {
+
+		return "cancel";
+
+	}    
+/*public List<CountryMasterDesc> getCountryNameList() {
+		
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		return getGeneralService().getCountryList(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):""+1));
+	}*/
+    
+    public List<CountryBean> getCountryListFromDB() {
+		
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		setLanguageId(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):""+1));
+		countrybean.clear();
+      
+    	List<CountryMasterDesc> lstCountryMasterDesc = getiGeneralService().getCountryList((getLanguageId())); 
+    
+     
+			for (CountryMasterDesc desc : lstCountryMasterDesc) {
+				
+				  CountryBean cntryBean = new CountryBean(desc.getCountryMasterId(), desc.getCountryName());	
+				  countrybean.add(cntryBean );
+				  countryMap.put(desc.getCountryMasterId(), desc.getCountryName());
+				}
+        return countrybean;
+	}
+    /*
+	*
+	*method to get state from db and add all the state code and name will be mapped to hashMap
+	*/
+	public void popState(AjaxBehaviorEvent e) {
+		stateBeanList.clear();
+		lstState = new ArrayList<StateMasterDesc>();
+		lstState.addAll(getiGeneralService().getStateList(getLanguageId(),getCountryId()));
+      
+			for(StateMasterDesc  statMastrDesc: lstState ){
+				
+				   StateBean  stsatBean = new StateBean(statMastrDesc.getFsStateMaster().getStateId(), statMastrDesc.getStateName());
+			       stateBeanList.add(stsatBean);
+			       stateHashaMap.put(stsatBean.getStateId(),stsatBean.getStateName());
+			}
+		  
+			getCompanyIdentityTypeList(e);
+			getPartnerIdentityTypeList(e);
+			getAuthorizedIdentityTypeList(e);
+		
+	}
+	
+	
+	
+	
+	public List<StateBean> getStateFromDb() {
+      return stateBeanList;
+    }
+	
+	public void popDistrict(AjaxBehaviorEvent e) {
+		distBeanList.clear();
+		distmasterList = new ArrayList<DistrictMasterDesc>();
+		distmasterList.addAll(getiGeneralService().getDistrictList(getLanguageId(), getCountryId(), getStateId()));
+		
+		for(DistrictMasterDesc districtMasterDesc: distmasterList ){
+			
+		       distBeanList.add(new DistrictBean(districtMasterDesc.getFsDistrictMaster().getDistrictId() , districtMasterDesc.getDistrict()));
+		       hashMapdistrict.put(districtMasterDesc.getFsDistrictMaster().getDistrictId() , districtMasterDesc.getDistrict());
+		}
+	}
+	
+	public List<DistrictBean> getDistricFromDb() {
+		return distBeanList;
+	}
+	
+	public void popCity(AjaxBehaviorEvent e) {
+		cityBeanList.clear();
+		lstCity = new ArrayList<CityMasterDesc>();
+		lstCity.addAll(getiGeneralService().getCityList(getLanguageId(), getCountryId(), getStateId(), getDistId()));
+		
+		for(CityMasterDesc cityMasterDesc : lstCity ){
+			
+			cityBeanList.add(new CityBean(cityMasterDesc.getFsCityMaster().getCityId(), cityMasterDesc.getCityName()));
+			cityHashaMap.put(cityMasterDesc.getFsCityMaster().getCityId(), cityMasterDesc.getCityName());
+		}
+	}
+	
+	public List<CityBean> getCityFromDb() {
+		return cityBeanList;
+	}
+	/*
+	 * method to populate the identity type drop down list
+	 */
+	
+	public void getCompanyIdentityTypeList(AjaxBehaviorEvent event) {
+		
+		lstCompanyIdentityType = new ArrayList<IdentityType>();
+		SessionStateManage sessionManage = new SessionStateManage();
+		String count = sessionManage.getSessionValue("countryId").toString();
+    	BigDecimal countryId = new BigDecimal(count); 
+		lstCompanyIdentityType.addAll(getiGeneralService().getIdentityTypes(getLanguageId(), countryId, bdCompanyIdType));
+		for(IdentityType identityType:lstCompanyIdentityType) {
+			companyIdentityTypeHashaMap.put( identityType.getIdentityTypeId(),  identityType.getIdentityType());
+		}
+	} 
+	public void getPartnerIdentityTypeList(AjaxBehaviorEvent event) {
+		SessionStateManage sessionManage = new SessionStateManage();
+		String count = sessionManage.getSessionValue("countryId").toString();
+    	BigDecimal countryId = new BigDecimal(count);
+		lstPartnerIdentityType = new ArrayList<IdentityType>();
+		lstPartnerIdentityType.addAll(getiGeneralService().getIdentityTypes(getLanguageId(), countryId, bdPartnerIdType));
+		for(IdentityType identityType:lstPartnerIdentityType) {
+			partnerIdentityTypeHashaMap.put( identityType.getIdentityTypeId(),  identityType.getIdentityType());
+		}
+	} 
+    public void getAuthorizedIdentityTypeList(AjaxBehaviorEvent event) {
+    	SessionStateManage sessionManage = new SessionStateManage();
+		String count = sessionManage.getSessionValue("countryId").toString();
+    	BigDecimal countryId = new BigDecimal(count);
+		lstAuthorizedIdentityType = new ArrayList<IdentityType>();
+		lstAuthorizedIdentityType.addAll(getiGeneralService().getIdentityTypes(getLanguageId(), countryId, bdAuthorizedIdType));
+		for(IdentityType identityType:lstAuthorizedIdentityType) {
+			authorizedIdentityTypeHashaMap.put( identityType.getIdentityTypeId(),  identityType.getIdentityType());
+		}
+    } 
+	public List<IdentityType> getIdentityTypeListFromExistingList() {
+		return identTypList;
+	}
+	private List<CustomerType> customerTypeList ;
+	
+	private void getCustomerTypeList() {
+		customerTypeList = new ArrayList<CustomerType>();
+		//fcustomerTypeList.add
+	}
+	
+	/*
+	 * method to get Objectives from Data Base
+	 */
+	public List<RuleObjective> getObjectivesFromDB() {
+		rulObjectList = new ArrayList<RuleObjective>();
+		rulObjectList.addAll(getCorpRegService().getObjectiveList());
+		for(RuleObjective rulObjective:rulObjectList){
+			secondryObjMap.put(rulObjective.getObjectiveId(), rulObjective.getObjectiveDesc());
+		}
+		return rulObjectList ;
+	}
+	/*
+	 * method to get objectives from existing List to no hits to DB
+	 */
+	public List<RuleObjective> getObjectivesFromExistingList() {
+		return rulObjectList;
+	}
+	public List<ContactType> getContactTypeListDB(){
+		contactTypeList = new ArrayList<ContactType>();
+		//System.out.println("sjsjsijofeeeeeeeevwjifjievjirg3jjihghjoijiohgeegegeggggggej");
+		contactTypeList.addAll(getCorpRegService().getContactTypeListFromDB());
+		for(ContactType contType:contactTypeList) {
+			contactTypeMap.put(contType.getContactTypeId(), contType.getContactType());
+		}
+		return contactTypeList;
+	}
+	public List<RuleBusinessNature>  getBussineesNatureFromDB() {
+		bussinessNatureList = new ArrayList<RuleBusinessNature>();
+		bussinessNatureList.addAll(getCorpRegService().getCorpBussinessNature());
+		for(RuleBusinessNature ruleBussnature:bussinessNatureList){
+			bussinessNatureHashaMap.put(ruleBussnature.getNatureOfBusinessId(), ruleBussnature.getNatureOfBusinessDesc());
+		}
+		return bussinessNatureList;
+	}
+
+	 // Store file in the database
+   public Blob storeImage(UploadedFile file) throws IOException, SerialException, SQLException {
+            
+   	InputStream stream = null;
+   	
+   	try {
+   		stream =  file.getInputstream();
+        }catch(Exception e){
+           e.printStackTrace();
+        }
+   	 return new javax.sql.rowset.serial.SerialBlob(readFully(stream));
+   }
+   
+   public  byte[] readFully(InputStream input) throws IOException
+   {
+       byte[] buffer = new byte[8192];
+       int bytesRead;
+       ByteArrayOutputStream output = new ByteArrayOutputStream();
+       while ((bytesRead = input.read(buffer)) != -1)
+       {
+           output.write(buffer, 0, bytesRead);
+       }
+       return output.toByteArray();
+   }
+   public StreamedContent downloadFile(BigDecimal imageId) {
+	   System.out.println("Image id : "+imageId);
+	   StreamedContent image = null;
+	   try{
+		   System.out.println("Image ID within getDownloadFile :::::::::::::::::::::::::::::::::::::::::::::::::: "+getImage_id());
+		   image = getImage(imageId); 
+	   } catch(Exception e){
+		   e.printStackTrace();
+	   }
+	   return image;
+	}
+   public StreamedContent getImage(BigDecimal imageId){
+		try{
+			if (imageId.toPlainString().length() > 0 && imageId!=null) {
+				Blob blob = getCorpRegService().getImage(imageId).get(0).getImage();
+				String imageNameWithExtention=getCorpRegService().getImage(imageId).get(0).getImageName();
+				String imageExtention=imageNameWithExtention.substring(imageNameWithExtention.lastIndexOf("."));
+				String imagename=imageNameWithExtention.substring(0,imageNameWithExtention.lastIndexOf(".")-1);
+				
+				int blobLength = (int) blob.length();
+				byte[] blobAsBytes = blob.getBytes(1, blobLength);
+				InputStream stream = new ByteArrayInputStream(blobAsBytes);
+				downloadFile = new DefaultStreamedContent(stream, "image/jpg", imagename + imageExtention);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	return downloadFile;
+   }
+   public StreamedContent imageDownload(){
+	  Customer viewCustomer = null;
+		CustomerEmploymentInfo viewCustomerEmpInfo = null;
+ 		for(CustomerIdProof idProof: viewCustomerIdProof){
+ 				try{
+ 					
+ 					log.info("idproof : "+idProof.getCustProofId());
+ 					Blob blob = idProof.getFsDocumentImg().getImage();
+ 					int blobLength = (int) blob.length();  
+ 					byte[] blobAsBytes = blob.getBytes(1, blobLength);
+ 					InputStream stream=new ByteArrayInputStream(blobAsBytes);
+ 			        downloadFile = new DefaultStreamedContent(stream, "image/jpg",  idProof.getFsDocumentImg().getImgId().toPlainString()+".jpg");
+ 		   } catch(Exception e) {
+ 			   log.error("image upload Error", e);
+ 			   e.printStackTrace();
+ 		 }
+ 	}
+ 		//image upload end 
+ 		return downloadFile;
+ 	}
+ /**
+  * Document Save
+  * @throws SerialException
+  * @throws IOException
+  * @throws SQLException
+  */
+   public void saveDocument(String imagename,BigDecimal customerId,UploadedFile file) throws SerialException, IOException, SQLException{
+		Blob blob = storeImage(file);
+		int blobLength = (int) blob.length();  
+		byte[] blobAsBytes = blob.getBytes(1, blobLength);
+		
+	
+		InputStream stream=new ByteArrayInputStream(blobAsBytes);
+		
+     downloadFile = new DefaultStreamedContent(stream, "image/jpg", "image.jpg");
+     
+		/**
+		 * Image Saving Start
+		 */
+	//	DocumentImg document = new DocumentImg();
+		try {
+			document.setImage(storeImage(file));
+		} catch (SerialException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		document.setUploadDate(new Date());
+		document.setImageName(imagename);
+		if(!isImageSave) {
+			try {
+				if(document.getImage().length()>0)
+					getCorpRegService().updateImage(document, customerId);
+				image_id = document.getImgId(); 
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			getCorpRegService().saveImage(document);
+			image_id = document.getImgId(); 
+			setImage_id(image_id);
+		}
+		
+   }
+  /*
+   * 
+   * method to clear the fields
+   * 
+   */
+   public String clearAction(){
+	   setCoAMLCommon(true);
+		setCoAMLPass(false);
+		setReadOnly(false);
+		setDisableDate(false);
+		setCoValdtBtn(true);
+		setCrno("");
+		setCompName("");
+		setCompNameL("");
+		setCompRegDate(null);
+		setEmail("");
+		setLocation(new BigDecimal(0));
+		setAMLStatus("");
+		setDisableAML(true);
+		setEnableContactDataTable(false);
+		setContactTypeVisibility(false);
+		setCountryVisibility(false);
+		setStateVisibility(false);
+		setDistrictVisibility(false);
+		setCityVisibility(false);
+		setAreaVisibility(false);
+		setStreetVisibility(false);
+		setBlockVisibility(false);
+		setTelephoneVisibility(false);
+		setFlatVisibility(false);
+		setDuplicateContact(false);
+		setContactListSizeVisibility(false);
+		setCountryId(new BigDecimal(0));
+		setContType(new BigDecimal(0));
+		setStateId(new BigDecimal(0));
+		setDistId(new BigDecimal(0));
+		setCityId(new BigDecimal(0));
+		setArea("");
+		setStreet("");
+		setBlock("");
+		setTel("");
+		setFlat("");
+		
+		contactList.clear();
+		contactListDelete.clear();
+		
+		secondaryList.clear();
+		secondryObjectiveListDeleted.clear();
+		
+		bussnessList.clear();
+		bussenessNatureListDeleted.clear();
+		
+		setEnableSecondaryObjDataTable(false);
+		setPrimayObjVisibility(false);
+		setSecondaryObjVisibility(false);
+		setSecondaryObjDuplicate(false);
+		setSeconObj(new BigDecimal(0));
+		setPrimaryObjId(new BigDecimal(0));
+		setSecondaryListVisibility(false);
+		
+		setEnableBussineesDataTable(false);
+		setBussenessDuplicateVisibility(false);
+		setPrimaySecondaryBussnessVisibility(false);
+		setNatureBussineesVisibility(false);
+		setBusenessListVisibility(false);
+		setBussNature(new BigDecimal(0));
+		setObj("");
+		return "";
+   }
+
+   public IGeneralService<T> getGeneralService() {
+   		return generalService;
+   }
+
+   public void setGeneralService(IGeneralService<T> generalService) {
+   	this.generalService = generalService;
+   }
+
+   public String viewBehaviorBean(String componentName, String type){
+        if(mapComponentBehavior==null || mapComponentBehavior.size()==0){
+			setPageIdIntoSession();
+			prepareBehavior();
+		}
+   		return new CollectionUtil().fetchBehavior(mapComponentBehavior, componentName, type);
+   	}
+   	
+   	@Autowired
+   	public CorpRegisterManageBean(IGeneralService<T> generalService){
+   		
+   		setGeneralService(generalService);
+   		
+   		//setPageIdIntoSession();
+   		/*prepareBehavior();*/
+   		//setReadOnly();
+   	}  
+   	
+   	private void setPageIdIntoSession(){
+   	
+   		String pageName = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+   		pageName = pageName.substring(pageName.lastIndexOf('/')+1, pageName.indexOf(".xhtml"));
+   		
+   		try{
+   			BigDecimal pageId = getGeneralService().getPageId(pageName);
+   			new SessionStateManage().setSessionValue("pageId", pageId.toString());
+   		}catch(Exception e){
+   			System.out.println("Page id not found for pagename :: "+pageName+" :: "+e);
+   		}
+   	}
+   	
+   	private void prepareBehavior(){
+   		
+   		SessionStateManage manage = new SessionStateManage(); 
+   		List<String> lstComponentName = Arrays.asList("Cr Number","Company Name","Company Name(L)","Company Registration Date","Email","Location","AML Status","Country","State","District","City","Area","Street","Telephone Number","Flat","Block","Contact Type","Primary/Secondary Objective","Primary Objective","Secondary Objective","Business Nature","Id Number","Partner Name","Id Type","Owner");
+   		mapComponentBehavior =  getGeneralService().getComponentBehavior(lstComponentName, manage.getLevel(),manage.getApplicationId(),manage.getCompanyId(),manage.getCountryId(),manage.getPageId());   	}
+	
+}

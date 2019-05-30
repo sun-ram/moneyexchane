@@ -1,0 +1,980 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</h:head>
+
+
+<h:body dir="#{facesBean.direction}">
+	<f:view locale="#{facesBean.locale}">
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<ui:include src="#{facesBean.menu}"></ui:include>
+		 <table align="left" width="100%" style="height:100%;">
+    <tr>
+    <td align="left" valign="top" style="height:100%;" ><div id="left" class="leftColumn">
+    		<div style="display: none; width: 150px;" id="leftCol">
+    		<p:accordionPanel>
+		<p:tab title="My Profile"
+			titleStyle="background: url(../images/menu_icon5.png) no-repeat scroll 6px 8px;  border-top:none !important;">
+			<h:outputLink value="../login/forgotpassword.xhtml" target="_self" styleClass="left_menu"  style=" border-top:none !important;">
+				 <h:outputText value="Change Password"/>
+ 			</h:outputLink>
+ 			<h:outputLink value="../login/login.xhtml" target="_self" styleClass="left_menu" style=" border-bottom:none !important;" >
+				 <h:outputText value="Logout"/>
+ 			</h:outputLink>
+			
+		</p:tab>
+		<p:tab title="About"
+			titleStyle="background: url(../images/menu_icon1.png) no-repeat scroll 6px 8px;">
+
+<h:outputLink value="http://www.almullagroup.com/" target="_blank" styleClass="left_menu"  style=" border-top:none !important;">
+				 <h:outputText value="Al Mulla Group"/>
+ 			</h:outputLink>
+ 			<h:outputLink value="http://www.almullagroup.com/finance/exchange.aspx" target="_blank" styleClass="left_menu">
+				 <h:outputText value="Exchange"/>
+ 			</h:outputLink>
+ 			<h:outputLink value="http://www.almullagroup.com/finance/finance.aspx" target="_blank" styleClass="left_menu">
+				 <h:outputText value="Finance"/>
+ 			</h:outputLink>
+ 			<h:outputLink value="http://www.autoalmulla.com/index.php/" target="_blank" styleClass="left_menu" style=" border-bottom:none !important;" >
+				 <h:outputText value="Automobiles"/>
+ 			</h:outputLink>
+			
+		</p:tab>
+		<p:tab title="Services"
+			titleStyle="background: url(../images/menu_icon2.png) no-repeat scroll 6px 8px;">
+			<h:outputLink value="../registration/custmanualbranchreg.xhtml" target="_self" styleClass="left_menu"   style=" border-top:none !important;">
+				 <h:outputText value="Individual"/>
+ 			</h:outputLink>
+ 			<h:outputLink value="../registration/corporateregistration.xhtml" target="_self" styleClass="left_menu"  style=" border-bottom:none !important;" >
+				 <h:outputText value="Non Individual"/>
+ 			</h:outputLink>			
+			
+		</p:tab>
+		<p:tab title="Branch"
+			titleStyle="background: url(../images/menu_icon3.png) no-repeat scroll 6px 8px;">
+			
+			<h:outputLink value="../search/searchcustomer.xhtml" target="_self" styleClass="left_menu"   style=" border-top:none !important;">
+				 <h:outputText value="Search Customer"/>
+ 			</h:outputLink>
+			<h:outputLink value="../registration/branchhome.xhtml" target="_self" styleClass="left_menu" style=" border-bottom:none !important;" >
+				 <h:outputText value="Branch Home"/>
+ 			</h:outputLink>
+
+			
+		</p:tab>
+		<p:tab title="Rule Engine"
+			titleStyle="background: url(../images/menu_icon4.png) no-repeat scroll 6px 8px;">
+			
+			<h:outputLink value="../ruleengine/businesscomponent.xhtml" target="_self" styleClass="left_menu"   style=" border-top:none !important;">
+				 <h:outputText value="Business Component"/>
+ 			</h:outputLink>
+			
+<h:outputLink value="../ruleengine/businesscomponentconf.xhtml" target="_self" styleClass="left_menu" style=" border-bottom:none !important;">
+				 <h:outputText value="Business Component Config"/>
+ 			</h:outputLink>
+			
+		</p:tab>
+	</p:accordionPanel>
+    		</div></div>
+    		
+    		</td>
+    		
+    	<td  class="rightColumn" valign="top">
+		<h:panelGroup layout="block" class="container">
+			<h:panelGroup layout="block" class="main_div">
+<div class="menu_button"><img style="cursor: pointer;  position:relative; left:15px;" id="HideHandle" name="HideHandle" src="../images/toggle_plus.png" alt="" onclick='hideLeftCol("leftCol");closeMenus();'/></div>
+				<h:panelGrid columns="1" width="100%" styleClass="heading1">
+					<h:outputText value="#{msg['lbl.corporateregistration']}"
+						style="text-align:center !important; display:block;" />
+				</h:panelGrid>
+				<h:panelGroup layout="block" class="table_bg">
+					<p:panel id="mainPanel" style="padding:10px!important;">
+
+						<h:form id="inputform" enctype="multipart/form-data">
+							<p:panel id="panel1" rendered="#{corpregisterBean.coAMLPass}"
+								style="align: left; width:820px;  border:none;">
+
+								<h:panelGrid columns="1"
+									rendered="#{corpregisterBean.coAMLPass}" styleClass="heading2">
+									<h:outputText value="#{msg['lbl.companyidentitydoc']}"
+										rendered="#{corpregisterBean.coAMLPass}" />
+								</h:panelGrid>
+
+								<p:panelGrid cellpadding="0" cellspacing="15"
+									rendered="#{corpregisterBean.coAMLPass}"
+									style="text-align:left;width: 100%;">
+									<p:row>
+										<p:column>
+										</p:column>
+										<p:column>
+											<h:outputText value="#{msg['lbl.idalreadyreg']}"
+												style="color:red;"
+												rendered="#{corpregisterBean.companyRegisterIdStatus}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column></p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.validationprefix']} #{msg['lbl.idnumber']}"
+												rendered="#{corpregisterBean.coIdVisibility}"
+												style="color:red;" />
+										</p:column>
+										<p:column></p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.validselectt']} #{msg['lbl.idtype']}"
+												rendered="#{corpregisterBean.coIdTypeVisibility}"
+												style="color:red;" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.idnumber']} #{corpregisterBean.viewBehaviorBean('Id Number','MANDATORY')}"
+												rendered="#{corpregisterBean.coAMLPass}" />
+										</p:column>
+										<p:column>
+											<p:inputText id="idno" value="#{corpregisterBean.idno}"
+												rendered="#{corpregisterBean.coAMLPass}"
+												readonly="#{corpregisterBean.viewBehaviorBean('Id Number','READ_ONLY')}"
+												maxlength="#{corpregisterBean.viewBehaviorBean('Id Number','MAX_VALUE')}"
+												disabled="#{corpregisterBean.viewBehaviorBean('Id Number','ENABLE')}"
+												validator="RegularExpressionValidation">
+												<f:attribute name="regexValue"
+													value="#{corpregisterBean.viewBehaviorBean('Id Number','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{corpregisterBean.viewBehaviorBean('Id Number','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{corpregisterBean.viewBehaviorBean('Id Number','MAX_VALUE')}" />
+												<p:message for="idno" display="text"/>
+											</p:inputText>
+										</p:column>
+										<p:column>
+											<h:outputText value="#{msg['lbl.idtype']} #{corpregisterBean.viewBehaviorBean('Id Type','MANDATORY')}"
+												rendered="#{corpregisterBean.coAMLPass}" />
+										</p:column>
+										<p:column>
+											<p:selectOneMenu value="#{corpregisterBean.idtype}"
+												id="idType" style="width:175px;"
+												rendered="#{corpregisterBean.coAMLPass}">
+												<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+												<f:selectItems
+													value="#{corpregisterBean.lstCompanyIdentityType}"
+													var="idTyp" itemLabel="#{idTyp.identityType}"
+													itemValue="#{idTyp.identityTypeId}" />
+
+											</p:selectOneMenu>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column></p:column>
+										<p:column>
+
+											<h:outputText
+												value="#{msg['lbl.validselectt']} #{msg['lbl.dateofexpiry']}"
+												rendered="#{corpregisterBean.coExpDateVisibility}"
+												style="color:red;" />
+										</p:column>
+										<p:column></p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.uploadfile']} (.jpg/.png/.doc/.docx/.pdf/.jpeg)}"
+												rendered="#{corpregisterBean.coUploadFileVisibility}"
+												style="color:red;" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<h:outputText value="#{msg['lbl.dateofexpiry']}*"
+												rendered="#{corpregisterBean.coAMLPass}" />
+										</p:column>
+										<p:column>
+											<p:calendar id="crd" mode="popup"
+												rendered="#{corpregisterBean.coAMLPass}"
+												value="#{corpregisterBean.idExpDate}" pattern="dd/MM/yyyy"
+												navigator="true"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.dateofexpiry']}"
+												size="25" mindate="#{corpregisterBean.expDateAdder}"
+												readonlyInput="true">
+												<p:message for="crd" display="text" />
+											</p:calendar>
+										</p:column>
+										<p:column>
+											<h:outputText value="#{msg['lbl.scandocument']}*" />
+										</p:column>
+										<p:messages showDetail="true" />
+										<p:column>
+											<p:fileUpload id="chooseFile"
+												value="#{corpregisterBean.identityfile}" mode="simple"
+												dragDropSupport="false" update="messages" sizeLimit="10000"
+												fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+											<!-- <p:message for="chooseFile" display="text" /> -->
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:commandButton value="#{msg['lbl.add']}"
+												rendered="#{corpregisterBean.coAMLPass}"
+												actionListener="#{corpregisterBean.addActionidentity}"
+												id="addTable1" process="panel1" update="panel1" ajax="false">
+											</p:commandButton>
+										</p:column>
+										<p:column>
+											<h:outputText value="#{msg['lbl.duplicateidentity']}"
+												rendered="#{corpregisterBean.coDublicateVisibility}"
+												style="color:red;" />
+												<h:outputText value="#{msg['lbl.atleastone']} #{msg['lbl.companyidentitydoc']}"
+												rendered="#{corpregisterBean.identityListVisibility}"
+												style="color:red;" />
+										</p:column>
+
+									</p:row>
+
+								</p:panelGrid>
+
+								<p:dataTable value="#{corpregisterBean.identityList}" var="co"
+									widgetVar="50" style="width:1220;" id="dataTable1"
+									rendered="#{corpregisterBean.enabledddCompanyDataTable}"
+									editable="true" emptyMessage="#{msg['lbl.norecordfound']}">
+									<!-- <p:ajax event="cellEdit"  listener="#{corpregisterBean. modifiedIdentity(co)}" /> -->
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.idnumber']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{co.idno}"
+													style="text-align: left; font-size:13px;  height:20px; width: 80px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{co.idno}"
+													style="text-align: left; font-size:13px;  height:20px; width: 80px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.idtype']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{co.idtype}"
+													style="text-align: left; font-size:13px;  height:20px; width: 50px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+											<f:facet name="input">
+												<!-- <h:outputText value="#{co.idtype}" style="text-align: left; font-size:13px;  height:20px; width: 50px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" /> -->
+												<p:selectOneMenu value="#{co.idTypeId}" id="idType"
+													style="width:175px;"
+													rendered="#{corpregisterBean.coAMLPass}">
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{co.lstIdentityList}" var="idTyp"
+														itemLabel="#{idTyp.identityType}"
+														itemValue="#{idTyp.identityTypeId}" />
+
+												</p:selectOneMenu>
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.dateofexpiry']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{co.idExpDate}"
+													style="text-align: left; font-size:13px;  height:20px; width: 90px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{co.idExpDate}"
+													style="text-align: left; font-size:13px;  height:20px; width: 90px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<!-- <p:commandLink value="Image" onclick="dialog.show()" style="margin-left: 10px;text-align: center;"/> -->
+									<p:column headerText="#{msg['lbl.download']}"
+										style="text-align:center; width:50px;">
+										<p:commandLink id="identitydownloadLink" title="download"
+											ajax="false" action="PrimeFaces.monitorDownload(start, stop)"
+											icon="ui-icon-arrowthichk-s">
+											<p:graphicImage value="../images/download.png" />
+											<p:fileDownload
+												value="#{corpregisterBean.downloadFile(co.imageId)}" />
+										</p:commandLink>
+									</p:column>
+
+									<p:column style="text-align:center !important; width:50px;">
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.delete']}" />
+										</f:facet>
+										<p:commandButton value="" styleClass="delete"
+											update="dataTable1"
+											action="#{corpregisterBean.removeCompanyDocument(co)}"
+											ajax="false" immediate="true"></p:commandButton>
+									</p:column>
+
+								</p:dataTable>
+							</p:panel>
+							<p:panel id="panel2" rendered="#{corpregisterBean.coAMLPass}"
+								style="align: left; width:820px; border:none; margin-top:30px;">
+
+								<h:panelGrid columns="1" cellpadding="0" cellspacing="0"
+									styleClass="heading2" rendered="#{corpregisterBean.coAMLPass}">
+									<h:outputText value="#{msg['lbl.partnersdetails']}" />
+								</h:panelGrid>
+
+
+								<p:panelGrid cellpadding="0" cellspacing="15"
+									rendered="#{corpregisterBean.coAMLPass}"
+									style="text-align:left;width: 100%;">
+									<p:row>
+										<p:column>
+										</p:column>
+										<p:column>
+											<h:outputText value="#{msg['lbl.idalreadyreg']}"
+												style="color:red;"
+												rendered="#{corpregisterBean.partnerRegisterIdStatus }" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column></p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.validationprefix']} #{msg['lbl.idnumber']}"
+												rendered="#{corpregisterBean.partnerIdVisibility}"
+												style="color:red;" />
+										</p:column>
+										<p:column></p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.validationprefix']} #{msg['lbl.partnerName']}"
+												rendered="#{corpregisterBean.partnerNameVisibility}"
+												style="color:red;" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.idnumber']} "
+												rendered="#{corpregisterBean.coAMLPass}" />
+										</p:column>
+										<p:column>
+											<p:inputText id="pidn" value="#{corpregisterBean.pidno}"
+												rendered="#{corpregisterBean.coAMLPass}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.idnumber']}"
+												readonly="#{corpregisterBean.viewBehaviorBean('Id Number','READ_ONLY')}"
+												maxlength="#{corpregisterBean.viewBehaviorBean('Id Number','MAX_VALUE')}"
+												disabled="#{corpregisterBean.viewBehaviorBean('Id Number','ENABLE')}"
+												validator="RegularExpressionValidation">
+												<f:attribute name="regexValue"
+													value="#{corpregisterBean.viewBehaviorBean('Id Number','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{corpregisterBean.viewBehaviorBean('Id Number','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{corpregisterBean.viewBehaviorBean('Id Number','MAX_VALUE')}" />
+												<p:message for="pidn" display="text" />
+											</p:inputText>
+										</p:column>
+										<p:column>
+											<h:outputText value="#{msg['lbl.partnerName']}"
+												rendered="#{corpregisterBean.coAMLPass}" />
+										</p:column>
+										<p:column>
+											<p:inputText id="pname" value="#{corpregisterBean.partName}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.partnerName']}"
+												rendered="#{corpregisterBean.coAMLPass}"
+												readonly="#{corpregisterBean.viewBehaviorBean('Partner Name','READ_ONLY')}"
+												maxlength="#{corpregisterBean.viewBehaviorBean('Partner Name','MAX_VALUE')}"
+												disabled="#{corpregisterBean.viewBehaviorBean('Partner Name','ENABLE')}"
+												validator="RegularExpressionValidation" >
+											<f:attribute name="regexValue"
+												value="#{corpregisterBean.viewBehaviorBean('Partner Name','PATTERN')}" />
+											<f:attribute name="minValue"
+												value="#{corpregisterBean.viewBehaviorBean('Partner Name','MIN_VALUE')}" />
+											<f:attribute name="maxValue"
+												value="#{corpregisterBean.viewBehaviorBean('Partner Name','MAX_VALUE')}" />
+												<p:message for="pname" display="text"/>
+											</p:inputText>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+										</p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.validselectt']} #{msg['lbl.idtype']}"
+												rendered="#{corpregisterBean.partnerIdTypeVisibility}"
+												style="color:red;" />
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.validselectt']} #{msg['lbl.dateofexpiry']}"
+												rendered="#{corpregisterBean.partnerExpDateVisibility}"
+												style="color:red;" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<h:outputText value="#{msg['lbl.idtype']} "
+												rendered="#{corpregisterBean.coAMLPass}" />
+										</p:column>
+										<p:column>
+											<p:selectOneMenu id="partnerIdType"
+												value="#{corpregisterBean.pidtype}"
+												rendered="#{corpregisterBean.coAMLPass}"
+												style="width:183px;">
+												<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+												<f:selectItems
+													value="#{corpregisterBean.lstPartnerIdentityType}"
+													var="idTyp" itemLabel="#{idTyp.identityType}"
+													itemValue="#{idTyp.identityTypeId}" />
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+											<h:outputText value="#{msg['lbl.dateofexpiry']}"
+												rendered="#{corpregisterBean.coAMLPass}"></h:outputText>
+										</p:column>
+										<p:column>
+											<p:calendar id="pcrd" mode="popup"
+												rendered="#{corpregisterBean.coAMLPass}"
+												value="#{corpregisterBean.pidExpDate}" pattern="dd/MM/yyyy"
+												mindate="#{corpregisterBean.expDateAdder}" navigator="true"
+												readonlyInput="true">
+											</p:calendar>
+										</p:column>
+
+									</p:row>
+									<p:row>
+										<p:column></p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.uploadfile']}(.jpg/.png/.doc/.docx/.pdf/.jpeg)"
+												rendered="#{corpregisterBean.partnerUploadFileVisibility}"
+												style="color:red;" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<h:outputText value="#{msg['lbl.scandocument']}" />
+										</p:column>
+										<p:messages showDetail="true" />
+										<p:column style="padding:10px;">
+											<p:fileUpload value="#{corpregisterBean.partnerfile}"
+												mode="simple" dragDropSupport="false"
+												update="patnermessages" sizeLimit="10000" fileLimit="1"
+												allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+
+										</p:column>
+									</p:row>
+
+									<h:outputText value="File Name"></h:outputText>
+									<h:inputFile label="file" value="#{corpregisterBean.ppart}"
+										style="width: 175px;">
+									</h:inputFile>
+
+									<p:row>
+										<p:column>
+											<p:commandButton value="#{msg['lbl.add']}"
+												rendered="#{corpregisterBean.coAMLPass}"
+												actionListener="#{corpregisterBean.addActionPartner}"
+												id="addTable2" process="panel2" update="panel2" ajax="false">
+											</p:commandButton>
+										</p:column>
+										<p:column>
+											<h:outputText value="#{msg['lbl.duplicatepartner']}"
+												style="color:red;"
+												rendered="#{corpregisterBean.partnerDublicateVisibility}" />
+										</p:column>
+									</p:row>
+
+								</p:panelGrid>
+								<br />
+								<p:dataTable value="#{corpregisterBean.partnerList}" var="q"
+									style="width:1220;"
+									rendered="#{corpregisterBean.enableddPartnerDataTable}"
+									id="datatable2" editable="true"
+									emptyMessage="#{msg['lbl.norecordfound']}">
+									<!-- <p:ajax event="cellEdit"  listener="#{corpregisterBean.modifiedPrtDtl(q)}" /> -->
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.idnumber']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{q.pidno}"
+													style="text-align: left; font-size:13px;  height:20px; width: 80px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{q.pidno}"
+													style="text-align: left; font-size:13px;  height:20px; width: 80px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.partnerName']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{q.partName}"
+													style="text-align: left; font-size:13px;  height:20px; width: 40px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{q.partName}"
+													style="text-align: left; font-size:13px;  height:20px; width: 40px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.idtype']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{q.pidtype}"
+													style="text-align: left; font-size:13px;  height:20px; width: 40px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:selectOneMenu value="#{q.pIdTypeId}" id="idType"
+													style="width:175px;"
+													rendered="#{corpregisterBean.coAMLPass}">
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{q.lstPartnerIdentityList}"
+														var="idTyp" itemLabel="#{idTyp.identityType}"
+														itemValue="#{idTyp.identityTypeId}" />
+												</p:selectOneMenu>
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.dateofexpiry']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{q.pidExpDate}"
+													style="text-align: left; font-size:13px;  height:20px; width: 80px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{q.pidExpDate}"
+													style="text-align: left; font-size:13px;  height:20px; width: 80px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+									<p:column headerText="#{msg['lbl.download']}"
+										style="text-align:center; width:50px;">
+										<p:commandLink id="partnerdownloadLink" title="download"
+											ajax="false" action="PrimeFaces.monitorDownload(start, stop)"
+											icon="ui-icon-arrowthichk-s">
+											<p:graphicImage value="../images/download.png" />
+											<p:fileDownload
+												value="#{corpregisterBean.downloadFile(q.imageId)}" />
+										</p:commandLink>
+									</p:column>
+									<p:column style="text-align:center !important; width:50px;">
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.delete']}" />
+										</f:facet>
+
+										<p:commandButton styleClass="delete" value=""
+											actionListener="#{corpregisterBean.removePartnerDetails(q)}"
+											ajax="false" update="datatable2"></p:commandButton>
+									</p:column>
+
+								</p:dataTable>
+
+							</p:panel>
+							<p:panel id="panel3" rendered="#{corpregisterBean.coAMLPass}"
+								style="align: left; width:820px; border:none; margin-top:30px; ">
+								<h:panelGrid columns="1" styleClass="heading2"
+									rendered="#{corpregisterBean.coAMLPass}">
+									<h:outputText value="#{msg['lbl.authorizedsig']}" />
+								</h:panelGrid>
+
+								<p:panelGrid cellpadding="0" cellspacing="15"
+									rendered="#{corpregisterBean.coAMLPass}"
+									style="text-align:left;width: 100%;">
+									<p:row>
+										<p:column>
+										</p:column>
+										<p:column>
+											<h:outputText value="#{msg['lbl.idalreadyreg']}"
+												style="color:red;"
+												rendered="#{corpregisterBean.authorRegisterIdStatus}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+										</p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.validationprefix']} #{msg['lbl.idnumber']}"
+												rendered="#{corpregisterBean.authourisedIdVisibility}"
+												style="color:red;" />
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.validationprefix']} #{msg['lbl.ownername']}"
+												rendered="#{corpregisterBean.authourisedOwnerNameVisibility}"
+												style="color:red;" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.idnumber']} #{corpregisterBean.viewBehaviorBean('Id Number','MANDATORY')}"
+												rendered="#{corpregisterBean.coAMLPass}" />
+										</p:column>
+										<p:column>
+											<p:inputText id="sidd" value="#{corpregisterBean.sidno}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.idnumber']}"
+												rendered="#{corpregisterBean.coAMLPass}"
+												readonly="#{corpregisterBean.viewBehaviorBean('Id Number','READ_ONLY')}"
+												maxlength="#{corpregisterBean.viewBehaviorBean('Id Number','MAX_VALUE')}"
+												disabled="#{corpregisterBean.viewBehaviorBean('Id Number','ENABLE')}"
+												validator="RegularExpressionValidation">
+												<f:attribute name="regexValue"
+													value="#{corpregisterBean.viewBehaviorBean('Id Number','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{corpregisterBean.viewBehaviorBean('Id Number','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{corpregisterBean.viewBehaviorBean('Id Number','MAX_VALUE')}" />
+												<p:message for="sidd" display="text" />
+											</p:inputText>
+										</p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.ownername']} #{corpregisterBean.viewBehaviorBean('Owner','MANDATORY')}"
+												rendered="#{corpregisterBean.coAMLPass}" />
+										</p:column>
+										<p:column>
+											<p:inputText id="nam" value="#{corpregisterBean.name}"
+												rendered="#{corpregisterBean.coAMLPass}"
+												readonly="#{corpregisterBean.viewBehaviorBean('Owner','READ_ONLY')}"
+												maxlength="#{corpregisterBean.viewBehaviorBean('Owner','MAX_VALUE')}"
+												disabled="#{corpregisterBean.viewBehaviorBean('Owner​','ENABLE')}"
+												validator="RegularExpressionValidation">
+												 
+											<f:attribute name="regexValue"
+												value="#{corpregisterBean.viewBehaviorBean('Owner','PATTERN')}" />
+											<f:attribute name="minValue"
+												value="#{corpregisterBean.viewBehaviorBean('Owner','MIN_VALUE')}" />
+											<f:attribute name="maxValue"
+												value="#{corpregisterBean.viewBehaviorBean('Owner','MAX_VALUE')}" />
+												<p:message for="nam" display="text" />
+											</p:inputText>
+										</p:column>
+									</p:row>
+								
+									<p:row>
+										<p:column>
+										</p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.validselectt']} #{msg['lbl.idtype']}"
+												rendered="#{corpregisterBean.authourisedTypeVisibility }"
+												style="color:red;" />
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.validselectt']} #{msg['lbl.effectivedate']}"
+												rendered="#{corpregisterBean. authourisedEffDateVisibility}"
+												style="color:red;" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<h:outputText value="#{msg['lbl.idtype']} #{corpregisterBean.viewBehaviorBean('Id Type','MANDATORY')}"
+												rendered="#{corpregisterBean.coAMLPass}" />
+										</p:column>
+										<p:column>
+											<p:selectOneMenu id="authorizedIdType"
+												value="#{corpregisterBean.sidtype}"
+												rendered="#{corpregisterBean.coAMLPass}"
+												style="width:183px;">
+												<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+												<f:selectItems
+													value="#{corpregisterBean.lstAuthorizedIdentityType}"
+													var="idTyp" itemLabel="#{idTyp.identityType}"
+													itemValue="#{idTyp.identityTypeId}" />
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+											<h:outputText value="#{msg['lbl.effectivedate']}*"
+												rendered="#{corpregisterBean.coAMLPass}" />
+										</p:column>
+										<p:column>
+											<p:calendar id="seed" mode="popup"
+												rendered="#{corpregisterBean.coAMLPass}"
+												readonlyInput="true" value="#{corpregisterBean.effDate}"
+												navigator="true" pattern="dd/MM/yyyy"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.dateofexpiry']}" mindate="#{corpregisterBean.effectiveMinDate}">
+												<p:message for="seed" display="text" />
+											</p:calendar>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+										</p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.validselectt']} #{msg['lbl.dateofexpiry']}"
+												rendered="#{corpregisterBean.authourisedExpDateVisibility}"
+												style="color:red;" />
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.validselectt']} #{msg['lbl.enddate']}"
+												rendered="#{corpregisterBean.authourisedEndDateVisibility}"
+												style="color:red;" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<h:outputText value="#{msg['lbl.dateofexpiry']}*"
+												rendered="#{corpregisterBean.coAMLPass}"></h:outputText>
+										</p:column>
+										<p:column>
+											<p:calendar id="scrd" mode="popup"
+												rendered="#{corpregisterBean.coAMLPass}"
+												value="#{corpregisterBean.sidExpDate}" navigator="true"
+												mindate="#{corpregisterBean.expDateAdder}"
+												readonlyInput="true" pattern="dd/MM/yyyy"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.dateofexpiry']}">
+												<p:message for="scrd" display="text" />
+											</p:calendar>
+										</p:column>
+										<p:column>
+											<h:outputText value="#{msg['lbl.enddate']}*"
+												rendered="#{corpregisterBean.coAMLPass}"></h:outputText>
+										</p:column>
+
+										<p:column>
+											<p:calendar id="sed" mode="popup"
+												rendered="#{corpregisterBean.coAMLPass}"
+												value="#{corpregisterBean.endDate}" navigator="true"
+												pattern="dd/MM/yyyy"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.enddate']}"
+												mindate="#{corpregisterBean.expDateAdder}"
+												readonlyInput="true">
+												<p:message for="sed" display="text" />
+											</p:calendar>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column></p:column>
+										<p:column>
+											<h:outputText
+												value="#{msg['lbl.uploadfile']} (.jpg/.png/.doc/.docx/.pdf/.jpeg)"
+												rendered="#{corpregisterBean.authorUploadFileVisibility}"
+												style="color:red;" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<h:outputText value="#{msg['lbl.scandocument']}*" />
+										</p:column>
+										<p:messages showDetail="true" />
+										<p:column style="padding:10px;">
+											<p:fileUpload value="#{corpregisterBean.autherfile}"
+												mode="simple" dragDropSupport="false"
+												update="authoritymessages" sizeLimit="10000" fileLimit="1"
+												allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:commandButton value="#{msg['lbl.add']}"
+												rendered="#{corpregisterBean.coAMLPass}"
+												actionListener="#{corpregisterBean.addActionAuthorized}"
+												id="addTable3" process="panel3" update="panel3" ajax="false">
+											</p:commandButton>
+										</p:column>
+										<p:column>
+											<h:outputText value="#{msg['lbl.duplicatesignatories']} "
+												rendered="#{corpregisterBean.authourisedDublicateVisibility}"
+												style="color:red;" />
+												<h:outputText value="#{msg['lbl.atleastone']} #{msg['lbl.authorizedsig']} "
+												rendered="#{corpregisterBean.authourisedListVisibility}"
+												style="color:red;" />
+										</p:column>
+									</p:row>
+
+
+								</p:panelGrid>
+								<br />
+								<p:dataTable value="#{corpregisterBean.authorisedList}" var="r"
+									style="width:1220;" editable="true"
+									rendered="#{corpregisterBean.enabledSignatoriesDataTable}"
+									id="datatable3" emptyMessage="#{msg['lbl.norecordfound']}">
+									<!-- <p:ajax event="cellEdit"
+										listener="#{corpregisterBean.modifiedSigntr(r)}" /> -->
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.ownername']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{r.name}"
+													style="text-align: left; font-size:13px;  height:20px; width: 40px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{r.name}"
+													style="text-align: left; font-size:13px;  height:20px; width: 40px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.idnumber']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{r.sidno}"
+													style="text-align: left; font-size:13px;  height:20px; width: 40px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{r.sidno}"
+													style="text-align: left; font-size:13px;  height:20px; width: 40px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.idtype']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{r.sidtype}"
+													style="text-align: left; font-size:13px;  height:20px; width: 40px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:selectOneMenu value="#{r.sIdTypeId}" id="idType"
+													style="width:175px;"
+													rendered="#{corpregisterBean.coAMLPass}">
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{r.lstaAuthourizedIdentityList}"
+														var="idTyp" itemLabel="#{idTyp.identityType}"
+														itemValue="#{idTyp.identityTypeId}" />
+												</p:selectOneMenu>
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.effectivedate']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{r.effDate}"
+													style="text-align: left; font-size:13px;  height:20px; width: 120px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{r.effDate}"
+													style="text-align: left; font-size:13px;  height:20px; width: 120px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.dateofexpiry']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{r.sidExpDate}"
+													style="text-align: left; font-size:13px;  height:20px; width: 120px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{r.sidExpDate}"
+													style="text-align: left; font-size:13px;  height:20px; width: 120px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.enddate']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{r.endDate}"
+													style="text-align: left; font-size:13px;  height:20px; width: 120px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{r.endDate}"
+													style="text-align: left; font-size:13px;  height:20px; width: 120px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+									<p:column headerText="#{msg['lbl.download']}"
+										style="text-align:center; width:50px;">
+										<p:commandLink id="authoritydownloadLink" title="download"
+											ajax="false" action="PrimeFaces.monitorDownload(start, stop)"
+											icon="ui-icon-arrowthichk-s">
+											<p:graphicImage value="../images/download.png" />
+											<p:fileDownload
+												value="#{corpregisterBean.downloadFile(r.imageId)}" />
+										</p:commandLink>
+									</p:column>
+
+									<p:column style="text-align:center !important; width:50px;">
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.delete']}" />
+										</f:facet>
+
+										<p:commandButton styleClass="delete" value=""
+											actionListener="#{corpregisterBean.removeAuthourSignatory(r)}"
+											ajax="false" update="datatable3"></p:commandButton>
+									</p:column>
+								</p:dataTable>
+							</p:panel>
+							<p:panel style="text-align:center !important; width:100px; margin:0 auto; border:none;">
+								<p:commandButton value="#{msg['lbl.submit']}"
+									rendered="#{corpregisterBean.coAMLPass}" style="margin:10px;"
+									action="#{corpregisterBean.saveAdditionalDetails}" ajax="false"
+									immediate="panel">
+								</p:commandButton>
+							</p:panel>
+						</h:form>
+					</p:panel>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
+		<div class="clearfix"></div>
+    				
+    				</td>
+    </tr>
+    </table>
+		<ui:include src="#{facesBean.footer}"></ui:include>
+	</f:view>
+</h:body>
+</html>

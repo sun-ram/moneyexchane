@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!-- <script type="text/javascript">
+	   function setHiddenValue(){
+ 		 alert("Called");
+	     alert(document.getElementById('contactform:hidden2').value);
+	     if(document.getElementById('contactform:hidden2').value == 'true'){
+		     alert("Enter")
+	    	 confirmDia.show();
+		 } 
+	   } 
+	</script>-->
+</h:head>
+
+<h:body>
+	<f:view>
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<ui:include src="#{facesBean.menu}"></ui:include>
+		<h:panelGroup layout="block" class="container">
+			<h:panelGroup layout="block" class="main_div">
+				<h1>
+					<h:outputText value="#{msg['lbl.bank']} #{msg['lbl.contactdetails']}" />
+				</h1>
+				<h:panelGroup layout="block" class="table_bg">
+					<h:form id="contactform" style="padding:0!important;">
+						
+						<p:panel id="mainPanel"	style="border: 0px; padding:0px!important;">
+						
+							<p:confirmDialog id="confirmDialog" header="#{msg['lbl.toSave']}" style="font-size:16px;" message="#{msg['lbl.contactAdd']} #{bankMasterContactDetails.bankName}" severity="alert" widgetVar="confirmDia">
+								<p:commandButton value="#{msg['lbl.go']}" style="float:right; padding:0px 15px !important;" oncomplete="confirmDia.hide()" actionListener="#{bankMasterContactDetails.goFromPopUp}" process="@this" update="mainPanel"/>
+								<p:commandButton value="#{msg['lbl.cancel']}" style="float:right;" oncomplete="confirmDia.hide()" actionListener="#{bankMasterContactDetails.cancelFromPopUp}" process="@this" update="mainPanel"/>
+							</p:confirmDialog>
+							<!-- <h:inputHidden id="hidden2" value="#{bankMasterContactDetails.addDelete}" /> -->
+							<p:panel style="padding:10px!important;">
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="#{msg['lbl.bank']} #{bankMasterContactDetails.viewBehaviorBean('Bank Id','MANDATORY')}"/>
+									</div>
+									<div class="ui-block-b">
+										<p:message for="bank" display="text"/>
+										<p:selectOneMenu id="bank" value="#{bankMasterContactDetails.contactBankId}" filter="true" filterMatchMode="startsWith" 
+														required="#{bankMasterContactDetails.viewBehaviorBean('Bank Id','REQUIRED')}"
+														disabled="#{bankMasterContactDetails.viewBehaviorBean('Bank Id','ENABLE')}" 
+														requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.bank']}">
+														<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+														<f:selectItems value="#{bankMasterContactDetails.bankDetails}" var="c" itemLabel="#{c.bankFullName}" itemValue="#{c.bankId}"/>
+														<p:ajax event="change" listener="#{bankMasterContactDetails.fetchBankContactInfo}" update="mainPanel"/>
+										</p:selectOneMenu>
+									</div>
+									
+								</div>
+								<div class="clearfix"></div>
+								
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="#{msg['lbl.zone']} #{bankMasterContactDetails.viewBehaviorBean('Zone','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="zone" value="#{bankMasterContactDetails.contactZone}" 
+														required="#{bankMasterContactDetails.viewBehaviorBean('Zone','REQUIRED')}"
+														disabled="#{bankMasterContactDetails.viewBehaviorBean('Zone','ENABLE')}"
+														maxlength="#{bankMasterContactDetails.viewBehaviorBean('Zone','MAX_VALUE')}"
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.zone']}"
+														validator="RegularExpressionValidation">
+													
+														<f:attribute name="regexValue" value="#{bankMasterContactDetails.viewBehaviorBean('Zone','PATTERN')}"/>  
+											    		<f:attribute name="minValue" value="#{bankMasterContactDetails.viewBehaviorBean('Zone','MIN_VALUE')}"/>  
+												    	<f:attribute name="maxValue" value="#{bankMasterContactDetails.viewBehaviorBean('Zone','MAX_VALUE')}"/>	
+														
+			                							<p:ajax update="zoneMsg" event="blur" />
+														<p:message id="zoneMsg" for="zone" display="text"/>	
+										</p:inputText>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="#{msg['lbl.contperson']} #{bankMasterContactDetails.viewBehaviorBean('Contact Person','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText id="contactPerson" value="#{bankMasterContactDetails.contactPerson}"	
+														required="#{bankMasterContactDetails.viewBehaviorBean('Contact Person','REQUIRED')}"
+														disabled="#{bankMasterContactDetails.viewBehaviorBean('Contact Person','ENABLE')}"
+														maxlength="#{bankMasterContactDetails.viewBehaviorBean('Contact Person','MAX_VALUE')}"
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.contperson']}"
+														validator="RegularExpressionValidation">
+													
+														<f:attribute name="regexValue" value="#{bankMasterContactDetails.viewBehaviorBean('Contact Person','PATTERN')}"/>  
+											    		<f:attribute name="minValue" value="#{bankMasterContactDetails.viewBehaviorBean('Contact Person','MIN_VALUE')}"/>  
+												    	<f:attribute name="maxValue" value="#{bankMasterContactDetails.viewBehaviorBean('Contact Person','MAX_VALUE')}"/>	
+														
+			                							<p:ajax update="contactPersonMsg" event="blur" />
+														<p:message id="contactPersonMsg" for="contactPerson" display="text"/>
+										</p:inputText>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="#{msg['lbl.department']} #{bankMasterContactDetails.viewBehaviorBean('Contact Dep','MANDATORY')}"/>
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="contactDepartment" value="#{bankMasterContactDetails.contactDep}" 
+														required="#{bankMasterContactDetails.viewBehaviorBean('Contact Dep','REQUIRED')}"
+														disabled="#{bankMasterContactDetails.viewBehaviorBean('Contact Dep','ENABLE')}"
+														maxlength="#{bankMasterContactDetails.viewBehaviorBean('Contact Dep','MAX_VALUE')}"
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.contperson']} #{msg['lbl.department']}"
+														validator="RegularExpressionValidation">
+													
+														<f:attribute name="regexValue" value="#{bankMasterContactDetails.viewBehaviorBean('Contact Dep','PATTERN')}"/>  
+											    		<f:attribute name="minValue" value="#{bankMasterContactDetails.viewBehaviorBean('Contact Dep','MIN_VALUE')}"/>  
+												    	<f:attribute name="maxValue" value="#{bankMasterContactDetails.viewBehaviorBean('Contact Dep','MAX_VALUE')}"/>	
+														
+			                							<p:ajax update="contactDepartmentMsg" event="blur" />
+														<p:message id="contactDepartmentMsg" for="contactDepartment" display="text"/>
+										</p:inputText>
+									</div>
+									<div class="ui-block-c" style="padding-top:13px;">
+										<h:outputText value="#{msg['lbl.designation']} #{bankMasterContactDetails.viewBehaviorBean('Contact Designation','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText id="contactDesignation" value="#{bankMasterContactDetails.contactDesignation}" 
+														required="#{bankMasterContactDetails.viewBehaviorBean('Contact Designation','REQUIRED')}"
+														disabled="#{bankMasterContactDetails.viewBehaviorBean('Contact Designation','ENABLE')}"
+														maxlength="#{bankMasterContactDetails.viewBehaviorBean('Contact Designation','MAX_VALUE')}"
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.contperson']} #{msg['lbl.designation']}"
+														validator="RegularExpressionValidation">
+													
+														<f:attribute name="regexValue" value="#{bankMasterContactDetails.viewBehaviorBean('Contact Designation','PATTERN')}"/>  
+											    		<f:attribute name="minValue" value="#{bankMasterContactDetails.viewBehaviorBean('Contact Designation','MIN_VALUE')}"/>  
+												    	<f:attribute name="maxValue" value="#{bankMasterContactDetails.viewBehaviorBean('Contact Designation','MAX_VALUE')}"/>	
+														
+			                							<p:ajax update="contactDesignationMsg" event="blur" />
+														<p:message id="contactDesignationMsg" for="contactDesignation" display="text"/>
+										</p:inputText>		
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.mobile']} #{bankMasterContactDetails.viewBehaviorBean('Mobile','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="mobile" value="#{bankMasterContactDetails.contactMobile}"
+														required="#{bankMasterContactDetails.viewBehaviorBean('Mobile','REQUIRED')}"
+														disabled="#{bankMasterContactDetails.viewBehaviorBean('Mobile','ENABLE')}"
+														maxlength="#{bankMasterContactDetails.viewBehaviorBean('Mobile','MAX_VALUE')}"
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.contperson']} #{msg['lbl.mobile']}"
+														validator="RegularExpressionValidation">
+													
+														<f:attribute name="regexValue" value="#{bankMasterContactDetails.viewBehaviorBean('Mobile','PATTERN')}"/>  
+											    		<f:attribute name="minValue" value="#{bankMasterContactDetails.viewBehaviorBean('Mobile','MIN_VALUE')}"/>  
+												    	<f:attribute name="maxValue" value="#{bankMasterContactDetails.viewBehaviorBean('Mobile','MAX_VALUE')}"/>	
+														
+			                							<p:ajax update="mobileMsg" event="blur" />
+														<p:message id="mobileMsg" for="mobile" display="text"/>
+										</p:inputText>		
+									</div>
+									
+								</div>
+								<div class="clearfix"></div>
+								
+								
+								<p:panel id="localPanel" style="padding:0px!important;border:none !important;">
+									<p:panel style="padding:10px!important;border:none !important;" rendered="#{bankMasterContactDetails.booLocal}">
+										<div class="ui-grid-e ui-responsive">
+											<div class="ui-block-a">
+												<h:outputText value="#{msg['lbl.contperson']}(L) #{bankMasterContactDetails.viewBehaviorBean('Local Contact Person','MANDATORY')}" />
+											</div>
+											<div class="ui-block-b">
+												<p:inputText id="localContactPerson" value="#{bankMasterContactDetails.localContactPerson}" 
+														required="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Person','REQUIRED')}"
+														disabled="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Person','ENABLE')}"
+														maxlength="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Person','MAX_VALUE')}"
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.contperson']}(L)"
+														validator="RegularExpressionValidation">
+													
+														<f:attribute name="regexValue" value="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Person','PATTERN')}"/>  
+											    		<f:attribute name="minValue" value="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Person','MIN_VALUE')}"/>  
+												    	<f:attribute name="maxValue" value="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Person','MAX_VALUE')}"/>	
+														
+			                							<p:ajax update="localContactPersonMsg" event="blur" />
+														<p:message id="localContactPersonMsg" for="localContactPerson" display="text"/>
+												</p:inputText>		
+											</div>
+											<div class="ui-block-c" style="padding-top:2%;">
+												<h:outputText value="#{msg['lbl.departmentl']} #{bankMasterContactDetails.viewBehaviorBean('Local Contact Dep','MANDATORY')}" /></div>
+											<div class="ui-block-d">
+												<p:inputText id="localContactDep" value="#{bankMasterContactDetails.localContactDepartment}" 
+														required="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Dep','REQUIRED')}"
+														disabled="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Dep','ENABLE')}"
+														maxlength="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Dep','MAX_VALUE')}"
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.contperson']} #{msg['lbl.departmentl']}"
+														validator="RegularExpressionValidation">
+													
+														<f:attribute name="regexValue" value="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Dep','PATTERN')}"/>  
+											    		<f:attribute name="minValue" value="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Dep','MIN_VALUE')}"/>  
+												    	<f:attribute name="maxValue" value="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Dep','MAX_VALUE')}"/>	
+														
+			                							<p:ajax update="localContactDepMsg" event="blur" />
+														<p:message id="localContactDepMsg" for="localContactDep" display="text"/>
+												</p:inputText>	
+											</div>
+											<div class="ui-block-e"></div>
+											<div class="ui-block-f"></div>
+										</div>
+											
+										<div class="clearfix"></div>
+										
+										<div class="ui-grid-a ui-responsive">
+											<div class="ui-block-a" style="padding-top:2%;">
+												<h:outputText value="#{msg['lbl.designationl']} #{bankMasterContactDetails.viewBehaviorBean('Local Contact Des','MANDATORY')}" />
+											</div>
+											<div class="ui-block-b">
+												<p:inputText id="localContactDes" value="#{bankMasterContactDetails.localContactDesignation}" 
+														required="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Des','REQUIRED')}"
+														disabled="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Des','ENABLE')}"
+														maxlength="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Des','MAX_VALUE')}"
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.contperson']} #{msg['lbl.designationl']}"
+														validator="RegularExpressionValidation">
+													
+														<f:attribute name="regexValue" value="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Des','PATTERN')}"/>  
+											    		<f:attribute name="minValue" value="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Des','MIN_VALUE')}"/>  
+												    	<f:attribute name="maxValue" value="#{bankMasterContactDetails.viewBehaviorBean('Local Contact Des','MAX_VALUE')}"/>	
+														
+			                							<p:ajax update="localContactDesMsg" event="blur" />
+														<p:message id="localContactDesMsg" for="localContactDes" display="text"/>
+												</p:inputText>	
+											</div>
+										</div>
+									</p:panel>
+								</p:panel>
+								<div class="clearfix"></div>
+								
+								<h:panelGroup layout="block"  styleClass="button_align" style="padding-top:0xp; margin-top:-20px;">
+									<p:commandButton value="#{msg['lbl.add']}" update="mainPanel" oncomplete="if (!args.validationFailed)confirmDia.show()" style="float:right;"/>
+									<div class="clearfix"></div>
+								</h:panelGroup>
+								
+								<p:dataTable value="#{bankMasterContactDetails.lstBankMasterContactDetails}" id="datatable" var="o" emptyMessage="#{msg['lbl.norecordfound']}">
+									<p:column headerText="#{msg['lbl.bank']}">
+										<h:outputText value="#{o.bank}"/>
+									</p:column>
+									
+									<p:column headerText="#{msg['lbl.zone']}">
+										<h:outputText value="#{o.zone}"/>
+									</p:column>
+									
+									<p:column headerText="#{msg['lbl.contperson']}">
+										<h:outputText value="#{o.contactPerson}"/>
+									</p:column>
+									
+									<p:column headerText="#{msg['lbl.contperson']} #{msg['lbl.department']}">
+										<h:outputText value="#{o.contactDep}"/>
+									</p:column>
+									
+									<p:column headerText="#{msg['lbl.contperson']} #{msg['lbl.designation']}">
+										<h:outputText value="#{o.contactDesignation}"/>
+									</p:column>
+									
+									<p:column headerText="#{msg['lbl.mobile']}">
+										<h:outputText value="#{o.mobile}"/>
+									</p:column>
+									
+									<p:column headerText="#{msg['lbl.contperson']}(L)" rendered="#{bankMasterContactDetails.booLocal}">
+										<h:outputText value="#{o.localContactPerson}"/>
+									</p:column>
+									
+									<p:column headerText="#{msg['lbl.contperson']} #{msg['lbl.Department']}(L)" rendered="#{bankMasterContactDetails.booLocal}">
+										<h:outputText value="#{o.localContactDepartment}"/>
+									</p:column>
+									
+									<p:column headerText="#{msg['lbl.contperson']} #{msg['lbl.designationl']}(L)" rendered="#{bankMasterContactDetails.booLocal}">
+										<h:outputText value="#{o.localContactDesignation}"/>
+									</p:column>
+									
+									<p:column headerText="#{msg['lbl.delete']}">
+										<p:commandButton styleClass="delete" value="" actionListener="#{bankMasterContactDetails.remove(o)}" update="datatable" process="@this"/>
+									</p:column>
+									
+								</p:dataTable>
+
+								<h:panelGroup layout="block"  styleClass="button_align" style="width:100% !important;">
+									<p:commandButton value="#{msg['lbl.save']}" action="#{bankMasterContactDetails.save}" update="mainPanel" process="@this" style="float:right;"/>
+									<p:commandButton value="#{msg['lbl.cancel']}" action="#{bankMasterContactDetails.cancel}" immediate="true" ajax="false" style="float:right; margin-right:10px; "/>
+									<p:commandButton value="#{msg['lbl.clear']}" action="#{bankMasterContactDetails.clear}" update="mainPanel" style="float:right; margin-right:10px; "/>
+									<div class="clearfix"></div>
+								</h:panelGroup>
+								<div class="clearfix"></div>
+							</p:panel>
+							
+						</p:panel>
+					</h:form>
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+		</h:panelGroup>
+
+
+		<ui:include src="#{facesBean.footer}"></ui:include>
+
+	</f:view>
+</h:body>
+</html>

@@ -1,0 +1,1581 @@
+package com.amg.exchange.bean;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.servlet.http.Part;
+import javax.sql.rowset.serial.SerialException;
+
+import org.apache.log4j.Logger;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import com.amg.exchange.common.TokenGeneration;
+import com.amg.exchange.mail.ApplicationMailer;
+import com.amg.exchange.model.Amlstatus;
+import com.amg.exchange.model.BussComponentConfDetail;
+import com.amg.exchange.model.CityMasterDesc;
+import com.amg.exchange.model.CompanyMaster;
+import com.amg.exchange.model.ContactDetail;
+import com.amg.exchange.model.CountryMaster;
+import com.amg.exchange.model.CountryMasterDesc;
+import com.amg.exchange.model.Customer;
+import com.amg.exchange.model.CustomerEmploymentInfo;
+import com.amg.exchange.model.CustomerIdProof;
+import com.amg.exchange.model.CustomerLogin;
+import com.amg.exchange.model.CustomerType;
+import com.amg.exchange.model.DistrictMaster;
+import com.amg.exchange.model.DistrictMasterDesc;
+import com.amg.exchange.model.DocumentImg;
+import com.amg.exchange.model.EmploymentType;
+import com.amg.exchange.model.IdentityType;
+import com.amg.exchange.model.LanguageType;
+import com.amg.exchange.model.StateMasterDesc;
+import com.amg.exchange.service.IGeneralService;
+import com.amg.exchange.service.IRemmiterOnlineRegService;
+import com.amg.exchange.util.CollectionUtil;
+import com.amg.exchange.util.SessionStateManage;
+
+/*******************************************************************************************************************
+
+File		: BranchPageManageBean.java
+
+Project	: AlmullaExchange
+
+Package	: com.amg.exchange.bean
+
+Created	:	
+				Date	: 15-Feb-2014 9:56:16 am
+				By		: Tanumoy Majumder
+				Revision:
+
+Last Change:
+				Date	: 2014-04-25
+				By		: Tanumoy Majumder
+				Revision:
+
+Description: Branch change page
+
+********************************************************************************************************************/
+@Component("remmiterInfo")
+@Scope("session")
+public class RemmiterInfoManageBean<T> implements Serializable {  
+    Logger log=Logger.getLogger(RemmiterInfoManageBean.class);
+	private static final long serialVersionUID = 1L;
+	private String id;
+	private String remName;
+	private String remLName;
+	private String alterEmail;
+	private String email;
+	private String mob;
+	private String gender;
+	private Date dob;
+	private String nationality;
+	private String AMLStatus;
+	private String employment_type;
+	private String occupation;
+	private String employer_name;
+	private String blk_no;
+	private String street_no;
+	private String area;
+	private BigDecimal city;
+	private String postal;
+	private BigDecimal dist;
+	private BigDecimal state;
+	private String offTel;
+	private String idFor;
+	private String idType;
+	private String idNumber;
+	private Date expDate;
+	private byte[] image;
+	private Boolean boolAdditional = false;
+	private Boolean booPass = false;
+	private Boolean booPend = false;
+	private Boolean booFailed = false;
+	private Boolean booCommon = true;
+	private Boolean booTable = false;
+	private Boolean booValidateBtn = true;
+	private Boolean booSave = true;
+	private String countryOfBirth;
+	private String fatherName;
+	private String birthPlace;
+	private Part part;
+	private String statusMessage;
+	private String validDate;
+	private BigDecimal cust_id;
+	private Boolean readonly = false;
+	private List<ContactDetail> empList;
+	private List<Amlstatus> amlList; 
+	private List<DistrictMaster> lstDistrict;
+	private List<District> districtBean;
+	private List<CityBean> lstCityBean;
+	private UploadedFile file;
+	private String expDateCheck;
+	private List<String> images = new ArrayList<String>();  
+	private StreamedContent downloadFile;  
+	private Boolean booUnEmp = false;
+	TokenGeneration tokenGeneration = new TokenGeneration();
+	private String tokenKey = null;
+	private boolean disableValidation = false;
+	private Boolean  booInvalidFile = false;
+	Map<String, BussComponentConfDetail> mapComponentBehavior = new HashMap<String,BussComponentConfDetail>();
+	
+	private Boolean booState = false;
+	private Boolean booDist = false;
+	private Boolean booCity = false;
+	
+	private Boolean boomail = false;
+	private Boolean viewable = false;
+	
+	@Autowired
+	public RemmiterInfoManageBean(IGeneralService<T> generalService){
+		
+		/*setiGeneralService(generalService);
+		
+		setPageIdIntoSession();
+		prepareBehavior();*/
+	}  
+	
+	public List<String> getImages() {  
+        return images;  
+    }
+	/**
+	 * These variable is responsible to set Rule Engine value 
+	 */
+	private int mobMin;
+	private int mobMax;
+	private String DATE_FORMAT = "dd/MM/yyyy";
+	private Boolean offSave = false; 
+	
+	public TokenGeneration getTokenGeneration() {
+		return tokenGeneration;
+	}
+
+	public void setTokenGeneration(TokenGeneration tokenGeneration) {
+		this.tokenGeneration = tokenGeneration;
+	}
+	
+	@Autowired
+	IRemmiterOnlineRegService<T> remOnlineReg;
+	
+	public IRemmiterOnlineRegService<T> getRemOnlineReg() {
+		return remOnlineReg;
+	}
+
+	public void setRemOnlineReg(IRemmiterOnlineRegService<T> remOnlineReg) {
+		this.remOnlineReg = remOnlineReg;
+	}
+	
+	@Autowired
+	IGeneralService<T> iGeneralService;
+	
+	public IGeneralService<T> getiGeneralService() {
+		return iGeneralService;
+	}
+
+	public void setiGeneralService(IGeneralService<T> iGeneralService) {
+		this.iGeneralService = iGeneralService;
+	}
+	
+	@Autowired
+	ApplicationMailer mailService;
+	
+	public ApplicationMailer getMailService() {
+		return mailService;
+	}
+
+	public void setMailService(ApplicationMailer mailService) {
+		this.mailService = mailService;
+	}
+
+	
+	public void setAmlList(List<Amlstatus> amlList) {
+		this.amlList = amlList;
+	}
+
+	public List<ContactDetail> getEmpList(String id) {
+		empList = new ArrayList<ContactDetail>();
+		empList.addAll(getRemOnlineReg().getAllEmployees(id));
+		return empList;
+	}
+	
+	public List<Nationality> getNationilityFromDB() {
+		
+		List<Nationality> nationalityBean = new ArrayList<Nationality>();
+		
+		int languageID = 1;
+		if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")){
+			languageID = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().equalsIgnoreCase("ar")?2:1;
+		}
+		
+		List<CountryMasterDesc> lstNationality = getiGeneralService().getNationalityList(new BigDecimal(languageID)); 
+		
+		for (CountryMasterDesc nationalityDes : lstNationality) {
+			nationalityBean.add( new Nationality(nationalityDes.getCountryMasterId().toPlainString(), nationalityDes.getNationality()));
+		}
+		
+		return nationalityBean;
+		/*lstData = new ArrayList<NationalityMaster>();
+		lstData.addAll(getRemOnlineReg().getNationality());
+		
+		List<Nationality> nationalityBean = new ArrayList<Nationality>();
+		List<Integer> lstNationalityID = new ArrayList<Integer>();
+		
+		int languageID = 1;
+		if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")){
+			languageID = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().equalsIgnoreCase("ar")?2:1;
+		}
+		
+		for(NationalityMaster nationality: lstData) {
+			for (NationalityMasterDesc desc : nationality.getFsNationalityMasterDescs()) {
+				if(desc.getFsLanguageType().getLanguageId().intValue() == languageID && !lstNationalityID.contains(desc.getNationalityMasterId().intValue()) ){ 
+					nationalityBean.add( new Nationality(String.valueOf(desc.getNationalityMasterId()), desc.getNationalityName()));
+					lstNationalityID.add(desc.getNationalityMasterId().intValue());
+				}
+			}
+		}
+		return nationalityBean;*/
+	}
+	
+	public List<State> getStateFromDb() {
+		
+		List<State> stateBean = new ArrayList<State>();
+		
+		int languageID = 1;
+		if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")){
+			languageID = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().equalsIgnoreCase("ar")?2:1;
+		}
+		
+		List<StateMasterDesc> lstState = getiGeneralService().getStateList(new BigDecimal(languageID), 
+				new BigDecimal(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countryId").toString()));
+		
+		for (StateMasterDesc stateDes : lstState) {
+			stateBean.add( new State(stateDes.getFsStateMaster().getStateId().toPlainString(), stateDes.getStateName()));
+		}
+		
+
+		
+		/*
+		lstState = new ArrayList<StateMaster>();
+		lstState.addAll(getRemOnlineReg().getState());
+		
+		List<State> stateBean = new ArrayList<State>();
+		List<Integer> lstStateID = new ArrayList<Integer>();
+		
+		int languageID = 1;
+		if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")){
+			languageID = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().equalsIgnoreCase("ar")?2:1;
+		}
+		
+		for(StateMaster state: lstState) {
+			for (StateMasterDesc desc : state.getFsStateMasterDescs()) {
+				if(desc.getFsLanguageType().getLanguageId().intValue() == languageID && !lstStateID.contains(desc.getStateDescId().intValue()) ){ 
+					stateBean.add( new State(String.valueOf(desc.getStateDescId()), desc.getStateName()));
+					lstStateID.add(desc.getStateDescId().intValue());
+				}
+			}
+		}
+		return stateBean;
+	*/
+	
+		return stateBean;
+	}
+	
+	public List<District> getDistrictFromDb() {
+		return districtBean;
+	}
+	
+	public List<CityBean> getCityFromDb() {
+		return lstCityBean;
+	}
+	
+	public void popCity(AjaxBehaviorEvent e) {
+		lstCityBean = new ArrayList<CityBean>();
+		
+		int languageID = 1;
+		if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")){
+			languageID = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().equalsIgnoreCase("ar")?2:1;
+		}
+		
+		List<CityMasterDesc> lstCity = getiGeneralService().getCityList(new BigDecimal(languageID), 
+				new BigDecimal(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countryId").toString()), 
+				getState(), getDist());
+		
+		for (CityMasterDesc cityDes : lstCity) {
+			lstCityBean.add( new CityBean(cityDes.getFsCityMaster().getCityId(), cityDes.getCityName()));
+		}
+		
+		/*
+		lstCity = new ArrayList<CityMaster>();
+		lstCity.addAll(getRemOnlineReg().getCity(getDist()));
+		
+		lstCityBean = new ArrayList<CityBean>();
+		List<Integer> lstDistrictID = new ArrayList<Integer>();
+		
+		int languageID = 1;
+		if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")){
+			languageID = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().equalsIgnoreCase("ar")?2:1;
+		}
+		
+		for(CityMaster city: lstCity) {
+			if(city.getFsDistrictMaster().getDistrictId().toPlainString().equalsIgnoreCase(getDist().toPlainString())){
+				for (CityMasterDesc desc : city.getFsCityMasterDescs()) {
+					if(desc.getFsLanguageType().getLanguageId().intValue() == languageID && !lstDistrictID.contains(desc.getCityMasterId().intValue()) ){ 
+						lstCityBean.add( new CityBean(desc.getCityMasterId(), desc.getCityName()));
+						lstDistrictID.add(desc.getCityMasterId().intValue());
+					}
+				}
+			}
+		}*/
+	}
+	
+	public void popCityForShow(BigDecimal distCode) {
+		
+		lstCityBean = new ArrayList<CityBean>();
+		
+		int languageID = 1;
+		if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")){
+			languageID = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().equalsIgnoreCase("ar")?2:1;
+		}
+		
+		List<CityMasterDesc> lstCity = getiGeneralService().getCityList(new BigDecimal(languageID), 
+				new BigDecimal(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countryId").toString()), 
+				getState(), getDist());
+		
+		for (CityMasterDesc cityDes : lstCity) {
+			lstCityBean.add( new CityBean(cityDes.getFsCityMaster().getCityId(), cityDes.getCityName()));
+		}
+		
+		/*
+		lstCity = new ArrayList<CityMaster>();
+		lstCity.addAll(getRemOnlineReg().getCity(distCode));
+		
+		lstCityBean = new ArrayList<CityBean>();
+		List<Integer> lstDistrictID = new ArrayList<Integer>();
+		
+		int languageID = 1;
+		if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")){
+			languageID = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().equalsIgnoreCase("ar")?2:1;
+		}
+		
+		for(CityMaster city: lstCity) {
+			if(city.getFsDistrictMaster().getDistrictId().toPlainString().equalsIgnoreCase(getDist().toPlainString())){
+				for (CityMasterDesc desc : city.getFsCityMasterDescs()) {
+					if(desc.getFsLanguageType().getLanguageId().intValue() == languageID && !lstDistrictID.contains(desc.getCityMasterId().intValue()) ){ 
+						lstCityBean.add( new CityBean(desc.getCityMasterId(), desc.getCityName()));
+						lstDistrictID.add(desc.getCityMasterId().intValue());
+					}
+				}
+			}
+		}
+	*/}
+	
+	public void popDistrict(AjaxBehaviorEvent e){
+		
+		int languageID = 1;
+		if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")){
+			languageID = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().equalsIgnoreCase("ar")?2:1;
+		}
+		
+		List<DistrictMasterDesc> lstDistrict = getiGeneralService().getDistrictList(new BigDecimal(languageID), 
+				new BigDecimal(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countryId").toString()), 
+				getState());
+		
+		/*stDistrict = new ArrayList<DistrictMaster>();
+		lstDistrict.addAll(getRemOnlineReg().getDistrict(getState()));
+				
+		for(DistrictMaster state: lstDistrict) {
+			if(state.getFsStateMaster().getStateId().toPlainString().equalsIgnoreCase(getState().toPlainString())) {
+				for (DistrictMasterDesc desc : state.getFsDistrictMasterDescs()) {
+					if(desc.getFsLanguageType().getLanguageId().intValue() == languageID && !lstDistrictID.contains(desc.getDistrictDescId().intValue()) ){ 
+						districtBean.add( new District(String.valueOf(desc.getDistrictDescId()), desc.getDistrict()));
+						lstDistrictID.add(desc.getDistrictDescId().intValue());
+					}
+				}
+			}
+		}*/
+		
+		districtBean = new ArrayList<District>();
+		for (DistrictMasterDesc districtDes : lstDistrict) {
+			districtBean.add( new District(districtDes.getFsDistrictMaster().getDistrictId().toPlainString(), districtDes.getDistrict()));
+		}
+	}
+	
+	public void setEmpList(List<ContactDetail> empList) {
+		this.empList = empList;
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getRemName() {
+		return remName;
+	}
+
+	public void setRemName(String remName) {
+		this.remName = remName;
+	}
+
+	public String getRemLName() {
+		return remLName;
+	}
+
+	public void setRemLName(String remLName) {
+		this.remLName = remLName;
+	}
+	
+	public String getMob() {
+		return mob;
+	}
+
+	public void setMob(String mob) {
+		this.mob = mob;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public Date getDob() {
+		return dob;
+	}
+
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
+
+	public String getNationality() {
+		return nationality;
+	}
+
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
+	}
+
+	public String getEmployment_type() {
+		return employment_type;
+	}
+
+	public void setEmployment_type(String employment_type) {
+		this.employment_type = employment_type;
+	}
+
+	public String getOccupation() {
+		return occupation;
+	}
+
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
+	}
+
+	public String getEmployer_name() {
+		return employer_name;
+	}
+
+	public void setEmployer_name(String employer_name) {
+		this.employer_name = employer_name;
+	}
+
+	public String getBlk_no() {
+		return blk_no;
+	}
+
+	public void setBlk_no(String blk_no) {
+		this.blk_no = blk_no;
+	}
+
+	public String getStreet_no() {
+		return street_no;
+	}
+
+	public void setStreet_no(String street_no) {
+		this.street_no = street_no;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public BigDecimal getCity() {
+		return city;
+	}
+
+	public void setCity(BigDecimal city) {
+		this.city = city;
+	}
+
+	public String getPostal() {
+		return postal;
+	}
+
+	public void setPostal(String postal) {
+		this.postal = postal;
+	}
+
+	public BigDecimal getDist() {
+		return dist;
+	}
+
+	public void setDist(BigDecimal dist) {
+		this.dist = dist;
+	}
+
+	public BigDecimal getState() {
+		return state;
+	}
+
+	public void setState(BigDecimal state) {
+		this.state = state;
+	}
+
+	public String getOffTel() {
+		return offTel;
+	}
+
+	public void setOffTel(String offTel) {
+		this.offTel = offTel;
+	}
+	
+	public String getIdFor() {
+		return idFor;
+	}
+
+	public void setIdFor(String idFor) {
+		this.idFor = idFor;
+	}
+
+	public String getIdType() {
+		return idType;
+	}
+
+	public void setIdType(String idType) {
+		this.idType = idType;
+	}
+
+	public String getIdNumber() {
+		return idNumber;
+	}
+
+	public void setIdNumber(String idNumber) {
+		this.idNumber = idNumber;
+	}
+
+	public String getAlterEmail() {
+		return alterEmail;
+	}
+
+	public void setAlterEmail(String alterEmail) {
+		this.alterEmail = alterEmail;
+	}
+
+	public Date getExpDate() {
+		return expDate;
+	}
+
+	public void setExpDate(Date expDate) {
+		this.expDate = expDate;
+	}
+	
+	public String getCountryOfBirth() {
+		return countryOfBirth;
+	}
+
+	public void setCountryOfBirth(String countryOfBirth) {
+		this.countryOfBirth = countryOfBirth;
+	}
+
+	public String getFatherName() {
+		return fatherName;
+	}
+
+	public void setFatherName(String fatherName) {
+		this.fatherName = fatherName;
+	}
+
+	public String getBirthPlace() {
+		return birthPlace;
+	}
+
+	public void setBirthPlace(String birthPlace) {
+		this.birthPlace = birthPlace;
+	}
+	
+	public Boolean getBoolAdditional() {
+		return boolAdditional;
+	}
+
+	public void setBoolAdditional(Boolean boolAdditional) {
+		this.boolAdditional = boolAdditional;
+	}
+	
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+	
+	
+	public Boolean getBooPass() {
+		return booPass;
+	}
+
+	public void setBooPass(Boolean booPass) {
+		this.booPass = booPass;
+	}
+
+	public Boolean getBooPend() {
+		return booPend;
+	}
+
+	public void setBooPend(Boolean booPend) {
+		this.booPend = booPend;
+	}
+
+	public Boolean getBooFailed() {
+		return booFailed;
+	}
+
+	public void setBooFailed(Boolean booFailed) {
+		this.booFailed = booFailed;
+	}
+	
+	public Boolean getBooTable() {
+		return booTable;
+	}
+
+	public void setBooTable(Boolean booTable) {
+		this.booTable = booTable;
+	}
+	
+	public Boolean getBooValidateBtn() {
+		return booValidateBtn;
+	}
+
+	public void setBooValidateBtn(Boolean booValidateBtn) {
+		this.booValidateBtn = booValidateBtn;
+	}
+	
+	public BigDecimal getCust_id() {
+		return cust_id;
+	}
+
+	public void setCust_id(BigDecimal cust_id) {
+		this.cust_id = cust_id;
+	}
+
+	public Boolean getBooSave() {
+		return booSave;
+	}
+
+	public void setBooSave(Boolean booSave) {
+		this.booSave = booSave;
+	}
+	
+	public Boolean getBooCommon() {
+		return booCommon;
+	}
+
+	public void setBooCommon(Boolean booCommon) {
+		this.booCommon = booCommon;
+	}
+	
+	public String getAMLStatus() {
+		return AMLStatus;
+	}
+
+	public void setAMLStatus(String aMLStatus) {
+		AMLStatus = aMLStatus;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public int getMobMin() {
+		return mobMin;
+	}
+
+	public void setMobMin(int mobMin) {
+		this.mobMin = mobMin;
+	}
+
+	public int getMobMax() {
+		return mobMax;
+	}
+
+	public void setMobMax(int mobMax) {
+		this.mobMax = mobMax;
+	}
+	
+	public String getValidDate() {
+		return validDate;
+	}
+
+	public void setValidDate(String validDate) {
+		this.validDate = validDate;
+	}
+
+	public Boolean getReadonly() {
+		return readonly;
+	}
+
+	public void setReadonly(Boolean readonly) {
+		this.readonly = readonly;
+	}
+	
+	public List<IdentityType> getFetchIdType(){
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<IdentityType> idType = getiGeneralService().getIdentityTypes(
+				new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):""+1),
+				new BigDecimal(sessionStateManage.getSessionValue("countryId")), new BigDecimal(1)   
+				);
+		
+		return idType;
+	}
+	
+	public List<EmploymentType> getEmploymentTypeList() {
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		return getiGeneralService().getEmploymentTypes(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):""+1));
+	}
+	
+	public void getEmploymentStatus(AjaxBehaviorEvent event) {
+		System.out.println("Caledd"+getEmployment_type());
+		if(getEmployment_type().equalsIgnoreCase("3") || getEmployment_type().equalsIgnoreCase("0")){
+			setBooUnEmp(false);
+		} else {
+			setBooUnEmp(true);
+		}
+	}
+	
+	public List<CountryMasterDesc> getCountryNameList() {
+
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<CountryMasterDesc> lstCountry = getiGeneralService().getCountryList(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):""+1));
+		
+		return lstCountry;
+	}
+	
+	/**
+	 * Responsible to save all the data of Online Remmiter Page
+	 * @return
+	 * @throws IOException
+	 * @throws SQLException 
+	 * @throws SerialException 
+	 */
+	public String saveData() throws IOException, SerialException, SQLException{
+			
+			if(getFile().getFileName().contains(".doc") || getFile().getFileName().contains(".docx") || getFile().getFileName().contains(".pdf") ||
+					getFile().getFileName().contains(".png") || getFile().getFileName().contains(".jpg") || getFile().getFileName().contains(".jpeg") || viewable){
+
+				String usereName = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userName").toString();
+			
+				CountryMaster countryMaster = new CountryMaster();
+				countryMaster.setCountryId(new BigDecimal(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countryId").toString()));
+			
+				CompanyMaster companyMaster = new CompanyMaster();
+				companyMaster.setCompanyId(new BigDecimal(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId").toString()));
+			
+				//Calculating Language ID
+				int languageID = 1;
+				if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")){
+					languageID = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().equalsIgnoreCase("ar")?2:1;
+				}
+			
+				LanguageType langType = new LanguageType();
+				langType.setLanguageId(new BigDecimal(languageID));
+			
+				//It is hard coded, as individual can only do online registration 
+				CustomerType cunstomerType = new CustomerType();
+				cunstomerType.setCustomerTypeId(new BigDecimal(1));
+			
+				Customer customer = new Customer();
+				customer.setFsCountryMasterByCountryId(countryMaster);
+				//customer.setFsCountryMaster(countryMaster);
+				customer.setFsCompanyMaster(companyMaster);
+				customer.setFsLanguageType(langType);
+				customer.setFsCustomerType(cunstomerType);
+				
+				/**
+				 * Additional Information, If AML status in Pending  
+				 */
+				if(boolAdditional){
+					customer.setPlaceOfBirth(getBirthPlace());
+					customer.setCountryOfBirth(getCountryOfBirth());
+					customer.setFatherName(getFatherName());
+				}
+				
+				/**
+				 * Personal Information 
+				 */
+				customer.setFirstName(getRemName());
+				customer.setLastName(getRemLName());
+				customer.setGender(getGender());
+				customer.setDateOfBirth(getDob());
+				customer.setFsCountryMasterByNationality(countryMaster);
+				//customer.setNationality(countryMaster);
+				customer.setAlterEmailId(getAlterEmail());
+				customer.setMobile(getMob());
+				customer.setTokenKey(getTokenKey());
+				
+				customer.setEmail(getEmail());
+				
+				customer.setCreatedBy(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userName").toString());
+				customer.setCreationDate(new Date());
+				
+				/**
+				 * Going to update, with the customer ID
+				 */
+				if(!getBooSave()) {
+					getRemOnlineReg().updateCustomer(customer, getCust_id().toPlainString());	
+				} 
+				/**
+				 * else part will execute only for insert
+				 */
+				else {
+					customer.setAmlStatus(getAMLStatus());
+					getRemOnlineReg().saveCustomer(customer,  "0");
+					setCust_id(customer.getCustomerId());
+				}
+				
+				/**
+				 * Employment Details 
+				 */
+				EmploymentType empType = new EmploymentType();
+				
+				empType.setEmploymentTypeId(new BigDecimal(getEmployment_type()));
+				
+				CustomerEmploymentInfo custEmploymentInfoIndividual = new CustomerEmploymentInfo();
+				
+				custEmploymentInfoIndividual.setFsCountryMaster(countryMaster);
+				custEmploymentInfoIndividual.setFsCompanyMaster(companyMaster);
+				custEmploymentInfoIndividual.setFsLanguageType(langType);
+				custEmploymentInfoIndividual.setFsCustomer(customer);
+				custEmploymentInfoIndividual.setFsEmploymentType(empType);
+				
+				custEmploymentInfoIndividual.setOccupation(getOccupation());
+				custEmploymentInfoIndividual.setEmployerName(getEmployer_name());
+				custEmploymentInfoIndividual.setStateId(getState());
+				custEmploymentInfoIndividual.setDistrictId(getDist());
+				custEmploymentInfoIndividual.setCityId(getCity());
+				custEmploymentInfoIndividual.setArea(getArea());
+				custEmploymentInfoIndividual.setBlock(getBlk_no());
+				custEmploymentInfoIndividual.setStreet(getStreet_no());
+				custEmploymentInfoIndividual.setPostal(getPostal());
+				custEmploymentInfoIndividual.setOfficeTelephone(getOffTel());
+				custEmploymentInfoIndividual.setCreatedBy(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userName").toString());
+				custEmploymentInfoIndividual.setCreationDate(new Date());
+				
+				/**
+				 * In if, it's going to update with the customer Id, otherwise(in else) it will go for insert   
+				 */
+				if(!booSave) {
+					getRemOnlineReg().updateCustomerEmploymentInfo(custEmploymentInfoIndividual, getCust_id().toPlainString());
+				} else {
+					getRemOnlineReg().saveCustomerEmploymentInfo(custEmploymentInfoIndividual, "0");
+				}
+				
+				/**
+				 * Image Saving Table
+				 */
+				DocumentImg document = new DocumentImg();
+				document.setImage(storeImage());
+				document.setUploadDate(new Date());
+				document.setImageName(getFile().getFileName());
+				if(!booSave) {
+					if(document.getImage().length()>0)
+					getRemOnlineReg().updateImage(document, getCust_id());
+				} else {
+					getRemOnlineReg().saveImage(document);
+				}
+				
+				/**
+				 * ID Proof Save
+				 */
+				IdentityType iType = new IdentityType();
+				iType.setIdentityTypeId(new BigDecimal(getIdType()));
+				
+				CustomerIdProof custIdProof = new CustomerIdProof();
+				custIdProof.setFsCustomerType(cunstomerType);
+				custIdProof.setFsCustomer(customer);
+				custIdProof.setFsIdentityType(iType);
+				custIdProof.setIdentityFor(getIdFor());
+				custIdProof.setFsLanguageType(langType);
+				custIdProof.setIdentityInt(getId());
+				custIdProof.setApprovedBy("0");
+				custIdProof.setIdentityStatus("1");
+				custIdProof.setFsDocumentImg(document);
+				custIdProof.setIdentityExpiryDate(getExpDate());
+				
+				custIdProof.setCreatedBy(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userName").toString());
+				custIdProof.setCreationDate(new Date());
+	
+				if(!booSave) {
+					getRemOnlineReg().updateCustomerEmploymentProofInfo(custIdProof, getCust_id().toPlainString());
+				} else {
+					getRemOnlineReg().saveCustomerEmploymentProofInfo(custIdProof, "0");
+				}
+				
+				if(getBoomail()){
+					String s= "Dear " +usereName+",\n \tYou received this email because you have successfully registered online account with us ."+"Please approach nearest branch to complete your proceeding.\n\t"+
+							"Your Customer No  : "+getCust_id()+"\n\t"+"Your Token Number : "+getTokenKey()+""+
+							"  \n\tPlease contact us if you have any questions or need further assistance.\n\n\n\t\t\t\t"+"Thanks for register with us!";
+					
+					
+					//getMailService().sendMail(getEmail(), "Successfully Registered", s);
+					getMailService().sendTokenMail(getEmail(), "Successfully Registered", getCust_id().toPlainString(), getTokenKey());
+				} 
+				setBooInvalidFile(false);
+				setBooDist(false);
+				setBooState(false);
+				setBooCity(false);
+				return "success";
+			} else {
+				setBooInvalidFile(true);
+				setBooState(false);
+				setBooDist(false);
+				setBooCity(false);
+				return "";
+			}
+	}
+	
+	List<Customer> lstFsCustomer;
+	List<CustomerEmploymentInfo> lstFsCustEmpInfo;
+	List<CustomerIdProof> lstFsCustIdProof;
+	
+	List<CustomerIdProof> fetchCustId;
+	List<CustomerLogin> loginDetails;
+	private ArrayList<CreateIDProofTableOnline> lstTable = new ArrayList<CreateIDProofTableOnline>();
+
+	public ArrayList<CreateIDProofTableOnline> getLstTable() {
+		return lstTable;
+	}
+	
+	/**
+	 * This method will call as, user will give civil Id, to populate DOB form civil Id
+	 */
+	public void popDob() {
+		try{
+			String id = getId(); 
+			String dob = id.substring(5, 7)+"/"+id.substring(3, 5)+"/"+id.substring(1, 3);
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+			Date date = formatter.parse(dob);
+			
+			setDob(date);
+			
+			Calendar cal = new GregorianCalendar();
+			cal.setTime(new Date());
+			cal.add(Calendar.DAY_OF_MONTH,+ 90);
+			Date today90 = cal.getTime();
+			
+			SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");
+			String finalDate = form.format(today90);
+
+			setExpDateCheck(finalDate);
+			
+			fetchCustId= new ArrayList<CustomerIdProof>();
+			fetchCustId.addAll(getRemOnlineReg().getCustomerIdProof());
+			
+			setDisableValidation(false);
+			
+			for (CustomerIdProof beanElement : fetchCustId) {
+				if(getId().equalsIgnoreCase(beanElement.getIdentityInt())){
+					setDisableValidation(true);
+					break;
+				}
+			}
+			
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public StreamedContent downloadFile(BigDecimal imageId) {
+		
+		   //for rule engine
+		   prepareBehavior();
+		   
+		   StreamedContent image = null;
+		   try{
+			   image = getImage(imageId); 
+		   } catch(Exception e){
+			   e.printStackTrace();
+		   }
+		   return image;
+		}
+	   
+	   public StreamedContent getImage(BigDecimal imageId){
+			try{
+				if (imageId.toPlainString().length() > 0 && imageId!=null) {
+					Blob blob = getRemOnlineReg().getImage(imageId).get(0).getImage();
+					String imageNameWithExtention=getRemOnlineReg().getImage(imageId).get(0).getImageName();
+					String imageExtention=imageNameWithExtention.substring(imageNameWithExtention.lastIndexOf("."));
+					String imagename=imageNameWithExtention.substring(0,imageNameWithExtention.lastIndexOf(".")-1);
+					
+					int blobLength = (int) blob.length();
+					byte[] blobAsBytes = blob.getBytes(1, blobLength);
+					InputStream stream = new ByteArrayInputStream(blobAsBytes);
+					downloadFile = new DefaultStreamedContent(stream, "image/jpg", imagename + imageExtention);
+				}
+			} catch(Exception e){
+				e.printStackTrace();
+			}
+		return downloadFile;
+	   }
+	   
+	/**
+	 * This method will call at the opening time(If customer is already registered), to populate all the registered data in the Remmiter online Registration page, 
+	 * @param userName
+	 * @param data
+	 * @return
+	 */
+	public String view(String userName){
+		
+		Boolean cutIdSet = false;
+		
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(new Date());
+		cal.add(Calendar.DAY_OF_MONTH,+ 90);
+		Date today90 = cal.getTime();
+		
+		SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");
+		String finalDate = form.format(today90);
+		
+		setExpDateCheck(finalDate);
+		
+		fetchCustId= new ArrayList<CustomerIdProof>();
+		lstFsCustomer = new ArrayList<Customer>();
+		lstFsCustEmpInfo = new ArrayList<CustomerEmploymentInfo>();
+		lstFsCustIdProof = new ArrayList<CustomerIdProof>();
+		fetchCustId.addAll(getRemOnlineReg().getCustomerIdProof());
+		
+		/**
+		 * This code will fetch, email ID what they give at SignUp, and display in Remmiter Online Registration
+		 */
+		loginDetails = new ArrayList<CustomerLogin>();
+		loginDetails.addAll(getRemOnlineReg().getLoginInfoForCustomer(userName));
+		try{
+			setEmail(loginDetails.get(0).getEmail());
+		} catch(Exception e){}
+		
+		/**
+		 * This code to get the customer Id, as per given Civil ID, this ID we will use  
+		 */
+		for (CustomerIdProof beanElement : fetchCustId) {
+			if(beanElement.getCreatedBy() != null){
+				if(beanElement.getCreatedBy().equalsIgnoreCase(userName)){
+					cust_id = beanElement.getFsCustomer().getCustomerId(); 
+					setCust_id(cust_id);
+					cutIdSet = true;
+				}
+			}
+		}
+		
+		List<CustomerIdProof> viewCustomerIdProof = new ArrayList<CustomerIdProof>();
+		Customer viewCustomer = null;
+		CustomerEmploymentInfo viewCustomerEmpInfo = null;
+		
+		/**
+		 * Fetching data for populating
+		 */
+		if(cutIdSet){
+			lstFsCustIdProof.addAll(getRemOnlineReg().getFsCustIdProof(getCust_id().toPlainString()));
+			if(lstFsCustIdProof.size()>0 ){
+				for (CustomerIdProof idProof : lstFsCustIdProof) {
+					if(idProof.getFsCustomer().getCustomerId().toPlainString().equalsIgnoreCase(getCust_id().toPlainString())){
+						viewCustomerIdProof.add(idProof) ;
+						viewable = true;
+					}
+				}
+			}
+		}
+		
+		if(viewable) {
+			setBoomail(false);
+			
+			lstFsCustomer.addAll(getRemOnlineReg().getFsCustomer(cust_id.toPlainString()));
+			if(lstFsCustomer.size() > 0){
+				for (Customer customer : lstFsCustomer) {
+					if(customer.getCustomerId().toPlainString().equalsIgnoreCase(getCust_id().toPlainString())){
+						viewCustomer = customer ;
+					}
+				}
+			}
+			
+			lstFsCustEmpInfo.addAll(getRemOnlineReg().getFsCustEmpInfo(cust_id.toPlainString()));
+			if(lstFsCustEmpInfo!=null && lstFsCustEmpInfo.size()>0){
+				viewCustomerEmpInfo = lstFsCustEmpInfo.get(0);
+			}
+		
+			setReadonly(true); //AML verified data we will not allow to change
+			
+			lstTable.clear();
+			//Preparing Contact Details table for showing
+			for(CustomerIdProof idProof: viewCustomerIdProof){
+				try{
+					
+					try{
+						
+						log.info("idproof : "+idProof.getCustProofId());
+						//Blob blob = idProof.getFsDocumentImg().getImage();
+						//int blobLength = (int) blob.length();  
+						//byte[] blobAsBytes = blob.getBytes(1, blobLength);
+						
+						/*ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+						String deploymentDirectoryPath = ctx.getRealPath("/");*/
+						
+						//InputStream stream=new ByteArrayInputStream(blobAsBytes);
+						
+						/*stream.mark(Integer.MAX_VALUE);
+						stream.read(blobAsBytes);
+						stream.reset();*/
+						//log.info("Stream  :"+stream.available());
+
+				        //downloadFile = new DefaultStreamedContent(stream, "image/jpg",  idProof.getFsDocumentImg().getImgId().toPlainString()+".jpg");
+						
+						/*FileOutputStream fileOuputStream =  new FileOutputStream("C://workspace//AlmullaExchange//webapp//dam//"+idProof.getFsDocumentImg().getImgId()+".jpg"); 
+					    fileOuputStream.write(blobAsBytes);
+					    fileOuputStream.close();*/
+					} catch(Exception e){
+						log.error("Image download Exception"+e);
+						e.printStackTrace();
+					}
+				    
+					if(idProof.getFsIdentityType().getIdentityType().equalsIgnoreCase("CIVIL ID")){
+						CreateIDProofTableOnline indi = new CreateIDProofTableOnline(idProof.getFsIdentityType().getIdentityType(),  idProof.getIdentityInt(),
+								new SimpleDateFormat(DATE_FORMAT).format(idProof.getIdentityExpiryDate()), "ID Proof", idProof.getFsDocumentImg().getImgId());
+
+						if(!idProof.getApprovedBy().equalsIgnoreCase("0")){
+							setOffSave(true);
+						}
+						lstTable.add(indi);
+					}
+			   } catch(Exception e) {
+				   e.printStackTrace();
+			 }
+		}
+			  
+			/**
+			 * Setting value from different tables
+			 */
+			setId(viewCustomerIdProof.get(0).getIdentityInt());
+			setIdNumber(viewCustomerIdProof.get(0).getIdentityInt());
+			setIdFor(viewCustomerIdProof.get(0).getIdentityFor());
+			setIdType(viewCustomerIdProof.get(0).getFsIdentityType().getIdentityTypeId().toPlainString());
+			
+			setAlterEmail(viewCustomer.getAlterEmailId());
+			setMob(viewCustomer.getMobile());
+			setGender(viewCustomer.getGender());
+			setDob(viewCustomer.getDateOfBirth());
+			setNationality(viewCustomer.getFsCountryMasterByNationality().getCountryId().toPlainString());
+			setRemName(viewCustomer.getFirstName());
+			setRemLName(viewCustomer.getLastName());
+			setTokenKey(viewCustomer.getTokenKey());
+			
+			setEmployment_type(viewCustomerEmpInfo.getFsEmploymentType().getEmploymentTypeId().toPlainString());
+			
+			if(viewCustomerEmpInfo.getFsEmploymentType().getEmploymentTypeId().intValue() == 3 || viewCustomerEmpInfo.getFsEmploymentType().getEmploymentTypeId().intValue() == 0){
+				setBooUnEmp(false);
+			} else {
+				setBooUnEmp(true);
+			}
+			setOccupation(viewCustomerEmpInfo.getOccupation());
+			setEmployer_name(viewCustomerEmpInfo.getEmployerName());
+			setBlk_no(viewCustomerEmpInfo.getBlock());
+			setStreet_no(viewCustomerEmpInfo.getStreet());
+			setArea(viewCustomerEmpInfo.getArea());
+			
+			//We need to populate state, then we can set the saved state, for logged customer 
+			getStateFromDb();
+			setState(viewCustomerEmpInfo.getStateId());
+			
+			popDist(viewCustomerEmpInfo.getStateId());
+			setDist(viewCustomerEmpInfo.getDistrictId());
+			
+			popCityForShow(viewCustomerEmpInfo.getDistrictId());
+			setCity(viewCustomerEmpInfo.getCityId());
+			
+			setPostal(viewCustomerEmpInfo.getPostal());
+			setOffTel(viewCustomerEmpInfo.getOfficeTelephone());
+			setExpDate(viewCustomerIdProof.get(0).getIdentityExpiryDate());
+			
+			setBooSave(false); //Means need to update depending upon Civil ID, not save
+			setBooValidateBtn(false);//AML status checking button will be off 
+			setBooTable(true); //Contact Details table will be visible
+			setBooCommon(true); //common section of page
+			setBooPass(true);
+		} else{
+			
+			//Means First Time providing data
+			setBooSave(true); //need to save
+			setBooCommon(true);
+			setBooPass(false);
+			setBooValidateBtn(true);
+			setBooTable(false);
+			setBoomail(true);
+			
+			String strToken = null;
+			try{
+				strToken = getTokenGeneration().getRandomIdentifier(8);
+			} catch(Exception e){}
+			
+			
+			boolean tokenConfirm = true;
+			while(tokenConfirm){
+				try{
+					if(getRemOnlineReg().CheckTokenAvailable(strToken).size() > 0){
+						tokenConfirm = true;
+						strToken = getTokenGeneration().getRandomIdentifier(8);
+					}else{
+						tokenConfirm = false;
+					}
+				}catch(Exception e){
+					tokenConfirm = false;
+				}
+				
+			}
+			setTokenKey(strToken);
+		}
+		return "remmiterInfo";
+	}
+	
+	public StreamedContent getImageFromDatabase (byte[] image, int length) {
+	    return new DefaultStreamedContent(new ByteArrayInputStream(image), "image/jpg");
+	}
+	
+	/**
+	 * AML status checking
+	 */
+	public void CheckAMLStatus(){
+		
+		List<Amlstatus> data = getAMLStatus(getRemName());
+		
+		if(data.get(0).getRemStatus().equalsIgnoreCase("Pass")){
+			setAMLStatus("Pass");
+			setBooPend(false);
+			setBooFailed(false);
+			setBooCommon(true);
+			setBooPass(true);
+			setIdNumber(getId());
+			setReadonly(true);
+		} else if(data.get(0).getRemStatus().equalsIgnoreCase("Pending")){
+			setAMLStatus("Pending");
+			setBooCommon(false);
+			setBooPass(false);
+			setBooPend(true);
+			setBooFailed(false);
+			setBooTable(false);
+			setIdNumber(getId());
+			setReadonly(true);
+		} else{
+			setAMLStatus("Fail");
+			setBooCommon(false);
+			setBooPass(false);
+			setBooPend(false);
+			setBooFailed(true);
+		}
+	}
+	
+	public List<Amlstatus> getAMLStatus(String name) {
+		amlList = new ArrayList<Amlstatus>();
+		amlList.addAll(getRemOnlineReg().getAMLStatus(name));
+		return amlList;
+	}
+	
+	public String cancelAdditional(){
+		setBooCommon(false);
+		setBooPass(false);
+		setBooPend(false);
+		setBooFailed(true);
+		return "";
+	}
+		
+	public String cancel() {
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+		return "cancel";
+	}
+	
+	public String addAdditional(){
+		setBoolAdditional(true);
+		setBooCommon(true);
+		setBooPass(true);
+		setBooPend(false);
+		setBooFailed(false);
+		return "";
+	}
+	
+	public void popDist(BigDecimal stateId) {
+		districtBean = new ArrayList<District>();
+		int languageID = 1;
+		if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")){
+			languageID = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().equalsIgnoreCase("ar")?2:1;
+		}
+		
+		List<DistrictMasterDesc> lstDistrict = getiGeneralService().getDistrictList(new BigDecimal(languageID), 
+				new BigDecimal(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countryId").toString()), 
+				getState());
+		
+		for (DistrictMasterDesc districtDes : lstDistrict) {
+			districtBean.add( new District(districtDes.getFsDistrictMaster().getDistrictId().toPlainString(), districtDes.getDistrict()));
+		}
+	}
+	
+	/*public byte[] uploadFile() throws IOException {
+		 
+		byte[] bFile  = null;
+        
+		// Extract file name from content-disposition header of file part
+        String fileName = getFileName(part);
+        String basePath = "C:" + File.separator + "temp" + File.separator;
+        
+        try{         
+            File file = new File(basePath + fileName);
+             bFile = new byte[(int) file.length()];
+     
+            try {
+    	     FileInputStream fileInputStream = new FileInputStream(file);
+    	     fileInputStream.read(bFile);
+    	     fileInputStream.close();
+            } catch (Exception e) {
+            	e.printStackTrace();
+            }
+            statusMessage = "File upload successfull !!";
+        } catch (Exception e) {
+            e.printStackTrace();
+            statusMessage = "File upload failed !!";
+        } 
+        return bFile;    // return to same page
+    }*/
+ 
+    public Part getPart() {
+        return part;
+    }
+ 
+    public void setPart(Part part) {
+        this.part = part;
+    }
+ 
+    public String getStatusMessage() {
+        return statusMessage;
+    }
+ 
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
+    }
+ 
+	public String getExpDateCheck() {
+		return expDateCheck;
+	}
+
+	public void setExpDateCheck(String expDateCheck) {
+		this.expDateCheck = expDateCheck;
+	}
+
+	public Boolean getOffSave() {
+		return offSave;
+	}
+
+	public void setOffSave(Boolean offSave) {
+		this.offSave = offSave;
+	}
+
+	public List<DistrictMaster> getLstDistrict() {
+		return lstDistrict;
+	}
+
+	public void setLstDistrict(List<DistrictMaster> lstDistrict) {
+		this.lstDistrict = lstDistrict;
+	}
+
+	public List<CityBean> getLstCityBean() {
+		return lstCityBean;
+	}
+
+	public void setLstCityBean(List<CityBean> lstCityBean) {
+		this.lstCityBean = lstCityBean;
+	}
+	
+	
+    
+    // Store file in the database
+    public Blob storeImage() throws IOException, SerialException, SQLException {
+             
+    	InputStream stream = null;
+    	
+    	try {
+    		stream =  file.getInputstream();
+         }catch(Exception e){
+            e.printStackTrace();
+         }
+    	return new javax.sql.rowset.serial.SerialBlob(readFully(stream));
+    }
+    
+    public  byte[] readFully(InputStream input) throws IOException
+    {
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        while ((bytesRead = input.read(buffer)) != -1)
+        {
+            output.write(buffer, 0, bytesRead);
+        }
+        return output.toByteArray();
+    }
+ 
+    // Getter method
+    public UploadedFile getFile() {
+        return file;
+    }
+ 
+    // Setter method
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }  
+    
+    public StreamedContent getDownloadFile() {
+		return downloadFile;
+	}
+
+	public Boolean getBooUnEmp() {
+		return booUnEmp;
+	}
+
+	public void setBooUnEmp(Boolean booUnEmp) {
+		this.booUnEmp = booUnEmp;
+	}
+
+	public String getTokenKey() {
+		return tokenKey;
+	}
+
+	public void setTokenKey(String tokenKey) {
+		this.tokenKey = tokenKey;
+	}
+
+	public boolean isDisableValidation() {
+		return disableValidation;
+	}
+
+	public void setDisableValidation(boolean disableValidation) {
+		this.disableValidation = disableValidation;
+	}
+	
+	//Rule Engine Implementation
+	public String viewBehaviorBean(String componentName, String type){
+		
+		if(mapComponentBehavior==null || mapComponentBehavior.size()==0){
+			setPageIdIntoSession();
+			prepareBehavior();
+		}
+		return new CollectionUtil().fetchBehavior(mapComponentBehavior, componentName, type);
+	}
+	
+	private void setPageIdIntoSession(){
+	
+		String pageName = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+		pageName = pageName.substring(pageName.lastIndexOf('/')+1, pageName.indexOf(".xhtml"));
+		
+		try{
+			BigDecimal pageId = getiGeneralService().getPageId(pageName);
+			new SessionStateManage().setSessionValue("pageId", pageId.toString());
+		}catch(Exception e){
+			System.out.println("Page id not found for pagename :: "+pageName+" :: "+e);
+		}
+	}
+	
+	private void prepareBehavior(){
+		
+		SessionStateManage manage = new SessionStateManage(); 
+		System.out.println("Component parameter ======================= "+manage.getApplicationId()+", "+manage.getCompanyId()+", "+manage.getCompanyId()+", "+manage.getPageId());
+		List<String> lstComponentName = Arrays.asList("Alternate Email Id", "Mobile in online reg", "Block online rem", 
+														"Employer Name", "Street online rem", "area online rem", 
+														"officetel online rem", "postal online rem", "Civil ID", "First Name", "Last Name",
+														"Civil Id Expiary Date", "State", "District", "City");
+		mapComponentBehavior =  getiGeneralService().getComponentBehavior(lstComponentName, manage.getLevel(),manage.getApplicationId(),manage.getCompanyId(),manage.getCountryId(),manage.getPageId());
+		for(Entry<String,BussComponentConfDetail> en:mapComponentBehavior.entrySet()){
+			System.out.println("Key: "+en.getKey()+", level : "+en.getValue().getFsBusinessComponentConf().getLevelId());
+			System.out.println("Object : "+en.getValue().toString());
+		}
+	}
+
+	public Boolean getBooInvalidFile() {
+		return booInvalidFile;
+	}
+
+	public void setBooInvalidFile(Boolean booInvalidFile) {
+		this.booInvalidFile = booInvalidFile;
+	}
+
+	public Boolean getBooState() {
+		return booState;
+	}
+
+	public void setBooState(Boolean booState) {
+		this.booState = booState;
+	}
+
+	public Boolean getBooDist() {
+		return booDist;
+	}
+
+	public void setBooDist(Boolean booDist) {
+		this.booDist = booDist;
+	}
+
+	public Boolean getBooCity() {
+		return booCity;
+	}
+
+	public void setBooCity(Boolean booCity) {
+		this.booCity = booCity;
+	}
+
+	public Boolean getBoomail() {
+		return boomail;
+	}
+
+	public void setBoomail(Boolean boomail) {
+		this.boomail = boomail;
+	}
+}  
+

@@ -1,0 +1,389 @@
+package com.amg.exchange.daoimpl;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import javax.faces.context.FacesContext;
+
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.amg.exchange.bean.LoginBean;
+import com.amg.exchange.dao.ICommonDao;
+import com.amg.exchange.dao.IRemmiterOnlineRegDao;
+import com.amg.exchange.model.Amlstatus;
+import com.amg.exchange.model.CityMaster;
+import com.amg.exchange.model.CompanyMaster;
+import com.amg.exchange.model.ContactDetail;
+import com.amg.exchange.model.CountryMaster;
+import com.amg.exchange.model.Customer;
+import com.amg.exchange.model.CustomerEmploymentInfo;
+import com.amg.exchange.model.CustomerIdProof;
+import com.amg.exchange.model.CustomerLogin;
+import com.amg.exchange.model.DistrictMaster;
+import com.amg.exchange.model.DocumentImg;
+import com.amg.exchange.model.NationalityMaster;
+import com.amg.exchange.model.StateMaster;
+
+@Repository
+public class RemmiterOnlineRegDaoImpl<T> extends CustomHibernateDaoSupport implements ICommonDao<T> , IRemmiterOnlineRegDao<T>{
+
+	@Override
+	public void save(T entity) {
+		getSession().save(entity);
+	}
+
+	@Override
+	public void update(T entity) {
+		getSession().update(entity);
+	}
+
+	@Override
+	public void delete(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<T> findByName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<T> findById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<T> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findAll(DetachedCriteria criteria) {
+		return criteria.getExecutableCriteria(getSession()).list();
+	}
+
+	@Override
+	public List<ContactDetail> getAllEmployees(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void saveCustomer(Customer customer, String custId) {
+		save((T)customer);
+	}
+	
+	@Override
+	public void saveCustomer(Customer customer) {
+		getSession().saveOrUpdate(customer);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void saveCustomerEmploymentInfo(CustomerEmploymentInfo customerEmp, 	String custId) {
+		save((T)customerEmp);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void saveCustomerEmploymentProofInfo(CustomerIdProof customerEmployeeProof, String custId) {
+		save((T)customerEmployeeProof);
+	}
+	
+	@Override
+	public void saveCustomerEmploymentProofInfo(CustomerIdProof proof) {
+		getSession().saveOrUpdate(proof);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CustomerIdProof> getCustomerIdProof() {
+		return getSession().createQuery("from CustomerIdProof").list();
+	}
+
+	@Override
+	public List<CustomerLogin> getLoginInfoForCustomer(String userName,
+			String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ContactDetail> getFsContactDetails(String cust_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Customer> getFsCustomer(BigDecimal customerId) {
+		System.out.println("Here in IMPL : "+customerId);
+		DetachedCriteria criteria = DetachedCriteria.forClass(Customer.class, "customer");
+		criteria.add(Restrictions.eq("customer.customerId", customerId));
+		
+		/*criteria.setFetchMode("customer.fsCustomerEmploymentInfos", FetchMode.SELECT);
+		criteria.createAlias("customer.fsCustomerEmploymentInfos", "fsCustomerEmploymentInfos", JoinType.LEFT_OUTER_JOIN);*/
+		
+		/*criteria.setFetchMode("customer.fsCustomerIdProofs", FetchMode.JOIN);
+		criteria.createAlias("customer.fsCustomerIdProofs", "fsCustomerIdProofs", JoinType.LEFT_OUTER_JOIN);
+		
+		criteria.setFetchMode("fsCustomerIdProofs.fsDocumentImg", FetchMode.JOIN);
+		criteria.createAlias("fsCustomerIdProofs.fsDocumentImg", "fsDocumentImg", JoinType.LEFT_OUTER_JOIN);*/
+		
+		/*criteria.setFetchMode("customer.fsContactDetails", FetchMode.JOIN);
+		criteria.createAlias("customer.fsContactDetails", "fsContactDetails", JoinType.LEFT_OUTER_JOIN);*/
+		
+		//criteria.setResultTransformer(DetachedCriteria.DISTINCT_ROOT_ENTITY);
+		
+		return (List<Customer>)findAll(criteria);
+	}
+
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	@Override
+	public List<CustomerEmploymentInfo> getFsCustEmpInfo(BigDecimal customerId) {
+		
+		DetachedCriteria criteria = DetachedCriteria.forClass(CustomerEmploymentInfo.class, "customerEmploymentInfo");
+			criteria.setFetchMode("customerEmploymentInfo.fsEmploymentType",  FetchMode.JOIN);
+			criteria.createAlias("customerEmploymentInfo.fsEmploymentType", "fsEmploymentType", CriteriaSpecification.INNER_JOIN);
+			
+			criteria.setFetchMode("customerEmploymentInfo.fsCustomer",  FetchMode.JOIN);
+			criteria.createAlias("customerEmploymentInfo.fsCustomer", "fsCustomer", CriteriaSpecification.INNER_JOIN);
+			
+			criteria.add(Restrictions.eq("fsCustomer.customerId", customerId));
+		
+		return (List<CustomerEmploymentInfo>)findAll(criteria);
+	}
+
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	@Override
+	public List<CustomerIdProof> getFsCustIdProof(BigDecimal customerId) {
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(CustomerIdProof.class, "customerIdProof");
+		
+		dCriteria.setFetchMode("customerIdProof.fsIdentityType", FetchMode.JOIN);
+		dCriteria.createAlias("customerIdProof.fsIdentityType", "fsIdentityType", CriteriaSpecification.INNER_JOIN);
+		
+		dCriteria.add(Restrictions.eq("fsIdentityType.identityTypeId", new BigDecimal(1)));
+		
+		dCriteria.setFetchMode("customerIdProof.fsDocumentImg", FetchMode.JOIN);
+		dCriteria.createAlias("customerIdProof.fsDocumentImg", "fsDocumentImg", CriteriaSpecification.INNER_JOIN);
+		
+		dCriteria.setFetchMode("customerIdProof.fsCustomer", FetchMode.JOIN);
+		dCriteria.createAlias("customerIdProof.fsCustomer", "fsCustomer", CriteriaSpecification.INNER_JOIN);
+		
+		dCriteria.add(Restrictions.eq("fsCustomer.customerId", customerId));
+		
+		return (List<CustomerIdProof>) findAll(dCriteria);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Amlstatus> getAMLStatus(String name) {
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(Amlstatus.class);
+		dCriteria.add(Restrictions.eq("remName", name));
+		return (List<Amlstatus>) findAll(dCriteria);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<NationalityMaster> getNationality() {
+		DetachedCriteria dCiteria = DetachedCriteria.forClass(NationalityMaster.class);
+		return (List<NationalityMaster>) findAll(dCiteria);
+	}
+
+	@Override
+	public List<CompanyMaster> getCompany(BigDecimal country) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StateMaster> getState(BigDecimal country) {
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(StateMaster.class);
+		dCriteria.add(Restrictions.eq("countryId", country));
+		return (List<StateMaster>) findAll(dCriteria);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CityMaster> getCity(BigDecimal district) {
+		return (List<CityMaster>) getSession().createQuery("from CityMaster").list();
+	}
+
+	@Override
+	public List<CountryMaster> getCountry() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	@Override
+	public List<DistrictMaster> getDistrict(BigDecimal state) {
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(DistrictMaster.class, "districtMaster");
+		
+		dCriteria.setFetchMode("districtMaster.fsDistrictMasterDescs", FetchMode.JOIN);
+		dCriteria.createAlias("districtMaster.fsDistrictMasterDescs", "fsDistrictMasterDescs", CriteriaSpecification.INNER_JOIN);
+		
+		dCriteria.setFetchMode("districtMaster.fsStateMaster", FetchMode.JOIN);
+		dCriteria.createAlias("districtMaster.fsStateMaster", "fsStateMaster", CriteriaSpecification.INNER_JOIN);
+		
+		dCriteria.add(Restrictions.eq("fsStateMaster.stateId", state));
+		return (List<DistrictMaster>) findAll(dCriteria); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	@Override
+	public List<StateMaster> getState() {
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(StateMaster.class);
+		return (List<StateMaster>) findAll(dCriteria);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void updateCustomer(Customer customer, String custId) {
+		Customer customerFromDb = (Customer)getSession().get(Customer.class, new BigDecimal(custId));
+		customerFromDb.setUpdatedBy(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userName").toString());
+		customerFromDb.setEmail(customer.getEmail());
+		customerFromDb.setLastUpdated(new Date());
+		update((T)customerFromDb); 
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void updateCustomerEmploymentInfo(CustomerEmploymentInfo customerEmp, String custId) {
+		CustomerEmploymentInfo custEmpBean = null;
+		List<CustomerEmploymentInfo> empInfo = getSession().createQuery("from CustomerEmploymentInfo").list();
+		for (CustomerEmploymentInfo customerEmploymentInfo : empInfo) {
+			if(customerEmploymentInfo.getFsCustomer().getCustomerId().toString().equalsIgnoreCase(custId)){
+				custEmpBean = customerEmploymentInfo;
+				break;
+			}
+		}
+		
+		custEmpBean.setFsEmploymentType(customerEmp.getFsEmploymentType());
+		custEmpBean.setOccupation(customerEmp.getOccupation());
+		custEmpBean.setEmployerName(customerEmp.getEmployerName());
+		/*custEmpBean.setStateId(customerEmp.getStateId());
+		custEmpBean.setDistrictId(customerEmp.getDistrictId());
+		custEmpBean.setCityId(customerEmp.getCityId());*/
+		custEmpBean.setArea(customerEmp.getArea());
+		custEmpBean.setBlock(customerEmp.getBlock());
+		custEmpBean.setStreet(customerEmp.getStreet());
+		custEmpBean.setPostal(customerEmp.getPostal());
+		custEmpBean.setOfficeTelephone(customerEmp.getOfficeTelephone());
+		
+		//custEmpBean.setUpdatedBy(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userName").toString());
+		custEmpBean.setUpdatedBy(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userName").toString());
+		custEmpBean.setLastUpdated(new Date());
+		
+		update((T)custEmpBean);
+	}
+
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	@Override
+	public void updateCustomerEmploymentProofInfo(CustomerIdProof customerEmployeeProof, String custId) {
+		
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(CustomerIdProof.class, "customerIdProof");
+		
+		dCriteria.setFetchMode("customerIdProof.fsCustomer", FetchMode.JOIN);
+		dCriteria.createAlias("customerIdProof.fsCustomer", "fsCustomer", CriteriaSpecification.INNER_JOIN);
+		
+		dCriteria.add(Restrictions.eq("fsCustomer.customerId", new BigDecimal(custId)));
+		
+		List<CustomerIdProof> proofInfo = (List<CustomerIdProof>) findAll(dCriteria);
+		
+
+		
+		//proofInfo.get(0).getFsCustomer().setCustomerId(new BigDecimal(custId));
+		proofInfo.get(0).setIdentityFor(customerEmployeeProof.getIdentityFor());
+		proofInfo.get(0).getFsIdentityType().setIdentityTypeId(customerEmployeeProof.getFsIdentityType().getIdentityTypeId());
+		proofInfo.get(0).setIdentityInt(customerEmployeeProof.getIdentityInt());
+		proofInfo.get(0).setIdentityExpiryDate(customerEmployeeProof.getIdentityExpiryDate());
+		
+		proofInfo.get(0).setUpdatedBy(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userName").toString());
+		proofInfo.get(0).setLastUpdatedDate(new Date());
+		
+		update((T)proofInfo.get(0));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void saveImage(DocumentImg document) {
+		save((T)document);
+	}
+	
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	@Override
+	public void updateImage(DocumentImg document, BigDecimal custId) {
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(CustomerIdProof.class, "customerIdProof");
+		dCriteria.setFetchMode("customerIdProof.fsCustomer", FetchMode.JOIN);
+		dCriteria.createAlias("customerIdProof.fsCustomer", "fsCustomer", CriteriaSpecification.INNER_JOIN);
+		
+		dCriteria.add(Restrictions.eq("fsCustomer.customerId", custId));
+		
+		List<CustomerIdProof> proof = (List<CustomerIdProof>) findAll(dCriteria);
+		
+		DocumentImg docImage = proof.get(0).getFsDocumentImg();
+		docImage.setImage(document.getImage());
+		docImage.setImageName(document.getImageName());
+		docImage.setUploadDate(new Date());
+		save((T)docImage);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CustomerLogin> getLoginInfoForCustomer(String userName) {
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(CustomerLogin.class);
+		dCriteria.add(Restrictions.eq("userName", userName));
+		return (List<CustomerLogin>) findAll(dCriteria);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DocumentImg> getImage(BigDecimal imageId) {
+		/*DetachedCriteria dCriteria = DetachedCriteria.forClass(DocumentImg.class, "docImage");
+		dCriteria.add(Restrictions.eq("docImage.imgId", imageId));
+		return (List<DocumentImg>) findAll(dCriteria);*/System.out.println("Dao ImageId"+imageId);
+		return  (List<DocumentImg>) getSession().createQuery("from DocumentImg where imgId="+imageId).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Customer> CheckTokenAvailable(String token) {
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(Customer.class);
+		dCriteria.add(Restrictions.eq("tokenKey", token));
+		return (List<Customer>) findAll(dCriteria);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void updateLoginCustomerId(String userName, BigDecimal customerId) {
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(CustomerLogin.class, "customerLogin");
+		dCriteria.add(Restrictions.eq("userName", userName));
+		
+		try{
+			CustomerLogin customerLogin = ((List<CustomerLogin>)findAll(dCriteria)).get(0);
+			customerLogin.setFsCustomer(new Customer(customerId));
+			getSession().saveOrUpdate(customerLogin);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+}

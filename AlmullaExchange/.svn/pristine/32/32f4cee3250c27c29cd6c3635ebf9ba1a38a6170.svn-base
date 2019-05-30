@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</h:head>
+
+<h:body>
+	<f:view>
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<ui:include src="#{facesBean.menu}"></ui:include>
+		<table align="left" width="100%" style="height:100%;">
+    <tr>
+    <td align="left" valign="top" style="height:100%;" ><ui:include src="../common/common_menu.xhtml"></ui:include></td>
+    		
+    	<td  class="rightColumn" valign="top">
+		<h:panelGroup layout="block" class="container">
+			<h:panelGroup layout="block" class="main_div">
+			<div class="menu_button"><img style="cursor: pointer;  position:relative; left:15px;" id="HideHandle" name="HideHandle" src="../images/toggle_plus.png" alt="" onclick='hideLeftCol("leftCol");closeMenus();'/></div>
+				<h1>
+					<h:outputText value="Bank Applicability" />
+				</h1>
+				<h:panelGroup layout="block" class="table_bg">
+					<h:form style="padding:0!important;">
+						<p:panel id="mainPanel"
+							style="border: 0px; padding:0px!important;">
+							<p:panel style="padding:10px!important;">
+
+								<p:panel style="border: 0px; padding:0px!important;" rendered="#{bankApplicabilityManagedBean.renderFirst}">
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="#{msg['lbl.country']} #{bankApplicabilityManagedBean.viewBehaviorBean('Country','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+									     <p:message for="country" display="text"/>
+										<p:selectOneMenu id="country"  value ="#{bankApplicabilityManagedBean.countryId}" 
+										       filterMatchMode="startsWith" filter="true" 
+										        requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.country']}"
+										        required="#{bankApplicabilityManagedBean.viewBehaviorBean('Country','REQUIRED')}"
+											    readonly="#{bankApplicabilityManagedBean.viewBehaviorBean('Country','READ_ONLY')}"
+										        disabled="#{bankApplicabilityManagedBean.viewBehaviorBean('Country','ENABLE')}" >
+										        <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+										        <f:selectItems value="#{bankApplicabilityManagedBean.countryListFromDB}"
+										    	var="c" itemLabel="#{c.countryName}"
+										     	itemValue="#{c.fsCountryMaster.countryId}" 
+										     	
+											    />
+											  <p:ajax event="change" update="bank" listener="#{bankApplicabilityManagedBean.popBank}"/>  
+										</p:selectOneMenu>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="#{msg['lbl.timezone']} #{bankApplicabilityManagedBean.viewBehaviorBean('Time Zone','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText  id="tzone"  value ="#{bankApplicabilityManagedBean.timeZone}" 
+										    requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.timezone']}"
+										    required="#{bankApplicabilityManagedBean.viewBehaviorBean('Time Zone','REQUIRED')}"
+											readonly="#{bankApplicabilityManagedBean.viewBehaviorBean('Time Zone','READ_ONLY')}"
+										    disabled="#{bankApplicabilityManagedBean.viewBehaviorBean('Time Zone','ENABLE')}"
+										    maxlength="#{bankApplicabilityManagedBean.viewBehaviorBean('Time Zone','MAX_VALUE')}"
+										    validator="RegularExpressionValidation">
+													<f:attribute name="regexValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('Time Zone','PATTERN')}" />
+													<f:attribute name="minValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('Time Zone','MIN_VALUE')}" />
+													<f:attribute name="maxValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('Time Zone','MAX_VALUE')}" />
+										    <p:ajax update="msgtzone" event="blur"/>	 				
+										    <p:message id="msgtzone" for="tzone" display="text"/>				
+										</p:inputText>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="#{msg['lbl.company']} #{bankApplicabilityManagedBean.viewBehaviorBean('Company','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+									    <p:message for="company" display="text"/>
+										<p:selectOneMenu   id="company"    value ="#{bankApplicabilityManagedBean.companyId}" 
+									    	  filterMatchMode="startsWith" filter="true" 
+									    	   requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.company']}"
+											     required="#{bankApplicabilityManagedBean.viewBehaviorBean('Company','REQUIRED')}"
+											     readonly="#{bankApplicabilityManagedBean.viewBehaviorBean('Company','READ_ONLY')}"
+										         disabled="#{bankApplicabilityManagedBean.viewBehaviorBean('Company','ENABLE')}">
+										      <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+										       <f:selectItems value="#{bankApplicabilityManagedBean.companyListFromDB}"
+											    var="c" itemLabel="#{c.companyName}"
+											     itemValue="#{c.fsCompanyMaster.companyId}" 
+											    />
+										</p:selectOneMenu>
+									</div>
+									<div class="ui-block-c">
+									      <h:outputText value="#{msg['lbl.exchangeId']} #{bankApplicabilityManagedBean.viewBehaviorBean('Exchange Id','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+									      <p:inputText   id="exchId"   value ="#{bankApplicabilityManagedBean.exchangeId}" 
+									        requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.exchangeId']}"
+									        required="#{bankApplicabilityManagedBean.viewBehaviorBean('Exchange Id','REQUIRED')}"
+											readonly="#{bankApplicabilityManagedBean.viewBehaviorBean('Exchange Id','READ_ONLY')}"
+										    disabled="#{bankApplicabilityManagedBean.viewBehaviorBean('Exchange Id','ENABLE')}"
+										    maxlength="#{bankApplicabilityManagedBean.viewBehaviorBean('Exchange Id','MAX_VALUE')}"
+										    validator="RegularExpressionValidation">
+													<f:attribute name="regexValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('Exchange Id','PATTERN')}" />
+													<f:attribute name="minValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('Exchange Id','MIN_VALUE')}" />
+													<f:attribute name="maxValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('Exchange Id','MAX_VALUE')}" />
+										    <p:ajax update="msgexchId" event="blur"/>				
+										    <p:message id = "msgexchId" for="exchId" display="text"/>				
+									      </p:inputText>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+                                <div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="#{msg['lbl.bank']} #{bankApplicabilityManagedBean.viewBehaviorBean('Banks','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+									    <p:message for="bank" display="text"/>
+										<p:selectOneMenu id="bank"    value ="#{bankApplicabilityManagedBean.bankId}" 
+									    	 filterMatchMode="startsWith" filter="true"
+									    	 requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.bank']}"
+											   required="#{bankApplicabilityManagedBean.viewBehaviorBean('Banks','REQUIRED')}"
+											     readonly="#{bankApplicabilityManagedBean.viewBehaviorBean('Banks','READ_ONLY')}"
+										         disabled="#{bankApplicabilityManagedBean.viewBehaviorBean('Banks','ENABLE')}" >
+										     <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+										     <f:selectItems value="#{bankApplicabilityManagedBean.bankListFromDB}"
+											    var="c" itemLabel="#{c.bankFullName}"  itemValue="#{c.bankId}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="ui-block-c">
+									    <h:outputText value="#{msg['lbl.banktype']} #{bankApplicabilityManagedBean.viewBehaviorBean('Bank Type','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+									     <p:message for="bankType" display="text"/> 
+									    <p:selectOneMenu  id="bankType" value ="#{bankApplicabilityManagedBean.bankTypeId}" 
+									    	 filterMatchMode="startsWith" filter="true" 
+									    	  requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.banktype']}"
+										         required="#{bankApplicabilityManagedBean.viewBehaviorBean('Bank Type','REQUIRED')}"
+											     readonly="#{bankApplicabilityManagedBean.viewBehaviorBean('Bank Type','READ_ONLY')}"
+										         disabled="#{bankApplicabilityManagedBean.viewBehaviorBean('Bank Type','ENABLE')}">
+										     <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" 
+										        />
+										     <f:selectItem itemLabel="Local Bank" itemValue="1"/>
+										     <f:selectItem itemLabel="Correspondent Bank" itemValue="2"/>
+										     <f:selectItem itemLabel="Beneficiary Bank" itemValue="3"/>   
+									    </p:selectOneMenu>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<h:panelGroup layout="block"  styleClass="button_align">
+								     <p:ajaxStatus>
+								      <f:facet name="start">
+									    <h:graphicImage value="../images/ajax_loader.gif" />
+								      </f:facet>
+								      <f:facet name="start">
+									    <h:graphicImage value="" />
+								      </f:facet>
+							     	</p:ajaxStatus>
+								    <p:commandButton value="#{msg['lbl.next']}"  style="float:right;" action="#{bankApplicabilityManagedBean.nextBankApplicabilityDetails}"  update="mainPanel">
+							        </p:commandButton>
+							   <div class="clearfix"></div>
+									</h:panelGroup>
+								<div class="clearfix"></div>
+								</p:panel>
+								<p:panel id="panelWebCredentials" style="border:0px;padding:0px!important;" rendered="#{bankApplicabilityManagedBean.renderWebCredentials}">
+								<h2><h:outputText value= "#{msg['lbl.webservicecredential']}"/></h2>
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="#{msg['lbl.username']} #{bankApplicabilityManagedBean.viewBehaviorBean('User Name','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText   id="uname"   value ="#{bankApplicabilityManagedBean.userName}"   autocomplete="off"
+										    requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.username']}"
+									        required="#{bankApplicabilityManagedBean.viewBehaviorBean('User Name','REQUIRED')}"
+											readonly="#{bankApplicabilityManagedBean.viewBehaviorBean('User Name','READ_ONLY')}"
+										    disabled="#{bankApplicabilityManagedBean.viewBehaviorBean('User Name','ENABLE')}"
+										    maxlength="#{bankApplicabilityManagedBean.viewBehaviorBean('User Name','MAX_VALUE')}"
+										    validator="RegularExpressionValidation">
+													<f:attribute name="regexValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('User Name','PATTERN')}" />
+													<f:attribute name="minValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('User Name','MIN_VALUE')}" />
+													<f:attribute name="maxValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('User Name','MAX_VALUE')}" />
+											<p:ajax update="msguname" event="blur"/>			
+										    <p:message id="msguname"  for="uname" display="text"/>
+										  </p:inputText>  
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="#{msg['lbl.password']} #{bankApplicabilityManagedBean.viewBehaviorBean('Password','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:password  id="password" value ="#{bankApplicabilityManagedBean.password}"  autocomplete="off"
+										    requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.password']}"
+										    required="#{bankApplicabilityManagedBean.viewBehaviorBean('Password','REQUIRED')}"
+											readonly="#{bankApplicabilityManagedBean.viewBehaviorBean('Password','READ_ONLY')}"
+										    disabled="#{bankApplicabilityManagedBean.viewBehaviorBean('Password','ENABLE')}"
+										    maxlength="#{bankApplicabilityManagedBean.viewBehaviorBean('Password','MAX_VALUE')}"
+										    validator="RegularExpressionValidation">
+													<f:attribute name="regexValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('Password','PATTERN')}" />
+													<f:attribute name="minValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('Password','MIN_VALUE')}" />
+													<f:attribute name="maxValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('Password','MAX_VALUE')}" />
+											<p:ajax update="msgpassword" event="blur"/>			
+										    <p:message id="msgpassword" for="password" display="text"/>
+										  </p:password> 
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="#{msg['lbl.agentId']} #{bankApplicabilityManagedBean.viewBehaviorBean('Agent Id','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText  id="agentId" value ="#{bankApplicabilityManagedBean.agentId}"  autocomplete="off"
+										     requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.agentId']}"
+										     required="#{bankApplicabilityManagedBean.viewBehaviorBean('Agent Id','REQUIRED')}"
+											 readonly="#{bankApplicabilityManagedBean.viewBehaviorBean('Agent Id','READ_ONLY')}"
+										     disabled="#{bankApplicabilityManagedBean.viewBehaviorBean('Agent Id','ENABLE')}"
+										     maxlength="#{bankApplicabilityManagedBean.viewBehaviorBean('Agent Id','MAX_VALUE')}"
+										     validator="RegularExpressionValidation">
+													<f:attribute name="regexValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('Agent Id','PATTERN')}" />
+													<f:attribute name="minValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('Agent Id','MIN_VALUE')}" />
+													<f:attribute name="maxValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('Agent Id','MAX_VALUE')}" />
+											<p:ajax update="msgagentid" event="blur"/>			
+										    <p:message  id="msgagentid" for="agentId" display="text"/>
+										 </p:inputText>   
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="#{msg['lbl.agentpin']} #{bankApplicabilityManagedBean.viewBehaviorBean('Agent Pin','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:password  id="agentpin" value ="#{bankApplicabilityManagedBean.agentPin}"  autocomplete="off"
+										     requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.agentpin']}"
+										    required="#{bankApplicabilityManagedBean.viewBehaviorBean('Agent Pin','REQUIRED')}"
+											readonly="#{bankApplicabilityManagedBean.viewBehaviorBean('Agent Pin','READ_ONLY')}"
+										    disabled="#{bankApplicabilityManagedBean.viewBehaviorBean('Agent Pin','ENABLE')}"
+										    maxlength="#{bankApplicabilityManagedBean.viewBehaviorBean('Agent Pin','MAX_VALUE')}"
+										    validator="RegularExpressionValidation">
+													<f:attribute name="regexValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('Agent Pin','PATTERN')}" />
+													<f:attribute name="minValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('Agent Pin','MIN_VALUE')}" />
+													<f:attribute name="maxValue"
+														value="#{bankApplicabilityManagedBean.viewBehaviorBean('Agent Pin','MAX_VALUE')}" />
+											<p:ajax update="msgagentpinn" event="blur"/>			
+										    <p:message id="msgagentpinn" for="agentpin" display="text"/>
+										</p:password>   
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<h:panelGroup layout="block"  styleClass="button_align" style="width:57% !important;">
+								    <p:ajaxStatus>
+								      <f:facet name="start">
+									    <h:graphicImage value="../images/ajax_loader.gif" />
+								      </f:facet>
+								      <f:facet name="start">
+									    <h:graphicImage value="" />
+								      </f:facet>
+							     	</p:ajaxStatus>
+							     	<p:commandButton value="#{msg['lbl.back']}" style="float:right;" action="#{bankApplicabilityManagedBean.backBankApplicabilityDetails}" immediate="true" update="mainPanel">
+							        </p:commandButton>
+								    <p:commandButton value="#{msg['lbl.submit']}" style="float:right; margin-right:10px;" action="#{bankApplicabilityManagedBean.saveBankApplicabilityDetails}" update="mainPanel">
+							        </p:commandButton>	
+							        <p:commandButton value="#{msg['lbl.cancel']}" style="float:right; margin-right:10px;"  action="#{bankApplicabilityManagedBean.cancelBankApplicabilityDetails}" immediate="true"  update="mainPanel" >
+							        </p:commandButton>  
+							        <p:commandButton value="#{msg['lbl.reset']}" style="float:right; margin-right:10px;" action="#{bankApplicabilityManagedBean.clearBankApplicabilityDetails}" immediate="true"  update="mainPanel">
+						            </p:commandButton>
+							   <div class="clearfix"></div>
+									</h:panelGroup>
+								<div class="clearfix"></div>
+								</p:panel>
+							</p:panel>
+						</p:panel>
+					</h:form>
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+		</h:panelGroup>
+		<div class="clearfix"></div>
+    				
+    				</td>
+    </tr>
+    </table>
+		<ui:include src="#{facesBean.footer}"></ui:include>
+	</f:view>
+</h:body>
+</html>

@@ -1,0 +1,1216 @@
+/**
+ * @author Arul JayaSingh
+ */
+package com.amg.exchange.treasury.bean;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
+import com.amg.exchange.model.BankBranch;
+import com.amg.exchange.model.BankMaster;
+import com.amg.exchange.model.BussComponentConfDetail;
+import com.amg.exchange.model.CityMaster;
+import com.amg.exchange.model.CityMasterDesc;
+import com.amg.exchange.model.CountryMaster;
+import com.amg.exchange.model.CountryMasterDesc;
+import com.amg.exchange.model.DistrictMaster;
+import com.amg.exchange.model.DistrictMasterDesc;
+import com.amg.exchange.model.StateMaster;
+import com.amg.exchange.model.StateMasterDesc;
+import com.amg.exchange.service.ICommonService;
+import com.amg.exchange.service.IGeneralService;
+import com.amg.exchange.treasury.service.IBankBranchDetailsService;
+import com.amg.exchange.util.CollectionUtil;
+import com.amg.exchange.util.SessionStateManage;
+
+@Component("bankBranchDetails")
+@RequestScoped
+public class BankBranchDetails<T> implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private String branchCode;
+	private String fullName;
+	private String shortName;
+	private String address1;
+	private String address2;
+	private String telephoneNumber;
+	private String fax;
+	private String email;
+	private String contactPerson;
+	private String contactdesignation;
+	private String contactDepartment;
+	private String micrCode;
+	private String fullNameLocal;
+	private String shortNameLocal;
+	private String address1Local;
+	private String address2Local;
+	private String contactPersonLocal;
+	private String contactdesignationLocal;
+	private String contactDepartmentLocal;
+	private String swift;
+	private String debitBranchID;
+	private String branchIFSC;
+	private String routingID;
+	private String mobileNo;
+	private BigDecimal bankID;
+
+	private BigDecimal countryId;
+	private BigDecimal stateId;
+	private BigDecimal cityId;
+	private BigDecimal districtId;
+	private Boolean isLocalPanelRender = true;
+	private Boolean isBranchInfo = true;
+	private Boolean isBranchLocalAddressPanel = true;
+	private Boolean isBranchTransactionPanel = true;
+	private List<StateMasterDesc> lstStateList = new ArrayList<StateMasterDesc>();
+	private List<DistrictMasterDesc> lstDistrictList = new ArrayList<DistrictMasterDesc>();
+	private List<CityMasterDesc> lstCityList = new ArrayList<CityMasterDesc>();
+	private List<BankMaster> lstBankList = new ArrayList<BankMaster>();
+	Map<String, BussComponentConfDetail> mapComponentBehavior = new HashMap<String, BussComponentConfDetail>();
+
+	private BankBranch selectedBankbranch;
+
+	/**
+	 * @return the selectedBankbranch
+	 */
+	public BankBranch getSelectedBankbranch() {
+		return this.selectedBankbranch;
+	}
+
+	/**
+	 * @param selectedBankbranch
+	 *            the selectedBankbranch to set
+	 */
+	public void setSelectedBankbranch(BankBranch selectedBankbranch) {
+		this.selectedBankbranch = selectedBankbranch;
+	}
+
+	// Retrive Bank Branch List
+	private List<BankBranch> bankBranchList = new ArrayList<BankBranch>();
+
+	public BankBranchDetails() {
+		System.out.println("Constractor ...");
+		setIsBranchInfo(true);
+		setIsBranchLocalAddressPanel(false);
+		setIsBranchTransactionPanel(false);
+	}
+
+	/**
+	 * @param branchCode
+	 * @param fullName
+	 * @param shortName
+	 * @param address1
+	 * @param address2
+	 * @param telephoneNumber
+	 * @param fax
+	 * @param email
+	 * @param contactPerson
+	 * @param contactdesignation
+	 * @param contactDepartment
+	 * @param micrCode
+	 * @param fullNameLocal
+	 * @param shortNameLocal
+	 * @param address1Local
+	 * @param address2Local
+	 * @param contactPersonLocal
+	 * @param contactdesignationLocal
+	 * @param contactDepartmentLocal
+	 * @param swift
+	 * @param debitBranchID
+	 * @param branchIFSC
+	 * @param routingID
+	 */
+	public BankBranchDetails(String branchCode, String fullName,
+			String shortName, String address1, String address2,
+			String telephoneNumber, String fax, String email,
+			String contactPerson, String contactdesignation,
+			String contactDepartment, String micrCode, String fullNameLocal,
+			String shortNameLocal, String address1Local, String address2Local,
+			String contactPersonLocal, String contactdesignationLocal,
+			String contactDepartmentLocal, String swift, String debitBranchID,
+			String branchIFSC, String routingID) {
+		this.branchCode = branchCode;
+		this.fullName = fullName;
+		this.shortName = shortName;
+		this.address1 = address1;
+		this.address2 = address2;
+		this.telephoneNumber = telephoneNumber;
+		this.fax = fax;
+		this.email = email;
+		this.contactPerson = contactPerson;
+		this.contactdesignation = contactdesignation;
+		this.contactDepartment = contactDepartment;
+		this.micrCode = micrCode;
+		this.fullNameLocal = fullNameLocal;
+		this.shortNameLocal = shortNameLocal;
+		this.address1Local = address1Local;
+		this.address2Local = address2Local;
+		this.contactPersonLocal = contactPersonLocal;
+		this.contactdesignationLocal = contactdesignationLocal;
+		this.contactDepartmentLocal = contactDepartmentLocal;
+		this.swift = swift;
+		this.debitBranchID = debitBranchID;
+		this.branchIFSC = branchIFSC;
+		this.routingID = routingID;
+	}
+
+	@Autowired
+	IGeneralService<T> generalService;
+
+	/**
+	 * @return the generalService
+	 */
+	public IGeneralService<T> getGeneralService() {
+		return this.generalService;
+	}
+
+	/**
+	 * @param generalService
+	 *            the generalService to set
+	 */
+	public void setGeneralService(IGeneralService<T> generalService) {
+		this.generalService = generalService;
+	}
+
+	/**
+	 * @return the bankBranchDetailsService
+	 */
+	@Autowired
+	IBankBranchDetailsService<T> bankBranchDetailsService;
+
+	public IBankBranchDetailsService<T> getBankBranchDetailsService() {
+		return this.bankBranchDetailsService;
+	}
+
+	/**
+	 * @param bankBranchDetailsService
+	 *            the bankBranchDetailsService to set
+	 */
+	public void setBankBranchDetailsService(
+			IBankBranchDetailsService<T> bankBranchDetailsService) {
+		this.bankBranchDetailsService = bankBranchDetailsService;
+	}
+
+	/**
+	 * @return the branchCode
+	 */
+	public String getBranchCode() {
+		return this.branchCode;
+	}
+
+	/**
+	 * @param branchCode
+	 *            the branchCode to set
+	 */
+	public void setBranchCode(String branchCode) {
+		this.branchCode = branchCode;
+	}
+
+	/**
+	 * @return the fullName
+	 */
+	public String getFullName() {
+		return this.fullName;
+	}
+
+	/**
+	 * @param fullName
+	 *            the fullName to set
+	 */
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	/**
+	 * @return the shortName
+	 */
+	public String getShortName() {
+		return this.shortName;
+	}
+
+	/**
+	 * @param shortName
+	 *            the shortName to set
+	 */
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+
+	/**
+	 * @return the address1
+	 */
+	public String getAddress1() {
+		return this.address1;
+	}
+
+	/**
+	 * @param address1
+	 *            the address1 to set
+	 */
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
+
+	/**
+	 * @return the address2
+	 */
+	public String getAddress2() {
+		return this.address2;
+	}
+
+	/**
+	 * @param address2
+	 *            the address2 to set
+	 */
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+
+	/**
+	 * @return the telephoneNumber
+	 */
+	public String getTelephoneNumber() {
+		return this.telephoneNumber;
+	}
+
+	/**
+	 * @param telephoneNumber
+	 *            the telephoneNumber to set
+	 */
+	public void setTelephoneNumber(String telephoneNumber) {
+		this.telephoneNumber = telephoneNumber;
+	}
+
+	/**
+	 * @return the fax
+	 */
+	public String getFax() {
+		return this.fax;
+	}
+
+	/**
+	 * @param fax
+	 *            the fax to set
+	 */
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return this.email;
+	}
+
+	/**
+	 * @param email
+	 *            the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * @return the contactPerson
+	 */
+	public String getContactPerson() {
+		return this.contactPerson;
+	}
+
+	/**
+	 * @param contactPerson
+	 *            the contactPerson to set
+	 */
+	public void setContactPerson(String contactPerson) {
+		this.contactPerson = contactPerson;
+	}
+
+	/**
+	 * @return the contactdesignation
+	 */
+	public String getContactdesignation() {
+		return this.contactdesignation;
+	}
+
+	/**
+	 * @param contactdesignation
+	 *            the contactdesignation to set
+	 */
+	public void setContactdesignation(String contactdesignation) {
+		this.contactdesignation = contactdesignation;
+	}
+
+	/**
+	 * @return the contactDepartment
+	 */
+	public String getContactDepartment() {
+		return this.contactDepartment;
+	}
+
+	/**
+	 * @param contactDepartment
+	 *            the contactDepartment to set
+	 */
+	public void setContactDepartment(String contactDepartment) {
+		this.contactDepartment = contactDepartment;
+	}
+
+	/**
+	 * @return the micrCode
+	 */
+	public String getMicrCode() {
+		return this.micrCode;
+	}
+
+	/**
+	 * @param micrCode
+	 *            the micrCode to set
+	 */
+	public void setMicrCode(String micrCode) {
+		this.micrCode = micrCode;
+	}
+
+	/**
+	 * @return the fullNameLocal
+	 */
+	public String getFullNameLocal() {
+		return this.fullNameLocal;
+	}
+
+	/**
+	 * @param fullNameLocal
+	 *            the fullNameLocal to set
+	 */
+	public void setFullNameLocal(String fullNameLocal) {
+		this.fullNameLocal = fullNameLocal;
+	}
+
+	/**
+	 * @return the shortNameLocal
+	 */
+	public String getShortNameLocal() {
+		return this.shortNameLocal;
+	}
+
+	/**
+	 * @param shortNameLocal
+	 *            the shortNameLocal to set
+	 */
+	public void setShortNameLocal(String shortNameLocal) {
+		this.shortNameLocal = shortNameLocal;
+	}
+
+	/**
+	 * @return the address1Local
+	 */
+	public String getAddress1Local() {
+		return this.address1Local;
+	}
+
+	/**
+	 * @param address1Local
+	 *            the address1Local to set
+	 */
+	public void setAddress1Local(String address1Local) {
+		this.address1Local = address1Local;
+	}
+
+	/**
+	 * @return the address2Local
+	 */
+	public String getAddress2Local() {
+		return this.address2Local;
+	}
+
+	/**
+	 * @param address2Local
+	 *            the address2Local to set
+	 */
+	public void setAddress2Local(String address2Local) {
+		this.address2Local = address2Local;
+	}
+
+	/**
+	 * @return the contactPersonLocal
+	 */
+	public String getContactPersonLocal() {
+		return this.contactPersonLocal;
+	}
+
+	/**
+	 * @param contactPersonLocal
+	 *            the contactPersonLocal to set
+	 */
+	public void setContactPersonLocal(String contactPersonLocal) {
+		this.contactPersonLocal = contactPersonLocal;
+	}
+
+	/**
+	 * @return the contactdesignationLocal
+	 */
+	public String getContactdesignationLocal() {
+		return this.contactdesignationLocal;
+	}
+
+	/**
+	 * @param contactdesignationLocal
+	 *            the contactdesignationLocal to set
+	 */
+	public void setContactdesignationLocal(String contactdesignationLocal) {
+		this.contactdesignationLocal = contactdesignationLocal;
+	}
+
+	/**
+	 * @return the contactDepartmentLocal
+	 */
+	public String getContactDepartmentLocal() {
+		return this.contactDepartmentLocal;
+	}
+
+	/**
+	 * @param contactDepartmentLocal
+	 *            the contactDepartmentLocal to set
+	 */
+	public void setContactDepartmentLocal(String contactDepartmentLocal) {
+		this.contactDepartmentLocal = contactDepartmentLocal;
+	}
+
+	/**
+	 * @return the swift
+	 */
+	public String getSwift() {
+		return this.swift;
+	}
+
+	/**
+	 * @param swift
+	 *            the swift to set
+	 */
+	public void setSwift(String swift) {
+		this.swift = swift;
+	}
+
+	/**
+	 * @return the debitBranchID
+	 */
+	public String getDebitBranchID() {
+		return this.debitBranchID;
+	}
+
+	/**
+	 * @param debitBranchID
+	 *            the debitBranchID to set
+	 */
+	public void setDebitBranchID(String debitBranchID) {
+		this.debitBranchID = debitBranchID;
+	}
+
+	/**
+	 * @return the branchIFSC
+	 */
+	public String getBranchIFSC() {
+		return this.branchIFSC;
+	}
+
+	/**
+	 * @param branchIFSC
+	 *            the branchIFSC to set
+	 */
+	public void setBranchIFSC(String branchIFSC) {
+		this.branchIFSC = branchIFSC;
+	}
+
+	/**
+	 * @return the routingID
+	 */
+	public String getRoutingID() {
+		return this.routingID;
+	}
+
+	/**
+	 * @param routingID
+	 *            the routingID to set
+	 */
+	public void setRoutingID(String routingID) {
+		this.routingID = routingID;
+	}
+
+	// Add Branch Details
+
+	/**
+	 * @return the mobileNo
+	 */
+	public String getMobileNo() {
+		return this.mobileNo;
+	}
+
+	/**
+	 * @param mobileNo
+	 *            the mobileNo to set
+	 */
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
+	/**
+	 * @return the countryId
+	 */
+	public BigDecimal getCountryId() {
+		return this.countryId;
+	}
+
+	/**
+	 * @param countryId
+	 *            the countryId to set
+	 */
+	public void setCountryId(BigDecimal countryId) {
+		this.countryId = countryId;
+	}
+
+	/**
+	 * @return the stateId
+	 */
+	public BigDecimal getStateId() {
+		return this.stateId;
+	}
+
+	/**
+	 * @param stateId
+	 *            the stateId to set
+	 */
+	public void setStateId(BigDecimal stateId) {
+		this.stateId = stateId;
+	}
+
+	/**
+	 * @return the cityId
+	 */
+	public BigDecimal getCityId() {
+		return this.cityId;
+	}
+
+	/**
+	 * @param cityId
+	 *            the cityId to set
+	 */
+	public void setCityId(BigDecimal cityId) {
+		this.cityId = cityId;
+	}
+
+	/**
+	 * @return the districtId
+	 */
+	public BigDecimal getDistrictId() {
+		return this.districtId;
+	}
+
+	/**
+	 * @param districtId
+	 *            the districtId to set
+	 */
+	public void setDistrictId(BigDecimal districtId) {
+		this.districtId = districtId;
+	}
+
+	/**
+	 * @return the bankID
+	 */
+	public BigDecimal getBankID() {
+		return this.bankID;
+	}
+
+	/**
+	 * @param bankID
+	 *            the bankID to set
+	 */
+	public void setBankID(BigDecimal bankID) {
+		this.bankID = bankID;
+	}
+
+	/**
+	 * Responsible to populate Country
+	 * 
+	 * @return
+	 */
+	public List<CountryMasterDesc> getCountryNameList() {
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<CountryMasterDesc> lstCountry = getGeneralService()
+				.getCountryList(
+						new BigDecimal(sessionStateManage
+								.isExists("languageId") ? sessionStateManage
+								.getSessionValue("languageId") : "" + 1));
+		return lstCountry;
+	}
+
+	/**
+	 * Responsible to populate BankName
+	 * 
+	 * @return
+	 */
+	public List<BankMaster> getBankNameList() {
+		List<BankMaster> lstBank = getBankBranchDetailsService().getBankList();
+		System.out.println("lstBank   :" + lstBank.size());
+		return lstBank;
+	}
+
+	/**
+	 * @return the isLocalPanelRender
+	 */
+	public Boolean getIsLocalPanelRender() {
+		return this.isLocalPanelRender;
+	}
+
+	/**
+	 * @param isLocalPanelRender
+	 *            the isLocalPanelRender to set
+	 */
+	public void setIsLocalPanelRender(Boolean isLocalPanelRender) {
+		this.isLocalPanelRender = isLocalPanelRender;
+	}
+
+	/**
+	 * @return the isBranchInfo
+	 */
+	public Boolean getIsBranchInfo() {
+		return this.isBranchInfo;
+	}
+
+	/**
+	 * @param isBranchInfo
+	 *            the isBranchInfo to set
+	 */
+	public void setIsBranchInfo(Boolean isBranchInfo) {
+		this.isBranchInfo = isBranchInfo;
+	}
+
+	/**
+	 * @return the isBranchLocalAddressPanel
+	 */
+	public Boolean getIsBranchLocalAddressPanel() {
+		return this.isBranchLocalAddressPanel;
+	}
+
+	/**
+	 * @param isBranchLocalAddressPanel
+	 *            the isBranchLocalAddressPanel to set
+	 */
+	public void setIsBranchLocalAddressPanel(Boolean isBranchLocalAddressPanel) {
+		this.isBranchLocalAddressPanel = isBranchLocalAddressPanel;
+	}
+
+	/**
+	 * @return the isBranchTransactionPanel
+	 */
+	public Boolean getIsBranchTransactionPanel() {
+		return this.isBranchTransactionPanel;
+	}
+
+	/**
+	 * @param isBranchTransactionPanel
+	 *            the isBranchTransactionPanel to set
+	 */
+	public void setIsBranchTransactionPanel(Boolean isBranchTransactionPanel) {
+		this.isBranchTransactionPanel = isBranchTransactionPanel;
+	}
+
+	/**
+	 * @return the lstStateList
+	 */
+	public List<StateMasterDesc> getLstStateList() {
+		return this.lstStateList;
+	}
+
+	/**
+	 * @param lstStateList
+	 *            the lstStateList to set
+	 */
+	public void setLstStateList(List<StateMasterDesc> lstStateList) {
+		this.lstStateList = lstStateList;
+	}
+
+	/**
+	 * @return the lstDistrictList
+	 */
+	public List<DistrictMasterDesc> getLstDistrictList() {
+		return this.lstDistrictList;
+	}
+
+	/**
+	 * @param lstDistrictList
+	 *            the lstDistrictList to set
+	 */
+	public void setLstDistrictList(List<DistrictMasterDesc> lstDistrictList) {
+		this.lstDistrictList = lstDistrictList;
+	}
+
+	/**
+	 * @return the lstCityList
+	 */
+	public List<CityMasterDesc> getLstCityList() {
+		return this.lstCityList;
+	}
+
+	/**
+	 * @param lstCityList
+	 *            the lstCityList to set
+	 */
+	public void setLstCityList(List<CityMasterDesc> lstCityList) {
+		this.lstCityList = lstCityList;
+	}
+
+	/**
+	 * @return the lstBankList
+	 */
+	public List<BankMaster> getLstBankList() {
+		return this.lstBankList;
+	}
+
+	/**
+	 * @param lstBankList
+	 *            the lstBankList to set
+	 */
+	public void setLstBankList(List<BankMaster> lstBankList) {
+		this.lstBankList = lstBankList;
+	}
+
+	/**
+	 * Responsible to prepare stateList by country change
+	 * 
+	 * @param event
+	 */
+	public void generateStateList(AjaxBehaviorEvent event) {
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<StateMasterDesc> stateMaster = getGeneralService()
+				.getStateList(
+						new BigDecimal(sessionStateManage
+								.isExists("languageId") ? sessionStateManage
+								.getSessionValue("languageId") : "" + 1),
+						getCountryId());
+		setLstStateList(stateMaster);
+
+		if (getCountryId() != null && getCountryId().intValue() != 120) {
+			setIsLocalPanelRender(false);
+		} else {
+			setIsLocalPanelRender(true);
+		}
+
+		// reset State, District, City, as country is changing
+		setStateId(null);
+		setDistrictId(null);
+		setCityId(null);
+	}
+
+	/**
+	 * Responsible to populate District depending upon state selection
+	 * 
+	 * @param event
+	 */
+	public void generateDistrictList(AjaxBehaviorEvent event) {
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<DistrictMasterDesc> lstDistrict = getGeneralService()
+				.getDistrictList(
+						new BigDecimal(sessionStateManage
+								.isExists("languageId") ? sessionStateManage
+								.getSessionValue("languageId") : "" + 1),
+						getCountryId(), getStateId());
+		setLstDistrictList(lstDistrict);
+
+		// reset District, City, as state is changing
+		setDistrictId(null);
+		setCityId(null);
+	}
+
+	/**
+	 * This method is responsible to populate State depending upon country
+	 * selection
+	 */
+	private void populateState() {
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<StateMasterDesc> stateMaster = getGeneralService()
+				.getStateList(
+						new BigDecimal(sessionStateManage
+								.isExists("languageId") ? sessionStateManage
+								.getSessionValue("languageId") : "" + 1),
+						getCountryId());
+		setLstStateList(stateMaster);
+	}
+
+	/**
+	 * This method is responsible to populate district depending upon state
+	 * election
+	 */
+	private void populateDistrict() {
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<DistrictMasterDesc> lstDistrict = getGeneralService()
+				.getDistrictList(
+						new BigDecimal(sessionStateManage
+								.isExists("languageId") ? sessionStateManage
+								.getSessionValue("languageId") : "" + 1),
+						getCountryId(), getStateId());
+		setLstDistrictList(lstDistrict);
+	}
+
+	/**
+	 * This method is responsible to populate City depending upon district
+	 * selection
+	 */
+	private void populateCity() {
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<CityMasterDesc> lstCity = getGeneralService()
+				.getCityList(
+						new BigDecimal(sessionStateManage
+								.isExists("languageId") ? sessionStateManage
+								.getSessionValue("languageId") : "" + 1),
+						getCountryId(), getStateId(), getDistrictId());
+		setLstCityList(lstCity);
+	}
+
+	/**
+	 * This method is responsible to populate City depending upon district
+	 * selection
+	 */
+	private void populateBank() {
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<BankMaster> lstBank = getBankBranchDetailsService().getBankList();
+		setLstBankList(lstBank);
+	}
+
+	/**
+	 * Responsible to populate city depending upon district selection
+	 * 
+	 * @param event
+	 */
+	public void generateCityList(AjaxBehaviorEvent event) {
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<CityMasterDesc> lstCity = getGeneralService()
+				.getCityList(
+						new BigDecimal(sessionStateManage
+								.isExists("languageId") ? sessionStateManage
+								.getSessionValue("languageId") : "" + 1),
+						getCountryId(), getStateId(), getDistrictId());
+		setLstCityList(lstCity);
+
+		// reset City, as district is changing
+		setCityId(null);
+	}
+	
+
+	/**
+	 *  
+	 * @param event
+	 */
+	public void getCity(AjaxBehaviorEvent event) {}
+	
+	//validate branch code 
+	public String validateBranchCode(){
+		System.out.println("branch code  :"+getBranchCode());
+		List branchList=getBankBranchDetailsService().checkBranchCode(getBranchCode().toString());
+		if(branchList!=null&&branchList.size()>0){
+			System.out.println("value there ");
+			return "Branch Code Already found";
+		}
+		else{
+			System.out.println("Not there ");
+			return "";
+		}
+		 
+	}
+	// Save Bank Branch details in Database
+
+	@SuppressWarnings("unchecked")
+	public String saveBankBranchdetails() {
+		System.out.println("inside save bank branch...");
+		// System.out.println("Size  e :"+addBankBranchDetail().size());
+
+		try {
+			/*
+			 * BranchDetail branchDetail=new
+			 * BranchDetail(getBranchCode(),getFullName
+			 * (),getShortName(),getAddress1
+			 * (),getAddress2(),getTelephoneNumber()
+			 * ,getFax(),getContactPerson(),
+			 * getContactdesignation(),getContactDepartment(),
+			 * getMicrCode(),getFullNameLocal
+			 * (),getShortNameLocal(),getAddress1Local
+			 * (),getAddress2Local(),getContactPersonLocal
+			 * (),getContactdesignationLocal(),getContactdesignationLocal(),
+			 * getSwift
+			 * (),getDebitBranchID(),getBranchIFSC(),getRoutingID(),getCountryId
+			 * (),getStateId(),getCityId(),getDistrictId());
+			 */
+			BankBranch bankBranch = new BankBranch();
+			bankBranch.setBranchCode(new BigDecimal(getBranchCode()));
+
+			bankBranch.setBranchFullName(getFullName());
+			bankBranch.setBranchShortName(getShortName());
+			bankBranch.setAddress1(getAddress1());
+			bankBranch.setAddress1(getAddress2());
+			bankBranch.setTelephoneNo(getTelephoneNumber());
+			bankBranch.setFaxNo(getFax());
+			bankBranch.setContactPerson(getContactPerson());
+			bankBranch.setContactDesg(getContactdesignation());
+			bankBranch.setContactDept(getContactDepartment());
+			bankBranch.setMicrCode(getMicrCode());
+			bankBranch.setBranchFullNameAr(getFullNameLocal());
+			bankBranch.setBranchShortNameAr(getShortNameLocal());
+			bankBranch.setAddress1Ar(getAddress1Local());
+			bankBranch.setAddress2Ar(getAddress2Local());
+			bankBranch.setContactPersonAr(getContactPersonLocal());
+			bankBranch.setContactDesgAr(getContactdesignationLocal());
+			bankBranch.setContactDeptAr(getContactDepartmentLocal());
+			bankBranch.setSwiftBic(getSwift());
+			bankBranch.setDebitBranchId(getDebitBranchID());
+			bankBranch.setBranchIfsc(getBranchIFSC());
+			bankBranch.setRoutingId(getRoutingID());
+			bankBranch.setMobile(getMobileNo());
+
+			BankMaster bankMaster = new BankMaster();
+			bankMaster.setBankId(getBankID());
+			bankBranch.setExBankMaster(bankMaster);
+
+			CountryMaster countryMaster = new CountryMaster();
+			countryMaster.setCountryId(getCountryId());
+			bankBranch.setFsCountryMaster(countryMaster);
+
+			StateMaster statemaster = new StateMaster();
+			statemaster.setStateId(getStateId());
+			bankBranch.setFsStateMaster(statemaster);
+
+			CityMaster cityMaster = new CityMaster();
+			cityMaster.setCityId(getDistrictId());
+			bankBranch.setFsCityMaster(cityMaster);
+
+			DistrictMaster districtMaster = new DistrictMaster();
+			districtMaster.setDistrictId(getDistrictId());
+			bankBranch.setFsDistrictMaster(districtMaster);
+
+			bankBranch.setCreator("Arul");
+			bankBranch.setCreateDate(new Date());
+
+			getBankBranchDetailsService().saveBankBranchDetail(bankBranch);
+			try{
+				ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+				context.redirect("../login/login.xhtml");
+			} catch(Exception e) {
+				System.out.println(e);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "";
+	}
+	
+	/**
+	 * cancelBranchDetail
+	 * @return
+	 */
+	public void cancelBranchDetail() {
+		try{
+			ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+			context.redirect("../treasury/bankbranchdetails.xhtml");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * @param bankBranchList
+	 *            the bankBranchList to set
+	 */
+	public void setBankBranchList(List<BankBranch> bankBranchList) {
+
+		// System.out.println("bankBranchList     :  "+bankBranchList.size());
+		this.bankBranchList = bankBranchList;
+	}
+
+	/**
+	 * @return the bankBranchList
+	 */
+	public List<BankBranch> getBankBranchList() {
+		// bankBranchList=getBankBranchDetailsService().getBankBranchList();
+		/*
+		 * System.out.println("bankBranchList     :  "+bankBranchList.size());
+		 * System.out.println("vvv vvv  :"+bankBranchList.size());
+		 */
+		return this.bankBranchList;
+	}
+	
+	public void getBank(){}
+
+	/*
+	 * public List<BankBranch> getBankBranchListInfo(){
+	 * System.out.println("bankBranchList     :  "+bankBranchList.size());
+	 * bankBranchList=getBankBranchDetailsService().getBankBranchList();
+	 * System.out.println("bankBranchList     :  "+bankBranchList.size());
+	 * return bankBranchList; }
+	 */
+
+	// Reset branch fields
+	public String resetBankBranch() {
+		// System.out.println("reset staRT");
+		
+		setFullName("");
+		setShortName("");
+		setShortName("");
+		setFullNameLocal("");
+		setShortNameLocal("");
+		setAddress1("");
+		setAddress2("");
+		setAddress1Local("");
+		setAddress2Local("");
+		setTelephoneNumber("");
+		setFax("");
+		setEmail("");
+		setContactDepartment("");
+		setContactDepartmentLocal("");
+		setContactPerson("");
+		setContactPersonLocal("");
+		setContactdesignation("");
+		setContactdesignationLocal("");
+		setSwift("");
+		setDebitBranchID("");
+		setBranchIFSC("");
+		setRoutingID("");
+		setMobileNo(null);
+		setMicrCode("");
+		setCountryId(null);
+		setStateId(null);
+		setCityId(null);
+		setDistrictId(null);
+		setBankID(null);
+		System.out.println("reset END");
+		return "";
+	}
+
+	/**
+	 * This method is responsible to supply, behavior of the component,calling
+	 * from page
+	 * 
+	 * @param componentName
+	 * @param type
+	 * @return
+	 */
+	public String viewBehaviorBean(String componentName, String type) {
+
+		if (mapComponentBehavior == null || mapComponentBehavior.size() == 0) {
+			setPageIdIntoSession();
+			prepareBehavior();
+		}
+		return new CollectionUtil().fetchBehavior(mapComponentBehavior,
+				componentName, type);
+	}
+
+	/**
+	 * This method is responsible to track the page name from viewId and then it
+	 * will search in page master table, then from there ID will get, and store
+	 * in session
+	 */
+	private void setPageIdIntoSession() {
+
+		String pageName = FacesContext.getCurrentInstance().getViewRoot()
+				.getViewId();
+		pageName = pageName.substring(pageName.lastIndexOf('/') + 1,
+				pageName.indexOf(".xhtml"));
+
+		try {
+			BigDecimal pageId = getGeneralService().getPageId(pageName);
+			new SessionStateManage().setSessionValue("pageId",
+					pageId.toString());
+		} catch (Exception e) {
+			System.out.println("Page id not found for pagename :: " + pageName
+					+ " :: " + e);
+		}
+	}
+
+	private void prepareBehavior() {
+
+		SessionStateManage manage = new SessionStateManage();
+		System.out.println("Component parameter ======================= "+manage.getApplicationId()+", "+manage.getCompanyId()+", "+manage.getCompanyId()+", "+manage.getPageId());
+		List<String> lstComponentName = Arrays.asList("Branch Code","Bank",
+				"Branch Full Name", "Branch Short Name", "Branch first address",
+				"Branch second address", "Country", "State", "District", "City",
+				"zip", "Telephone Number", "Mobile Number", "Fax", "Email",
+				"Branch Contact Person", "Branch Contact Designation", "Branch Contact Department",
+				"Branch Local Full Name", "Branch Local Short Name",
+				"Branch Local first address", "Branch Local second address",
+				"Branch Local Contact Person",
+				"Branch Contact Designation",
+				"Branch Contact Department", "SWIFT", "Debit Branch ID",
+				"Branch IFSC", "Routing ID", "MIRC Code");
+		mapComponentBehavior = getGeneralService().getComponentBehavior(
+				lstComponentName, manage.getLevel(), manage.getApplicationId(),
+				manage.getCompanyId(), manage.getCountryId(),
+				manage.getPageId());
+
+	}
+
+	public void branchInfoPanelNext() {
+		setIsBranchInfo(false);
+		setIsBranchLocalAddressPanel(true);
+		setIsBranchTransactionPanel(false);
+
+	}
+
+	public void branchLocalAddressPanelBack() {
+		setIsBranchInfo(true);
+		setIsBranchLocalAddressPanel(false);
+		setIsBranchTransactionPanel(false);
+	}
+
+	public void branchLocalAddressPanelNext() {
+		setIsBranchInfo(false);
+		setIsBranchLocalAddressPanel(false);
+		setIsBranchTransactionPanel(true);
+	}
+
+	public void barnchTransactionBack() {
+		setIsBranchInfo(false);
+		setIsBranchLocalAddressPanel(true);
+		setIsBranchTransactionPanel(false);
+
+	}
+
+
+	/*
+	 * This method will call when OK will clicked from confirm dialogue box
+	 */
+	public void welcomeListener() {
+		// System.out.println("Welcome Back");
+	}
+
+	/**
+	 * This method will call when Log Me Out button will press from confirm
+	 * dialogue box
+	 * 
+	 * @throws IOException
+	 */
+	public void logoutListener() throws IOException {
+		ExternalContext ec = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		ec.invalidateSession();
+		// System.out.println(ec.getRequestContextPath()) ....This will print
+		// the "/AlmullaExchange"...Context Name..That's why we store External
+		// context in 'ec' variable
+		ec.redirect(ec.getRequestContextPath() + "/index.jsp");
+	}
+}

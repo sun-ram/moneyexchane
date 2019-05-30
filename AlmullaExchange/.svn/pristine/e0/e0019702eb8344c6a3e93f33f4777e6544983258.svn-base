@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link href="css/style1.css" rel="stylesheet" type="text/css" />
+	  </h:head>
+
+	  <h:body dir="#{facesBean.direction}">
+<f:view locale="#{facesBean.locale}">
+<ui:include src="#{facesBean.header}"></ui:include>
+<ui:include src="#{facesBean.menu}"></ui:include>
+
+
+    				
+    <table align="left" width="100%">
+    <tr>
+    <td align="left" valign="top"><div id="left" class="leftColumn">
+    		<div style="display: none; width: 150px;" id="leftCol">
+    		<p:accordionPanel>
+		<p:tab title="My Profile"
+			titleStyle="background: url(../images/menu_icon5.png) no-repeat scroll 6px 8px #FFF !important;  border-top:none !important;">
+			<h:outputLink value="../login/forgotpassword.xhtml" target="_self" styleClass="left_menu">
+				 <h:outputText value="Change Password"/>
+ 			</h:outputLink>
+			<p:commandLink value="Logout" url="#" styleClass="left_menu" style=" border-bottom:none !important;"  />
+		</p:tab>
+		<p:tab title="About"
+			titleStyle="background: url(../images/menu_icon1.png) no-repeat scroll 6px 8px #FFF !important;">
+
+			<p:commandLink value="Almull Group" styleClass="left_menu" />
+			<p:commandLink value="Exchange" url="#" styleClass="left_menu" />
+
+			<p:commandLink value="Finance" url="#" styleClass="left_menu" />
+
+			<p:commandLink value="Automobiles" url="#" styleClass="left_menu"  style=" border-bottom:none !important;" />
+		</p:tab>
+		<p:tab title="Services"
+			titleStyle="background: url(../images/menu_icon2.png) no-repeat scroll 6px 8px #FFF !important;">
+			<p:commandLink value="Individual" styleClass="left_menu"
+				url="../registration/custmanualbranchreg.xhtml" />
+
+			<p:commandLink value="Non Individual" styleClass="left_menu"
+				url="../registration/corporateregistration.xhtml"  style=" border-bottom:none !important;" />
+		</p:tab>
+		<p:tab title="Branch"
+			titleStyle="background: url(../images/menu_icon3.png) no-repeat scroll 6px 8px #FFF !important;">
+			<p:commandLink value="Search Customer" styleClass="left_menu"
+				url="../search/searchcustomer.xhtml" />
+
+			<p:commandLink value="Branch Home" styleClass="left_menu"
+				url="../registration/branchhome.xhtml" style=" border-bottom:none !important;"  />
+		</p:tab>
+		<p:tab title="Rule Engine"
+			titleStyle="background: url(../images/menu_icon4.png) no-repeat scroll 6px 8px #FFF !important;">
+			<p:commandLink styleClass="left_menu" value="Business Component"
+				url="../ruleengine/businesscomponent.xhtml" />
+
+			<p:commandLink styleClass="left_menu" value="Business Component Config"
+				url="../ruleengine/businesscomponentconf.xhtml"  style=" border-bottom:none !important;"  />
+		</p:tab>
+	</p:accordionPanel>
+    		</div></div>
+    		</td>
+    		
+    	<td  class="rightColumn" valign="top">
+    	<h:panelGroup layout="block"  class="container">
+  <h:panelGroup layout="block" class="main_div">
+<div class="menu_button"><img style="cursor: pointer;  position:relative; left:15px;" id="HideHandle" name="HideHandle" src="../images/toggle_plus.png" alt="" onclick='hideLeftCol("leftCol");closeMenus();'/></div>
+    				<h1><h:outputText value="#{msg['lbl.customerreg']}"/></h1>
+    	<h:panelGroup layout="block" class="table_bg">	
+			   <p:panel id="mainPanel" style="padding:10px!important;"><h:form title="customer">
+	    				<p:panel style="align:center;margin:0 auto; border:none;padding-top:100px; padding-bottom:100px;">
+	     					
+	     					
+	     					<div class="ui-grid-e ui-responsive">
+											<div class="ui-block-a">
+												
+											</div>
+											<div class="ui-block-b" >
+												<p:button  value="#{msg['lbl.remitterreg']}" style="height:40px;width:210px;"  href="../registration/custmanualbranchreg.xhtml"/>
+											</div>
+											<div class="ui-block-c">
+												
+											</div>
+											<div class="ui-block-d"><p:button value="#{msg['lbl.corporateregistration']}"  style="width:230px;height:40px;" href="../registration/corporateregistration.xhtml"/>						
+											</div>
+											<div class="ui-block-e"></div>
+											<div class="ui-block-f"></div>
+										</div>
+										<div class="clearfix"></div>
+		   					
+		     		
+		    			
+		      				
+	     				</p:panel>
+    				</h:form>
+    				</p:panel></h:panelGroup>
+    				</h:panelGroup></h:panelGroup>
+    				</td>
+    </tr>
+    </table>
+    				<div class="clearfix"></div>
+    				
+    				
+                 <ui:include src="#{facesBean.footer}"></ui:include>
+            
+	       </f:view>
+     </h:body> 
+
+
+  </html>

@@ -1,0 +1,1539 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</h:head>
+
+<h:body>
+	<f:view>
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<ui:include src="#{facesBean.menu}"></ui:include>
+		<table align="left" width="100%" style="height: 100%;">
+			<tr>
+				<td align="left" valign="top" style="height: 100%;"><ui:include src="../common/common_menu.xhtml"></ui:include></td>
+
+				<td class="rightColumn" valign="top"><h:panelGroup
+						layout="block" class="container">
+						<h:panelGroup layout="block" class="main_div">
+							<div class="menu_button">
+								<img style="cursor: pointer; position: relative; left: 15px;"
+									id="HideHandle" name="HideHandle"
+									src="../images/toggle_plus.png" alt=""
+									onclick='hideLeftCol("leftCol");closeMenus();' />
+							</div>
+							<h1>
+								<h:outputText value="Customer Information Verification" />
+							</h1>
+							<h:panelGroup layout="block" class="table_bg">
+								<h:form enctype="multipart/form-data" style="padding:0!important;">
+									<p:panel id="mainPanel"
+										style="border: 0px; padding:0px!important;">
+										<p:panel style="padding:10px!important;border: 0px; ">
+											<p:panel styleClass="shadow" rendered="#{customerInfoBranch.renderBasicInfo}">
+												<p:panel
+													style="padding:0px !important; border:none !important;"
+													>
+													<div class="ui-grid-a ui-responsive">
+														<div class="ui-block-a" style="padding-top: 20px;">
+															<h:outputText value="#{msg['lbl.validselect']} *" />
+														</div>
+														<div class="ui-block-b">
+															<p:selectOneMenu
+																value="#{customerInfoBranch.methodTypeId}">
+																<f:selectItem itemLabel="#{msg['lbl.select']}"
+																	itemValue="" />
+																<f:selectItem itemLabel="#{msg['lbl.smartcard']}"
+																	itemValue="1" />
+																<f:selectItem itemLabel="#{msg['lbl.manual']}"
+																	itemValue="2" />
+															</p:selectOneMenu>
+														</div>
+
+													</div>
+													<div class="clearfix"></div>
+												</p:panel>
+
+												<p:panel
+													style="padding:0px !important; border:none !important;"
+													>
+													<div class="ui-grid-e ui-responsive">
+														<div class="ui-block-a">
+															<h:outputText value="Token Number" />
+														</div>
+														<div class="ui-block-b">
+															<p:inputText value="#{customerInfoBranch.tokenNumber}">
+															</p:inputText>
+														</div>
+														<div class="ui-block-c">
+															<h:outputText value="ID Number *" />
+														</div>
+														<div class="ui-block-d">
+														    <p:outputLabel value="Civil ID is not Registered." rendered="#{customerInfoBranch.renderIdNotReg}"
+														     style="color:red;"/>
+															<p:inputText value="#{customerInfoBranch.idNumber}" id="idNumer"
+															requiredMessage="Enter Id Number" validatorMessage="Wrong Civil ID" >
+											            	<f:validator validatorId="com.amg.exchange.validator.CivilIDValidator"/>
+												            <p:message for="idNumer" display="text" />
+															</p:inputText>
+														</div>
+														<div class="ui-block-e"></div>
+														<div class="ui-block-f"></div>
+													</div>
+													<div class="clearfix"></div>
+
+												</p:panel>
+											</p:panel>
+											<h:panelGroup layout="block" styleClass="shadow_button" rendered="#{customerInfoBranch.renderBasicInfo}">
+
+
+												<p:commandButton value="clear" style="margin-right:10px;"
+													action="#{customerInfoBranch.clearBasicInfo}"
+													update="mainPanel">
+												</p:commandButton>
+												<p:commandButton value="Go" action="#{customerInfoBranch.fetchCustomerInfo}" update="mainPanel">
+												</p:commandButton>
+
+												<div class="clearfix"></div>
+											</h:panelGroup>
+
+
+											<p:panel styleClass="shadow" rendered="#{customerInfoBranch.renderCustomerDetails}">
+												<p:panel    
+													style="padding:0px !important; border:none !important;"
+													>
+													<h2>Customer Details</h2>
+													<div class="ui-grid-a ui-responsive">
+														<div class="ui-block-a" style="padding-top:20px;">
+															<h:outputText value="Title #{customerInfoBranch.viewBehaviorBean('Title','MANDATORY')}" />
+														</div>
+														<div class="ui-block-b">
+														    <p:message for="title" display="text"/>
+															<p:selectOneMenu id="title" value="#{customerInfoBranch.title}"
+															 required="#{customerInfoBranch.viewBehaviorBean('Title','REQUIRED')}"
+													     	  disabled="#{customerInfoBranch.viewBehaviorBean('Title','ENABLE')}"
+														     requiredMessage="#{msg['lbl.validselectt']} Title">
+										                 	<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+											                <f:selectItem itemLabel="Mr" itemValue="0" />
+											                <f:selectItem itemLabel="Ms" itemValue="1" />
+											                <f:selectItem itemLabel="Mrs" itemValue="2" />
+									                    	</p:selectOneMenu>
+														</div>
+
+													</div>
+													<div class="clearfix"></div>
+
+													<div class="ui-grid-e ui-responsive">
+														<div class="ui-block-a">
+															<h:outputText value="First Name #{customerInfoBranch.viewBehaviorBean('First Name','MANDATORY')}" />
+														</div>
+														<div class="ui-block-b">
+														<p:inputText value="#{customerInfoBranch.firstName}" id="firstName" readonly="true"
+													     required="#{customerInfoBranch.viewBehaviorBean('First Name','REQUIRED')}"
+														 disabled="#{customerInfoBranch.viewBehaviorBean('First Name','ENABLE')}"
+														 maxlength="#{customerInfoBranch.viewBehaviorBean('First Name','MAX_VALUE')}"
+													  	 requiredMessage="#{msg['lbl.validationprefix']} First Name"
+														 validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('First Name','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('First Name','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('First Name','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="firstNameMsg" event="blur" />
+											    	<p:message id="firstNameMsg" for="firstName" display="text"/>
+															</p:inputText>
+														</div>
+														<div class="ui-block-c">
+															<h:outputText value="Middle Name  #{customerInfoBranch.viewBehaviorBean('Middle Name','MANDATORY')}" />
+														</div>
+														<div class="ui-block-d">
+															<p:inputText id="middleName" value="#{customerInfoBranch.middleName}"  readonly="true"
+															   required="#{customerInfoBranch.viewBehaviorBean('Middle Name','REQUIRED')}"
+														       disabled="#{customerInfoBranch.viewBehaviorBean('Middle Name','ENABLE')}"
+														       maxlength="#{customerInfoBranch.viewBehaviorBean('Middle Name','MAX_VALUE')}"
+														       requiredMessage="#{msg['lbl.validationprefix']} Middle Name"
+														       validator="RegularExpressionValidation">
+													          <f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Middle Name','PATTERN')}"/>  
+										    	        	  <f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Middle Name','MIN_VALUE')}"/>  
+											             	  <f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Middle Name','MAX_VALUE')}"/>	
+											         	       <p:ajax update="middleNameMsg" event="blur" />
+											                 	<p:message id="middleNameMsg" for="middleName" display="text"/>
+															</p:inputText>
+														</div>
+														<div class="ui-block-e"></div>
+														<div class="ui-block-f"></div>
+													</div>
+													<div class="clearfix"></div>
+
+													<div class="ui-grid-e ui-responsive">
+														<div class="ui-block-a">
+															<h:outputText value="Last Name #{customerInfoBranch.viewBehaviorBean('Last Name','MANDATORY')}" />
+														</div>
+														<div class="ui-block-b">
+															<p:inputText  id="lastName" value="#{customerInfoBranch.lastName}"  readonly="true"
+															    required="#{customerInfoBranch.viewBehaviorBean('Last Name','REQUIRED')}"
+														        disabled="#{customerInfoBranch.viewBehaviorBean('Last Name','ENABLE')}"
+														        maxlength="#{customerInfoBranch.viewBehaviorBean('Last Name','MAX_VALUE')}"
+														        requiredMessage="#{msg['lbl.validationprefix']} Last Name"
+														        validator="RegularExpressionValidation">
+													         <f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Last Name','PATTERN')}"/>  
+										    	             <f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Last Name','MIN_VALUE')}"/>  
+											    	         <f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Last Name','MAX_VALUE')}"/>	
+											    	         <p:ajax update="lastNameMsg" event="blur" />
+											    	         <p:message id="lastNameMsg" for="lastName" display="text"/>
+															</p:inputText>
+														</div>
+														<div class="ui-block-c">
+															<h:outputText value="Short Name #{customerInfoBranch.viewBehaviorBean('Short Name','MANDATORY')}" />
+														</div>
+														<div class="ui-block-d">
+															<p:inputText id="shortName" value="#{customerInfoBranch.shortName}"  readonly="true"
+															    required="#{customerInfoBranch.viewBehaviorBean('Short Name','REQUIRED')}"
+														        disabled="#{customerInfoBranch.viewBehaviorBean('Short Name','ENABLE')}"
+														        maxlength="#{customerInfoBranch.viewBehaviorBean('Short Name','MAX_VALUE')}"
+														        requiredMessage="#{msg['lbl.validationprefix']} Short Name"
+														        validator="RegularExpressionValidation">
+													
+													            <f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Short Name','PATTERN')}"/>  
+										    	             	<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Short Name','MIN_VALUE')}"/>  
+											    	            <f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Short Name','MAX_VALUE')}"/>	
+											    	
+											                 	<p:ajax update="shortNameMsg" event="blur" />
+											                 	<p:message id="shortNameMsg" for="shortName" display="text"/>
+															</p:inputText>
+														</div>
+														<div class="ui-block-e"></div>
+														<div class="ui-block-f"></div>
+													</div>
+													<div class="clearfix"></div>
+                                                   
+
+													<p:panel
+														style="padding:0px !important; border:none !important;"
+														rendered="#{customerInfoBranch.renderCustomeInfoLocal}">
+														<div class="ui-grid-a ui-responsive">
+														<div class="ui-block-a" style="padding-top:20px;">
+															<h:outputText value="Title (L) #{customerInfoBranch.viewBehaviorBean('Local Title','MANDATORY')}" />
+														</div>
+														<div class="ui-block-b">
+														    <p:message for="titlel" display="text"/>
+															<p:selectOneMenu id="titlel" value="#{customerInfoBranch.titleL}" disabled="true"
+														    required="#{customerInfoBranch.viewBehaviorBean('Local Title','REQUIRED')}"
+												   	        requiredMessage="#{msg['lbl.validselectt']} Local Title">
+										                 	<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+											                <f:selectItem itemLabel="Mr" itemValue="0" />
+											                <f:selectItem itemLabel="Ms" itemValue="1" />
+											                <f:selectItem itemLabel="Mrs" itemValue="2" />
+									                    	</p:selectOneMenu>
+														</div>
+
+													</div>
+													<div class="clearfix"></div>
+														<div class="ui-grid-e ui-responsive">
+															<div class="ui-block-a">
+																<h:outputText value="First Name (L) #{customerInfoBranch.viewBehaviorBean('Local First Name','MANDATORY')}" />
+															</div>
+															<div class="ui-block-b">
+																<p:inputText  id="localFirstName" value="#{customerInfoBranch.firstNameL}"  readonly="true"
+																        required="#{customerInfoBranch.viewBehaviorBean('Local First Name','REQUIRED')}"
+														                disabled="#{customerInfoBranch.viewBehaviorBean('Local First Name','ENABLE')}"
+													                	maxlength="#{customerInfoBranch.viewBehaviorBean('Local First Name','MAX_VALUE')}"
+													                	requiredMessage="#{msg['lbl.validationprefix']} Local First Name"
+														                validator="RegularExpressionValidation">
+													
+												                	<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Local First Name','PATTERN')}"/>  
+										    	                	<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Local First Name','MIN_VALUE')}"/>  
+											                    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Local First Name','MAX_VALUE')}"/>	
+											    	
+											    	                <p:ajax update="localFirstNameMsg" event="blur" />
+											    	                <p:message id="localFirstNameMsg" for="localFirstName" display="text"/>
+																</p:inputText>
+															</div>
+															<div class="ui-block-c">
+																<h:outputText value="Middle Name (L) #{customerInfoBranch.viewBehaviorBean('Local Middle name','MANDATORY')}" />
+															</div>
+															<div class="ui-block-d">
+																<p:inputText id="localMiddleName" value="#{customerInfoBranch.middleNameL}" readonly="true"
+																        required="#{customerInfoBranch.viewBehaviorBean('Local Middle name','REQUIRED')}"
+														                disabled="#{customerInfoBranch.viewBehaviorBean('Local Middle name','ENABLE')}"
+																		maxlength="#{customerInfoBranch.viewBehaviorBean('Local Middle name','MAX_VALUE')}"
+																		requiredMessage="#{msg['lbl.validationprefix']} Local Middle Name"
+																		validator="RegularExpressionValidation">
+													
+																		<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Local Middle name','PATTERN')}"/>  
+															    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Local Middle nName','MIN_VALUE')}"/>  
+																    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Local Middle nName','MAX_VALUE')}"/>	
+																    	
+																    	<p:ajax update="localMiddleNameMsg" event="blur" />
+																    	<p:message id="localMiddleNameMsg" for="localMiddleName" display="text"/>
+																</p:inputText>
+															</div>
+															<div class="ui-block-e"></div>
+															<div class="ui-block-f"></div>
+														</div>
+														<div class="clearfix"></div>
+
+														<div class="ui-grid-e ui-responsive">
+															<div class="ui-block-a">
+																<h:outputText value="Last Name (L) #{customerInfoBranch.viewBehaviorBean('Local Last Name','MANDATORY')}"/>
+															</div>
+															<div class="ui-block-b">
+																<p:inputText   id="localLastName" value="#{customerInfoBranch.lastNameL}"  readonly="true"
+																        required="#{customerInfoBranch.viewBehaviorBean('Local Last Name','REQUIRED')}"
+																		disabled="#{customerInfoBranch.viewBehaviorBean('Local Last Name','ENABLE')}"
+																		maxlength="#{customerInfoBranch.viewBehaviorBean('Local Last Name','MAX_VALUE')}"
+																		requiredMessage="#{msg['lbl.validationprefix']} Local Last Name"
+																		validator="RegularExpressionValidation">
+													
+																		<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Local Last Name','PATTERN')}"/>  
+															    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Local Last Name','MIN_VALUE')}"/>  
+																    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Local Last Name','MAX_VALUE')}"/>	
+																    	
+																    	<p:ajax update="localLastNameMsg" event="blur" />
+																    	<p:message id="localLastNameMsg" for="localLastName" display="text"/>
+																</p:inputText>
+															</div>
+															<div class="ui-block-c">
+																<h:outputText value="Short Name (L) #{customerInfoBranch.viewBehaviorBean('Local Short Name','MANDATORY')}" />
+															</div>
+															<div class="ui-block-d">
+																<p:inputText  id="localShortName"  value="#{customerInfoBranch.shortNameL}"  readonly="true"
+																            required="#{customerInfoBranch.viewBehaviorBean('Local Short Name','REQUIRED')}"
+																			disabled="#{customerInfoBranch.viewBehaviorBean('Local Short Name','ENABLE')}"
+																			maxlength="#{customerInfoBranch.viewBehaviorBean('Local Short Name','MAX_VALUE')}"
+																			requiredMessage="#{msg['lbl.validationprefix']} Local Short Name"
+																			validator="RegularExpressionValidation">
+																		
+																		<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Local Short Name','PATTERN')}"/>  
+															    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Local Short Name','MIN_VALUE')}"/>  
+																    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Local Short Name','MAX_VALUE')}"/>	
+																    	
+																    	<p:ajax update="localShortNameMsg" event="blur" />
+																    	<p:message id="localShortNameMsg" for="localShortName" display="text"/>
+																</p:inputText>
+															</div>
+															<div class="ui-block-e"></div>
+															<div class="ui-block-f"></div>
+														</div>
+														<div class="clearfix"></div>
+													</p:panel>
+
+													<div class="ui-grid-e ui-responsive">
+														<div class="ui-block-a">
+															<h:outputText value="Nationality #{customerInfoBranch.viewBehaviorBean('Nationality','MANDATORY')}" />
+														</div>
+														<div class="ui-block-b">
+														     <p:message for="natinality" display="text"/>
+															<p:selectOneMenu  id="natinality" disabled="true"
+															    
+																value="#{customerInfoBranch.nationalityId}"
+																filterMatchMode="startsWith" filter="true" 
+																required="#{customerInfoBranch.viewBehaviorBean('Nationality','REQUIRED')}"
+													 		    
+														 		requiredMessage="#{msg['lbl.validselectt']} Nationality">
+																<f:selectItem itemLabel="#{msg['lbl.select']}"
+																	itemValue="" />
+																<f:selectItems
+																	value="#{customerInfoBranch.nationalityNameList}" var="c"
+																	itemLabel="#{c.nationality}"
+																	itemValue="#{c.fsCountryMaster.countryId}" />
+															</p:selectOneMenu>
+														</div>
+														<div class="ui-block-c">
+															<h:outputText value="Alternate Email #{customerInfoBranch.viewBehaviorBean('Alternate Email','MANDATORY')}" />
+														</div>
+														<div class="ui-block-d">
+															<p:inputText id="alterEmailId"  value="#{customerInfoBranch.alternateEmail}" 
+															        required="#{customerInfoBranch.viewBehaviorBean('Alternate Email','REQUIRED')}"
+																	disabled="#{customerInfoBranch.viewBehaviorBean('Alternate Email','ENABLE')}"
+																	readonly="#{customerInfoBranch.viewBehaviorBean('Alternate Email','READ_ONLY')}"
+																	maxlength="#{customerInfoBranch.viewBehaviorBean('Alternate Email','MAX_VALUE')}"
+																	requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.email']}" validatorMessage="Invalid Email Id">
+																
+																<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]"/>
+																
+																<p:ajax update="alterEmailIdMsg" event="blur" />
+														    	<p:message id="alterEmailIdMsg" for="alterEmailId" display="text"/>
+											    	          </p:inputText>
+														</div>
+														<div class="ui-block-e"></div>
+														<div class="ui-block-f"></div>
+													</div>
+													<div class="clearfix"></div>
+													
+													<div class="ui-grid-a ui-responsive">
+														<div class="ui-block-a" style="padding-top:20px;">
+															<h:outputText value="Gender #{customerInfoBranch.viewBehaviorBean('Gender','MANDATORY')}" />
+														</div>
+														<div class="ui-block-b">
+														    <p:message for="gender" display="text"/>
+															<p:selectOneMenu id="gender" value="#{customerInfoBranch.gender}" disabled="true"
+															         required="#{customerInfoBranch.viewBehaviorBean('Gender','REQUIRED')}"
+														 		     requiredMessage="#{msg['lbl.validselectt']} Gender">
+																<f:selectItem itemLabel="#{msg['lbl.select']}"
+																	itemValue="" />
+																<f:selectItem itemValue="#{msg['lbl.male']}"
+																	itemLabel="#{msg['lbl.male']}" />
+																<f:selectItem itemValue="#{msg['lbl.female']}"
+																	itemLabel="#{msg['lbl.female']}" />
+															</p:selectOneMenu>
+														</div>
+
+													</div>
+													<div class="clearfix"></div>
+												</p:panel>
+												<p:panel  
+													style="padding:0px !important; border:none !important;"
+													rendered="#{customerInfoBranch.renderCustomeInfoEditable}">
+													<div class="ui-grid-e ui-responsive">
+														<div class="ui-block-a">
+															<h:outputText value="Date of Birth #{customerInfoBranch.viewBehaviorBean('Date of Birth','MANDATORY')}" />
+														</div>
+														<div class="ui-block-b">
+															<p:calendar  mode="popup"  value="#{customerInfoBranch.dateOfBirth}" 
+									                    	readonlyInput="true"
+										                  requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.dateofexpiry']}"
+										                  pattern="dd/MM/yyyy" navigator="true"  />
+														</div>
+														<div class="ui-block-c">
+															<h:outputText value="Mobile No #{customerInfoBranch.viewBehaviorBean('Mobile No','MANDATORY')}" />
+														</div>
+														<div class="ui-block-d">
+															<p:inputText id="mobileNo" value="#{customerInfoBranch.mobileNo}"
+															            required="#{customerInfoBranch.viewBehaviorBean('Mobile No','REQUIRED')}"
+																		disabled="#{customerInfoBranch.viewBehaviorBean('Mobile No','ENABLE')}"
+																		maxlength="#{customerInfoBranch.viewBehaviorBean('Mobile No','MAX_VALUE')}"
+																		requiredMessage="#{msg['lbl.validationprefix']} Mobile No"
+																		validator="RegularExpressionValidation">
+																	
+																	<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Mobile No','PATTERN')}"/>  
+														    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Mobile No','MIN_VALUE')}"/>  
+															    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Mobile No','MAX_VALUE')}"/>	
+															    	
+															    	<p:ajax update="mobileNoMsg" event="blur" />
+															    	<p:message id="mobileNoMsg" for="mobileNo" display="text"/>
+															</p:inputText>
+														</div>
+														<div class="ui-block-e"></div>
+														<div class="ui-block-f"></div>
+													</div>
+													<div class="clearfix"></div>
+													<div class="ui-grid-e ui-responsive">
+														<div class="ui-block-a">
+															<h:outputText value="Email #{customerInfoBranch.viewBehaviorBean('Email','MANDATORY')}" />
+														</div>
+														<div class="ui-block-b">
+															<p:inputText id="EmailId" value="#{customerInfoBranch.email}"
+															        required="#{customerInfoBranch.viewBehaviorBean('Email','REQUIRED')}"
+																	disabled="#{customerInfoBranch.viewBehaviorBean('Email','ENABLE')}"
+																	readonly="#{customerInfoBranch.viewBehaviorBean('Email','READ_ONLY')}"
+																	maxlength="#{customerInfoBranch.viewBehaviorBean('Email','MAX_VALUE')}"
+																	requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.email']}" validatorMessage="Invalid Email Id">
+																
+																  <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]"/>
+																
+																  <p:ajax update="EmailIdMsg" event="blur" />
+														    	  <p:message id="EmailIdMsg" for="EmailId" display="text"/>
+															</p:inputText>
+														</div>
+                                             <div class="ui-block-c">
+															<h:outputText value="ID Expiry #{customerInfoBranch.viewBehaviorBean('ID Expiary Date','MANDATORY')}" />
+														</div>
+														<div class="ui-block-d">
+															<p:calendar size="24" mode="popup"  value="#{customerInfoBranch.expiryDateforEdit}" 
+									                    	readonlyInput="true"
+										                  requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.dateofexpiry']}"
+										                  pattern="dd/MM/yyyy" navigator="true"  mindate="#{customerInfoBranch.expDateAdder}"  >
+										                     <p:ajax event="dateSelect" update="panelIdProof" listener="#{customerInfoBranch.idExpDateChange}"/> 
+                                                         </p:calendar>
+														</div>
+														<div class="ui-block-e"></div>
+														<div class="ui-block-f"></div>
+													</div>
+													<div class="clearfix"></div>
+
+												</p:panel>
+
+												<p:panel
+													style="padding:0px !important; border:none !important;"
+													rendered="#{customerInfoBranch.renderCustomeInfoLocal}">
+													<div class="ui-grid-e ui-responsive">
+														<div class="ui-block-a">
+															<h:outputText value="AML Status" />
+														</div>
+														<div class="ui-block-b">
+															<p:inputText value="#{customerInfoBranch.amlStatus}"  readonly="true"/>
+														</div>
+														<div class="ui-block-c">
+															<h:outputText value="Number of Hits" />
+														</div>
+														<div class="ui-block-d">
+															<p:inputText value="#{customerInfoBranch.numberOfHits}" readonly="true" />
+
+														</div>
+														<div class="ui-block-e"></div>
+														<div class="ui-block-f"></div>
+													</div>
+													<div class="clearfix"></div>
+
+
+												</p:panel>
+											</p:panel>
+											<h:panelGroup layout="block" styleClass="shadow_button" rendered="#{customerInfoBranch.renderCustomerDetails}">
+												<p:commandButton value="Back" style="margin-right:10px;"
+													action="#{customerInfoBranch.backCustomerInfoToBasicInfo}"
+													update="mainPanel">
+												</p:commandButton>
+
+												<p:commandButton value="Save" style="margin-right:10px;"
+													action="#{customerInfoBranch.panelSaveController}"
+													update="mainPanel">
+												</p:commandButton>
+												<p:commandButton value="Next"
+													action="#{customerInfoBranch.nextContactDetails}"
+													update="mainPanel">
+												</p:commandButton>
+
+												<div class="clearfix"></div>
+											</h:panelGroup>
+
+											<p:panel styleClass="shadow"
+												rendered="#{customerInfoBranch.renderContactDetails}">
+												<h2>Contact Details</h2>
+
+
+
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="Contact Type" />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu />
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Local Area" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText />
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="Country" />
+													</div>
+													<div class="ui-block-b">
+														<p:inputText />
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Street No" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText />
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="State/Province" />
+													</div>
+													<div class="ui-block-b">
+														<p:inputText />
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Telephone No" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText />
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="District/Region" />
+													</div>
+													<div class="ui-block-b">
+														<p:inputText />
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Flat No" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText />
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="City" />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu />
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Block No" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText />
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<h:panelGroup layout="block" style="padding:20px;">
+													<p:selectBooleanCheckbox />
+													<p:spacer width="10px;" />
+													<h:outputText value="Contact details is not matching." />
+												</h:panelGroup>
+												<div class="clearfix"></div>
+
+											</p:panel>
+
+											<h:panelGroup layout="block" styleClass="shadow_button" rendered="#{customerInfoBranch.renderContactDetails}">
+												<p:commandButton value="Back" style="margin-right:10px;"
+													action="#{customerInfoBranch.backBasicInfo}"
+													update="mainPanel">
+												</p:commandButton>
+												<p:commandButton value="clear" style="margin-right:10px;"
+													action="#{customerInfoBranch.clearBasicInfo}"
+													update="mainPanel">
+												</p:commandButton>
+												<p:commandButton value="Next"
+													action="#{customerInfoBranch.nextContactDetails}"
+													update="mainPanel">
+												</p:commandButton>
+
+												<div class="clearfix"></div>
+											</h:panelGroup>
+
+											<p:panel styleClass="shadow"
+												rendered="#{customerInfoBranch.renderContactDetailsMatch}">
+												<h2>Contact Details</h2>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="Contact Type #{customerInfoBranch.viewBehaviorBean('Contact Type','MANDATORY')}" />
+													</div>
+													<div class="ui-block-b">
+													    <p:message for="contactType" display="text"/>
+														<p:selectOneMenu id="contactType" value="#{customerInfoBranch.contactTypeId}" 
+														  required="#{customerInfoBranch.viewBehaviorBean('Contact Type','REQUIRED')}"
+										 	 	         disabled="#{customerInfoBranch.viewBehaviorBean('Contact Type','ENABLE')}"
+													 	 requiredMessage="#{msg['lbl.validselectt']} Contact Type">
+														  <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems
+														value="#{customerInfoBranch.contactTypeListDB}" var="o"
+														itemLabel="#{o.contactType}"
+														itemValue="#{o.contactTypeId}" />
+														</p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Local Area #{customerInfoBranch.viewBehaviorBean('Contact Local Area','MANDATORY')}" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText id="contactArea" value="#{customerInfoBranch.localArea}"
+													    required="#{customerInfoBranch.viewBehaviorBean('Contact Local Area','REQUIRED')}"
+														disabled="#{customerInfoBranch.viewBehaviorBean('Contact Local Area','ENABLE')}"
+														maxlength="#{customerInfoBranch.viewBehaviorBean('Contact Local Area','MAX_VALUE')}"
+														requiredMessage="#{msg['lbl.validationprefix']} Contact Local Area"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Contact Local Area','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Contact Local Area','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Contact Local Area','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="contactAreaMsg" event="blur" />
+											    	<p:message id="contactAreaMsg" for="contactArea" display="text"/>
+								    	     	</p:inputText>
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="Country" />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu id="country1"
+															value="#{customerInfoBranch.countryId}"
+															filterMatchMode="startsWith" filter="true">
+															<f:selectItem itemLabel="#{msg['lbl.select']}"
+																itemValue="" />
+															<f:selectItems
+																value="#{customerInfoBranch.countryListFromDB}" var="c"
+																itemLabel="#{c.countryName}"
+																itemValue="#{c.fsCountryMaster.countryId}" />
+															<p:ajax event="change" update="state"
+																listener="#{customerInfoBranch.popState}" />
+														</p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Street No #{customerInfoBranch.viewBehaviorBean('Contact Street No','MANDATORY')}" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText id="contactStreetNo" value="#{customerInfoBranch.streetNo}"
+																	required="#{customerInfoBranch.viewBehaviorBean('Contact Street No','REQUIRED')}"
+																	disabled="#{customerInfoBranch.viewBehaviorBean('Contact Street No','ENABLE')}"
+																	maxlength="#{customerInfoBranch.viewBehaviorBean('Contact Street No','MAX_VALUE')}"
+																	requiredMessage="#{msg['lbl.validationprefix']} Contact Local Area"
+																	validator="RegularExpressionValidation">
+																
+																<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Contact Street No','PATTERN')}"/>  
+													    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Contact Street No','MIN_VALUE')}"/>  
+														    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Contact Street No','MAX_VALUE')}"/>	
+														    	
+														    	<p:ajax update="contactStreetNoMsg" event="blur" />
+														    	<p:message id="contactStreetNoMsg" for="contactStreetNo" display="text"/>
+								    		       </p:inputText>
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="State/Province" />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu id="state"
+															value="#{customerInfoBranch.stateId}"
+															filterMatchMode="startsWith" filter="true"
+															requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.state']}">
+															<f:selectItem itemLabel="#{msg['lbl.select']}"
+																itemValue="" />
+															<f:selectItems
+																value="#{customerInfoBranch.stateListFromDB}" var="c"
+																itemLabel="#{c.stateName}"
+																itemValue="#{c.fsStateMaster.stateId}" />
+															<p:ajax update="district"
+																listener="#{customerInfoBranch.popDistrict}" />
+														</p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Telephone No #{customerInfoBranch.viewBehaviorBean('Contact Telephone No','MANDATORY')}" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText id="contactTel" value="#{customerInfoBranch.telephoneNo}"
+														    required="#{customerInfoBranch.viewBehaviorBean('Contact Telephone No','REQUIRED')}"
+																disabled="#{customerInfoBranch.viewBehaviorBean('Contact Telephone No','ENABLE')}"
+																maxlength="#{customerInfoBranch.viewBehaviorBean('Contact Telephone No','MAX_VALUE')}"
+																requiredMessage="#{msg['lbl.validationprefix']} Contact Telephone No"
+																validator="RegularExpressionValidation">
+															
+															<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Contact Telephone No','PATTERN')}"/>  
+												    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Contact Telephone No','MIN_VALUE')}"/>  
+													    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Contact Telephone No','MAX_VALUE')}"/>	
+													    	
+													    	<p:ajax update="contactTelMsg" event="blur" />
+													    	<p:message id="contactTelMsg" for="contactTel" display="text"/>
+									            	</p:inputText>
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="District/Region" />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu id="district"
+															value="#{customerInfoBranch.districtId}"
+															filterMatchMode="startsWith" filter="true"
+															requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.district']}">
+															<f:selectItem itemLabel="#{msg['lbl.select']}"
+																itemValue="" />
+															<f:selectItems
+																value="#{customerInfoBranch.districtListFromDB}" var="c"
+																itemLabel="#{c.district}"
+																itemValue="#{c.fsDistrictMaster.districtId}" />
+															<p:ajax update="city"
+																listener="#{customerInfoBranch.popCity}" />
+														</p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Flat No #{customerInfoBranch.viewBehaviorBean('Contact Flat No','MANDATORY')}" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText id="flatNumber" value="#{customerInfoBranch.flatNo}"
+																	 required="#{customerInfoBranch.viewBehaviorBean('Contact Flat No','REQUIRED')}"
+															         disabled="#{customerInfoBranch.viewBehaviorBean('Contact Flat No','ENABLE')}"
+															         maxlength="#{customerInfoBranch.viewBehaviorBean('Contact Flat No','MAX_VALUE')}"
+															         requiredMessage="#{msg['lbl.validationprefix']} Flat No"
+															         validator="RegularExpressionValidation">
+														
+														<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Contact Flat No','PATTERN')}"/>  
+											    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Contact Flat No','MIN_VALUE')}"/>  
+												    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Contact Flat No','MAX_VALUE')}"/>	
+												    	
+												    	<p:ajax update="flatNumberMsg" event="blur" />
+												    	<p:message id="flatNumberMsg" for="flatNumber" display="text"/>
+										         </p:inputText>
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="City" />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu id="city"
+															value="#{customerInfoBranch.cityId}"
+															filterMatchMode="startsWith" filter="true"
+															requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.city']}">
+															<f:selectItem itemLabel="#{msg['lbl.select']}"
+																itemValue="" />
+															<f:selectItems
+																value="#{customerInfoBranch.cityListFromDB}" var="c"
+																itemLabel="#{c.cityName}"
+																itemValue="#{c.fsCityMaster.cityId}" />
+														</p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Block No #{customerInfoBranch.viewBehaviorBean('Contact Block No','MANDATORY')}" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText id="contactBlock" value="#{customerInfoBranch.blockNo}"  required="#{customerInfoBranch.viewBehaviorBean('Contact Block No','REQUIRED')}"
+															         disabled="#{customerInfoBranch.viewBehaviorBean('Contact Block No','ENABLE')}"
+															         maxlength="#{customerInfoBranch.viewBehaviorBean('Contact Block No','MAX_VALUE')}"
+															         requiredMessage="#{msg['lbl.validationprefix']} Block No"
+															         validator="RegularExpressionValidation">
+														
+														<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Contact Block No','PATTERN')}"/>  
+											    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Contact Block No','MIN_VALUE')}"/>  
+												    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Contact Block No','MAX_VALUE')}"/>	
+												    	
+												    	<p:ajax update="contactBlockMsg" event="blur" />
+												    	<p:message id="contactBlockMsg" for="contactBlock" display="text"/>
+														</p:inputText>
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+
+												<div class="ui-grid-a ui-responsive">
+													<div class="ui-block-a"></div>
+													<div class="ui-block-b" style="width: 34%;">
+														<p:commandButton value="Add" style="float:left;"
+															action="#{customerInfoBranch.addContactDataTable}"
+															update="mainPanel">
+														</p:commandButton>
+														<p:spacer width="10px" />
+														<h:outputText
+															value="Please enter atleast one contact details"
+															style="white-space:nowrap !important; color:red;" rendered="false" />
+													</div>
+												</div>
+												<div class="clearfix"></div>
+												<p:dataTable value="#{customerInfoBranch.contactList}"
+													var="o"
+													rendered="#{customerInfoBranch.enableContactDataTable}"
+													style="width:1220;" editable="true" id="datatable"
+													emptyMessage="#{msg['lbl.norecordfound']}">
+													<!-- <p:ajax update="datatable" event="cellEdit"  listener="#{customerInfoBranch.modified(o)}" /> -->
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.contacttype']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.contType}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.contType}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.country']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.country}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.country}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.state']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.state}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.state}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.district']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.dist}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.dist}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.city']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.city}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.city}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.localarea']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.area}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.area}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.block']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.block}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.block}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.street']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.street}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.street}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.flatno']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.flat}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.flat}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.telephone']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.tel}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.tel}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column style="width:50px; text-align:center !important;">
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.delete']}" />
+														</f:facet>
+														<p:commandButton styleClass="delete" value="" actionListener="#{customerInfoBranch.removeContactDetail(o)}"
+															update="datatable" immediate="true"></p:commandButton>
+													</p:column>
+													 
+												</p:dataTable>
+												<div class="clearfix"></div>
+
+											</p:panel>
+											<h:panelGroup layout="block" styleClass="shadow_button" rendered="#{customerInfoBranch.renderContactDetailsMatch}">
+												<p:commandButton value="Back" style="margin-right:10px;"
+													action="#{customerInfoBranch.backToCustomerInfo}" update="mainPanel" process="@this">
+												</p:commandButton>
+												<p:commandButton value="save" style="margin-right:10px;"
+													action="#{customerInfoBranch.panelSaveController}" update="mainPanel" >
+												</p:commandButton>
+												<!-- <p:commandButton value="SaveClose"
+													style="margin-right:10px;">
+												</p:commandButton> -->
+												<p:commandButton value="Next"
+													action="#{customerInfoBranch.nextToEmpInfo}" process="@this"
+													update="mainPanel">
+												</p:commandButton>
+												<div class="clearfix"></div>
+											</h:panelGroup>
+											
+											
+											<p:panel styleClass="shadow" rendered="#{customerInfoBranch.renderEmployeementInfo}">	
+											<h2>
+     <h:outputText value="Transaction Limit Settings" />
+    </h2>
+    
+    <div class="ui-grid-a ui-responsive">
+          <div class="ui-block-a" style="padding-top:15px;">
+           <h:outputText value="Article" />
+          </div>
+          <div class="ui-block-b">
+           <p:message for="article" display="text"/>	
+           <p:selectOneMenu id="article" value="#{customerInfoBranch.article}" required="true" requiredMessage="Please Select Article">
+				<f:selectItem itemLabel="select" itemValue=""/>
+				<f:selectItems value="#{customerInfoBranch.articleData}" var="c" itemLabel="#{c.articleName}" itemValue="#{c.articleId}"/>
+           		<p:ajax event="change" update="level"  listener="#{customerInfoBranch.generateLevel}"/>
+           </p:selectOneMenu>
+          </div>
+          </div>
+           <div class="clearfix"></div>
+           
+           <div class="ui-grid-a ui-responsive">
+          <div class="ui-block-a" style="padding-top:15px;">
+           <h:outputText value="Level" />
+          </div>
+          <div class="ui-block-b">
+           <p:message for="level" display="text"/>
+           <p:selectOneMenu id="level" value="#{customerInfoBranch.level}" required="true" requiredMessage="Please select Level">
+				<f:selectItem itemLabel="select" itemValue=""/>
+				<f:selectItems value="#{customerInfoBranch.levelData}" var="c" itemLabel="#{c.articleDesc}" itemValue="#{c.articleDetailId}"/>
+           </p:selectOneMenu>
+          </div>
+          </div>
+           <!-- <div class="clearfix"></div>
+         
+          <h:panelGroup layout="block" styleClass="shadow_button">
+          <p:commandButton value="Back" style="margin-right:10px;">
+												</p:commandButton>
+
+          <p:commandButton value="#{msg['lbl.clear']}" style="margin-right:10px;" action="#{branchRegistration.clearFirst}"  update="mainPanel" process="@this">
+          </p:commandButton>
+          <p:commandButton value="Go" action="#{branchRegistration.remitterInfo}" update="mainPanel">
+          </p:commandButton> 
+
+          <div class="clearfix"></div>
+         </h:panelGroup>-->
+						<div class="clearfix"></div>					
+											
+											
+												<h2><h:outputText value="#{msg['lbl.employementdetails']}" /></h2>
+									<div class="ui-grid-a ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.employmenttype']} #{customerInfoBranch.viewBehaviorBean('Employment Type','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										      <p:message for="employmentType" display="text"/>
+										    <p:selectOneMenu id="employmentType" value="#{customerInfoBranch.empInfoEmploymentTypeId}"	 style="width:180px;"
+										                 required="#{customerInfoBranch.viewBehaviorBean('Employment Type','REQUIRED')}"
+													 	 disabled="#{customerInfoBranch.viewBehaviorBean('Employment Type','ENABLE')}"
+														 requiredMessage="#{msg['lbl.validselectt']} Employment Type">
+							                  <f:selectItems  value="#{customerInfoBranch.employmentTypeList}" var="c" itemLabel="#{c.employmentType}" itemValue="#{c.employmentTypeId}"  />
+					                        	<!-- 	<p:ajax event="change" update="emp"  listener="#{customerInfoBranch.getEmploymentStatus}" />  -->
+						                    </p:selectOneMenu>
+										</div>
+
+									</div>
+									<div class="clearfix"></div>
+
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.occupation']} #{customerInfoBranch.viewBehaviorBean('occupation','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										     <p:message for="occupationI" display="text"/>
+											<p:selectOneMenu id="occupationI" value="#{customerInfoBranch.occupation}" style="width:180px;"
+											             required="#{customerInfoBranch.viewBehaviorBean('occupation','REQUIRED')}"
+													 	 disabled="#{customerInfoBranch.viewBehaviorBean('occupation','ENABLE')}"
+														 requiredMessage="#{msg['lbl.validselectt']} Occupation">
+						                            <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+							                        <f:selectItem itemLabel="#{msg['lbl.doctor']}" itemValue="1" />
+							                        <f:selectItem itemLabel="#{msg['lbl.teacher']}" itemValue="2" />
+						                    </p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.employer']} #{customerInfoBranch.viewBehaviorBean('Employer Name','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="employerName" value="#{customerInfoBranch.employer}" 
+											      required="#{customerInfoBranch.viewBehaviorBean('Employer Name','REQUIRED')}"
+														disabled="#{customerInfoBranch.viewBehaviorBean('Employer Name','ENABLE')}"
+														maxlength="#{customerInfoBranch.viewBehaviorBean('Employer Name','MAX_VALUE')}"
+														readonly="#{customerInfoBranch.viewBehaviorBean('Employer Name','READ_ONLY')}"
+														requiredMessage="#{msg['lbl.validationprefix']} Employer Name"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Employer Name','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Employer Name','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Employer Name','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="employerNameMsg" event="blur" />
+											    	<p:message id="employerNameMsg" for="employerName" display="text"/>
+											 </p:inputText>   	
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+									
+									
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.country']} #{customerInfoBranch.viewBehaviorBean('Country','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										 <p:message for="country" display="text"/>
+										<p:selectOneMenu id="country" filterMatchMode="startsWith" filter="true"  value ="#{customerInfoBranch.empInfoCountry}" 
+										      required="#{customerInfoBranch.viewBehaviorBean('Country','REQUIRED')}"
+						 					  requiredMessage="#{msg['lbl.validselectt']} Country">
+											<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+								          <f:selectItems  value="#{customerInfoBranch.countryNameList}" var="c" itemLabel="#{c.countryName}" itemValue="#{c.fsCountryMaster.countryId}"  />
+							              <p:ajax  event ="change" update="stateemp" listener="#{customerInfoBranch.popStateEmp}"/> 
+					 
+									   </p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="Block No #{customerInfoBranch.viewBehaviorBean('Block','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+										<p:inputText id="blockNo" value="#{customerInfoBranch.empInfoBlock}" 
+										         required="#{customerInfoBranch.viewBehaviorBean('Block','REQUIRED')}"
+														disabled="#{customerInfoBranch.viewBehaviorBean('Block','ENABLE')}"
+														maxlength="#{customerInfoBranch.viewBehaviorBean('Block','MAX_VALUE')}"
+														readonly="#{customerInfoBranch.viewBehaviorBean('Block','READ_ONLY')}"
+														requiredMessage="#{msg['lbl.validationprefix']} Block Number"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Block','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Block','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Block','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="blockNoMsg" event="blur" />
+											    	<p:message id="blockNoMsg" for="blockNo" display="text"/>
+										</p:inputText>	    	
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+									
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.state']} #{customerInfoBranch.viewBehaviorBean('State','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										<p:message for="stateemp" display="text"/>
+										<p:selectOneMenu id="stateemp" value ="#{customerInfoBranch.empInfoState}" filterMatchMode="startsWith" filter="true"
+										                     required="#{customerInfoBranch.viewBehaviorBean('State','REQUIRED')}"
+													 	 	 disabled="#{customerInfoBranch.viewBehaviorBean('State','ENABLE')}"
+													 		 requiredMessage="#{msg['lbl.validselectt']} State">
+										    <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{customerInfoBranch.lstStateEmpList}"
+														var="c" itemLabel="#{c.stateName}" itemValue="#{c.fsStateMaster.stateId}"/>
+											<p:ajax update ="districtemp" listener="#{customerInfoBranch.popDistrictEmp}"/>			
+										</p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="Street No #{customerInfoBranch.viewBehaviorBean('Street','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+										     <p:inputText id="street" value="#{customerInfoBranch.empInfoStreet}"
+										                required="#{customerInfoBranch.viewBehaviorBean('Street','REQUIRED')}"
+														disabled="#{customerInfoBranch.viewBehaviorBean('Street','ENABLE')}"
+														maxlength="#{customerInfoBranch.viewBehaviorBean('Street','MAX_VALUE')}"
+														requiredMessage="#{msg['lbl.validationprefix']} Street No"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Street','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Street','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Street','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="streetMsg" event="blur" />
+											    	<p:message id="streetMsg" for="street" display="text"/>
+								    		</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.district']} #{customerInfoBranch.viewBehaviorBean('District','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										    <p:message for="districtemp" display="text"/>
+											<p:selectOneMenu  id="districtemp" value ="#{customerInfoBranch.empInfoDistrict}" filterMatchMode="startsWith" filter="true"
+											       required="#{customerInfoBranch.viewBehaviorBean('District','REQUIRED')}"
+												   disabled="#{customerInfoBranch.viewBehaviorBean('District','ENABLE')}"
+										           requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.district']}">
+										              <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{customerInfoBranch.lstDistrictEmpList}"
+														var="c" itemLabel="#{c.district}" itemValue="#{c.fsDistrictMaster.districtId}"/>
+											<p:ajax update ="cityemp" listener="#{customerInfoBranch.popCityEmp}"/>			
+										</p:selectOneMenu> 
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="Area #{customerInfoBranch.viewBehaviorBean('Area','MANDATORY')}" />
+											  
+										</div>
+										<div class="ui-block-d">
+											<p:inputText  id="area" value="#{customerInfoBranch.empInfoArea}" 
+											     required="#{customerInfoBranch.viewBehaviorBean('Area','REQUIRED')}"
+														disabled="#{customerInfoBranch.viewBehaviorBean('Area','ENABLE')}"
+														maxlength="#{customerInfoBranch.viewBehaviorBean('Area','MAX_VALUE')}"
+														readonly="#{customerInfoBranch.viewBehaviorBean('Area','READ_ONLY')}"
+														requiredMessage="#{msg['lbl.validationprefix']} Area"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Area','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Area','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Area','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="areaMsg" event="blur" />
+											    	<p:message id="areaMsg" for="area" display="text"/>
+								    		</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.city']} #{customerInfoBranch.viewBehaviorBean('City','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										    <p:message for="cityemp" display="text"/>
+											<p:selectOneMenu  id="cityemp" value ="#{customerInfoBranch.empInfoCity}" filterMatchMode="startsWith" filter="true" 
+											 required="#{customerInfoBranch.viewBehaviorBean('City','REQUIRED')}"
+													 	 	           disabled="#{customerInfoBranch.viewBehaviorBean('City','ENABLE')}"
+										     requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.city']}">
+										    <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{customerInfoBranch.lstCityEmpList}"
+														var="c" itemLabel="#{c.cityName}" itemValue="#{c.fsCityMaster.cityId}"/>
+										</p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="Office Tel. No. #{customerInfoBranch.viewBehaviorBean('Telephone Number','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="officeTelNo" value="#{customerInfoBranch.empInfoOfficeTel}"
+											      required="#{customerInfoBranch.viewBehaviorBean('Telephone Number','REQUIRED')}"
+														disabled="#{customerInfoBranch.viewBehaviorBean('Telephone Number','ENABLE')}"
+														readonly="#{customerInfoBranch.viewBehaviorBean('Telephone Number','READ_ONLY')}"
+														maxlength="#{customerInfoBranch.viewBehaviorBean('Telephone Number','MAX_VALUE')}"
+														requiredMessage="#{msg['lbl.validationprefix']} Office Telephone Number"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Telephone Number','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Telephone Number','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Telephone Number','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="officeTelNoMsg" event="blur" />
+											    	<p:message id="officeTelNoMsg" for="officeTelNo" display="text"/>
+								    		</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="Postal Code #{customerInfoBranch.viewBehaviorBean('Postal Code','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText  id="postalCode" value ="#{customerInfoBranch.postalCode}"
+											    required="#{customerInfoBranch.viewBehaviorBean('Postal Code','REQUIRED')}"
+														disabled="#{customerInfoBranch.viewBehaviorBean('Postal Code','ENABLE')}"
+														maxlength="#{customerInfoBranch.viewBehaviorBean('Postal Code','MAX_VALUE')}"
+														readonly="#{customerInfoBranch.viewBehaviorBean('Postal Code','READ_ONLY')}"
+														requiredMessage="#{msg['lbl.validationprefix']} Postal Code"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Postal Code','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Postal Code','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Postal Code','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="postalCodeMsg" event="blur" />
+											    	<p:message id="postalCodeMsg" for="postalCode" display="text"/>
+								    		</p:inputText>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="Department #{customerInfoBranch.viewBehaviorBean('Department','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="department" value ="#{customerInfoBranch.department}"
+											   required="#{customerInfoBranch.viewBehaviorBean('Department','REQUIRED')}"
+														disabled="#{customerInfoBranch.viewBehaviorBean('Department','ENABLE')}"
+														maxlength="#{customerInfoBranch.viewBehaviorBean('Department','MAX_VALUE')}"
+														readonly="#{customerInfoBranch.viewBehaviorBean('Department','READ_ONLY')}"
+														requiredMessage="#{msg['lbl.validationprefix']} Department"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{customerInfoBranch.viewBehaviorBean('Department','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{customerInfoBranch.viewBehaviorBean('Department','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{customerInfoBranch.viewBehaviorBean('Department','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="departmentMsg" event="blur" />
+											    	<p:message id="departmentMsg" for="department" display="text"/>
+								    		</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+												<div class="clearfix"></div>
+											</p:panel>
+											<h:panelGroup layout="block" styleClass="shadow_button" rendered="#{customerInfoBranch.renderEmployeementInfo}">
+
+
+												<p:commandButton value="save"  action="#{customerInfoBranch.panelSaveController}" style="margin-right:10px; " update="mainPanel">
+												</p:commandButton>
+												<p:commandButton value="back" action="#{customerInfoBranch.bactToContactMatch}" style="margin-right:10px;" update="mainPanel">
+												</p:commandButton>
+												<p:commandButton value="next" action="#{customerInfoBranch.nextToScanDoc}" update="mainPanel">
+												</p:commandButton>
+												<div class="clearfix"></div>
+											</h:panelGroup>
+											<div class="clearfix"></div>
+									
+
+
+											<p:panel styleClass="shadow" rendered="#{customerInfoBranch.renderIdProof}" id="panelIdProof">
+												<h2>Proof</h2>
+
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText  value="#{msg['lbl.idfor']}"  />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu value="#{customerInfoBranch.idFor}"  style="width:180px;">
+							                                  <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+								                              <f:selectItem itemLabel="#{msg['lbl.addressproof']}" itemValue="1" />
+								                              <f:selectItem itemLabel="#{msg['lbl.identityproof']}" itemValue="2" />
+							                            </p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="#{msg['lbl.idtype']}" />
+													</div>
+													<div class="ui-block-d">
+														<p:selectOneMenu id="idType" value="#{customerInfoBranch.idTypeproof}" style="width:180px;">
+							                                   <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+								                               <f:selectItems value="#{customerInfoBranch.fetchIdType}" var="c" itemValue="#{c.identityTypeId}" itemLabel="#{c.identityType}" />
+							                             </p:selectOneMenu>
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="#{msg['lbl.idnumber']}"/> 
+													</div>
+													<div class="ui-block-b">
+														<p:inputText id="idNumber" value="#{customerInfoBranch.idnumberProof}" ></p:inputText>
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="#{msg['lbl.dateofexpiry']}" />
+													</div>
+													<div class="ui-block-d">
+														 <p:calendar id="dateOfExp" size="24" value="#{customerInfoBranch.dateExp}" mode="popup" 
+									                    	readonlyInput="true"
+										                  requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.dateofexpiry']}"
+										                  pattern="dd/MM/yyyy" navigator="true"  mindate="#{customerInfoBranch.expDateAdder}"/>
+													</div>
+													<!--mindate="#{customerInfoBranch.expDateCheck}"  -->
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+
+												<div class="ui-grid-a ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="#{msg['lbl.uploadfile']}" />
+													</div>
+													<div class="ui-block-b">
+													<p:fileUpload  value="#{customerInfoBranch.file}" mode="simple" dragDropSupport="false" required="true" id="fileUplod"   
+                  								        sizeLimit="10000" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|pdf)$/" label="Choose File">
+                  								        <p:message for="fileUplod" value="File Not Selected" style="color:red;"/>
+						                     	</p:fileUpload>
+													</div>
+												</div>
+												<div class="clearfix"></div>
+												<h:panelGroup layout="block" styleClass="button_align">
+                                                    <p:commandButton value="#{msg['lbl.add']}" actionListener="#{customerInfoBranch.addRows}"
+													id="btnGlobal"  update="mainpanel" ajax="false"/>
+													<div class="clearfix"></div>
+												</h:panelGroup>
+                                                <p:dataTable value="#{customerInfoBranch.createProofList}" var="o" widgetVar="50" style="width: 780px; font-size:12px;" editable="true" 
+						id="datatable1">
+						
+						 <p:ajax update="datatable1" event="cellEdit"  listener="#{customerInfoBranch.modifiedProofList(o)}" /> 
+						
+						<p:column>
+						<h:outputText/>
+							<f:facet name="header"><h:outputText value="#{msg['lbl.idfor']}"/></f:facet>
+
+							<p:cellEditor>
+								<f:facet name="output" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"><h:outputText value="#{o.idFor}"/></f:facet>
+								
+								<f:facet name="input" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;">
+									<h:selectOneMenu value="#{o.id_for}" >
+										<f:selectItem itemLabel="#{msg['lbl.addressproof']}"	itemValue="1" />
+										<f:selectItem itemLabel="#{msg['lbl.identityproof']}" itemValue="2" />
+									</h:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column>
+							<!-- <h:outputText value="#{o.idType}"/> -->
+							<f:facet name="header">
+								<h:outputText value="#{msg['lbl.idtype']}" />
+							</f:facet>
+							<p:cellEditor>
+								<f:facet name="output" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;">
+									<h:outputText value="#{o.idType}"  />
+								</f:facet>
+								<f:facet name="input" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;">
+									<p:inputText value="#{o.idType}"  />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column>
+							<f:facet name="header"><h:outputText value="#{msg['lbl.idnumber']}" /></f:facet>
+							<p:cellEditor>
+								<f:facet name="output"><h:outputText value="#{o.id_number}" style="text-align: left; font-size:13px;  height:20px; width:100px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+								<f:facet name="input"><p:inputText value="#{o.id_number}" style="text-align: left; font-size:13px;  height:20px; width:100px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column>
+							<f:facet name="header"><h:outputText value="#{msg['lbl.dateofexpiry']}" /></f:facet>
+							<p:cellEditor>
+								<f:facet name="output"><h:outputText value="#{o.date_expiary}" style="text-align: left; font-size:13px;  height:20px; width: 90px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+								<f:facet name="input"><p:inputText value="#{o.date_expiary}" style="text-align: left; font-size:13px;  height:20px; width: 90px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+							</p:cellEditor>
+						</p:column>
+						
+						<p:column headerText="#{msg['lbl.download']}" style="text-align:center; width:50px;">
+								<p:commandLink id="downloadLink" title="download"  ajax="false" action="PrimeFaces.monitorDownload(start, stop)"   
+        															icon="ui-icon-arrowthichk-s">  
+        									<p:graphicImage value="../images/download.png"/>
+    										<p:fileDownload value="#{customerInfoBranch.downloadFile(o.imageId)}" />  
+								</p:commandLink>   
+						</p:column>
+								 
+						<p:column headerText="#{msg['lbl.verified']}" style="text-align:center; width:50px;">
+							<h:selectBooleanCheckbox value="#{o.checked}" />
+						</p:column>
+						
+						<p:column  style="text-align:center; width:50px;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['lbl.delete']}" />
+								</f:facet>
+								<p:commandButton  value="" styleClass="delete" actionListener="#{customerInfoBranch.removeIdProof(o)}" ajax="false"/>
+							</p:column>
+					</p:dataTable>
+												<h2>Digital Sign</h2>
+												<p:selectBooleanCheckbox   value="#{customerInfoBranch.approved}">
+					                            	<p:ajax event="change" update="panelIdProof" listener="#{customerInfoBranch.veryfiAllClick}"/>
+				                         	</p:selectBooleanCheckbox>
+												<p:spacer width="10px;" />
+												<h:outputText value="Verified All" />
+												<p:spacer width="20px;" />
+												<h:panelGroup layout="block" styleClass="button_align">
+												
+												
+													<p:commandButton value="Sign">
+													</p:commandButton>
+													<div class="clearfix"></div>
+												</h:panelGroup>
+
+												<div class="clearfix"></div>
+												<h2>
+     											<h:outputText value="Nominee Register" />
+    										</h2>
+    										<p:selectBooleanCheckbox value="#{customerInfoBranch.nominee}"/>
+					                            	
+												<p:spacer width="10px;" />
+												<h:outputText value="Nominee Registration" />
+												<p:spacer width="20px;" />
+											</p:panel>
+											
+											<h:panelGroup layout="block" styleClass="shadow_button" rendered="#{customerInfoBranch.renderIdProof}">
+												
+												<p:commandButton value="Back" style="margin-right:10px;"
+													action="#{customerInfoBranch.bactToEmpInfo()}" update="mainPanel" ajax="false">
+												</p:commandButton>
+												<p:commandButton value="clear" style="margin-right:10px;"
+													action="#{customerInfoBranch.clearBasicInfo}" ajax="false">
+												</p:commandButton>
+												<p:commandButton value="Submit"
+													action="#{customerInfoBranch.saveCustomerIdProof()}"
+													update="mainPanel" ajax="false">
+												</p:commandButton>
+												<div class="clearfix"></div>
+											</h:panelGroup>
+											<div class="clearfix"></div>
+											
+											
+											
+											
+											
+										</p:panel>
+									</p:panel>
+								</h:form>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+					</h:panelGroup></td>
+			</tr>
+		</table>
+		<div class="clearfix"></div>
+		<ui:include src="#{facesBean.footer}"></ui:include>
+	</f:view>
+</h:body>
+</html>

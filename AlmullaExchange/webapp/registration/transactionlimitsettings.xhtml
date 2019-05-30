@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Al Mulla Exchange - Online Remittance Systems</title>
+	<link rel="icon" type="../image/png" href="../images/favicon.png" />
+	<link href="../css/style1.css" rel="stylesheet" type="text/css" />
+</h:head>
+
+<h:body>
+	<f:view>
+		
+		<h:panelGroup layout="block" class="container" style="width:550px !important;">
+			<h:panelGroup layout="block" class="main_div">
+				<h1 style="font-size:18px;">
+					<h:outputText value="Transaction Limit Settings" />
+				</h1>
+				<h:panelGroup layout="block" class="table_bg" style="width:90%; margin:0 auto;">
+					<h:form id="transactionsettings" enctype="multipart/form-data" style="padding:0!important;">
+						
+							
+							<p:panelGrid style="width:100%;font-size:12px;"  cellpadding="0" cellspacing="0" >
+									<p:row>
+										<p:column width="40%">
+											<h:outputText value="Article" />
+										</p:column>
+										<p:column>
+											<p:selectOneMenu/>
+										</p:column>										
+									</p:row>
+									
+									<p:row>
+										<p:column width="40%">
+											<h:outputText value="Level" />
+										</p:column>
+										<p:column>
+											<p:selectOneMenu/>
+										</p:column>										
+									</p:row>
+									
+									<p:row>
+										<p:column width="40%">
+											<h:outputText value="Weekly Limit" />
+										</p:column>
+										<p:column>
+											<p:inputText/>
+										</p:column>										
+									</p:row>
+									
+									<p:row>
+										<p:column width="40%">
+											<h:outputText value="Monthly Limit" />
+										</p:column>
+										<p:column>
+											<p:inputText/>
+										</p:column>										
+									</p:row>
+									
+									<p:row>
+										<p:column width="40%">
+											<h:outputText value="Yearly Limit" />
+										</p:column>
+										<p:column>
+											<p:inputText/>
+										</p:column>										
+									</p:row>
+									
+								
+									
+								</p:panelGrid>
+							
+								<h:panelGroup layout="block"  styleClass="button_align">
+									<p:commandButton value="Clear" style="margin-right:10px;"/>
+									<p:commandButton value="Cancel" style="margin-right:10px;"/>
+									<p:commandButton value="Submit"/>
+									<div class="clearfix"></div>
+								</h:panelGroup>
+								<div class="clearfix"></div>
+							
+				</h:form>
+			</h:panelGroup>
+		</h:panelGroup>
+		<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+	</h:panelGroup>
+	
+	</f:view>
+</h:body>
+</html>

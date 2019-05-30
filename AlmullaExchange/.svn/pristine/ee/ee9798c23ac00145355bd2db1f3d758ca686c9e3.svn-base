@@ -1,0 +1,373 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</h:head>
+
+<h:body>
+	<f:view>
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<ui:include src="#{facesBean.menu}"></ui:include>
+		<h:panelGroup layout="block" class="container">
+			<h:panelGroup layout="block" class="main_div">
+				<h1>
+					<h:outputText value="Bank Master" />
+				</h1>
+				<h:panelGroup layout="block" class="table_bg">
+					<h:form style="padding:0!important;">
+						
+						<!-- Confirmation messages will come --> 
+						<!-- <p:growl id="msg" showDetail="true" sticky="true" globalOnly="true"/> -->
+						<!-- If idle 20 seconds, run 'idleDialog' -->
+						<p:idleMonitor timeout="20000" onidle="idleDialog.show()" />
+					 
+						<p:confirmDialog id="confirmDialog"
+							message="You have been idle for a long time, Please click ok to continue."
+							header="Are you there?" severity="alert" widgetVar="idleDialog">
+					 
+							<p:commandButton id="confirm" value="Stay" 
+								oncomplete="idleDialog.hide()"
+								actionListener="#{bankMaster.welcomeListener}" process="@this"/>
+					 
+							<p:commandButton id="Logout" value="Leave" 
+								oncomplete="idleDialog.hide()"
+								actionListener="#{bankMaster.logoutListener}" process="@this"/>
+						</p:confirmDialog>
+					
+						<p:panel id="mainPanel" style="border: 0px; padding:0px!important;">
+							<p:panel style="padding:10px!important;">
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Bank Code" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputMask value="#{bankMaster.bankCode}" mask="#{bankMaster.maskBankCode}"/>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Full Name"/>
+									</div>
+									<div class="ui-block-b">
+										<p:inputText value="#{bankMaster.fullName}" required="true"/>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Short Name" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText value="#{bankMaster.shortName}" required="true"/>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Language" />
+									</div>
+									<div class="ui-block-b">
+										<p:selectOneMenu value="#{bankMaster.languageBank}">
+											<f:selectItem itemLabel="select" itemValue=""/>
+											<f:selectItem itemLabel="English" itemValue="en"/>
+											<f:selectItem itemLabel="Arabic" itemValue="ar"/>
+										</p:selectOneMenu>
+									</div>
+									<div class="ui-block-c"></div>
+									<div class="ui-block-d"></div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Address 1" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputTextarea  value="#{bankMaster.address1}"  style="height:70px !important; overflow-y:scroll;" />
+									</div>
+									<div class="ui-block-c"><h:outputText value="Address 2" /></div>
+									<div class="ui-block-d">
+										<p:inputTextarea value="#{bankMaster.address2}" style="height:70px !important; overflow-y:scroll;" /></div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+								
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Country" />
+									</div>
+									<div class="ui-block-b">
+										<p:selectOneMenu value="#{bankMaster.countryId}" filter="true" filterMatchMode="startsWith">
+											<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+											<f:selectItems value="#{bankMaster.countryNameList}" var="c" itemLabel="#{c.countryName}" itemValue="#{c.countryMasterId}"/>
+											<p:ajax event="change" update="state"  listener="#{bankMaster.generateStateList}"/>
+										</p:selectOneMenu>
+									</div>
+									
+								</div>
+								<div class="clearfix"></div>
+								
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="State" />
+									</div>
+									<div class="ui-block-b">
+										<p:selectOneMenu id="state" value="#{bankMaster.stateId}">
+											<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+											<f:selectItems  value="#{bankMaster.lstStateList}" var="c" itemLabel="#{c.stateName}" itemValue="#{c.fsStateMaster.stateId}"/>
+											<p:ajax event="change" update="district"  listener="#{bankMaster.generateDistrictList}"/>
+										</p:selectOneMenu>
+									</div>
+									
+								</div>
+								<div class="clearfix"></div>
+								
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="District" />
+									</div>
+									<div class="ui-block-b">
+										<p:selectOneMenu id="district" value="#{bankMaster.districtId}">
+											<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+											<f:selectItems  value="#{bankMaster.lstDistrictList}" var="c" itemLabel="#{c.district}" itemValue="#{c.fsDistrictMaster.districtId}"/>
+											<p:ajax event="change" update="city"  listener="#{bankMaster.generateCityList}" />
+										</p:selectOneMenu>
+											
+									</div>
+									
+								</div>
+								<div class="clearfix"></div>
+								
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="City" />
+									</div>
+									<div class="ui-block-b">
+										<p:selectOneMenu id="city" value="#{bankMaster.cityId}">
+											<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+											<f:selectItems  value="#{bankMaster.lstCityList}" var="c" itemLabel="#{c.cityName}" itemValue="#{c.fsCityMaster.cityId}"/>
+										</p:selectOneMenu>
+									</div>
+									
+								</div>
+								<div class="clearfix"></div>
+								
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Zipcode" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText value="#{bankMaster.zip}"/>
+									</div>
+									
+								</div>
+								<div class="clearfix"></div>
+								
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Telephone" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText value="#{bankMaster.telephone}"/>
+									</div>
+									<div class="ui-block-c"><h:outputText value="Fax" /></div>
+									<div class="ui-block-d">
+										<p:inputText value="#{bankMaster.fax}"/>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Email" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText value="#{bankMaster.email}"/>
+									</div>
+									<div class="ui-block-c"><h:outputText value="Contact Person" /></div>
+									<div class="ui-block-d">
+										<p:inputText value="#{bankMaster.contactPerson}"/>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Designation" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText value="#{bankMaster.designation}"/>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Department" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText value="#{bankMaster.department}"/>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+								<br />
+								<br />
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Full Name (L)" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText value="#{bankMaster.localFullName}"/>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Short Name (L)" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText value="#{bankMaster.localShortname}"/>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Address 1 (L)" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputTextarea value="#{bankMaster.localAddress1}" style="height:70px !important; overflow-y:scroll;" />
+									</div>
+									<div class="ui-block-c"><h:outputText value="Address 2 (L)" /></div>
+									<div class="ui-block-d">
+										<p:inputTextarea value="#{bankMaster.localAddress2}" style="height:70px !important; overflow-y:scroll;" />
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Contact Person (L)" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText value="#{bankMaster.localContactPerson}"/>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Designation (L)" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText value="#{bankMaster.localDesignation}"/>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Department (L)" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText value="#{bankMaster.localDepartment}"/>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div><br/><br/>
+														
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="IFSC Lenth" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText value="#{bankMaster.IFSCLength}"/>
+									</div>
+									<div class="ui-block-c" style="padding-top:2%;">
+										<h:outputText value="Reuters Bank Name" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText value="#{bankMaster.reutersBankNname }"/>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a" style="padding-top:2%;">
+										<h:outputText value="File specific /ALL Creation (File All)" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText value="#{bankMaster.fileSpecificOrAll}"/>
+									</div>
+									<div class="ui-block-c" style="padding-top:2%;">
+										<h:outputText value="File Branch-wise (y/n)" />
+									</div>
+									<div class="ui-block-d">
+										<p:selectOneMenu value="#{bankMaster.fileBranchWiseYOrN}">
+											<f:selectItem itemLabel="select" itemValue=""/>
+											<f:selectItem itemLabel="Yes" itemValue="Y"/>
+											<f:selectItem itemLabel="No" itemValue="N"/>
+										</p:selectOneMenu>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="MICR REUTERS" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText value="#{bankMaster.MICRReuters}"/>
+									</div>
+									<div class="ui-block-c" style="padding-top:2%;">
+										<h:outputText value="Remittence Mode Wise (y/n)" />
+									</div>
+									<div class="ui-block-d">
+										<p:selectOneMenu value="#{bankMaster.remmiterModeYOrN}">
+											<f:selectItem itemLabel="select" itemValue=""/>
+											<f:selectItem itemLabel="Yes" itemValue="Y"/>
+											<f:selectItem itemLabel="No" itemValue="N"/>
+										</p:selectOneMenu>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+								<h:panelGroup layout="block" styleClass="button_align">
+
+									<p:commandButton value="SUBMIT" action="#{bankMaster.save}" style="float:right;"/>
+									<p:commandButton value="CANCEL" action="#{bankMaster.cancel}" immediate="true" ajax="false" style="float:right; margin-right:10px;"/>
+									<p:commandButton value="CLEAR" action="#{bankMaster.clear}" style="float:right; margin-right:10px;" update="mainPanel" process="@this"/>
+									<div class="clearfix"/>
+								</h:panelGroup>
+								<div class="clearfix"></div>
+							</p:panel>
+						</p:panel>
+					</h:form>
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+		</h:panelGroup>
+		<ui:include src="#{facesBean.footer}"></ui:include>
+	</f:view>
+</h:body>
+</html>

@@ -1,0 +1,1170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</h:head>
+
+
+<h:body dir="#{facesBean.direction}">
+	<f:view locale="#{facesBean.locale}">
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<ui:include src="#{facesBean.menu}"></ui:include>
+		<table align="left" width="100%" style="height: 100%;">
+			<tr>
+				<td align="left" valign="top" style="height: 100%;"><div
+						id="left" class="leftColumn">
+						<div style="display: none; width: 150px;" id="leftCol">
+							<p:accordionPanel>
+								<p:tab title="My Profile"
+									titleStyle="background: url(../images/menu_icon5.png) no-repeat scroll 6px 8px;  border-top:none !important;">
+									<h:outputLink value="../login/forgotpassword.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Change Password" />
+									</h:outputLink>
+									<h:outputLink value="../login/login.xhtml" target="_self"
+										styleClass="left_menu" style=" border-bottom:none !important;">
+										<h:outputText value="Logout" />
+									</h:outputLink>
+
+								</p:tab>
+								<p:tab title="About"
+									titleStyle="background: url(../images/menu_icon1.png) no-repeat scroll 6px 8px;">
+
+									<h:outputLink value="http://www.almullagroup.com/"
+										target="_blank" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Al Mulla Group" />
+									</h:outputLink>
+									<h:outputLink
+										value="http://www.almullagroup.com/finance/exchange.aspx"
+										target="_blank" styleClass="left_menu">
+										<h:outputText value="Exchange" />
+									</h:outputLink>
+									<h:outputLink
+										value="http://www.almullagroup.com/finance/finance.aspx"
+										target="_blank" styleClass="left_menu">
+										<h:outputText value="Finance" />
+									</h:outputLink>
+									<h:outputLink value="http://www.autoalmulla.com/index.php/"
+										target="_blank" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Automobiles" />
+									</h:outputLink>
+
+								</p:tab>
+								<p:tab title="Services"
+									titleStyle="background: url(../images/menu_icon2.png) no-repeat scroll 6px 8px;">
+									<h:outputLink value="../registration/custmanualbranchreg.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Individual" />
+									</h:outputLink>
+									<h:outputLink
+										value="../registration/corporateregistration.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Non Individual" />
+									</h:outputLink>
+
+								</p:tab>
+								<p:tab title="Branch"
+									titleStyle="background: url(../images/menu_icon3.png) no-repeat scroll 6px 8px;">
+
+									<h:outputLink value="../search/searchcustomer.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Search Customer" />
+									</h:outputLink>
+									<h:outputLink value="../registration/branchhome.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Branch Home" />
+									</h:outputLink>
+
+
+								</p:tab>
+								<p:tab title="Rule Engine"
+									titleStyle="background: url(../images/menu_icon4.png) no-repeat scroll 6px 8px;">
+
+									<h:outputLink value="../ruleengine/businesscomponent.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Business Component" />
+									</h:outputLink>
+
+									<h:outputLink value="../ruleengine/businesscomponentconf.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Business Component Config" />
+									</h:outputLink>
+
+								</p:tab>
+							</p:accordionPanel>
+						</div>
+					</div></td>
+
+				<td class="rightColumn" valign="top"><h:panelGroup
+						layout="block" class="container">
+						<h:panelGroup layout="block" class="main_div">
+
+							<div class="menu_button">
+								<img style="cursor: pointer; position: relative; left: 15px;"
+									id="HideHandle" name="HideHandle"
+									src="../images/toggle_plus.png" alt=""
+									onclick='hideLeftCol("leftCol");closeMenus();' />
+							</div>
+							<h1>
+								<h:outputText value="#{msg['lbl.corporateregistration']}" />
+							</h1>
+
+
+							<h:panelGroup layout="block" class="table_bg">
+									<h:form id="corporateregistrationfrm" enctype="multipart/form-data">
+									<p:panel id="mainPanel" style="padding:10px!important;">
+										<p:panel id="subPanel" styleClass="shadow" rendered="#{corpregisterBean.renderValidate}">
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a" style="padding-top: 20px;">
+													<h:outputText
+														value="#{msg['lbl.crnumber']} #{corpregisterBean.viewBehaviorBean('Cr Number','MANDATORY')}" />
+												</div>
+												<div class="ui-block-b">
+													<p:inputText id="cr" value="#{corpregisterBean.crno}"
+														readonly="#{corpregisterBean.readOnly}"
+														required="#{corpregisterBean.viewBehaviorBean('Cr Number','REQUIRED')}"
+														maxlength="#{corpregisterBean.viewBehaviorBean('Cr Number','MAX_VALUE')}"
+														minlength="#{corpregisterBean.viewBehaviorBean('Cr Number','MIN_VALUE')}"
+														validatorMessage="#{msg['lbl.validcrno']}"
+														text-align="left"
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.crnumber']}">
+														 <p:ajax event="blur" listener="#{corpregisterBean.fetchData}"
+										                	update="panelObjective" /> 
+														<p:message for="cr" display="text" />
+													</p:inputText>
+												</div>
+
+												<div class="ui-block-c">
+													<p:ajaxStatus id="corporatestatuspanel">
+														<f:facet name="start">
+															<h:graphicImage value="../images/ajax_loader.gif" />
+														</f:facet>
+														<f:facet name="start">
+															<h:graphicImage value="" />
+														</f:facet>
+													</p:ajaxStatus>
+												</div>
+
+												<div class="ui-block-d"></div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+
+
+
+											</div>
+											<div class="clearfix"></div>
+
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText
+														value="#{msg['lbl.companyname']} #{corpregisterBean.viewBehaviorBean('Company Name','MANDATORY')}" />
+												</div>
+												<div class="ui-block-b">
+													<p:inputText id="name" value="#{corpregisterBean.compName}"
+														required="#{corpregisterBean.viewBehaviorBean('Company Name','REQUIRED')}"
+														validatorMessage="#{msg['lbl.validcompanyname']}"
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.companyname']}"
+														maxlength="#{corpregisterBean.viewBehaviorBean('Company Name','MAX_VALUE')}"
+														minlength="#{corpregisterBean.viewBehaviorBean('Company Name','MIN_VALUE')}">
+														<f:validateRegex
+															pattern="#{corpregisterBean.viewBehaviorBean('Company Name','PATTERN')}" />
+														<p:message for="name" display="text" />
+													</p:inputText>
+												</div>
+												<div class="ui-block-c">
+													<h:outputText
+														value="#{msg['lbl.companynamel']} #{corpregisterBean.viewBehaviorBean('Company Name(L)','MANDATORY')}" />
+												</div>
+
+												<div class="ui-block-d">
+													<p:inputText id="cnamel"
+														value="#{corpregisterBean.compNameL}"
+														readonly="#{corpregisterBean.readOnly}"
+														required="#{corpregisterBean.viewBehaviorBean('Company Name(L)','REQUIRED')}"
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.companynamel']}"
+														maxlength="#{corpregisterBean.viewBehaviorBean('Company Name(L)','MAX_VALUE')}"
+														minlength="#{corpregisterBean.viewBehaviorBean('Company Name(L)','MIN_VALUE')}">
+														<p:message for="cnamel" display="text" />
+													</p:inputText>
+
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+
+
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a" style="padding-top: 8px;">
+													<h:outputText
+														value="#{msg['lbl.companyaregdate']} #{corpregisterBean.viewBehaviorBean('Company Registration Date','MANDATORY')}" />
+												</div>
+												<div class="ui-block-b">
+													<p:calendar id="regdate"
+														value="#{corpregisterBean.compRegDate}" autocomplete="off"
+														readonlyInput="true" pattern="dd/MM/yyyy" navigator="true"
+														required="#{corpregisterBean.viewBehaviorBean('Company Registration Date','REQUIRED')}"
+														requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.companyaregdate']}"
+														maxdate="#{corpregisterBean.dateAdderForReg}"
+														disabled="#{corpregisterBean.disableDate}"
+														readonly="#{corpregisterBean.readOnly}">
+
+														<p:message for="regdate" display="text" />
+													</p:calendar>
+												</div>
+												<div class="ui-block-c">
+													<h:outputText
+														value="#{msg['lbl.location']} #{corpregisterBean.viewBehaviorBean('Location','MANDATORY')}" />
+												</div>
+
+												<div class="ui-block-d">
+													<p:message for="location" display="text"></p:message>
+													<p:selectOneMenu value="#{corpregisterBean.location}"
+														id="location"
+														required="#{corpregisterBean.viewBehaviorBean('Location','REQUIRED')}"
+														style="width:175px;color:black" filter="true"
+														requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.location']}"
+														filterMatchMode="startsWith">
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue="" />
+														<f:selectItems
+															value="#{corpregisterBean.countryListFromDB}" var="c"
+															itemLabel="#{c.countryName}" itemValue="#{c.countryId}"
+															readonly="#{corpregisterBean.viewBehaviorBean('Location','READ_ONLY')}"
+															disabled="#{corpregisterBean.viewBehaviorBean('Location','ENABLE')}" />
+													</p:selectOneMenu>
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText value="Contact Person" />
+												</div>
+												<div class="ui-block-b">
+													<p:inputText value="#{corpregisterBean.contactPerson}" />
+												</div>
+												<div class="ui-block-c">
+													<h:outputText value="Contact Number" />
+												</div>
+
+												<div class="ui-block-d">
+													<p:inputText value="#{corpregisterBean.contactNumber}"/>
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText
+														value="#{msg['lbl.email']} #{corpregisterBean.viewBehaviorBean('Email','MANDATORY')}" />
+												</div>
+												<div class="ui-block-b">
+													<p:inputText id="email" value="#{corpregisterBean.email}"
+														required="#{corpregisterBean.viewBehaviorBean('Email','REQUIRED')}"
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.email']}"
+														validatorMessage="#{msg['lbl.validlemailformat']}"
+														readonly="#{corpregisterBean.readOnly}">
+														<f:validateRegex
+															pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+														<p:message for="email" display="text" />
+													</p:inputText>
+												</div>
+												<div class="ui-block-c">
+													<h:outputText
+														value="#{msg['lbl.amlstatus']} #{corpregisterBean.viewBehaviorBean('AML Status','MANDATORY')}" />
+												</div>
+
+												<div class="ui-block-d">
+													<p:inputText id="amlStatus"
+														value="#{corpregisterBean.AMLStatus}" disabled="true">
+													</p:inputText>
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+
+
+											<div class="ui-grid-a ui-responsive">
+												<div class="ui-block-a" style="padding-top: 20px;">
+													<h:outputText value="Hit Count" />
+												</div>
+												<div class="ui-block-b">
+													<p:inputText value="#{corpregisterBean.hitCount}"/>
+												</div>
+
+											</div>
+											<div class="clearfix"></div>
+
+											<p:commandButton value="#{msg['lbl.validate']}"
+												rendered="#{corpregisterBean.coValdtBtn}"
+												actionListener="#{corpregisterBean.checkCompanyAMLStatus}"
+												update="mainPanel"/>
+										</p:panel>
+
+
+
+										<p:panel id="panelObjective" styleClass="shadow"  rendered="#{corpregisterBean.renderObjective}">
+
+											<h:panelGrid columns="1"
+												 
+												styleClass="heading2">
+												<h:outputText value="#{msg['lbl.Objectives']}"
+													  />
+											</h:panelGrid>
+
+											<div class="ui-grid-a ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText
+													value="#{msg['lbl.natureofbusiness']} #{corpregisterBean.viewBehaviorBean('Business Nature','MANDATORY')}"
+													  />
+												</div>
+												<div class="ui-block-b">
+                                               <p:selectOneMenu value="#{corpregisterBean.bussNature}"
+													 
+													 
+													style="width:300px; height: 25px; margin-top:15px;text-align:left"
+													readonly="#{corpregisterBean.viewBehaviorBean('Business Nature','READ_ONLY')}"
+													disabled="#{corpregisterBean.viewBehaviorBean('Business Nature','ENABLE')}">
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems
+														value="#{corpregisterBean.bussineesNatureFromDB}" var="o"
+														itemLabel="#{o.natureOfBusinessDesc}"
+														itemValue="#{o.natureOfBusinessId}" />
+												</p:selectOneMenu>
+												</div>
+
+											</div>
+											<div class="clearfix"></div>
+
+											<div class="ui-grid-a ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText
+														value="#{msg['lbl.primaryobjective']} #{corpregisterBean.viewBehaviorBean('Primary Objective','MANDATORY')}"
+														  />
+												</div>
+												<div class="ui-block-b">
+													<p:message for="prmobj" display="text" />
+													<p:selectOneMenu value="#{corpregisterBean.primaryObjId}"
+														id="prmobj"  
+														required="#{corpregisterBean.viewBehaviorBean('Primary Objective','REQUIRED')}"
+														requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.primaryobjective']}"
+														readonly="#{corpregisterBean.viewBehaviorBean('Primary Objective','READ_ONLY')}"
+														disabled="#{corpregisterBean.viewBehaviorBean('Primary Objective','ENABLE')}">
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue="" />
+														<f:selectItems
+															value="#{corpregisterBean.objectivesFromDB}" var="o"
+															itemLabel="#{o.objectiveDesc}"
+															itemValue="#{o.objectiveId}" />
+
+													</p:selectOneMenu>
+												</div>
+
+											</div>
+											<div class="clearfix"></div>
+
+
+											<div class="ui-grid-a ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText
+														value="#{msg['lbl.secondaryobjective']} #{corpregisterBean.viewBehaviorBean('Secondary Objective','MANDATORY')}"
+														  />
+												</div>
+												<div class="ui-block-b">
+													<p:selectOneMenu value="#{corpregisterBean.seconObj}"
+														 
+														readonly="#{corpregisterBean.viewBehaviorBean('Secondary Objective','READ_ONLY')}"
+														disabled="#{corpregisterBean.viewBehaviorBean('Secondary Objective','ENABLE')}">
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue="" />
+														<f:selectItems
+															value="#{corpregisterBean.objectivesFromExistingList}"
+															var="o" itemLabel="#{o.objectiveDesc}"
+															itemValue="#{o.objectiveId}" />
+													</p:selectOneMenu>
+												</div>
+
+											</div>
+											<div class="clearfix"></div>
+
+										</p:panel>
+
+										<h:panelGroup layout="block" styleClass="button_align" rendered="#{corpregisterBean.renderObjective}">
+											<!-- <p:commandButton value="Back" style="margin-right:10px;"
+												 process="@this">
+
+											</p:commandButton> -->
+											<p:commandButton value="NEXT"   action="#{corpregisterBean.nextToContact}" style="margin-right:10px;" update="mainPanel"/>
+												  
+											<p:commandButton value="clear"  style="float:right; margin-right:10px;"  action="#{corpregisterBean.saveData}" update="mainPanel"/>
+											<div class="clearfix"></div>
+										</h:panelGroup>
+										<div class="clearfix"></div>
+
+
+										<p:panel id="panel" rendered="#{corpregisterBean.renderContactDetails}"
+											styleClass="shadow">
+
+											<h:panelGrid columns="1"
+												 
+												styleClass="heading2">
+												<h:outputText value="#{msg['lbl.contactdetails']}"
+													  />
+											</h:panelGrid>
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText
+														value="#{msg['lbl.contacttype']} #{corpregisterBean.viewBehaviorBean('Contact Type','MANDATORY')}"
+														  />
+												</div>
+												<div class="ui-block-b">
+													<p:selectOneMenu id="newContactType"
+														value="#{corpregisterBean.contType}"
+														 
+														readonly="#{corpregisterBean.viewBehaviorBean('Contact Type','READ_ONLY')}"
+														disabled="#{corpregisterBean.viewBehaviorBean('Contact Type','ENABLE')}">
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue="" />
+														<f:selectItems
+															value="#{corpregisterBean.contactTypeListDB}" var="o"
+															itemLabel="#{o.contactType}"
+															itemValue="#{o.contactTypeId}" />
+													</p:selectOneMenu>
+												</div>
+												<div class="ui-block-c">
+													<h:outputText
+														value="#{msg['lbl.country']} #{corpregisterBean.viewBehaviorBean('Country','MANDATORY')}"
+														  />
+												</div>
+
+												<div class="ui-block-d">
+													<p:selectOneMenu value="#{corpregisterBean.countryId}"
+														  filter="true"
+														filterMatchMode="startsWith"
+														readonly="#{corpregisterBean.viewBehaviorBean('Country','READ_ONLY')}">
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue="" />
+														<f:selectItems
+															value="#{corpregisterBean.countryListFromDB}" var="c"
+															itemLabel="#{c.countryName}" itemValue="#{c.countryId}" />
+														<p:ajax update="state" event="change"
+															listener="#{corpregisterBean.popState}" />
+													</p:selectOneMenu>
+
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText
+														value="#{msg['lbl.state']} #{corpregisterBean.viewBehaviorBean('State','MANDATORY')}" />
+												</div>
+												<div class="ui-block-b">
+													<p:selectOneMenu id="state"
+														value="#{corpregisterBean.stateId}">
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue="" />
+														<f:selectItems value="#{corpregisterBean.stateFromDb}"
+															var="c" itemLabel="#{c.stateName}"
+															itemValue="#{c.stateId}"
+															readonly="#{corpregisterBean.viewBehaviorBean('State','READ_ONLY')}"
+															disabled="#{corpregisterBean.viewBehaviorBean('State','ENABLE')}" />
+
+														<p:ajax update="dist" event="change"
+															listener="#{corpregisterBean.popDistrict}" />
+
+													</p:selectOneMenu>
+
+												</div>
+												<div class="ui-block-c">
+													<h:outputText
+														value="#{msg['lbl.district']} #{corpregisterBean.viewBehaviorBean('Distict','MANDATORY')}   " />
+												</div>
+
+												<div class="ui-block-d">
+													<p:selectOneMenu value="#{corpregisterBean.distId}"
+														id="dist">
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue="" />
+														<f:selectItems value="#{corpregisterBean.districFromDb}"
+															var="c" itemLabel="#{c.districName}"
+															itemValue="#{c.districId}"
+															readonly="#{corpregisterBean.viewBehaviorBean('Distict','READ_ONLY')}"
+															disabled="#{corpregisterBean.viewBehaviorBean('Distict','ENABLE')}" />
+
+														<p:ajax update="city" event="change"
+															listener="#{corpregisterBean.popCity}" />
+
+													</p:selectOneMenu>
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText
+														value="#{msg['lbl.city']}  #{corpregisterBean.viewBehaviorBean('City','MANDATORY')} " />
+												</div>
+												<div class="ui-block-b">
+													<p:selectOneMenu id="city"
+														value="#{corpregisterBean.cityId}"
+														 >
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue=""
+															readonly="#{corpregisterBean.viewBehaviorBean('City','READ_ONLY')}"
+															disabled="#{corpregisterBean.viewBehaviorBean('City','ENABLE')}" />
+														<f:selectItems value="#{corpregisterBean.cityFromDb}"
+															var="c" itemLabel="#{c.cityName}" itemValue="#{c.cityId}" />
+													</p:selectOneMenu>
+												</div>
+												<div class="ui-block-c">
+													<h:outputText
+														value="#{msg['lbl.localarea']} #{corpregisterBean.viewBehaviorBean('Area','MANDATORY')}"
+														  />
+												</div>
+
+												<div class="ui-block-d">
+													<p:inputText id="area" value="#{corpregisterBean.area}"
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.localarea']}"
+														 
+														readonly="#{corpregisterBean.viewBehaviorBean('Area','READ_ONLY')}"
+														maxlength="#{corpregisterBean.viewBehaviorBean('Area','MAX_VALUE')}"
+														disabled="#{corpregisterBean.viewBehaviorBean('Area','ENABLE')}"
+														validator="RegularExpressionValidation">
+														<f:attribute name="regexValue"
+															value="#{corpregisterBean.viewBehaviorBean('Area','PATTERN')}" />
+														<f:attribute name="minValue"
+															value="#{corpregisterBean.viewBehaviorBean('Area','MIN_VALUE')}" />
+														<f:attribute name="maxValue"
+															value="#{corpregisterBean.viewBehaviorBean('Area','MAX_VALUE')}" />
+														<p:message for="area" display="text" />
+													</p:inputText>
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText
+														value="#{msg['lbl.street']} #{corpregisterBean.viewBehaviorBean('Street','MANDATORY')}"
+														  />
+												</div>
+												<div class="ui-block-b">
+													<p:inputText id="str" value="#{corpregisterBean.street}"
+														 
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.street']}"
+														readonly="#{corpregisterBean.viewBehaviorBean('Street','READ_ONLY')}"
+														maxlength="#{corpregisterBean.viewBehaviorBean('Street','MAX_VALUE')}"
+														disabled="#{corpregisterBean.viewBehaviorBean('Street','ENABLE')}"
+														validator="RegularExpressionValidation">
+														<f:attribute name="regexValue"
+															value="#{corpregisterBean.viewBehaviorBean('Street','PATTERN')}" />
+														<f:attribute name="minValue"
+															value="#{corpregisterBean.viewBehaviorBean('Street','MIN_VALUE')}" />
+														<f:attribute name="maxValue"
+															value="#{corpregisterBean.viewBehaviorBean('Street','MAX_VALUE')}" />
+														<p:message for="str" display="text" />
+													</p:inputText>
+												</div>
+												<div class="ui-block-c">
+													<h:outputText
+														value="#{msg['lbl.block']}  #{corpregisterBean.viewBehaviorBean('Block','MANDATORY')} "
+														 ></h:outputText>
+												</div>
+
+												<div class="ui-block-d">
+													<p:inputText value="#{corpregisterBean.block}" id="blk"
+														 
+														readonly="#{corpregisterBean.viewBehaviorBean('Block','READ_ONLY')}"
+														maxlength="#{corpregisterBean.viewBehaviorBean('Block','MAX_VALUE')}"
+														disabled="#{corpregisterBean.viewBehaviorBean('Block','ENABLE')}"
+														validator="RegularExpressionValidation">
+														<f:attribute name="regexValue"
+															value="#{corpregisterBean.viewBehaviorBean('Block','PATTERN')}" />
+														<f:attribute name="minValue"
+															value="#{corpregisterBean.viewBehaviorBean('Block','MIN_VALUE')}" />
+														<f:attribute name="maxValue"
+															value="#{corpregisterBean.viewBehaviorBean('Block','MAX_VALUE')}" />
+														<p:message for="blk" display="text" />
+													</p:inputText>
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText
+														value="#{msg['lbl.telephone']}  #{corpregisterBean.viewBehaviorBean('Telephone Number','MANDATORY')}"
+														 ></h:outputText>
+												</div>
+												<div class="ui-block-b">
+													<p:inputText value="#{corpregisterBean.tel}" id="telp"
+														 
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.telephone']}"
+														readonly="#{corpregisterBean.viewBehaviorBean('Telephone Number','READ_ONLY')}"
+														maxlength="#{corpregisterBean.viewBehaviorBean('Telephone Number','MAX_VALUE')}"
+														disabled="#{corpregisterBean.viewBehaviorBean('Telephone Number','ENABLE')}"
+														validator="RegularExpressionValidation">
+														<f:attribute name="regexValue"
+															value="#{corpregisterBean.viewBehaviorBean('Telephone Number','PATTERN')}" />
+														<f:attribute name="minValue"
+															value="#{corpregisterBean.viewBehaviorBean('Telephone Number','MIN_VALUE')}" />
+														<f:attribute name="maxValue"
+															value="#{corpregisterBean.viewBehaviorBean('Telephone Number','MAX_VALUE')}" />
+
+														<p:message for="telp" display="text" />
+													</p:inputText>
+												</div>
+												<div class="ui-block-c">
+													<h:outputText
+														value="#{msg['lbl.flatno']}  #{corpregisterBean.viewBehaviorBean('Flat','MANDATORY')}  "
+														  />
+												</div>
+
+												<div class="ui-block-d">
+													<p:inputText value="#{corpregisterBean.flat}" id="flat"
+														 
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.flatno']}"
+														readonly="#{corpregisterBean.viewBehaviorBean('Flat','READ_ONLY')}"
+														maxlength="#{corpregisterBean.viewBehaviorBean('Flat','MAX_VALUE')}"
+														disabled="#{corpregisterBean.viewBehaviorBean('Flat','ENABLE')}"
+														validator="RegularExpressionValidation">
+														<f:attribute name="regexValue"
+															value="#{corpregisterBean.viewBehaviorBean('Flat','PATTERN')}" />
+														<f:attribute name="minValue"
+															value="#{corpregisterBean.viewBehaviorBean('Flat','MIN_VALUE')}" />
+														<f:attribute name="maxValue"
+															value="#{corpregisterBean.viewBehaviorBean('Flat','MAX_VALUE')}" />
+														<p:message for="flat" display="text" />
+													</p:inputText>
+
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+										</p:panel>
+
+										<h:panelGroup layout="block" styleClass="button_align"  rendered="#{corpregisterBean.renderContactDetails}">
+											<p:commandButton value="Back"  action="#{corpregisterBean.backFromContactDetails}"  style="margin-right:10px;" update="mainPanel">
+											</p:commandButton>
+											<p:commandButton value="NEXT"  action="#{corpregisterBean.nextToCompanyIdentityDoc}" style="margin-right:10px;" update="mainPanel"
+											 />
+											<p:commandButton value="clear" action="#{corpregisterBean.saveContact}" style="float:right; margin-right:10px;" update="mainPanel" />
+											<div class="clearfix"></div>
+										</h:panelGroup>
+										<div class="clearfix"></div>
+
+
+
+										<p:panel styleClass="shadow"
+											rendered="#{corpregisterBean.renderCoIdentityDoc}">
+
+											<h:panelGrid columns="1" styleClass="heading2">
+												<h:outputText value="Company Identity Document" />
+											</h:panelGrid>
+
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText
+														value="#{msg['lbl.idnumber']} #{corpregisterBean.viewBehaviorBean('Id Number','MANDATORY')}"
+														  />
+												</div>
+												<div class="ui-block-b">
+													<p:inputText id="idno" value="#{corpregisterBean.idno}"
+														 
+														readonly="#{corpregisterBean.viewBehaviorBean('Id Number','READ_ONLY')}"
+														maxlength="#{corpregisterBean.viewBehaviorBean('Id Number','MAX_VALUE')}"
+														disabled="#{corpregisterBean.viewBehaviorBean('Id Number','ENABLE')}"
+														validator="RegularExpressionValidation">
+														<f:attribute name="regexValue"
+															value="#{corpregisterBean.viewBehaviorBean('Id Number','PATTERN')}" />
+														<f:attribute name="minValue"
+															value="#{corpregisterBean.viewBehaviorBean('Id Number','MIN_VALUE')}" />
+														<f:attribute name="maxValue"
+															value="#{corpregisterBean.viewBehaviorBean('Id Number','MAX_VALUE')}" />
+														<p:message for="idno" display="text" />
+													</p:inputText>
+												</div>
+												<div class="ui-block-c">
+													<h:outputText
+														value="#{msg['lbl.idtype']} #{corpregisterBean.viewBehaviorBean('Id Type','MANDATORY')}"
+														  />
+												</div>
+
+												<div class="ui-block-d">
+													<p:selectOneMenu value="#{corpregisterBean.idtype}"
+														id="idType" style="width:175px;"
+														 >
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue="" />
+														<f:selectItems
+															value="#{corpregisterBean.lstCompanyIdentityType}"
+															var="idTyp" itemLabel="#{idTyp.identityType}"
+															itemValue="#{idTyp.identityTypeId}" />
+
+													</p:selectOneMenu>
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText value="#{msg['lbl.dateofexpiry']}*"
+														  />
+
+												</div>
+												<div class="ui-block-b">
+													<p:calendar id="crd" mode="popup"
+														 
+														value="#{corpregisterBean.idExpDate}" pattern="dd/MM/yyyy"
+														navigator="true"
+														requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.dateofexpiry']}"
+														size="25" mindate="#{corpregisterBean.expDateAdder}"
+														readonlyInput="true">
+														<p:message for="crd" display="text" />
+													</p:calendar>
+												</div>
+												<div class="ui-block-c">
+													<h:outputText value="#{msg['lbl.scandocument']}*" />
+												</div>
+
+												<div class="ui-block-d">
+													<p:messages showDetail="true" />
+
+													<p:fileUpload id="chooseFile1"
+														value="#{corpregisterBean.identityfile}" mode="simple"
+														dragDropSupport="false" update="messages"
+														sizeLimit="10000" fileLimit="1"
+														allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+
+										</p:panel>
+
+										<h:panelGroup layout="block" styleClass="button_align" rendered="#{corpregisterBean.renderCoIdentityDoc}">
+											<p:commandButton value="Back" style="margin-right:10px;" action="#{corpregisterBean.backFromCompanyIdentity}" ajax="false" >
+											</p:commandButton>
+											<p:commandButton value="NEXT" action="#{corpregisterBean.nextToPartnerDetails}" style="margin-right:10px;"
+												ajax="false" />
+											<p:commandButton value="clear" action="#{corpregisterBean.saveCompanyIdentityDocument}" style="float:right; margin-right:10px;"  ajax="false"/>
+											<div class="clearfix"></div>
+										</h:panelGroup>
+										<div class="clearfix"></div>
+
+
+
+										<p:panel styleClass="shadow"  rendered="#{corpregisterBean.renderPartnerDetail}">
+
+											<h:panelGrid columns="1" styleClass="heading2">
+												<h:outputText value="#{msg['lbl.partnersdetails']}" />
+											</h:panelGrid>
+
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText
+												value="#{msg['lbl.idnumber']} "
+												  />
+												</div>
+												<div class="ui-block-b">
+													<p:inputText id="pidn" value="#{corpregisterBean.pidno}"
+												 
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.idnumber']}"
+												readonly="#{corpregisterBean.viewBehaviorBean('Id Number','READ_ONLY')}"
+												maxlength="#{corpregisterBean.viewBehaviorBean('Id Number','MAX_VALUE')}"
+												disabled="#{corpregisterBean.viewBehaviorBean('Id Number','ENABLE')}"
+												validator="RegularExpressionValidation">
+												<f:attribute name="regexValue"
+													value="#{corpregisterBean.viewBehaviorBean('Id Number','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{corpregisterBean.viewBehaviorBean('Id Number','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{corpregisterBean.viewBehaviorBean('Id Number','MAX_VALUE')}" />
+												<p:message for="pidn" display="text" />
+											</p:inputText>
+												</div>
+												<div class="ui-block-c">
+													<h:outputText value="#{msg['lbl.partnerName']}"
+												  />
+												</div>
+
+												<div class="ui-block-d">
+													<p:inputText id="pname" value="#{corpregisterBean.partName}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.partnerName']}"
+												 
+												readonly="#{corpregisterBean.viewBehaviorBean('Partner Name','READ_ONLY')}"
+												maxlength="#{corpregisterBean.viewBehaviorBean('Partner Name','MAX_VALUE')}"
+												disabled="#{corpregisterBean.viewBehaviorBean('Partner Name','ENABLE')}"
+												validator="RegularExpressionValidation" >
+											<f:attribute name="regexValue"
+												value="#{corpregisterBean.viewBehaviorBean('Partner Name','PATTERN')}" />
+											<f:attribute name="minValue"
+												value="#{corpregisterBean.viewBehaviorBean('Partner Name','MIN_VALUE')}" />
+											<f:attribute name="maxValue"
+												value="#{corpregisterBean.viewBehaviorBean('Partner Name','MAX_VALUE')}" />
+												<p:message for="pname" display="text"/>
+											</p:inputText>
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText value="#{msg['lbl.idtype']} "
+												  />
+												</div>
+												<div class="ui-block-b">
+													<p:selectOneMenu id="partnerIdType"
+												value="#{corpregisterBean.pidtype}"
+												 
+												style="width:183px;">
+												<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+												<f:selectItems
+													value="#{corpregisterBean.lstPartnerIdentityType}"
+													var="idTyp" itemLabel="#{idTyp.identityType}"
+													itemValue="#{idTyp.identityTypeId}" />
+											</p:selectOneMenu>
+												</div>
+												<div class="ui-block-c">
+													<h:outputText value="#{msg['lbl.dateofexpiry']}"
+												 ></h:outputText>
+												
+												</div>
+
+												<div class="ui-block-d">
+													<p:calendar id="pcrd" mode="popup"
+												 
+												value="#{corpregisterBean.pidExpDate}" pattern="dd/MM/yyyy"
+												mindate="#{corpregisterBean.expDateAdder}" navigator="true"
+												readonlyInput="true">
+											</p:calendar>
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText value="#{msg['lbl.scandocument']}*" />
+
+												</div>
+												<div class="ui-block-b">
+													<p:messages showDetail="true" />
+
+													<p:fileUpload id="chooseFilep"
+														value="#{corpregisterBean.identityfile}" mode="simple"
+														dragDropSupport="false" update="messages"
+														sizeLimit="10000" fileLimit="1"
+														allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+												</div>
+												<div class="ui-block-c"></div>
+
+												<div class="ui-block-d"></div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+
+
+										</p:panel>
+
+										<h:panelGroup layout="block" styleClass="button_align" rendered="#{corpregisterBean.renderPartnerDetail}">
+											<p:commandButton value="Back"   action="#{corpregisterBean.backFromPartnerDetails}" style="margin-right:10px;" ajax="false">
+												
+											</p:commandButton>
+											<p:commandButton value="NEXT"  action="#{corpregisterBean.nextToAuthorDetails}" style="margin-right:10px;" ajax="false"/>
+											<p:commandButton value="clear"   action="#{corpregisterBean.savePartnerDetail}" 	style="float:right; margin-right:10px;" ajax="false" />
+											<div class="clearfix"></div>
+										</h:panelGroup>
+										<div class="clearfix"></div>
+										<p:panel styleClass="shadow" rendered="#{corpregisterBean.renderOwnerDetails}">
+
+											<h:panelGrid columns="1" styleClass="heading2">
+												<h:outputText value="#{msg['lbl.authorizedsig']}" />
+											</h:panelGrid>
+
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText
+												value="#{msg['lbl.idnumber']} #{corpregisterBean.viewBehaviorBean('Id Number','MANDATORY')}"
+												  />
+												</div>
+												<div class="ui-block-b">
+													<p:inputText id="sidd" value="#{corpregisterBean.sidno}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.idnumber']}"
+												 
+												readonly="#{corpregisterBean.viewBehaviorBean('Id Number','READ_ONLY')}"
+												maxlength="#{corpregisterBean.viewBehaviorBean('Id Number','MAX_VALUE')}"
+												disabled="#{corpregisterBean.viewBehaviorBean('Id Number','ENABLE')}"
+												validator="RegularExpressionValidation">
+												<f:attribute name="regexValue"
+													value="#{corpregisterBean.viewBehaviorBean('Id Number','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{corpregisterBean.viewBehaviorBean('Id Number','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{corpregisterBean.viewBehaviorBean('Id Number','MAX_VALUE')}" />
+												<p:message for="sidd" display="text" />
+											</p:inputText>
+												</div>
+												<div class="ui-block-c">
+													<h:outputText
+												value="#{msg['lbl.ownername']} #{corpregisterBean.viewBehaviorBean('Owner','MANDATORY')}"
+												  />
+												</div>
+
+												<div class="ui-block-d">
+													<p:inputText id="nam" value="#{corpregisterBean.name}"
+												 
+												readonly="#{corpregisterBean.viewBehaviorBean('Owner','READ_ONLY')}"
+												maxlength="#{corpregisterBean.viewBehaviorBean('Owner','MAX_VALUE')}"
+												disabled="#{corpregisterBean.viewBehaviorBean('Owner​','ENABLE')}"
+												validator="RegularExpressionValidation">
+												 
+											<f:attribute name="regexValue"
+												value="#{corpregisterBean.viewBehaviorBean('Owner','PATTERN')}" />
+											<f:attribute name="minValue"
+												value="#{corpregisterBean.viewBehaviorBean('Owner','MIN_VALUE')}" />
+											<f:attribute name="maxValue"
+												value="#{corpregisterBean.viewBehaviorBean('Owner','MAX_VALUE')}" />
+												<p:message for="nam" display="text" />
+											</p:inputText>
+
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText value="#{msg['lbl.idtype']} #{corpregisterBean.viewBehaviorBean('Id Type','MANDATORY')}"
+												  />
+
+												</div>
+												<div class="ui-block-b">
+													<p:selectOneMenu id="authorizedIdType"
+												value="#{corpregisterBean.sidtype}"
+												 
+												style="width:183px;">
+												<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+												<f:selectItems
+													value="#{corpregisterBean.lstAuthorizedIdentityType}"
+													var="idTyp" itemLabel="#{idTyp.identityType}"
+													itemValue="#{idTyp.identityTypeId}" />
+											</p:selectOneMenu>
+												</div>
+												<div class="ui-block-c">
+													<h:outputText value="#{msg['lbl.effectivedate']}*"
+												  />
+												</div>
+
+												<div class="ui-block-d">
+													<p:calendar id="seed" mode="popup"
+												 
+												readonlyInput="true" value="#{corpregisterBean.effDate}"
+												navigator="true" pattern="dd/MM/yyyy"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.dateofexpiry']}" mindate="#{corpregisterBean.effectiveMinDate}">
+												<p:message for="seed" display="text" />
+											</p:calendar>
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText value="#{msg['lbl.dateofexpiry']}*"
+												 ></h:outputText>
+
+												</div>
+												<div class="ui-block-b">
+													<p:calendar id="scrd" mode="popup"
+												 
+												value="#{corpregisterBean.sidExpDate}" navigator="true"
+												mindate="#{corpregisterBean.expDateAdder}"
+												readonlyInput="true" pattern="dd/MM/yyyy"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.dateofexpiry']}">
+												<p:message for="scrd" display="text" />
+											</p:calendar>
+												</div>
+												<div class="ui-block-c">
+													<h:outputText value="#{msg['lbl.enddate']}*"
+												 ></h:outputText>
+												</div>
+
+												<div class="ui-block-d">
+													<p:calendar id="sed" mode="popup"
+												 
+												value="#{corpregisterBean.endDate}" navigator="true"
+												pattern="dd/MM/yyyy"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.enddate']}"
+												mindate="#{corpregisterBean.expDateAdder}"
+												readonlyInput="true">
+												<p:message for="sed" display="text" />
+											</p:calendar>
+												</div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+											<div class="ui-grid-e ui-responsive">
+												<div class="ui-block-a">
+													<h:outputText value="#{msg['lbl.scandocument']}*" />
+
+												</div>
+												<div class="ui-block-b">
+													<p:messages showDetail="true" />
+
+													<p:fileUpload id="chooseFile2"
+														value="#{corpregisterBean.identityfile}" mode="simple"
+														dragDropSupport="false" update="messages"
+														sizeLimit="10000" fileLimit="1"
+														allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+												</div>
+												<div class="ui-block-c"></div>
+
+												<div class="ui-block-d"></div>
+
+												<div class="ui-block-e"></div>
+												<div class="ui-block-f"></div>
+											</div>
+											<div class="clearfix"></div>
+
+
+
+										</p:panel>
+
+										<h:panelGroup layout="block" styleClass="button_align" rendered="#{corpregisterBean.renderOwnerDetails}">
+
+											<p:commandButton value="Submit"  action="#{corpregisterBean.saveData}" 
+												
+												style="float:right; margin-right:10px;" />
+											<div class="clearfix"></div>
+										</h:panelGroup>
+										<div class="clearfix"></div>
+
+
+
+
+
+										<p:panel id="panel7" rendered="#{corpregisterBean.coAMLFail}"
+											styleClass="shadow">
+
+											<h:outputText value="#{msg['lbl.welcomealmulla']}"
+												style="font-size: 15px; color:black;"
+												rendered="#{corpregisterBean.coAMLFail}" />
+											<!-- <h:outputText value="Al Mulla Group,"  style="font-weight: bold;font-size: 15px; color:black; margin-right: 50px;"  rendered="#{corpregisterBean.coAMLFail}" /> -->
+
+											<h:panelGrid rendered="#{corpregisterBean.coAMLFail}">
+												<br />
+												<br />
+											</h:panelGrid>
+
+											<h:outputText value="#{msg['lbl.accountpending']}"
+												style="font-size: 15px; color:black;"
+												rendered="#{corpregisterBean.coAMLFail}" />
+
+											<h:panelGrid>
+												<br />
+												<br />
+											</h:panelGrid>
+
+											<h:outputText value="#{msg['lbl.messagemanualbranch1']}"
+												style="font-size: 15px; color:black;"
+												rendered="#{corpregisterBean.coAMLFail}" />
+											<h:outputText value="#{msg['lbl.remitterInfo']}"
+												style="font-weight: bold;font-size: 15px; color:black;"
+												rendered="#{corpregisterBean.coAMLFail}" />
+											<h:outputText value="#{msg['lbl.messagemanualbranch2']}"
+												style="font-size: 15px; color:black;"
+												rendered="#{corpregisterBean.coAMLFail}" />
+										</p:panel>
+									</p:panel>
+
+									</h:form>
+								
+							</h:panelGroup>
+						</h:panelGroup>
+					</h:panelGroup></td>
+			</tr>
+		</table>
+		<div class="clearfix"></div>
+		<ui:include src="#{facesBean.footer}"></ui:include>
+	</f:view>
+</h:body>
+</html>

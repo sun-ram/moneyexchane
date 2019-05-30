@@ -1,0 +1,720 @@
+package com.amg.exchange.bean;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+
+import org.apache.commons.collections.map.HashedMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import com.amg.exchange.model.CityMaster;
+import com.amg.exchange.model.CityMasterDesc;
+import com.amg.exchange.model.CompanyMaster;
+import com.amg.exchange.model.ContactDetail;
+import com.amg.exchange.model.ContactType;
+import com.amg.exchange.model.CorporateBusinessNature;
+import com.amg.exchange.model.CountryMaster;
+import com.amg.exchange.model.CountryMasterDesc;
+import com.amg.exchange.model.CustCorporateAddlDetail;
+import com.amg.exchange.model.Customer;
+import com.amg.exchange.model.CustomerIdProof;
+import com.amg.exchange.model.CustomerType;
+import com.amg.exchange.model.DistrictMaster;
+import com.amg.exchange.model.DistrictMasterDesc;
+import com.amg.exchange.model.IdentityType;
+import com.amg.exchange.model.LanguageType;
+import com.amg.exchange.model.RuleBusinessNature;
+import com.amg.exchange.model.RuleObjective;
+import com.amg.exchange.model.StateMaster;
+import com.amg.exchange.model.StateMasterDesc;
+import com.amg.exchange.service.IGeneralService;
+import com.amg.exchange.util.SessionStateManage;
+@SuppressWarnings("serial")
+@Component("customerInfoBranch")
+@Scope("session")
+public class CustomerInfoVerificationBranchManageBean<T> implements Serializable {
+	//TODO
+	private boolean renderBasicInfo = true;
+	private boolean renderCustomerDetails = true;
+	private boolean renderCustomeInfoEditable = true;
+	private boolean renderCustomeInfoLocal = true;
+    private boolean renderContactDetails = true;
+    private boolean renderContactDetailsMatch = true;
+    private boolean renderIdProof = true;
+    private boolean renderDigitalSign = true;
+    private BigDecimal methodTypeId =null;
+    private String tokenNumber = null;
+    private String idNumber = null;
+    private BigDecimal customerId = null;
+
+    //customer details
+    private String title;
+    private String firstName = null;
+    private String middleName = null;
+    private String lastName = null;
+    private String shortName = null;
+    private String firstNameL = null;
+    private String middleNameL = null;
+    private String lastNameL = null;
+    private String shortNameL = null;
+    private BigDecimal nationalityId = null;
+    private String gender = null;
+    private Date  idExpiryDate = null;
+    private Date  dateOfBirth = null;
+    private String  mobileNo = null;
+    private String  email = null;
+    //contact details
+    private BigDecimal contactTypeId = null;
+    private BigDecimal  countryId = null;
+    private BigDecimal  stateId = null;
+    private BigDecimal  districtId = null;
+    private BigDecimal  cityId = null;
+    private String  localArea = null;
+    private String streetNo = null;
+    private String  telephoneNo = null;
+    private String  flatNo = null;
+    private String   blockNo= null;
+    private ContactDetail contactDetail = null;
+	private CorporateBusinessNature corpBussnsNature = null;
+	private CustCorporateAddlDetail custCorpAddDetail = null;
+	private CustomerIdProof custmrIdProof = null;
+	private IdentityType identityType = null;
+	private Customer customer = null;
+	private CountryMaster countryMstr = null;
+	private CompanyMaster companyMstr = null;
+	private CustomerType custmrType = null;
+	private LanguageType langType = null;
+	private StateMaster stateMaster = null;
+	private DistrictMaster districtMaster = null;
+	private CountryMaster  countryMaster = null;
+	private ContactType  contactType = null;
+	private CityMaster   cityMaster = null;
+    private List<CountryMasterDesc>  countryList;
+    private List<StateMasterDesc> lstState;
+	private List<CityMasterDesc>lstCity;
+	private List<DistrictMasterDesc>lstDistrict;
+	private SessionStateManage sessionStateManage = null;
+	private List<AddContactDetailBean> contactList = new ArrayList<AddContactDetailBean>();
+	private List<AddContactDetailBean> contactListDelete = new ArrayList<AddContactDetailBean>();
+	private boolean enableContactDataTable = true;	
+	private List<StateMasterDesc> stateList;
+	private List<DistrictMasterDesc> districtList;
+	private List<CityMasterDesc> cityList;
+	Map<BigDecimal,String> mapCountryList = new HashMap<BigDecimal,String>();
+	Map<BigDecimal,String> mapStateList = new HashMap<BigDecimal,String>();
+	Map<BigDecimal,String> mapDistirictList = new HashMap<BigDecimal,String>();
+	Map<BigDecimal,String> mapCityList = new HashMap<BigDecimal,String>();
+	/*private String userName=FacesContext.getCurrentInstance()
+			.getExternalContext().getSessionMap().get("userName")
+			.toString();*/
+
+	private String userName="AlMulla";
+	//TODO
+	@Autowired
+	IGeneralService<T> generalService;
+    
+	public BigDecimal getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(BigDecimal customerId) {
+		this.customerId = customerId;
+	}
+
+	public List<AddContactDetailBean> getContactList() {
+		return contactList;
+	}
+
+	public void setContactList(List<AddContactDetailBean> contactList) {
+		this.contactList = contactList;
+	}
+
+	public boolean isEnableContactDataTable() {
+		return enableContactDataTable;
+	}
+
+	public void setEnableContactDataTable(boolean enableContactDataTable) {
+		this.enableContactDataTable = enableContactDataTable;
+	}
+
+	public boolean isRenderBasicInfo() {
+		return renderBasicInfo;
+	}
+
+	public void setRenderBasicInfo(boolean renderBasicInfo) {
+		this.renderBasicInfo = renderBasicInfo;
+	}
+
+	public boolean isRenderCustomeInfoEditable() {
+		return renderCustomeInfoEditable;
+	}
+
+	public void setRenderCustomeInfoEditable(boolean renderCustomeInfoEditable) {
+		this.renderCustomeInfoEditable = renderCustomeInfoEditable;
+	}
+
+	public boolean isRenderCustomeInfoLocal() {
+		return renderCustomeInfoLocal;
+	}
+
+	public void setRenderCustomeInfoLocal(boolean renderCustomeInfoLocal) {
+		this.renderCustomeInfoLocal = renderCustomeInfoLocal;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public IGeneralService<T> getGeneralService() {
+		return generalService;
+	}
+
+	public void setGeneralService(IGeneralService<T> generalService) {
+		this.generalService = generalService;
+	}
+
+	public boolean isRenderCustomerDetails() {
+		return renderCustomerDetails;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public BigDecimal getMethodTypeId() {
+		return methodTypeId;
+	}
+
+	public void setMethodTypeId(BigDecimal methodTypeId) {
+		this.methodTypeId = methodTypeId;
+	}
+
+	public String getTokenNumber() {
+		return tokenNumber;
+	}
+
+	public void setTokenNumber(String tokenNumber) {
+		this.tokenNumber = tokenNumber;
+	}
+
+	public String getIdNumber() {
+		return idNumber;
+	}
+
+	public void setIdNumber(String idNumber) {
+		this.idNumber = idNumber;
+	}
+
+	public BigDecimal getContactTypeId() {
+		return contactTypeId;
+	}
+
+	public void setContactTypeId(BigDecimal contactTypeId) {
+		this.contactTypeId = contactTypeId;
+	}
+
+	public BigDecimal getCountryId() {
+		return countryId;
+	}
+
+	public void setCountryId(BigDecimal countryId) {
+		this.countryId = countryId;
+	}
+
+	public BigDecimal getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(BigDecimal stateId) {
+		this.stateId = stateId;
+	}
+
+	public BigDecimal getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(BigDecimal districtId) {
+		this.districtId = districtId;
+	}
+
+	public BigDecimal getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(BigDecimal cityId) {
+		this.cityId = cityId;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+
+	public String getFirstNameL() {
+		return firstNameL;
+	}
+
+	public void setFirstNameL(String firstNameL) {
+		this.firstNameL = firstNameL;
+	}
+
+	public String getMiddleNameL() {
+		return middleNameL;
+	}
+
+	public void setMiddleNameL(String middleNameL) {
+		this.middleNameL = middleNameL;
+	}
+
+	public String getLastNameL() {
+		return lastNameL;
+	}
+
+	public void setLastNameL(String lastNameL) {
+		this.lastNameL = lastNameL;
+	}
+
+	public String getShortNameL() {
+		return shortNameL;
+	}
+
+	public void setShortNameL(String shortNameL) {
+		this.shortNameL = shortNameL;
+	}
+
+	public BigDecimal getNationalityId() {
+		return nationalityId;
+	}
+
+	public void setNationalityId(BigDecimal nationalityId) {
+		this.nationalityId = nationalityId;
+	}
+
+	
+
+	public Date getIdExpiryDate() {
+		return idExpiryDate;
+	}
+
+	public void setIdExpiryDate(Date idExpiryDate) {
+		this.idExpiryDate = idExpiryDate;
+	}
+
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getLocalArea() {
+		return localArea;
+	}
+
+	public void setLocalArea(String localArea) {
+		this.localArea = localArea;
+	}
+
+	public String getStreetNo() {
+		return streetNo;
+	}
+
+	public void setStreetNo(String streetNo) {
+		this.streetNo = streetNo;
+	}
+
+	public String getTelephoneNo() {
+		return telephoneNo;
+	}
+
+	public void setTelephoneNo(String telephoneNo) {
+		this.telephoneNo = telephoneNo;
+	}
+
+	public String getFlatNo() {
+		return flatNo;
+	}
+
+	public void setFlatNo(String flatNo) {
+		this.flatNo = flatNo;
+	}
+
+	public String getBlockNo() {
+		return blockNo;
+	}
+
+	public void setBlockNo(String blockNo) {
+		this.blockNo = blockNo;
+	}
+
+	public boolean isRenderContactDetailsMatch() {
+		return renderContactDetailsMatch;
+	}
+
+	public void setRenderContactDetailsMatch(boolean renderContactDetailsMatch) {
+		this.renderContactDetailsMatch = renderContactDetailsMatch;
+	}
+
+	public boolean isRenderIdProof() {
+		return renderIdProof;
+	}
+
+	public void setRenderIdProof(boolean renderIdProof) {
+		this.renderIdProof = renderIdProof;
+	}
+
+	public boolean isRenderDigitalSign() {
+		return renderDigitalSign;
+	}
+
+	public void setRenderDigitalSign(boolean renderDigitalSign) {
+		this.renderDigitalSign = renderDigitalSign;
+	}
+
+	public boolean isRenderContactDetails() {
+		return renderContactDetails;
+	}
+
+	public void setRenderContactDetails(boolean renderContactDetails) {
+		this.renderContactDetails = renderContactDetails;
+	}
+
+	public void setRenderCustomerDetails(boolean renderCustomerDetails) {
+		this.renderCustomerDetails = renderCustomerDetails;
+	}
+	/**
+	 * method is responsible to populate List of countries from DB 
+	 * @return
+	 */
+	public List<CountryMasterDesc> getCountryListFromDB() {
+	   /* sessionStateManage = new SessionStateManage(); 
+		countryList = new ArrayList<CountryMasterDesc>();
+		countryList.addAll( getGeneralService().getCountryList(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):"1")));*/
+ 		return countryList;
+	}
+	/**
+	 * method is responsible to populate List of countries from DB 
+	 * @return
+	 */
+	public List<CountryMasterDesc> getCountryNameList() {
+		 sessionStateManage = new SessionStateManage(); 
+		countryList = new ArrayList<CountryMasterDesc>();
+		countryList.addAll( getGeneralService().getCountryList(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):"1")));
+		for(CountryMasterDesc countryMasterDesc:countryList) {
+			mapCountryList.put(countryMasterDesc.getFsCountryMaster().getCountryId(), countryMasterDesc.getCountryName());
+		}
+ 		return countryList;
+	}
+	/*
+	*
+	*method to get state from db and add all the state code and name will be mapped to hashMap
+	*/
+	public void popState(AjaxBehaviorEvent e) {
+		System.out.println("kdkdkdkdkdkdkddkdkdkd");
+		lstState = new ArrayList<StateMasterDesc>();
+		lstState.addAll(getGeneralService().getStateList(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):"1"),getCountryId()));
+		for(StateMasterDesc stateMasterDesc:lstState) {
+			mapStateList.put(stateMasterDesc.getFsStateMaster().getStateId(), stateMasterDesc.getStateName());
+		}
+	}
+	public List<StateMasterDesc> getStateListFromDB() {
+		return lstState;
+	}
+	/*
+	*
+	*method to get District from db and add all the state code and name will be mapped to hashMap
+	*/
+	public void popDistrict(AjaxBehaviorEvent e) {
+		lstDistrict = new ArrayList<DistrictMasterDesc>();
+		lstDistrict.addAll(getGeneralService().getDistrictList(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):"1"),getCountryId(),getStateId()));
+		for(DistrictMasterDesc districtMasterDesc:lstDistrict) {
+			mapDistirictList.put(districtMasterDesc.getFsDistrictMaster().getDistrictId(), districtMasterDesc.getDistrict());
+		}
+	}
+	public List<DistrictMasterDesc> getDistrictListFromDB() {
+		return lstDistrict;
+	}
+	/*
+	*
+	*method to get city from db and add all the state code and name will be mapped to hashMap
+	*/
+	public void popCity(AjaxBehaviorEvent e) {
+		lstCity = new ArrayList<CityMasterDesc>();
+		lstCity.addAll(getGeneralService().getCityList(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):"1"),getCountryId(),getStateId(),getDistrictId()));
+		for(CityMasterDesc cityMasterDesc:lstCity) {
+			mapCityList.put(cityMasterDesc.getFsCityMaster().getCityId(), cityMasterDesc.getCityName());
+		}
+	}
+	public List<CityMasterDesc> getCityListFromDB() {
+		return lstCity;
+		
+	}
+	//TODO
+	/*
+	 * method to fetch the record from db
+	 * 
+	 */
+	public String fetchCustomerInfo() {
+	    setRenderCustomerDetails(true);
+	    setRenderCustomeInfoEditable(true);
+	    setRenderCustomeInfoLocal(true);
+	    setRenderBasicInfo(false);
+	    return"";
+	}
+	/*
+	 * method is responsible to clear basic info
+	 * 
+	 */
+	public void clearBasicInfo() {
+		System.out.println("inside basic clear");
+		setMethodTypeId(null);
+		setTokenNumber("");
+		setIdNumber("");
+	}
+	/*
+	 * method is responsible to back basic info and hide other panels
+	 * 
+	 */
+	public void backCustomerInfoToBasicInfo() {
+		System.out.println("inside back of basic");
+		setRenderBasicInfo(true);
+		setRenderCustomerDetails(false);
+		setRenderCustomeInfoEditable(false);
+		setRenderCustomeInfoLocal(false);
+	}
+	/*
+	 * method is responsible to clear  customer info
+	 * 
+	 */
+	public void clearCustomerInfo() {
+		System.out.println("inside cleare of customer");
+		setFirstName("");
+		setMiddleName("");
+		setLastName("");
+		setShortName("");
+		setFirstNameL("");
+		setMiddleNameL("");
+		setLastNameL("");
+		setShortNameL("");
+		setTitle("");
+		setGender("");
+		setNationalityId(null);
+		setEmail("");
+		setIdExpiryDate(null);
+		setDateOfBirth(null);
+		setMobileNo("");
+	}
+	/*
+	 * method is responsible to display (contact details) and hide other panels 
+	 * 
+	 */
+	public void nextContactDetails() {
+		System.out.println("inside contact details");
+		setRenderBasicInfo(false);
+		setRenderCustomerDetails(false);
+		setRenderCustomeInfoEditable(false);
+		setRenderCustomeInfoLocal(false);
+		setRenderContactDetails(false);
+		setRenderContactDetailsMatch(true);
+	}
+	/*
+	 * method is responsible to add contact in a dataTable
+	 * 
+	 */
+	public void addContactDataTable() {
+		System.out.println("inside contact details");
+	    AddContactDetailBean addContact = new AddContactDetailBean();
+	    addContact.setContType("office");
+	    addContact.setContactTypeId(new BigDecimal(1));
+	    addContact.setCountryId(this.countryId);
+	    addContact.setCountry(mapCountryList.get(this.countryId));
+	    addContact.setStateId(this.stateId);
+	    addContact.setState(mapStateList.get(this.stateId));
+	    addContact.setDistrictId(this.districtId);
+	    addContact.setDist(mapDistirictList.get(this.districtId));
+	    addContact.setCityId(this.cityId);
+	    addContact.setCity(mapCityList.get(this.cityId));
+	    addContact.setArea(this.localArea);
+	    addContact.setStreet(this.streetNo);
+	    addContact.setFlat(this.flatNo);
+	    addContact.setTel(this.telephoneNo);
+	    addContact.setBlock(this.blockNo);
+		contactList.add(addContact);
+		setContactTypeId(new BigDecimal(0));
+		setCountryId(new BigDecimal(0));
+		setStateId(new BigDecimal(0));
+		setDistrictId(new BigDecimal(0));
+		setCityId(new BigDecimal(0));
+		setLocalArea("");
+		setStreetNo("");
+		setBlockNo("");
+		setTelephoneNo("");
+		setFlatNo("");
+		setEnableContactDataTable(true);
+	}
+	/*
+	 * method is responsible to clear contact details
+	 * 
+	 */
+	public void clearContactDetails() {
+		System.out.println("inside clear contacts");
+		setContactTypeId(new BigDecimal(0));
+		setCountryId(new BigDecimal(0));
+		setStateId(new BigDecimal(0));
+		setDistrictId(new BigDecimal(0));
+		setCityId(new BigDecimal(0));
+		setLocalArea("");
+		setStreetNo("");
+		setBlockNo("");
+		setTelephoneNo("");
+		setFlatNo("");
+	}
+	/*
+	 * method is responsible to display customer info
+	 * 
+	 */
+	public void backToCustomerInfo() {
+		System.out.println("back to customer info from contacts");
+		setRenderCustomeInfoEditable(true);
+		setRenderCustomeInfoLocal(true);
+		setRenderCustomerDetails(true);
+		setRenderContactDetails(false);
+		setRenderContactDetailsMatch(false);
+		setRenderIdProof(false);
+		setRenderBasicInfo(false);
+		
+	}
+	/*
+	 * method is responsible to display scan document
+	 * 
+	 */
+	public void nextToScanDoc() {
+		System.out.println("next to scan doc");
+		setRenderBasicInfo(false);
+		setRenderCustomerDetails(false);
+		setRenderCustomeInfoEditable(false);
+		setRenderCustomeInfoLocal(false);
+		setRenderContactDetails(false);
+		setRenderContactDetailsMatch(false);
+		setRenderIdProof(true);
+	}
+	public void backTOContact() {
+		System.out.println("back to contact");
+		setRenderBasicInfo(false);
+		setRenderCustomerDetails(false);
+		setRenderCustomeInfoEditable(false);
+		setRenderCustomeInfoLocal(false);
+		setRenderContactDetails(false);
+		setRenderContactDetailsMatch(true);
+		
+	}
+	public void nextToDigital() {
+		setRenderBasicInfo(false);
+		setRenderCustomerDetails(false);
+		setRenderCustomeInfoEditable(false);
+		setRenderCustomeInfoLocal(false);
+		setRenderContactDetails(false);
+		setRenderContactDetailsMatch(false);
+		setRenderDigitalSign(true);
+	}
+	public void bactToScanDoc() {
+		setRenderBasicInfo(false);
+		setRenderCustomerDetails(false);
+		setRenderCustomeInfoEditable(false);
+		setRenderCustomeInfoLocal(false);
+		setRenderContactDetails(false);
+		setRenderContactDetailsMatch(false);
+		setRenderDigitalSign(false);
+		setRenderIdProof(true);
+	}
+	public String saveCustomer() {
+        customer = new Customer();
+        langType = new LanguageType();
+        customer.setTokenKey(getTokenNumber());
+        sessionStateManage = new SessionStateManage();
+        int languageID = 1;
+		if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")){
+			languageID = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().equalsIgnoreCase("ar")?2:1;
+		}
+        customer.setFsLanguageType(langType);
+        customer.setFirstName(getFirstName());
+        customer.setLastName(getLastName() );
+        customer.setFirstNameLocal(getFirstNameL());
+        customer.setLastNameLocal(getLastNameL());
+        customer.setMiddleName(getMiddleName());
+        customer.setMiddleNameLocal(getMiddleNameL());
+        customer.setShortName(getShortName());
+        customer.setShortNameLocal(getShortNameL());
+        customer.setDateOfBirth(getDateOfBirth());
+        customer.setMobile(getMobileNo());
+        customer.setEmail(getEmail());
+        customer.setTitle(getTitle());
+        customer.setCreatedBy(userName);
+        customer.setCreationDate(new Date());
+        
+        //customer.setUpdatedBy(updatedBy);
+       // customer.set
+		return"";
+	}
+}

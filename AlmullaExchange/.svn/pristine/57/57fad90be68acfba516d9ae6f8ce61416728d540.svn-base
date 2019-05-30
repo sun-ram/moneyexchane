@@ -1,0 +1,482 @@
+package com.amg.exchange.treasury.bean;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import com.amg.exchange.model.CityMasterDesc;
+import com.amg.exchange.model.CountryMasterDesc;
+import com.amg.exchange.model.DistrictMasterDesc;
+import com.amg.exchange.model.StateMasterDesc;
+import com.amg.exchange.service.IGeneralService;
+import com.amg.exchange.util.SessionStateManage;
+
+@Component("bankMaster")
+@Scope("session")
+public class BankMaster<T> implements Serializable {
+
+	/**
+	 * @author 
+	 */
+	private static final long serialVersionUID = -1333138778448003609L;
+	
+	/**
+	 * Constructor
+	 */
+	public BankMaster() {
+		setValidationValue();
+	}
+	
+	private String bankCode = null;
+	private String fullName = null;
+	private String shortName = null;
+	private String languageBank = null;
+	private String address1 = null;
+	private String address2 = null;
+	private BigDecimal countryId = null;
+	private BigDecimal stateId = null;
+	private BigDecimal districtId = null;
+	private BigDecimal cityId = null;
+	private String zip = null;
+	private String telephone = null;
+	private String fax = null;
+	private String email = null;
+	private String contactPerson = null;
+	private String designation = null;
+	private String department = null;
+	private String localFullName = null;
+	private String localShortname = null;
+	private String localAddress1 = null;
+	private String localAddress2 = null;
+	private String localContactPerson = null;
+	private String localDesignation = null;
+	private String localDepartment = null;
+	private String IFSCLength = null;
+	private String reutersBankNname = null;
+	private String fileSpecificOrAll = null;
+	private String fileBranchWiseYOrN = null;
+	private String MICRReuters = null;
+	private String remmiterModeYOrN = null; 
+	private String maskBankCode = null;
+	private List<StateMasterDesc> lstStateList = new ArrayList<StateMasterDesc>();
+	private List<DistrictMasterDesc> lstDistrictList = new ArrayList<DistrictMasterDesc>();
+	private List<CityMasterDesc> lstCityList = new ArrayList<CityMasterDesc>();
+	
+	public String getBankCode() {
+		return bankCode;
+	}
+	public void setBankCode(String bankCode) {
+		this.bankCode = bankCode;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getShortName() {
+		return shortName;
+	}
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+
+	public String getLanguageBank() {
+		return languageBank;
+	}
+	public void setLanguageBank(String languageBank) {
+		this.languageBank = languageBank;
+	}
+
+	public String getAddress1() {
+		return address1;
+	}
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
+
+	public String getAddress2() {
+		return address2;
+	}
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+
+	public BigDecimal getCountryId() {
+		return countryId;
+	}
+	public void setCountryId(BigDecimal countryId) {
+		this.countryId = countryId;
+	}
+	
+	public BigDecimal getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(BigDecimal districtId) {
+		this.districtId = districtId;
+	}
+	
+	public BigDecimal getStateId() {
+		return stateId;
+	}
+	public void setStateId(BigDecimal stateId) {
+		this.stateId = stateId;
+	}
+
+	public BigDecimal getCityId() {
+		return cityId;
+	}
+	public void setCityId(BigDecimal cityId) {
+		this.cityId = cityId;
+	}
+
+	public String getZip() {
+		return zip;
+	}
+	public void setZip(String zip) {
+		this.zip = zip;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	public String getFax() {
+		return fax;
+	}
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getContactPerson() {
+		return contactPerson;
+	}
+	public void setContactPerson(String contactPerson) {
+		this.contactPerson = contactPerson;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public String getLocalFullName() {
+		return localFullName;
+	}
+	public void setLocalFullName(String localFullName) {
+		this.localFullName = localFullName;
+	}
+
+	public String getLocalShortname() {
+		return localShortname;
+	}
+	public void setLocalShortname(String localShortname) {
+		this.localShortname = localShortname;
+	}
+
+	public String getLocalAddress1() {
+		return localAddress1;
+	}
+	public void setLocalAddress1(String localAddress1) {
+		this.localAddress1 = localAddress1;
+	}
+
+	public String getLocalAddress2() {
+		return localAddress2;
+	}
+	public void setLocalAddress2(String localAddress2) {
+		this.localAddress2 = localAddress2;
+	}
+
+	public String getLocalContactPerson() {
+		return localContactPerson;
+	}
+	public void setLocalContactPerson(String localContactPerson) {
+		this.localContactPerson = localContactPerson;
+	}
+
+	public String getLocalDesignation() {
+		return localDesignation;
+	}
+	public void setLocalDesignation(String localDesignation) {
+		this.localDesignation = localDesignation;
+	}
+
+	public String getLocalDepartment() {
+		return localDepartment;
+	}
+	public void setLocalDepartment(String localDepartment) {
+		this.localDepartment = localDepartment;
+	}
+
+	public String getIFSCLength() {
+		return IFSCLength;
+	}
+	public void setIFSCLength(String iFSCLength) {
+		IFSCLength = iFSCLength;
+	}
+
+	public String getReutersBankNname() {
+		return reutersBankNname;
+	}
+	public void setReutersBankNname(String reutersBankNname) {
+		this.reutersBankNname = reutersBankNname;
+	}
+
+	public String getFileSpecificOrAll() {
+		return fileSpecificOrAll;
+	}
+	public void setFileSpecificOrAll(String fileSpecificOrAll) {
+		this.fileSpecificOrAll = fileSpecificOrAll;
+	}
+
+	public String getFileBranchWiseYOrN() {
+		return fileBranchWiseYOrN;
+	}
+	public void setFileBranchWiseYOrN(String fileBranchWiseYOrN) {
+		this.fileBranchWiseYOrN = fileBranchWiseYOrN;
+	}
+
+	public String getMICRReuters() {
+		return MICRReuters;
+	}
+	public void setMICRReuters(String mICRReuters) {
+		MICRReuters = mICRReuters;
+	}
+
+	public String getRemmiterModeYOrN() {
+		return remmiterModeYOrN;
+	}
+	public void setRemmiterModeYOrN(String remmiterModeYOrN) {
+		this.remmiterModeYOrN = remmiterModeYOrN;
+	}
+	
+	public List<StateMasterDesc> getLstStateList() {
+		return lstStateList;
+	}
+	public void setLstStateList(List<StateMasterDesc> lstStateList) {
+		this.lstStateList = lstStateList;
+	}
+	
+	public List<DistrictMasterDesc> getLstDistrictList() {
+		return lstDistrictList;
+	}
+	public void setLstDistrictList(List<DistrictMasterDesc> lstDistrictList) {
+		this.lstDistrictList = lstDistrictList;
+	}
+	
+	public List<CityMasterDesc> getLstCityList() {
+		return lstCityList;
+	}
+	public void setLstCityList(List<CityMasterDesc> lstCityList) {
+		this.lstCityList = lstCityList;
+	}
+	
+	public String getMaskBankCode() {
+		return maskBankCode;
+	}
+	public void setMaskBankCode(String maskBankCode) {
+		this.maskBankCode = maskBankCode;
+	}
+	
+	@Autowired
+	IGeneralService<T> iGeneralService;
+	public IGeneralService<T> getiGeneralService() {
+		return iGeneralService;
+	}
+	public void setiGeneralService(IGeneralService<T> iGeneralService) {
+		this.iGeneralService = iGeneralService;
+	}
+	
+	/**
+	 * Responsible to populate Country
+	 * @return
+	 */
+	public List<CountryMasterDesc> getCountryNameList() {
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<CountryMasterDesc> lstCountry = getiGeneralService().getCountryList(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):""+1));
+		return lstCountry;
+	}
+	
+	/**
+	 * Responsible to prepare stateList by country change
+	 * @param event
+	 */
+	public void generateStateList(AjaxBehaviorEvent event) {
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<StateMasterDesc> stateMaster =getiGeneralService().getStateList(
+				new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):""+1), getCountryId()); 
+		setLstStateList(stateMaster);
+	}
+	
+	/**
+	 * Responsible to populate District depending upon state selection
+	 * @param event
+	 */
+	public void generateDistrictList(AjaxBehaviorEvent event) {
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<DistrictMasterDesc> lstDistrict = getiGeneralService().getDistrictList(
+				new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):""+1), getCountryId(), getStateId()
+				);
+		setLstDistrictList(lstDistrict);
+	}
+	
+	/**
+	 * Responsible to populate city depending upon district selection
+	 * @param event
+	 */
+	public void generateCityList(AjaxBehaviorEvent event) {
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<CityMasterDesc> lstCity = getiGeneralService().getCityList(
+				new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):""+1), 
+																												getCountryId(),	getStateId(),	getDistrictId()
+				); 
+		setLstCityList(lstCity);
+	}
+	
+	/**
+	 * method is responsible to cancel the Bank Master
+	 * @return
+	 */
+	public void cancel() {
+		try{
+			ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+			context.redirect("../login/login.xhtml");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Responsible to save Bank Master details 
+	 * @return
+	 */
+	public String save() {
+		System.out.println(getBankCode()+"-"+
+		getFullName()+"-"+
+		getShortName()+"-"+
+		getLanguageBank()+"-"+
+		getAddress1()+"-"+
+		getAddress2()+"-"+
+		getCountryId()+"-"+
+		getStateId()+"-"+
+		getCityId()+"-"+
+		getZip() +"-"+
+		getTelephone()+"-"+
+		getFax()+"-"+
+		getEmail()+"-"+
+		getContactPerson()+"-"+
+		getDesignation()+"-"+
+		getDepartment()+"-"+
+		getLocalFullName() +"-"+
+		getLocalShortname()+"-"+
+		getLocalAddress1()+"-"+
+		getLocalAddress2()+"-"+
+		getLocalContactPerson()+"-"+ 
+		getLocalDesignation()+"-"+
+		getLocalDepartment()+"-"+
+		getIFSCLength()+"-"+
+		getReutersBankNname()+"-"+ 
+		getFileSpecificOrAll()+"-"+
+		getFileBranchWiseYOrN()+"-"+
+		getMICRReuters()+"-"+
+		getRemmiterModeYOrN()); 
+		return "";
+	}
+	
+	/**
+	 * Responsible to clear all component of Bank Master
+	 * @return
+	 */
+	public void clear() {
+		setBankCode("");
+		setFullName("");
+		setShortName("");
+		setLanguageBank("");
+		setAddress1("");
+		setAddress2("");
+		setCountryId(null);
+		setStateId(null);
+		setDistrictId(null);
+		setCityId(null);
+		setZip("");
+		setTelephone("");
+		setFax("");
+		setEmail("");
+		setContactPerson("");
+		setDesignation("");
+		setDepartment("");
+		setLocalFullName("");
+		setLocalShortname("");
+		setLocalAddress1("");
+		setLocalAddress2("");
+		setLocalContactPerson("");
+		setLocalDesignation("");
+		setLocalDepartment("");
+		setIFSCLength("");
+		setReutersBankNname("");
+		setFileSpecificOrAll("");
+		setFileBranchWiseYOrN("");
+		setMICRReuters("");
+		setRemmiterModeYOrN(""); 
+	}
+	
+	/**
+	 * This method is responsible to set the validation value from rule engine
+	 */
+	public void setValidationValue() {
+		setMaskBankCode("99999999");
+	}
+	
+	/**
+	 * This method will call when OK will clicked from confirm dialogue box 
+	 */
+	public void welcomeListener() {
+	    //System.out.println("Welcome Back");
+	}
+	
+	/**
+	 * This method will call when Log Me Out button will press from confirm dialogue box
+	 * @throws IOException
+	 */
+	public void logoutListener() throws IOException{
+		 ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+		 ec.invalidateSession();
+		 //System.out.println(ec.getRequestContextPath()) ....This will print the  "/AlmullaExchange"...Context Name..That's why we store External context in 'ec' variable 
+		 ec.redirect(ec.getRequestContextPath() + "/index.jsp");
+	}
+	
+}

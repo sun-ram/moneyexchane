@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/tx 
+    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<context:annotation-config />
+	<context:component-scan base-package="com.amg.exchange,com.amg.exchange.mail" />
+	<context:property-placeholder  location="classpath:com/amg/exchange/messages/email.properties" />
+    
+    <!-- Use this to connect directly to the database -->
+    <!-- <bean
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>database.properties</value>
+        </property>
+    </bean> -->
+    
+	<!-- <bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/amgtest" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</bean> -->
+    
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@192.168.5.22:1521:chdevdb" />		
+		<property name="username" value="chexchdba"/>
+		<property name="password" value="oracle"/>
+		
+	</bean>
+    
+    <!-- <session-factory name="session-factory">
+        <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
+        <property name="hibernate.connection.password">oracle</property>
+        <property name="hibernate.connection.url">jdbc:oracle:thin:@192.168.5.22:1521:almulla</property>
+        <property name="hibernate.connection.username">almulla</property>
+        <property name="hibernate.default_schema">almulla</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.OracleDialect</property>
+    </session-factory> -->
+    
+    
+    <!-- Use this if you use a data source managed by Tomcat -->
+    <!-- 
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/jdbc/amgdb">   
+        <property name="resourceRef" value="true" />
+    </bean>
+    -->
+   
+	<!-- Hibernate session factory -->
+	<bean id="sessionFactory" 
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+
+		<property name="hibernateProperties">
+			<props>
+			    <prop key="hibernate.default_schema" >chexchdba</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="connection.pool_size">10</prop>
+				<prop key="hibernate.format_sql">false</prop>
+       			<prop key="hibernate.use_sql_comments">true</prop>
+				<prop key="hbm2ddl.auto">create</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</prop>
+				<prop key="hibernate.generate_statistics">true</prop>
+				<prop key="hibernate.cache.use_structured_entries">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+			</props>
+		</property>
+		<!-- <property name="hibernate.default_schema" value="chexchdba"/> -->
+
+		 <property name="annotatedClasses">
+			<list>
+				<value>com.amg.exchange.model.Amlstatus</value>	
+				 <value>com.amg.exchange.model.CityMaster</value>	
+				<value>com.amg.exchange.model.CityMasterDesc</value>
+				<value>com.amg.exchange.model.CompanyGroup</value>	
+				<value>com.amg.exchange.model.CompanyGroupDesc</value>	
+				<value>com.amg.exchange.model.CompanyMaster</value>	
+				<value>com.amg.exchange.model.CompanyMasterDesc</value>	
+				<value>com.amg.exchange.model.ContactDetail</value>	
+				<value>com.amg.exchange.model.ContactType</value>	
+				<value>com.amg.exchange.model.CountryMaster</value>	
+				<value>com.amg.exchange.model.CountryMaster</value>	
+				<value>com.amg.exchange.model.CountryMasterDesc</value>	
+				<value>com.amg.exchange.model.Customer</value>	
+				<value>com.amg.exchange.model.CustomerEmploymentInfo</value>	
+				<value>com.amg.exchange.model.CustomerIdProof</value>	
+				<value>com.amg.exchange.model.CustomerLogin</value> 
+				<value>com.amg.exchange.model.CustomerType</value>	
+				<value>com.amg.exchange.model.DistrictMaster</value>	
+				<value>com.amg.exchange.model.DistrictMasterDesc</value>	
+				<value>com.amg.exchange.model.Employee</value>	
+				<value>com.amg.exchange.model.EmploymentType</value>	
+				<value>com.amg.exchange.model.IdentityType</value>	
+				<value>com.amg.exchange.model.LanguageType</value>	
+				<value>com.amg.exchange.model.NationalityMaster</value>	
+				<value>com.amg.exchange.model.NationalityMasterDesc</value>	
+				<value>com.amg.exchange.model.RuleApplicationDesc</value>	
+				<value>com.amg.exchange.model.RuleApplicationMaster</value>	
+				<value>com.amg.exchange.model.RuleBusinessNature</value>	
+				<value>com.amg.exchange.model.RuleComponent</value>	
+				<value>com.amg.exchange.model.RuleObjective</value>	
+				<value>com.amg.exchange.model.RulePageMaster</value>	
+				<!-- <value>com.amg.exchange.model.SecurityQuesMasterDesc</value>	
+				<value>com.amg.exchange.model.SecurityQuestionCompDesc</value> -->	
+				<value>com.amg.exchange.model.SecurityQuestionMaster</value>	
+				<value>com.amg.exchange.model.StateMaster</value>	
+				<value>com.amg.exchange.model.StateMasterDesc</value>	
+				<!-- <value>com.amg.exchange.model.SecurityQuestCompMaster</value> -->
+				<value>com.amg.exchange.model.CustCorporateAddlDetail</value>	
+				<value>com.amg.exchange.model.CorporateBusinessNature</value>	
+				<value>com.amg.exchange.model.DocumentImg</value>
+				<value>com.amg.exchange.model.BussComponentConfDetail</value>
+				<value>com.amg.exchange.model.BussComponentComboData</value>
+				<value>com.amg.exchange.model.BusinessComponentConf</value>
+				<value>com.amg.exchange.model.BusinessComponent</value>
+				<value>com.amg.exchange.model.ComponentType</value>
+				<!-- Treasury -->
+				<value>com.amg.exchange.model.BankAccount</value>
+				<value>com.amg.exchange.model.BankAccountDetails</value>
+				<value>com.amg.exchange.model.BankAccountLength</value>
+				<value>com.amg.exchange.model.BankApplicability</value>
+				<value>com.amg.exchange.model.BankBranch</value>
+				<value>com.amg.exchange.model.BankContactDetails</value>
+				<value>com.amg.exchange.model.BankDdPrintLoc</value>
+				<value>com.amg.exchange.model.BankMaster</value>
+				<value>com.amg.exchange.model.Nominee</value>
+			</list>
+		</property>
+	</bean>
+	
+	
+	<!--  Mail Sendar Bean -->
+     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${host}"/>
+        <property name="port" value="${port}"/>
+        <property name="username" value="${emailid}"/>
+        <property name="password" value="${password}"/> 
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.transport.protocol">${protocol}</prop>
+                <prop key="mail.smtp.auth">${auth}</prop>
+                <prop key="mail.smtp.starttls.enable">${enable}</prop>
+                <prop key="mail.debug">${debug}</prop>
+               
+            </props>
+        </property>
+    </bean>
+    
+       <!-- You can have some pre-configured messagess also which are ready to send -->
+    <bean id="preConfiguredMessage" class="org.springframework.mail.SimpleMailMessage">
+        <property name="to" value="nazish.h@almullagroup.com"></property>
+        <property name="cc" value="neel.rish@gmail.com"></property>       
+        <property name="subject" value="Welcome To Almulla Group"/>
+    </bean>
+	
+    
+    <bean id="transactionManager" 
+            class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+    	<property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+  
+    <tx:annotation-driven/>
+    
+</beans>

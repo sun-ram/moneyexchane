@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link href="css/style1.css" rel="stylesheet" type="text/css" />
+</h:head>
+
+<h:body dir="#{facesBean.direction}">
+	<f:view locale="#{facesBean.locale}">
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<ui:include src="#{facesBean.menu}"></ui:include>
+		<table align="left" width="100%" style="height:100%;">
+    <tr>
+    <td align="left" valign="top" style="height:100%;" ><div id="left" class="leftColumn">
+    		<div style="display: none; width: 150px;" id="leftCol">
+    		<p:accordionPanel>
+		<p:tab title="My Profile"
+			titleStyle="background: url(../images/menu_icon5.png) no-repeat scroll 6px 8px;  border-top:none !important;">
+			<h:outputLink value="../login/forgotpassword.xhtml" target="_self" styleClass="left_menu"  style=" border-top:none !important;">
+				 <h:outputText value="Change Password"/>
+ 			</h:outputLink>
+ 			<h:outputLink value="../login/login.xhtml" target="_self" styleClass="left_menu" style=" border-bottom:none !important;" >
+				 <h:outputText value="Logout"/>
+ 			</h:outputLink>
+			
+		</p:tab>
+		<p:tab title="About"
+			titleStyle="background: url(../images/menu_icon1.png) no-repeat scroll 6px 8px;">
+
+<h:outputLink value="http://www.almullagroup.com/" target="_blank" styleClass="left_menu"  style=" border-top:none !important;">
+				 <h:outputText value="Al Mulla Group"/>
+ 			</h:outputLink>
+ 			<h:outputLink value="http://www.almullagroup.com/finance/exchange.aspx" target="_blank" styleClass="left_menu">
+				 <h:outputText value="Exchange"/>
+ 			</h:outputLink>
+ 			<h:outputLink value="http://www.almullagroup.com/finance/finance.aspx" target="_blank" styleClass="left_menu">
+				 <h:outputText value="Finance"/>
+ 			</h:outputLink>
+ 			<h:outputLink value="http://www.autoalmulla.com/index.php/" target="_blank" styleClass="left_menu" style=" border-bottom:none !important;" >
+				 <h:outputText value="Automobiles"/>
+ 			</h:outputLink>
+			
+		</p:tab>
+		<p:tab title="Services"
+			titleStyle="background: url(../images/menu_icon2.png) no-repeat scroll 6px 8px;">
+			<h:outputLink value="../registration/custmanualbranchreg.xhtml" target="_self" styleClass="left_menu"   style=" border-top:none !important;">
+				 <h:outputText value="Individual"/>
+ 			</h:outputLink>
+ 			<h:outputLink value="../registration/corporateregistration.xhtml" target="_self" styleClass="left_menu"  style=" border-bottom:none !important;" >
+				 <h:outputText value="Non Individual"/>
+ 			</h:outputLink>			
+			
+		</p:tab>
+		<p:tab title="Branch"
+			titleStyle="background: url(../images/menu_icon3.png) no-repeat scroll 6px 8px;">
+			
+			<h:outputLink value="../search/searchcustomer.xhtml" target="_self" styleClass="left_menu"   style=" border-top:none !important;">
+				 <h:outputText value="Search Customer"/>
+ 			</h:outputLink>
+			<h:outputLink value="../registration/branchhome.xhtml" target="_self" styleClass="left_menu" style=" border-bottom:none !important;" >
+				 <h:outputText value="Branch Home"/>
+ 			</h:outputLink>
+
+			
+		</p:tab>
+		<p:tab title="Rule Engine"
+			titleStyle="background: url(../images/menu_icon4.png) no-repeat scroll 6px 8px;">
+			
+			<h:outputLink value="../ruleengine/businesscomponent.xhtml" target="_self" styleClass="left_menu"   style=" border-top:none !important;">
+				 <h:outputText value="Business Component"/>
+ 			</h:outputLink>
+			
+<h:outputLink value="../ruleengine/businesscomponentconf.xhtml" target="_self" styleClass="left_menu" style=" border-bottom:none !important;">
+				 <h:outputText value="Business Component Config"/>
+ 			</h:outputLink>
+			
+		</p:tab>
+	</p:accordionPanel>
+    		</div></div>
+    		
+    		</td>
+    		
+    	<td  class="rightColumn" valign="top">
+		<h:panelGroup layout="block" class="container">
+			<h:panelGroup layout="block" class="main_div">
+			<div class="menu_button"><img style="cursor: pointer;  position:relative; left:15px;" id="HideHandle" name="HideHandle" src="../images/toggle_plus.png" alt="" onclick='hideLeftCol("leftCol");closeMenus();'/></div>
+				<h1>
+					<h:outputText value="#{msg['lbl.remitterInfo']}" />
+				</h1>
+				<h:panelGroup layout="block" class="table_bg">
+					<h:form id="inputForm2" enctype="multipart/form-data"
+						style="padding:0!important;">
+						<p:panel id="mainPanel"
+							style="border: 0px; padding:0px!important;">
+							<p:panel rendered="#{remmiterInfo.booCommon}"
+								style="padding:10px!important;">
+								<table cellpadding="0" cellspacing="15" width="100%">
+									<tr>
+										<td width="16%"><h:outputText value="#{msg['lbl.idnumber']} #{remmiterInfo.viewBehaviorBean('Civil ID','MANDATORY')}" 
+																			rendered="#{remmiterInfo.booCommon}" /></td>
+										<td width="19%"><p:inputText id="idNumer"
+												value="#{remmiterInfo.id}"
+												rendered="#{remmiterInfo.booCommon}" 
+												required="#{remmiterInfo.viewBehaviorBean('Civil ID','REQUIRED')}"
+												disabled="#{remmiterInfo.viewBehaviorBean('Civil ID','ENABLE')}"
+												maxlength="#{remmiterInfo.viewBehaviorBean('Civil ID','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.civilid']}"
+												readonly="#{remmiterInfo.readonly}"
+												validatorMessage="#{msg['lbl.validwrongcivil']}">
+
+												<!-- Need not to be worry seeing the warning below..... it will work fine -->
+												<f:validator validatorId="com.amg.exchange.validator.CivilIDValidator"/>
+												
+												<p:message for="idNumer" display="text" />
+
+												<p:ajax event="blur" listener="#{remmiterInfo.popDob}" update="mainPanel" />
+											</p:inputText></td>
+
+										<td width="65%"><h:outputText
+												value="#{msg['lbl.duplicatecivilid']}"
+												rendered="#{remmiterInfo.disableValidation}"
+												style="Color: Red;" /></td>
+									</tr>
+								</table>
+								<h2 class="mt20">
+									<h:outputText value="#{msg['lbl.personal']}."
+										rendered="#{remmiterInfo.booCommon}" />
+								</h2>
+								<table cellpadding="0" cellspacing="15" width="100%">
+									<tr>
+										<td width="16%"><h:outputText value="#{msg['lbl.firstname']} #{remmiterInfo.viewBehaviorBean('First Name','MANDATORY')}" rendered="#{remmiterInfo.booCommon}" /></td>
+										<td width="22%">
+											<p:inputText id="remname"
+												value="#{remmiterInfo.remName}"
+												rendered="#{remmiterInfo.booCommon}" 
+												required="#{remmiterInfo.viewBehaviorBean('First Name','REQUIRED')}"
+												disabled="#{remmiterInfo.viewBehaviorBean('First Name','ENABLE')}"
+												maxlength="#{remmiterInfo.viewBehaviorBean('First Name','MAX_VALUE')}" 
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.remittername']}"
+												style="font-weight :normal;"
+												readonly="#{remmiterInfo.readonly}"
+												validator="RegularExpressionValidation">
+												
+												<f:attribute name="regexValue" value="#{remmiterInfo.viewBehaviorBean('First Name','PATTERN')}"/>  
+									    		<f:attribute name="minValue" value="#{remmiterInfo.viewBehaviorBean('First Name','MIN_VALUE')}"/>  
+									    		<f:attribute name="maxValue" value="#{remmiterInfo.viewBehaviorBean('First Name','MAX_VALUE')}"/>
+									    
+												<p:message for="remname" display="text"/>
+												
+											</p:inputText>
+										</td>
+										<td width="17%"><h:outputText value="#{msg['lbl.email']}"
+												rendered="#{remmiterInfo.booCommon}" /></td>
+										<td width="45%"><h:outputText
+												value="#{remmiterInfo.email}" /></td>
+									</tr>
+									<tr>
+										<td width="15%"><h:outputText value="#{msg['lbl.lastname']} #{remmiterInfo.viewBehaviorBean('Last Name','MANDATORY')}" rendered="#{remmiterInfo.booCommon}"/></td>
+										<td width="23%">
+											<p:inputText id="remitterNameL"
+												value="#{remmiterInfo.remLName}"
+												readonly="#{remmiterInfo.readonly}" 
+												required="#{remmiterInfo.viewBehaviorBean('Last Name','REQUIRED')}"
+												disabled="#{remmiterInfo.viewBehaviorBean('Last Name','ENABLE')}"
+												maxlength="#{remmiterInfo.viewBehaviorBean('Last Name','MAX_VALUE')}" 
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.lastname']}"
+												style="font-weight :normal;"
+												rendered="#{remmiterInfo.booCommon}"
+												validator="RegularExpressionValidation">
+												
+												<f:attribute name="regexValue" value="#{remmiterInfo.viewBehaviorBean('Last Name','PATTERN')}"/>  
+									    		<f:attribute name="minValue" value="#{remmiterInfo.viewBehaviorBean('Last Name','MIN_VALUE')}"/>  
+									    		<f:attribute name="maxValue" value="#{remmiterInfo.viewBehaviorBean('Last Name','MAX_VALUE')}"/>
+									    		
+												<p:message for="remitterNameL" display="text" />
+												
+											</p:inputText>
+										</td>
+										<p:row>	
+										<p:column>
+										<td width="17%">
+										
+										<h:outputText value="#{msg['lbl.nationality']}*" rendered="#{remmiterInfo.booCommon}"/></td></p:column>
+										<p:column>
+										<td width="45%">
+										<p:message for="nationality" display="text" />
+										<p:selectOneMenu id="nationality"
+												value="#{remmiterInfo.nationality}"
+												disabled="#{remmiterInfo.readonly}" filter="true"
+												filterMatchMode="startsWith" required="true"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.nationality']}"
+												rendered="#{remmiterInfo.booCommon}"
+												style="width: 130px; height: 25px; text-align: left;">
+												<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+												<f:selectItems value="#{remmiterInfo.nationilityFromDB}"
+													var="c" itemLabel="#{c.nationalityName}"
+													itemValue="#{c.nationalityCode}" />
+											</p:selectOneMenu>
+										</td></p:column>
+										</p:row>
+										<!-- <td width="17%">
+										<h:outputText value="#{msg['lbl.alternatemail']}" rendered="#{remmiterInfo.booCommon}" /></td>
+										<td width="45%">
+											<p:inputText id="alterMail"
+												value="#{remmiterInfo.alterEmail}"
+												validatorMessage="#{msg['lbl.validlemailformat']}"
+												rendered="#{remmiterInfo.booCommon}"
+												style="font-weight :normal;"
+												readonly="#{remmiterInfo.viewBehaviorBean('Alternate Email Id','READ_ONLY')}"
+												required="#{remmiterInfo.viewBehaviorBean('Alternate Email Id','REQUIRED')}"
+												disabled="#{remmiterInfo.viewBehaviorBean('Alternate Email Id','ENABLE')}" 
+												requiredMessage="#{msg['lbl.validlemailformat']}"
+												maxlength="#{remmiterInfo.viewBehaviorBean('Alternate Email Id','MAX_VALUE')}">
+												
+												<f:validator validatorId="com.amg.exchange.validator.EmailValidator"/>
+												
+											</p:inputText>
+										</td> -->
+									</tr>
+									<tr>
+										<td width="15%"><h:outputText
+												value="#{msg['lbl.mobile']} #{remmiterInfo.viewBehaviorBean('Mobile in online reg','MANDATORY')}"
+												rendered="#{remmiterInfo.booCommon}" /></td>
+										<td width="23%">
+											<p:inputText id="mobile"
+													value="#{remmiterInfo.mob}"
+													readonly="#{remmiterInfo.readonly}" 
+													required="#{remmiterInfo.viewBehaviorBean('Mobile in online reg','REQUIRED')}"
+													disabled="#{remmiterInfo.viewBehaviorBean('Mobile in online reg','ENABLE')}"
+													maxlength="#{remmiterInfo.viewBehaviorBean('Mobile in online reg','MAX_VALUE')}" 
+													rendered="#{remmiterInfo.booCommon}"
+													requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.mobile']}"
+													style="font-weight :normal;"
+													validatorMessage="#{msg['lbl.validminmobile']}"
+													validator="RegularExpressionValidation">
+
+													<f:attribute name="regexValue" value="#{remmiterInfo.viewBehaviorBean('Mobile in online reg','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{remmiterInfo.viewBehaviorBean('Mobile in online reg','MIN_VALUE')}"/>  
+										    		<f:attribute name="maxValue" value="#{remmiterInfo.viewBehaviorBean('Mobile in online reg','MAX_VALUE')}"/>
+													
+													<f:validateRegex pattern="#{remmiterInfo.viewBehaviorBean('Mobile in online reg','PATTERN')}"/>
+													
+													<p:message for="mobile" display="text" />
+											</p:inputText>
+										</td>
+
+										<td width="17%"><h:outputText value="#{msg['lbl.gender']}*" rendered="#{remmiterInfo.booCommon}" /></td>
+										<td width="45%">
+										<p:message for="gender" display="text" />
+										<p:selectOneMenu id="gender"
+												value="#{remmiterInfo.gender}"
+												disabled="#{remmiterInfo.readonly}"
+												rendered="#{remmiterInfo.booCommon}"
+												style="width: 130px; height: 25px; text-align: left;"
+												required="true"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.gender']}">
+												<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+												<f:selectItem itemValue="#{msg['lbl.male']} "
+													itemLabel="#{msg['lbl.male']}" />
+												<f:selectItem itemValue="#{msg['lbl.female']}"
+													itemLabel="#{msg['lbl.female']}" />
+											</p:selectOneMenu></td>
+									</tr>
+									<tr>
+										<td width="15%"><h:outputText value="#{msg['lbl.dob']} #{remmiterInfo.viewBehaviorBean('Civil Id Expiary Date','MANDATORY')}" rendered="#{remmiterInfo.booCommon}" /></td>
+										<td width="23%">
+											<p:calendar id="dob"
+												value="#{remmiterInfo.dob}"
+												disabled="true"
+												pattern="dd/MM/yyyy"
+												required="#{remmiterInfo.viewBehaviorBean('Civil Id Expiary Date','REQUIRED')}"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.dob']}"
+												rendered="#{remmiterInfo.booCommon}">
+
+												<p:message for="dob" display="text" />
+											</p:calendar>
+										</td>
+									</tr>
+									<tr>
+										<td width="15%"></td>
+										<td width="23%"></td>
+										<td width="17%"></td>
+										<td width="45%" align="center">
+											<h:panelGroup layout="block" style="padding:10px; text-align:center; float:left; margin-left:50px;">
+												<p:commandButton value="#{msg['lbl.validate']}"
+													styleClass="fright" rendered="#{remmiterInfo.booCommon}"
+													disabled="#{remmiterInfo.disableValidation}"
+													actionListener="#{remmiterInfo.CheckAMLStatus}"
+													update="panel, mainPanel" id="ajax">
+												</p:commandButton>
+												<h:panelGroup layout="block" styleClass="clr"></h:panelGroup>
+											</h:panelGroup>
+										</td>
+									</tr>
+								</table>
+
+							</p:panel>
+						</p:panel>
+						<h:panelGroup layout="block" class="height1"></h:panelGroup>
+						<p:panel id="panel" style=" padding:10px;">
+							<p:panel rendered="#{remmiterInfo.booPass}"
+								style="border :0px; padding:0px;">
+								<h2 class="mt20">
+									<h:outputText value="#{msg['lbl.employementdetails']}" />
+								</h2>
+								<p:spacer width="10" height="0" />
+								<h:outputText value="#{msg['lbl.employmenttype']}"  style="width:110px; display:inline-block;"/>
+								<p:spacer width="30" height="0" />
+								<p:selectOneMenu value="#{remmiterInfo.employment_type}" id="empType" required="true" requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.employmenttype']}"
+									style="width: 183px; margin-top:10px;">
+									<f:selectItems value="#{remmiterInfo.employmentTypeList}"
+										var="c" itemLabel="#{c.employmentType}" itemValue="#{c.employmentTypeId}" />
+									<p:ajax event="change" update="emp" listener="#{remmiterInfo.getEmploymentStatus}" />
+								</p:selectOneMenu>
+								<p:message for="empType" display="text"></p:message>
+								<p:panel id="emp"  style=" padding:0px; border:none;">
+								<table cellpadding="15" cellspacing="15" width="90%">
+									<tr>
+										<td>
+
+									<h:outputText  value="#{msg['lbl.occupation']}" rendered="#{remmiterInfo.booUnEmp}" style="width:100px; display:inline-block;" /></td>
+									
+									<td><p:selectOneMenu value="#{remmiterInfo.occupation}" rendered="#{remmiterInfo.booUnEmp}" style="width: 183px;">
+										<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+										<f:selectItem itemLabel="#{msg['lbl.doctor']}" itemValue="1" />
+										<f:selectItem itemLabel="#{msg['lbl.teacher']}" itemValue="2" />
+									</p:selectOneMenu></td>
+									
+									<td><h:outputText value="#{msg['lbl.employer']} #{remmiterInfo.viewBehaviorBean('Employer Name','MANDATORY')}" rendered="#{remmiterInfo.booUnEmp}" /></td>
+									<td><p:inputText id="employerName"
+										value="#{remmiterInfo.employer_name}"
+										style="font-weight :normal;" 
+										readonly="#{remmiterInfo.viewBehaviorBean('Employer Name','READ_ONLY')}" 
+										maxlength="#{remmiterInfo.viewBehaviorBean('Employer Name','MAX_VALUE')}" 
+										disabled="#{remmiterInfo.viewBehaviorBean('Employer Name','ENABLE')}" 
+										required="#{remmiterInfo.viewBehaviorBean('Employer Name','REQUIRED')}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.employer']}"  
+										validator="RegularExpressionValidation"
+										rendered="#{remmiterInfo.booUnEmp}">
+										
+										<f:attribute name="regexValue" value="#{remmiterInfo.viewBehaviorBean('Employer Name','PATTERN')}"/>  
+									    <f:attribute name="minValue" value="#{remmiterInfo.viewBehaviorBean('Employer Name','MIN_VALUE')}"/>  
+									    <f:attribute name="maxValue" value="#{remmiterInfo.viewBehaviorBean('Employer Name','MAX_VALUE')}"/>
+										
+										<p:message for="employerName" display="text" />
+									</p:inputText></td></tr>
+<tr><td>
+									<h:outputText value="#{msg['lbl.block']} #{remmiterInfo.viewBehaviorBean('Block online rem','MANDATORY')}" rendered="#{remmiterInfo.booUnEmp}" /></td>
+									<td><p:inputText id="blkNumber" value="#{remmiterInfo.blk_no}"
+										style="font-weight :normal;" 
+										required="#{remmiterInfo.viewBehaviorBean('Block online rem','REQUIRED')}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.block']}"
+										rendered="#{remmiterInfo.booUnEmp}"
+										validator="RegularExpressionValidation">
+										
+										<f:attribute name="regexValue" value="#{remmiterInfo.viewBehaviorBean('Block online rem','PATTERN')}"/>  
+									    <f:attribute name="minValue" value="#{remmiterInfo.viewBehaviorBean('Block online rem','MIN_VALUE')}"/>  
+									    <f:attribute name="maxValue" value="#{remmiterInfo.viewBehaviorBean('Block online rem','MAX_VALUE')}"/>
+									    
+										<p:message for="blkNumber" display="text" />
+									</p:inputText></td>
+									
+									<td><h:outputText value="#{msg['lbl.street']} #{remmiterInfo.viewBehaviorBean('Street online rem','MANDATORY')}" rendered="#{remmiterInfo.booUnEmp}" /></td>
+									<td><p:inputText id="streetNumber"
+										value="#{remmiterInfo.street_no}" style="font-weight :normal;"
+										required="#{remmiterInfo.viewBehaviorBean('Street online rem','REQUIRED')}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.street']}"
+										rendered="#{remmiterInfo.booUnEmp}"
+										validator="RegularExpressionValidation">
+										
+										<f:attribute name="regexValue" value="#{remmiterInfo.viewBehaviorBean('Street online rem','PATTERN')}"/>  
+									    <f:attribute name="minValue" value="#{remmiterInfo.viewBehaviorBean('Street online rem','MIN_VALUE')}"/>  
+									    <f:attribute name="maxValue" value="#{remmiterInfo.viewBehaviorBean('Street online rem','MAX_VALUE')}"/>
+										
+										<p:message for="streetNumber" display="text" />
+									</p:inputText></td></tr>
+									
+		<tr><td>							<h:outputText value="#{msg['lbl.area']} #{remmiterInfo.viewBehaviorBean('area online rem','MANDATORY')}" rendered="#{remmiterInfo.booUnEmp}" /></td>
+									<td><p:inputText id="area" value="#{remmiterInfo.area}"
+										style="font-weight :normal;" 
+										required="#{remmiterInfo.viewBehaviorBean('area online rem','REQUIRED')}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.area']}"
+										rendered="#{remmiterInfo.booUnEmp}"
+										validator="RegularExpressionValidation">
+										
+										<f:attribute name="regexValue" value="#{remmiterInfo.viewBehaviorBean('area online rem','PATTERN')}"/>  
+									    <f:attribute name="minValue" value="#{remmiterInfo.viewBehaviorBean('area online rem','MIN_VALUE')}"/>  
+									    <f:attribute name="maxValue" value="#{remmiterInfo.viewBehaviorBean('area online rem','MAX_VALUE')}"/>
+										
+										<p:message for="area" display="text" />
+									</p:inputText></td>
+
+									<td><h:outputText value="#{msg['lbl.officetelno']} #{remmiterInfo.viewBehaviorBean('officetel online rem','MANDATORY')}" rendered="#{remmiterInfo.booUnEmp}" /></td>
+									<td><p:inputText id="office_tel" value="#{remmiterInfo.offTel}"
+										style="font-weight :normal;" 
+										required="#{remmiterInfo.viewBehaviorBean('officetel online rem','REQUIRED')}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.officetelno']}"
+										rendered="#{remmiterInfo.booUnEmp}"
+										validator="RegularExpressionValidation">
+										
+										<f:attribute name="regexValue" value="#{remmiterInfo.viewBehaviorBean('officetel online rem','PATTERN')}"/>  
+									    <f:attribute name="minValue" value="#{remmiterInfo.viewBehaviorBean('officetel online rem','MIN_VALUE')}"/>  
+									    <f:attribute name="maxValue" value="#{remmiterInfo.viewBehaviorBean('officetel online rem','MAX_VALUE')}"/>
+										
+										<p:message for="office_tel" display="text" />
+									</p:inputText></td></tr>
+<tr><td>
+									<h:outputText value="#{msg['lbl.state']} #{remmiterInfo.viewBehaviorBean('State','MANDATORY')}" rendered="#{remmiterInfo.booUnEmp}" /></td>
+									<td><p:message for="state" display="text"/>
+									<p:selectOneMenu id="state" value="#{remmiterInfo.state}"
+										filter="true" filterMatchMode="startsWith"
+										style="width: 183px;"
+										rendered="#{remmiterInfo.booUnEmp}"
+										readonly="#{remmiterInfo.viewBehaviorBean('State','READ_ONLY')}" 
+										disabled="#{remmiterInfo.viewBehaviorBean('State','ENABLE')}" required="true"
+										requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.state']}">
+										
+										<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+										<f:selectItems value="#{remmiterInfo.stateFromDb}" var="c"
+											itemLabel="#{c.stateName}" itemValue="#{c.stateCode}" />
+											
+										<p:ajax update="dist" event="change" listener="#{remmiterInfo.popDistrict}" />
+									</p:selectOneMenu></td>
+
+
+									<td><h:outputText value="#{msg['lbl.postalcode']} #{remmiterInfo.viewBehaviorBean('postal online rem','MANDATORY')}" rendered="#{remmiterInfo.booUnEmp}" /></td>
+									<td><p:inputText id="postalCode" value="#{remmiterInfo.postal}"
+										style="font-weight :normal;" 
+										required="#{remmiterInfo.viewBehaviorBean('postal online rem','REQUIRED')}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.postalcode']}"
+										rendered="#{remmiterInfo.booUnEmp}"
+										validator="RegularExpressionValidation">
+										
+										<f:attribute name="regexValue" value="#{remmiterInfo.viewBehaviorBean('postal online rem','PATTERN')}"/>  
+									    <f:attribute name="minValue" value="#{remmiterInfo.viewBehaviorBean('postal online rem','MIN_VALUE')}"/>  
+									    <f:attribute name="maxValue" value="#{remmiterInfo.viewBehaviorBean('postal online rem','MAX_VALUE')}"/>
+
+										<p:message for="postalCode" display="text" />
+									</p:inputText></td></tr>
+									
+			<tr><td>						<h:outputText value="#{msg['lbl.district']} #{remmiterInfo.viewBehaviorBean('District','MANDATORY')}" rendered="#{remmiterInfo.booUnEmp}" /></td>
+								<td>	<p:message for="dist" display="text" />
+									<p:selectOneMenu id="dist" value="#{remmiterInfo.dist}"
+										filter="true" filterMatchMode="startsWith"
+										style="width: 183px;"
+										rendered="#{remmiterInfo.booUnEmp}"
+										
+										readonly="#{remmiterInfo.viewBehaviorBean('District','READ_ONLY')}" 
+										disabled="#{remmiterInfo.viewBehaviorBean('District','ENABLE')}"
+										required="true"
+										requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.district']}">
+										
+										<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+										<f:selectItems value="#{remmiterInfo.districtFromDb}" var="c"
+											itemLabel="#{c.districtName}" itemValue="#{c.districtCode}" />
+										
+										<p:ajax update="city" event="change" listener="#{remmiterInfo.popCity}" />
+
+									</p:selectOneMenu></td>
+
+									<td><h:outputText value="#{msg['lbl.city']} #{remmiterInfo.viewBehaviorBean('City','MANDATORY')}" rendered="#{remmiterInfo.booUnEmp}" /></td>
+									<td><p:message for="city" display="text" />
+									<p:selectOneMenu id="city" value="#{remmiterInfo.city}"
+										filter="true" filterMatchMode="startsWith"
+										style="width: 183px;"
+										rendered="#{remmiterInfo.booUnEmp}" required="true" requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.city']}"
+										
+										readonly="#{remmiterInfo.viewBehaviorBean('City','READ_ONLY')}" 
+										disabled="#{remmiterInfo.viewBehaviorBean('City','ENABLE')}">
+										
+										<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+										<f:selectItems value="#{remmiterInfo.cityFromDb}" var="c"
+											itemLabel="#{c.cityName}" itemValue="#{c.cityId}" />
+											
+									</p:selectOneMenu></td></tr>
+									<tr><td colspan="4">
+									<h:outputLabel value="Select District" rendered="#{remmiterInfo.booDist}" style="Color: red;position:absolute; margin-top:-15px; margin-left:132px;"/>
+									<h:outputLabel value="Select State" rendered="#{remmiterInfo.booState}" style="Color: red;position:absolute; margin-top:-63px; margin-left:132px;"/>
+									<h:outputLabel value="Select City" rendered="#{remmiterInfo.booCity}" style="Color: red;position:absolute; margin-top:-15px; margin-left:500px;"/>
+									<h:outputLabel/>
+									</td>								
+								</tr></table></p:panel>
+
+
+
+								<h2 class="mt20">
+									<h:outputText value="#{msg['lbl.proof']}" />
+								</h2>
+								<table cellpadding="15" cellspacing="15" width="90%">
+									<tr>
+										<td>
+											<h:outputText value="#{msg['lbl.idfor']}" style="width:120px; display:inline-block;" />
+										</td>
+										<td>	
+												<p:message for="idProofDoc" display="text" />
+												<p:selectOneMenu value="#{remmiterInfo.idFor}" style="width:183px;" editable="false" required="true" id="idProofDoc"
+													requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.idfor']}">
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItem itemLabel="#{msg['lbl.idproof']}" itemValue="1" />
+												</p:selectOneMenu>
+										</td>
+										<td>
+											<h:outputText value="#{msg['lbl.idtype']}"  style="width:110px; display:inline-block;" />
+										</td>
+										<td>
+											<p:message for="idTypeDoc" display="text" />
+											<p:selectOneMenu value="#{remmiterInfo.idType}" style="width:183px;" editable="false" required="true" id="idTypeDoc"
+											requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.idtype']}">
+												<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+												<f:selectItem itemLabel="#{msg['lbl.civilid']}" itemValue="1" />
+											</p:selectOneMenu>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="#{msg['lbl.idnumber']}"/>
+										</td>
+										<td>
+											<p:inputText id="id_number"
+												value="#{remmiterInfo.id}"
+												style="font-weight :normal; text-align: left;"
+												required="true"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.idnumber']}"
+												readonly="true">
+												<p:message for="id_number" display="text" />
+											</p:inputText>
+										</td>
+										<td>
+											<h:outputText value="#{msg['lbl.dateofexpiry']} #{remmiterInfo.viewBehaviorBean('Civil Id Expiary Date','MANDATORY')}"/>
+										</td>
+										<td>
+											<p:calendar id="doe" value="#{remmiterInfo.expDate}"
+												mode="popup" navigator="true" pattern="dd/MM/yyyy"
+												mindate="#{remmiterInfo.expDateCheck}"
+												style="font-weight :normal; text-align: left;"
+												required="#{remmiterInfo.viewBehaviorBean('Civil Id Expiary Date','REQUIRED')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.dateofexpiry']}"
+												validatorMessage="#{msg['lbl.validmindate']}"
+												readonlyInput="true">
+												<p:message for="doe" display="text" />
+											</p:calendar>
+										</td>
+									</tr>
+									<tr>
+										<td width="1%"></td>
+										<td width="40%">
+										<h:outputText value="Choose Proper file(pdf/doc/Image)" rendered="#{remmiterInfo.booInvalidFile}"
+														style="color: red;"/></td>
+
+										<td width="15%"><label><h:outputText value="#{msg['lbl.scandocument']}" /></label></td>
+										<td width="23%">
+											<p:fileUpload style="color: red;"
+												value="#{remmiterInfo.file}" mode="simple"
+												dragDropSupport="false" required="true" id="fileUplod"
+												sizeLimit="10000" fileLimit="1"
+												allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|pdf)$/"
+												label="Choose File">
+												
+												<p:message for="fileUplod" value="File Not Selected" style="color:red;" />
+											</p:fileUpload><br /> 
+										</td>
+									</tr>
+								</table>
+
+								<p:dataTable value="#{remmiterInfo.lstTable}" var="o" widgetVar="50" style="width:700px; font-size:12px;"
+																				editable="true" id="table" rendered="#{remmiterInfo.booTable}">
+
+									<p:column headerText="#{msg['lbl.idtype']}">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{o.id_type}" style="margin-left: 10px; text-align: center;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{o.id_type}" style="text-align: center;" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column headerText="#{msg['lbl.idfor']}">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{o.idFor}"
+													style="margin-left: 10px;text-align: center;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{o.idFor}" style="text-align: center;" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column headerText="#{msg['lbl.idnumber']}">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{o.id_number}"
+													style="margin-left: 10px;text-align: center;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{o.id_number}"
+													style="text-align: center;" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column headerText="#{msg['lbl.dateofexpiry']}">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{o.dateOfExp}"
+													style="margin-left: 10px;text-align: center;" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{o.dateOfExp}"
+													style="text-align: center;" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column headerText="#{msg['lbl.download']}">
+										<!-- <p:commandLink value="Image" onclick="dialog.show()" style="margin-left: 10px;text-align: center;"/> -->
+										<p:commandLink id="downloadLink" title="download"
+											style="padding-left:30px;" ajax="false"
+											action="PrimeFaces.monitorDownload(start, stop)"
+											icon="ui-icon-arrowthichk-s" immediate="true">
+											<p:graphicImage value="../images/download.png" />
+											<p:fileDownload
+												value="#{remmiterInfo.downloadFile(o.imageId)}" />
+										</p:commandLink>
+									</p:column>
+
+									<!-- <p:column headerText="#{msg['lbl.view']}">
+						    <h:outputLink id="openDialogLink"   style="padding-left:20px;" value="javascript:void(0)" onclick="PF('dlg').show()">
+						    	<p:graphicImage value="../images/viewer.png"/>
+						    </h:outputLink>
+						
+						    <p:dialog id="picture" widgetVar="dlg" header="Document Viewer" width="500" height="500"
+						        resizable="false" showEffect="clip" hideEffect="clip">
+						        <p:graphicImage value="#{remmiterInfo.downloadFile}" />
+    						</p:dialog>
+						</p:column> -->
+
+								</p:dataTable>
+
+
+								<h:panelGroup layout="block" class="height1"></h:panelGroup>
+								<table cellpadding="0" cellspacing="0" width="85%"
+									class="form-table">
+									<tr>
+										<td width="40%" />
+										<td width="10%"><p:commandButton
+												value="#{msg['lbl.cancel']}"
+												disabled="#{remmiterInfo.offSave}"
+												action="#{remmiterInfo.cancel}" id="ajaxCancel" ajax="false">
+											</p:commandButton></td>
+										<!-- <td width="10%"><p:commandButton value="#{msg['lbl.back']}"
+							ajax="false" disabled="#{remmiterInfo.offSave}">
+						</p:commandButton>
+			</td> -->
+
+										<td width="10%"><p:commandButton
+												value="#{msg['lbl.submit']}"
+												action="#{remmiterInfo.saveData}" ajax="false"
+												disabled="#{remmiterInfo.offSave}">
+											</p:commandButton></td>
+
+									</tr>
+								</table>
+							</p:panel>
+							<h:panelGrid columns="3">
+
+								<p:spacer width="90px" height="0px" />
+								<h:outputText value="#{msg['lbl.additionalinfo']}"
+									style="font-weight: bold;font-size: 20px; text-decoration:underline;"
+									rendered="#{remmiterInfo.booPend}" />
+
+								<h:outputText value="#{msg['lbl.additionalmessage']}"
+									style="font-size: 12px;" rendered="#{remmiterInfo.booPend}" />
+
+							</h:panelGrid>
+
+
+							<h:panelGrid rendered="#{remmiterInfo.booPend}">
+								<br />
+								<br />
+							</h:panelGrid>
+
+							<h:panelGrid columns="4" cellpadding="4"
+								style="text-align: left;" width="770"
+								rendered="#{remmiterInfo.booPend}">
+
+								<h:outputText value="Country of Birth" />
+								<p:selectOneMenu value="#{remmiterInfo.countryOfBirth}"
+									style="width: 130px; height: 25px; text-align: left; margin-top: 15px;">
+									<!-- <f:selectItem itemLabel="Kuwait" itemValue="Kuwait" />
+								<f:selectItem itemLabel="Bahrin" itemValue="Bahrin" />
+								<f:selectItem itemLabel="Quatar" itemValue="Quatar" />
+								<f:selectItem itemLabel="Dubai" itemValue="Dubai" />
+								<f:selectItem itemLabel="Pakistan" itemValue="Pakistan" />
+								<f:selectItem itemLabel="Bangladesh" itemValue="Bangladesh" /> -->
+									<f:selectItems value="#{remmiterInfo.countryNameList}" var="c"
+										itemLabel="#{c.nationality}"
+										itemValue="#{c.fsCountryMaster.countryId}" />
+								</p:selectOneMenu>
+
+								<h:outputText value="#{msg['lbl.fathername']}" />
+								<p:inputText id="father_name"
+									style="font-weight :normal; margin-bottom: 10px;"
+									value="#{remmiterInfo.fatherName}" required="true"
+									requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.fathername']}">
+									<p:message for="father_name" display="text" />
+								</p:inputText>
+
+								<h:outputText value="#{msg['lbl.placeofbirth']}" />
+								<p:inputText id="birth_place" size="24"
+									style="font-weight :normal;" value="#{remmiterInfo.birthPlace}"
+									required="true"
+									requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.placeofbirth']}">
+									<p:message for="birth_place" display="text" />
+								</p:inputText>
+
+							</h:panelGrid>
+
+							<h:panelGrid rendered="#{remmiterInfo.booPend}">
+								<br />
+								<br />
+							</h:panelGrid>
+
+							<!-- <h:commandButton style="cursor: pointer; font-size: 15px; font-weight: bold;font-style: italic;color: #FFFFFF;width: 120px;height: 30px;
+			   															background-color: #0099FF;
+			   															border-style: none; border:2px solid #a1a1a1; padding:3px 10px; border-radius:30px;" value="Cancel" rendered="#{remmiterInfo.booPend}"></h:commandButton> -->
+
+							<p:commandButton value="#{msg['lbl.cancel']}"
+								rendered="#{remmiterInfo.booPend}"
+								actionListener="#{remmiterInfo.cancelAdditional}"
+								update="panel, mainPanel" id="ajaxAdditionalCancel">
+							</p:commandButton>
+
+							<p:spacer width="50px" height="0px" />
+
+							<p:commandButton value="#{msg['lbl.add']}" style="width: 80px;"
+								rendered="#{remmiterInfo.booPend}"
+								actionListener="#{remmiterInfo.addAdditional}"
+								update="panel, mainPanel" id="ajaxAdditionalAdd">
+							</p:commandButton>
+
+
+							<!-- <h:commandButton style="cursor: pointer; font-size: 15px; font-weight: bold;font-style: italic;color: #FFFFFF;width: 120px;height: 30px;
+			   															background-color: #0099FF;
+			   															border-style: none; border:2px solid #a1a1a1; padding:3px 10px; border-radius:30px;" value="#{msg['lbl.add']}" rendered="#{remmiterInfo.booPend}"></h:commandButton> -->
+
+
+							<h:outputText value="Welcome to  "
+								style="font-size: 15px; color:black;"
+								rendered="#{remmiterInfo.booFailed}" />
+							<h:outputText value="Al Mulla Group,"
+								style="font-weight: bold;font-size: 15px; color:black; margin-right: 50px;"
+								rendered="#{remmiterInfo.booFailed}" />
+
+							<h:panelGrid rendered="#{remmiterInfo.booFailed}">
+								<br />
+								<br />
+							</h:panelGrid>
+
+							<h:outputText value="#{msg['lbl.accountpending']}"
+								style="font-size: 15px; color:black;"
+								rendered="#{remmiterInfo.booFailed}" />
+
+							<h:panelGrid rendered="#{remmiterInfo.booFailed}">
+								<br />
+								<br />
+							</h:panelGrid>
+
+							<h:outputText value="#{msg['lbl.messagemanualbranch1']}"
+								style="font-size: 15px; color:black; width: 120px;"
+								rendered="#{remmiterInfo.booFailed}" />
+							<h:outputText value="#{msg['lbl.remitterInfo']}"
+								style="font-weight: bold;font-size: 15px;width: 120px; color:black;"
+								rendered="#{remmiterInfo.booFailed}" />
+							<h:outputText value="#{msg['lbl.messagemanualbranch2']}"
+								rendered="#{remmiterInfo.booFailed}"
+								style="font-size: 15px; color:black;" />
+						</p:panel>
+					</h:form>
+
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+		</h:panelGroup>
+
+<div class="clearfix"></div>
+    				
+    				</td>
+    </tr>
+    </table>
+		<ui:include src="#{facesBean.footer}"></ui:include>
+
+	</f:view>
+</h:body>
+</html>

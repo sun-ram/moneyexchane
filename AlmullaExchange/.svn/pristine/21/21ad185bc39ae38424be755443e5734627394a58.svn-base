@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link href="css/style1.css" rel="stylesheet" type="text/css" />
+</h:head>
+
+
+<h:body dir="#{facesBean.direction}">
+	<f:view locale="#{facesBean.locale}">
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<ui:include src="#{facesBean.menu}"></ui:include>
+		<table align="left" width="100%" style="height:100%;">
+    <tr>
+    <td align="left" valign="top" style="height:100%;" ><ui:include src="../common/common_menu.xhtml"></ui:include></td>
+    		
+    	<td  class="rightColumn" valign="top">
+		<h:panelGroup layout="block" class="container">
+			<h:panelGroup layout="block" class="main_div">
+			<div class="menu_button"><img style="cursor: pointer;  position:relative; left:15px;" id="HideHandle" name="HideHandle" src="../images/toggle_plus.png" alt="" onclick='hideLeftCol("leftCol");closeMenus();'/></div>
+				<h:panelGroup layout="block" class="heading1">
+					<h:outputText value="#{msg['lbl.searchcustomer']}" />
+				</h:panelGroup>
+				<h:panelGroup layout="block" class="table_bg">
+					<p:panel id="mainPanel" style="padding:10px!important;">
+						<h:form id="inputForm">
+							<p:panel id="mainPanel" style="align: left;  border:none; ">
+
+
+								<br />
+
+								<p:panelGrid cellpadding="15" cellspacing="15"
+									style="text-align:left;width:90%;">
+
+
+									<p:row>
+										<p:column>
+											<h:outputText value="#{msg['lbl.nationality']} *" />
+										</p:column>
+										<p:column>
+											<p:message for="national" display="text" />
+											<p:selectOneMenu id="national" required="true"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.nationality']}"
+												value="#{searchCustomer.nationality}" filter="true"
+												filterMatchMode="startsWith"
+												style="width: 180px; height: 25px; text-align: left;">
+												<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+												<f:selectItems value="#{searchCustomer.nationalityNameList}"
+													var="c" itemLabel="#{c.nationality}"
+													itemValue="#{c.fsCountryMaster.countryId}" />
+
+												<p:ajax update="idtype, datatable" event="change"
+													listener="#{searchCustomer.popIdType}" />
+											</p:selectOneMenu>
+
+
+										</p:column>
+
+										<p:column>
+										</p:column>
+										<p:column>
+
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column></p:column>
+										<p:column></p:column>
+										<p:column></p:column>
+										<p:column></p:column>
+									</p:row>
+
+									<p:row>
+
+										<p:column>
+											<h:outputText value="#{msg['lbl.idtype']} *" />
+										</p:column>
+										<p:column>
+											<p:message for="idtype" display="text" />
+											<p:selectOneMenu id="idtype" value="#{searchCustomer.idType}"
+												style="width:180px" required="true"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.idtype']}">
+												<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+												<f:selectItems value="#{searchCustomer.idList}" var="c"
+													itemLabel="#{c.identityType}"
+													itemValue="#{c.identityTypeId}" />
+											</p:selectOneMenu>
+
+										</p:column>
+										<p:column>
+
+											<h:outputText value="#{msg['lbl.idnumber']}" />
+										</p:column>
+										<p:column>
+											<p:inputText id="idNo" value="#{searchCustomer.idNumber}">
+											</p:inputText>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column></p:column>
+										<p:column></p:column>
+										<p:column></p:column>
+										<p:column></p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<h:outputText value="#{msg['lbl.firstname']}" />
+										</p:column>
+										<p:column>
+											<p:inputText id="firstName"
+												value="#{searchCustomer.firstName}">
+											</p:inputText>
+										</p:column>
+										<p:column>
+
+											<h:outputText value="#{msg['lbl.lastname']}" />
+										</p:column>
+										<p:column>
+											<p:inputText id="lstName" value="#{searchCustomer.lastName}">
+											</p:inputText>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column></p:column>
+										<p:column></p:column>
+										<p:column></p:column>
+										<p:column></p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<h:outputText value="#{msg['lbl.dob']}" />
+										</p:column>
+										<p:column>
+											<p:calendar id="dob" value="#{searchCustomer.dob}"
+												mode="popup" readonlyInput="true" navigator="true"
+												pattern="dd/MM/yyyy">
+											</p:calendar>
+										</p:column>
+										<p:column>
+											<h:outputText value="#{msg['lbl.mobile']}" />
+										</p:column>
+										<p:column>
+											<p:inputText id="mobNo" value="#{searchCustomer.mob}">
+											</p:inputText>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column></p:column>
+										<p:column></p:column>
+										<p:column></p:column>
+										<p:column></p:column>
+									</p:row>
+									<p:row>
+										<p:column></p:column>
+										<p:column>
+											<p:commandButton value="#{msg['lbl.search']}" id="addTable"
+												update="mainPanel, tablePanel" style="align: right;">
+											</p:commandButton> &nbsp; <p:commandButton value="#{msg['lbl.clear']}"
+												update="mainPanel, tablePanel" process="@this"
+												actionListener="#{searchCustomer.resetValue}"
+												style=" align :right;">
+
+											</p:commandButton>
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column></p:column>
+
+									</p:row>
+									<p:row>
+										<p:column></p:column>
+										<p:column></p:column>
+										<p:column></p:column>
+										<p:column></p:column>
+									</p:row>
+
+									<p:ajaxStatus id="usernamestatuspanel">
+										<f:facet name="start">
+											<h:graphicImage value="../images/ajax_loader.gif" />
+										</f:facet>
+										<f:facet name="start">
+											<h:graphicImage value="" />
+										</f:facet>
+									</p:ajaxStatus>
+
+
+								</p:panelGrid>
+
+
+
+							</p:panel>
+
+							<p:panel id="tablePanel"
+								style="align: left; border:none; font-size: 15px; text-align: left;">
+								<p:dataTable value="#{searchCustomer.dataForAllCustomer}"
+									var="o" style=" font-family: Arial; font-size: 13px;"
+									widgetVar="50" editable="true" id="datatable"
+									rendered="#{searchCustomer.booPass}"
+									emptyMessage="#{msg['lbl.norecordfound']}">
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.idnumber']}" />
+										</f:facet>
+										<p:commandLink action="#{searchCustomer.showData(o)}"
+											ajax="false" value="#{o.idNumber}" />
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.idtype']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{o.idType}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{o.idType}" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.firstname']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{o.firstName}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{o.firstName}" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.lastname']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{o.lastName}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{o.lastName}" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.nationality']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{o.nationality}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{o.nationality}" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.dob']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{o.dob}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{o.dob}" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg['lbl.mobile']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{o.mob}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{o.mob}" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+								</p:dataTable>
+							</p:panel>
+						</h:form>
+					</p:panel>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
+		<div class="clearfix"></div>
+    				
+    				</td>
+    </tr>
+    </table>
+		<ui:include src="#{facesBean.footer}"></ui:include>
+	</f:view>
+</h:body>
+
+
+</html>

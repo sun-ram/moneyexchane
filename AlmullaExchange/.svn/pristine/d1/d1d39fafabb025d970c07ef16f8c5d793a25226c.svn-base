@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width" />
+	<title>Al Mulla Exchange - Online Remittance Systems</title>
+	<link rel="icon" type="../image/png" href="../images/favicon.png" />
+	<link href="../css/arabicstyle.css" rel="stylesheet" type="text/css" />
+</h:head>
+<h:body dir="#{facesBean.direction}">
+	<h:form>
+
+		<h:panelGroup layout="block" class="container">
+			<h:panelGroup layout="block" class="header">
+				<h:panelGroup layout="block" class="logo">
+					<h:graphicImage url="../images/arabic_logo.jpg" width="264" height="89"
+						styleClass="fleft" />
+				</h:panelGroup>
+
+				<h:panelGroup class="top_nav"><h:outputLabel value="#{msg['lbl.header']}" />
+					<h:panelGroup class="clearfix"></h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+
+				<h:panelGroup class="top_nav_lang">
+					<p:commandLink id="english"
+						actionListener="#{facesBean.getDirectionEnglish}"
+						style="margin-right:5px;margin-left:10px;  color:#FFF;"
+						ajax="false">
+						<h:outputText value="English" />
+					</p:commandLink>
+					<p:commandLink style="margin-right:5px;  color:#FFF;">
+						<h:outputText value="/" />
+					</p:commandLink>
+
+					<p:commandLink id="arabic"
+						actionListener="#{facesBean.getDirectionArabic}"
+						style="margin-right:5px; color:#FFF;" ajax="false">
+						<h:outputText value="#{msg['lbl.arabic']}" />
+					</p:commandLink>
+					
+					<h:panelGroup class="clearfix"></h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+
+
+
+			</h:panelGroup>
+			<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+		</h:panelGroup>
+	</h:form>
+	
+	
+</h:body>
+</html>

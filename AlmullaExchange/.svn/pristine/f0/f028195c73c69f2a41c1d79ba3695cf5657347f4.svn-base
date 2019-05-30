@@ -1,0 +1,326 @@
+lbl.header = Al Mulla Exchange Online- Remittance Systems
+lbl.idnumber = ID Number
+lbl.token = Token
+lbl.remitterInfo = Remitter Information
+lbl.civilid = CIVIL ID
+lbl.onlycivilid = Users having valid CIVIL ID can only perform this operation
+lbl.personal = Personal Information
+
+lbl.title= Title
+lbl.firstname = First Name
+lbl.lastname  = Last Name
+lbl.midname = Middle Name
+lbl.shortname= Short Name
+lbl.gender = Gender
+lbl.nationality= Nationality
+
+lbl.titleL= Title(L)
+lbl.firstnameL  = First Name(L)
+lbl.lastnameL  = Last Name (L)
+lbl.middlenameL  = Middle Name (L)
+lbl.shortnameL  = Short Name (L)
+
+lbl.dob = Date Of Birth
+lbl.mobile = Mobile No
+lbl.email= Email
+lbl.alternatemail= Alternate Email
+
+lbl.amlstatus = AML Status
+lbl.numberHits = Number Of Hits
+
+lbl.contactdetails = Contact Details
+lbl.contacttype = Contact Type
+lbl.localarea = Local Area
+lbl.country = Country
+lbl.street = Street No
+lbl.block = Block No
+lbl.telephone= Telephone No
+lbl.flatno= Flat No
+lbl.add= Add
+lbl.cancel = Cancel
+lbl.next = Next
+
+lbl.customerinfo = Customer Information
+lbl.employementdetails= Employment Details
+lbl.employmenttype= Employment Type
+lbl.occupation = Occupation
+lbl.employer = Employer
+lbl.area = Area
+lbl.city = City
+lbl.state= State/Province
+lbl.district= District/Region
+
+lbl.originid= Origin Id
+lbl.postalcode = Postal Code
+lbl.officetelno= Office Tel. No.
+lbl.proof = Identity Proof
+lbl.idfor = ID For
+lbl.idtype = ID Type
+lbl.dateofexpiry= ID Expiry Date
+lbl.uploadfile= Upload File
+lbl.browse= Browse
+
+lbl.weblogin= Web Login
+lbl.username = User Name
+lbl.password= Password
+lbl.employee = Employee
+lbl.customer=Customer
+lbl.login= Login
+lbl.forgot=Forgot Password
+lbl.newuser=New User
+
+lbl.remittername = Remitter Name
+lbl.remitterlname= Remitter Last Name
+lbl.province = Province
+lbl.identityproof = Identity Proof
+
+lbl.validate = Validate
+lbl.back=Back
+lbl.submit = Submit
+lbl.individual = Individual
+lbl.selectinputmethod = Select Input Method
+lbl.individualregistration = Individual Registration
+lbl.corporateregistration = Corporate Registration
+lbl.category = Category
+lbl.fingureprint = Finger Print
+lbl.digisign= Digital Sign
+lbl.scan = Scan
+lbl.sign = Sign
+lbl.verified = Verified
+lbl.verifiedall= Verified All
+
+lbl.usersignup= User Sign Up
+lbl.usertype= User Type
+lbl.checkavilability= Check Availability
+lbl.primarypwd= Primary Password
+lbl.retypepwd = Retype Password
+lbl.secondarypwd = Secondary Password
+
+lbl.plotno= Plot No
+lbl.companyidentitydoc= Company Identity Document
+lbl.partnersdetails= Partner Details
+lbl.partnerName= Partner Name
+lbl.authorizedsig= Authorized Signatures
+lbl.ownername= Owner Name
+lbl.effectivedate= Effective Date
+lbl.enddate = End Date
+lbl.securityquestion= Security Questions
+lbl.crnumber= CR Number
+
+
+lbl.companyname= Company Name
+lbl.companynamel= Company Name(L)
+lbl.companyaregdate= Company Registration Date
+lbl.location= Location
+
+lbl.primaryobjective = Primary Objective
+lbl.secondaryobjective= Secondary Objective
+lbl.natureofbusiness= Nature Of Business
+lbl.sucessfullalmulla = Successfully completed Customer Registration !! 
+lbl.welcomealmulla= Welcome to Al Mulla Group. 
+lbl.visitbranch= We request you to visit the nearest Al Mulla Exchange branch along with the original Documents for immediate account activation.
+
+
+lbl.scandocument = Scan Document
+lbl.desc1 = As the fastest growing major Exchange Company in Kuwait, with a network of 45 Branches, and a paid up capital of KD11 million, Al Mulla International Exchange Co.'s (AMX) mission has always been to bring to the customer the latest technological advancements in global money transfer solutions combined with consistency and accuracy.
+lbl.desc2=AMX continuously works with its Correspondent Banks and Service Providers to enhance systems which enable not just faster, accurate and consistent money transfer, but also on line flow of information to the customer, thereby removing the mental stress associated with transfers traditionally
+lbl.desc3= At the same time, AMX continually endeavors to surpass customer expectations, by bringing them newer products and better services, all of which have resulted in an overall improved offering to the customer
+lbl.primarypassword = Primary Password
+lbl.retypeprimarypassword = Retype Primary Password
+lbl.secondarypassword = Secondary Password
+lbl.retypesecondarypassword = Retype Secondary Password
+lbl.securityquestions = Security Questions (Optional).
+
+lbl.search = Search
+lbl.clear = Clear
+lbl.searchcustomer = Search Customer
+
+lbl.validationprefix = Please Enter 
+lbl.validselectt = Please Select 
+lbl.validselect = Select Type
+
+lbl.validwrongcivil = Wrong Civil ID
+lbl.validminmobile = Mobile No. should be 8 digit
+lbl.validmintelephone = Telephone No. should be 8 digit
+lbl.validlemailformat = Invalid email format
+lbl.validprimpass = Please Enter primary password
+lbl.validretypeprimpass = Please Retype Secondary password
+lbl.validsecondarypass = Please Enter Secondary password
+lbl.validretypepass = Please Retype Secondary password
+
+lbl.validmindate = Minimum validity 3 month
+lbl.validminmaxuser = Give size between 6 and 20 without space  
+lbl.validmatchsecondarypass = Secondary Password should match with Retype Secondary Password
+lbl.validmatchprimaryypass = Primary Password should match with Retype Primary Password
+
+lbl.fathername = Father Name
+lbl.placeofbirth = Place Of Birth
+lbl.accountpending = Your Account Activation is pending.
+lbl.employementcategory = Employment Category
+lbl.validcrno = CR Number should be Integer
+lbl.validcompanyname = Company name should be Character
+
+lbl.primary = Primary
+lbl.secondary = Secondary
+lbl.doctor = Doctor
+lbl.teacher = Teacher
+lbl.mr = Mr
+lbl.ms = Ms
+lbl.mrs = Mrs
+lbl.additionalinfo = Additional Information
+lbl.additionalmessage = Please enter, if above email has limit on attachments
+lbl.messagemanualbranch1 = We request you to navigate to
+lbl.messagemanualbranch2 = page (My Account > Remitter Information) and fill in the complete details to activate an account for online transactions.
+lbl.incorrecruserpassword = User name or password you entered is incorrect
+lbl.countryofbirth = Country Of Birth
+lbl.male = Male
+lbl.female = Female
+lbl.addressproof = Address Proof
+lbl.passport = Passport
+lbl.prooff = Proof
+lbl.success = Success
+lbl.select = Select
+lbl.properAns = Enter Proper Answer
+lbl.office = Office
+lbl.residence = Residence
+lbl.save = Save
+lbl.remitterreg = Remitter Registration
+lbl.customerreg = Customer Registration
+
+lbl.norecordfound = No records found
+
+lbl.success1= Successfully completed Customer Registration !!
+lbl.success2= Welcome to Al Mulla Group.
+lbl.success3= Security Token has been generated and sent to your registered email account.  Request you to visit the nearest branch within 7 working days along with the original supporting documents and token for activating your account.
+lbl.objePriSecon=Objective Primary/Secondary
+
+lbl.forgotpassword = Forgot Password
+lbl.forgotpasswordmsg = What Problem are you facing with Almulla Exchange Account ?
+lbl.forgotpasswordchk = I have problem with my password.
+lbl.forgotusername = I forgot my Almulla Exchange ID.
+lbl.invalidusername = Invalid username
+lbl.reset = Reset
+lbl.duplicate = Duplicate Contact Detail
+lbl.duplicateidentity = Duplicate Company Identity Document
+lbl.duplicatepartner = Duplicate Partner Detail
+lbl.duplicatesignatories = Duplicate Authorized Signatory
+lbl.duplicateprimaryobjective = Duplicate Primary Objective
+lbl.duplicatesecondaryobjective = Duplicate Secondary Objective
+lbl.duplicatebussnessnature = Duplicate Business Nature
+lbl.idproof = Proof of ID
+lbl.download = Download
+lbl.delete = Delete
+
+lbl.businesscomponent = Business Component
+lbl.businesscomponentmsg = Business Component Detail
+lbl.businesscomponentconfmsg = Business Component Default Behavior
+lbl.businesscomponentdatamsg = Component Data
+lbl.bcname = Business Component Name
+lbl.bctype = Business Component Type
+lbl.bcmultiple = Is this component have multiple values?
+lbl.bcminvalue = Minimum Length
+lbl.bcmaxvalue = Maximum Length
+lbl.bcisnumeric = Allow Numeric
+lbl.bcisalphabet = Allow Alphabet
+lbl.bcisspecial = Allow Special Symbols
+lbl.bcisrequired = Is this Mandatory
+lbl.bcisreadonly = Is this Read only
+lbl.bcisenable = Is this Enabled 
+lbl.bccomponentdata = Component Data
+lbl.bcsno = SNo
+lbl.bcdatalist = Data List
+lbl.yes = Yes
+lbl.no = No
+lbl.duplicatecivilid = This Civil ID is already Registered
+lbl.view = View
+
+lbl.businesscomponentsetup = Business Component Setup
+lbl.businesscomponentsetupmsg = Business Component Belongs To
+lbl.businesscomponentconfsetupmsg = Business Component Behavior
+lbl.bc = Business Component
+lbl.bcapplication = Application
+lbl.bccompany = Company
+lbl.bccountry = Country
+lbl.bcpage = Page
+lbl.idalreadyreg = This id number is already registered
+
+lbl.oldpassword = Old Password
+lbl.retypepassword = Retype new Password
+lbl.conformpassword = Please confirm your password
+lbl.newpassword = New  Password
+lbl.changepassword = Change Password
+lbl.duplicateidproof = Duplicate ID Proof
+
+lbl.branchcontacttelephone = Enter Proper Telephone Number
+lbl.success4 = Click here to Log in.
+lbl.passmatch = Primary Password should not match secondary password
+
+lbl.arabic = \u0627\u0644\u0639\u0631\u0628\u064A\u0629
+lbl.midnamecorrect = proper Middle Name
+lbl.propershortname = proper Short Name
+lbl.properfirstnameL = proper First Name(L)
+lbl.propermiddlenameL = proper Middle Name(L)
+lbl.properlastnameL = proper Last Name(L)
+lbl.pripershortnameL = proper Short Name(L)
+lbl.validalternatemail = valid Email format
+
+lbl.contactDetailsSize = At least one details needed 
+lbl.atleastone = please add at least one
+lbl.Objectives = Objectives
+
+// Added for Treasury
+//Bank Master
+lbl.bankaccountdetails = Bank Account Details
+lbl.bank = Bank
+lbl.accountno = Account No
+lbl.accounttype = Account Type
+lbl.accountdesc = Account Description
+lbl.currency = Currency
+lbl.minbalance = Minimum Balance
+lbl.odlimit = OD Limit
+lbl.glno = GL No
+lbl.address = Address
+lbl.fax = Fax
+lbl.contperson = Contact Person
+lbl.department = Department
+lbl.designation = Designation
+lbl.contpersonl = Contact Person (L)
+lbl.departmentl = Department (L)
+lbl.designationl = Designation (L)
+lbl.fundglno = Fund GL No
+lbl.intminbalance = Internal Minimum Balance
+lbl.banktype = Bank Type
+lbl.timezone = Time Zone
+lbl.exchangeId = Exchange Id
+lbl.company = Company
+lbl.agentId = Agent Id
+lbl.agentpin = Agent Pin
+lbl.webservicecredential = Web Services Credential Information
+lbl.bankaccount = Bank Account
+lbl.branch = Branch
+lbl.currencycode = Currency Code
+lbl.debitaccount = Debit Account No
+lbl.bankCode = Bank Code
+lbl.bankFullName = Full Name
+lbl.language = Language
+lbl.bankState = State
+lbl.bankDistrict = District
+lbl.bankShortName = Short Name
+lbl.address1 = Address 1
+lbl.address2 = Address 2
+lbl.zip = ZipCode
+lbl.ifscLength = IFSC Length
+lbl.reutersBankName = Reuters Bank Name
+lbl.fileSpecific = File specific /ALL Creation (File All)
+lbl.fileBranchWise = File Branch-wise (y/n) 
+lbl.micrReuters = MICR REUTERS
+lbl.remmiterModeWise = Remittence Mode Wise (y/n)
+
+lbl.zone = Zone 
+lbl.go = Go
+lbl.toSave = Going to Save
+lbl.contactAdd = Going to Add Contact Details for
+lbl.ddagent = DD Agent
+lbl.ddlocation = DD Location
+lbl.bankbranch = Bank Branch
+lbl.ddprintlocation = DD Print Location

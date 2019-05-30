@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#registration#custmanualbranchreg.xhtml"
+  PATH="/registration/custmanualbranchreg.xhtml" SHAPE="272,497,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#registration#custmanualbranchreg.xhtml:0"
+   NAME="item" PATH="/registration/custmanualbranchreg.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="next::#registration#customerinfoinbranch.xhtml" NAME="output"
+    PATH="/registration/customerinfoinbranch.xhtml"
+    TARGET="rules:#registration#customerinfoinbranch.xhtml" TITLE="next" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="login::#login#login.xhtml" NAME="output1"
+    PATH="/login/login.xhtml" TARGET="rules:#login#login.xhtml"
+    TITLE="login" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#registration#customerinfoinbranch.xhtml"
+  PATH="/registration/customerinfoinbranch.xhtml" SHAPE="736,528,50,41" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#registration#customerinfoinbranch.xhtml:0"
+   NAME="item" PATH="/registration/customerinfoinbranch.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#common#success.xhtml"
+    NAME="output" PATH="/common/success.xhtml"
+    TARGET="rules:#common#success.xhtml" TITLE="success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+  <PROCESS-ITEM ID="rules:#registration#customerinfoinbranch.xhtml:1"
+   NAME="item1" PATH="/registration/customerinfoinbranch.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#common#success.xhtml"
+    NAME="output" PATH="/common/success.xhtml"
+    TARGET="rules:#common#success.xhtml" TITLE="success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="login::#login#login.xhtml" NAME="output1"
+    PATH="/login/login.xhtml" TARGET="rules:#login#login.xhtml"
+    TITLE="login" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#common#success.xhtml"
+  PATH="/common/success.xhtml" SHAPE="752,385,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#login#usersignup.xhtml"
+  PATH="/login/usersignup.xhtml" SHAPE="512,256,50,25" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#login#usersignup.xhtml:0" NAME="item"
+   PATH="/login/usersignup.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#common#success.xhtml"
+    NAME="output" PATH="/common/success.xhtml"
+    TARGET="rules:#common#success.xhtml" TITLE="success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+  <PROCESS-ITEM ID="rules:#login#usersignup.xhtml:1" NAME="item1"
+   PATH="/login/usersignup.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#login#login.xhtml" NAME="output"
+    PATH="/login/login.xhtml" TARGET="rules:#login#login.xhtml"
+    TITLE="success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#login#login.xhtml" PATH="/login/login.xhtml"
+  SHAPE="240,689,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#login#login.xhtml:0" NAME="item"
+   PATH="/login/login.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="remmiterInfo::#registration#remmiterreg.xhtml" NAME="output"
+    PATH="/registration/remmiterreg.xhtml"
+    TARGET="rules:#registration#remmiterreg.xhtml" TITLE="remmiterInfo" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+  <PROCESS-ITEM ID="rules:#login#login.xhtml:1" NAME="item1"
+   PATH="/login/login.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="branchHome::#registration#branchhome.xhtml"
+    NAME="output" PATH="/registration/branchhome.xhtml"
+    TARGET="rules:#registration#branchhome.xhtml" TITLE="branchHome" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="remmiterInfo::#registration#remmiterreg.xhtml" NAME="output1"
+    PATH="/registration/remmiterreg.xhtml"
+    TARGET="rules:#registration#remmiterreg.xhtml" TITLE="remmiterInfo" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+  <PROCESS-ITEM ID="rules:#login#login.xhtml:2" NAME="item2"
+   PATH="/login/login.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#login#usersignup.xhtml"
+    NAME="output" PATH="/login/usersignup.xhtml"
+    TARGET="rules:#login#usersignup.xhtml" TITLE="success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#registration#remmiterreg.xhtml"
+  PATH="/registration/remmiterreg.xhtml" SHAPE="560,753,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#registration#remmiterreg.xhtml:0" NAME="item"
+   PATH="/registration/remmiterreg.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#common#success.xhtml"
+    NAME="output" PATH="/common/success.xhtml"
+    TARGET="rules:#common#success.xhtml" TITLE="success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+  <PROCESS-ITEM ID="rules:#registration#remmiterreg.xhtml:1"
+   NAME="item1" PATH="/registration/remmiterreg.xhtml" model-entity="JSFProcessItem"/>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#registration#corporateregistration.xhtml"
+  PATH="/registration/corporateregistration.xhtml" SHAPE="560,497,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#registration#corporateregistration.xhtml:0"
+   NAME="item" PATH="/registration/corporateregistration.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#common#success.xhtml"
+    NAME="output" PATH="/common/success.xhtml"
+    TARGET="rules:#common#success.xhtml" TITLE="success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+  <PROCESS-ITEM ID="rules:#registration#corporateregistration.xhtml:1"
+   NAME="item1" PATH="/registration/corporateregistration.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#common#success.xhtml"
+    NAME="output" PATH="/common/success.xhtml"
+    TARGET="rules:#common#success.xhtml" TITLE="success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="cancel::#registration#branchhome.xhtml"
+    NAME="output1" PATH="/registration/branchhome.xhtml"
+    TARGET="rules:#registration#branchhome.xhtml" TITLE="cancel" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#search#searchcustomer.xhtml"
+  PATH="/search/searchcustomer.xhtml" SHAPE="32,497,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#search#searchcustomer.xhtml:0" NAME="item"
+   PATH="/search/searchcustomer.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="branchPage::#registration#custmanualbranchreg.xhtml"
+    NAME="output" PATH="/registration/custmanualbranchreg.xhtml"
+    TARGET="rules:#registration#custmanualbranchreg.xhtml"
+    TITLE="branchPage" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:" SHAPE="32,753,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::0" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="customerinfoinbranch.xhtml::#registration#customerinfoinbranch.xhtml"
+    NAME="output" PATH="/registration/customerinfoinbranch.xhtml"
+    TARGET="rules:#registration#customerinfoinbranch.xhtml"
+    TITLE="customerinfoinbranch.xhtml" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#registration#branchhome.xhtml"
+  PATH="/registration/branchhome.xhtml" SHAPE="304,145,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules::1" SHAPE="32,1025,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::1" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="login::#login#login.xhtml" NAME="output"
+    PATH="/login/login.xhtml" TARGET="rules:#login#login.xhtml"
+    TITLE="login" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#common#header.xhtml"
+  PATH="/common/header.xhtml" SHAPE="32,1025,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#common#header.xhtml:0" NAME="item"
+   PATH="/common/header.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="login::#login#login.xhtml" NAME="output"
+    PATH="/login/login.xhtml" TARGET="rules:#login#login.xhtml"
+    TITLE="login" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+</PROCESS>

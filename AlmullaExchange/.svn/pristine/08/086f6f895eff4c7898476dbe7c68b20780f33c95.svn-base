@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</h:head>
+
+<h:body>
+	<f:view>
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<ui:include src="#{facesBean.menu}"></ui:include>
+		<h:panelGroup layout="block" class="container">
+			<h:panelGroup layout="block" class="main_div">
+				<h1>
+					<h:outputText value="#{msg['lbl.bankaccountdetails']}" />
+				</h1>
+				<h:panelGroup layout="block" class="table_bg">
+					<h:form style="padding:0!important;">
+						<p:panel id="mainPanel"	style="border: 0px; padding:0px!important;">
+							<p:panel style="padding:10px!important;">
+
+								<p:panel id="accountdetailsPanel"
+									style="padding:0px!important; border:none !important;"
+									rendered="#{bankaccountdetails.accountdetail}">
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText
+												value="#{msg['lbl.country']} #{bankaccountdetails.viewBehaviorBean('Country','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:message for="country" display="text" />
+											<p:selectOneMenu id="country"
+												value="#{bankaccountdetails.countryId}" filter="true"
+												filterMatchMode="startsWith"
+												required="#{bankaccountdetails.viewBehaviorBean('Country','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Country','ENABLE')}"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.country']}">
+												<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+												<f:selectItems value="#{bankaccountdetails.countryNameList}"
+													var="c" itemLabel="#{c.countryName}"
+													itemValue="#{c.countryMasterId}" />
+                          <p:ajax event="change" update="bank" listener="#{bankaccountdetails.popBank}"/>  
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText
+												value="#{msg['lbl.bank']} #{bankaccountdetails.viewBehaviorBean('Banks','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:message for="bank" display="text" />
+											<p:selectOneMenu id="bank"
+												value="#{bankaccountdetails.bankId}"
+												filterMatchMode="startsWith" filter="true"
+												required="#{bankaccountdetails.viewBehaviorBean('Banks','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Banks','ENABLE')}"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.bank']}">
+												<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+												<f:selectItems value="#{bankaccountdetails.bankMasterList}"
+													var="c" itemLabel="#{c.bankFullName}"
+													itemValue="#{c.bankId}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText
+												value="#{msg['lbl.accountno']} #{bankaccountdetails.viewBehaviorBean('Account No','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="accountno"
+												value="#{bankaccountdetails.accountNo}"
+												required="#{bankaccountdetails.viewBehaviorBean('Account No','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Account No','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('Account No','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.accountno']}"
+												validator="RegularExpressionValidation">
+
+												<f:attribute name="regexValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Account No','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Account No','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Account No','MAX_VALUE')}" />
+												<p:ajax update="accountMsg" event="blur" />
+												<p:message id="accountMsg" for="accountno" display="text" />
+												<!-- <p:ajax event="blur" listener="#{bankaccountdetails.fetchBankAccountDetails}"
+											update="mainPanel" /> -->
+											</p:inputText>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText
+												value="#{msg['lbl.accounttype']} #{bankaccountdetails.viewBehaviorBean('Account Type','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:message for="accounttype" display="text" />
+											<p:selectOneMenu id="accounttype"
+												value="#{bankaccountdetails.accountType}"
+												required="#{bankaccountdetails.viewBehaviorBean('Account Type','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Account Type','ENABLE')}"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.accounttype']}">
+												<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+												<f:selectItem itemLabel="Bussness Account" itemValue="1" />
+												<f:selectItem itemLabel="Shariah Account" itemValue="2" />
+												<f:selectItem itemLabel="Money Market Accounts" itemValue="3" />
+												<f:selectItem itemLabel="Foreign Currency Accounts" itemValue="4" />
+											</p:selectOneMenu>
+
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText
+												value="#{msg['lbl.currency']} #{bankaccountdetails.viewBehaviorBean('Currency','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:message for="currency" display="text" />
+											<p:selectOneMenu id="currency"
+												value="#{bankaccountdetails.currency}"
+												required="#{bankaccountdetails.viewBehaviorBean('Currency','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Currency','ENABLE')}"
+												requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.currency']}">
+												<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+												<f:selectItem itemLabel="US Dollar" itemValue="1" />
+												<f:selectItem itemLabel="Kuwaiti Dinar" itemValue="2" />
+												<f:selectItem itemLabel="Indian Rupees" itemValue="3" />
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText
+												value="#{msg['lbl.minbalance']} #{bankaccountdetails.viewBehaviorBean('Minimum Balance','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="minbal"
+												value="#{bankaccountdetails.minBalance}"
+												required="#{bankaccountdetails.viewBehaviorBean('Minimum Balance','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Minimum Balance','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('Minimum Balance','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.minbalance']}"
+												validator="RegularExpressionValidation">
+
+												<f:attribute name="regexValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Minimum Balance','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Minimum Balance','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Minimum Balance','MAX_VALUE')}" />
+												<p:ajax update="minbalMsg" event="blur" />
+												<p:message id="minbalMsg" for="minbal" display="text" />
+											</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText
+												value="#{msg['lbl.odlimit']} #{bankaccountdetails.viewBehaviorBean('OD Limit','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="odlimit"
+												value="#{bankaccountdetails.odLimit}"
+												required="#{bankaccountdetails.viewBehaviorBean('OD Limit','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('OD Limit','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('OD Limit','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.odlimit']}"
+												validator="RegularExpressionValidation">
+
+												<f:attribute name="regexValue"
+													value="#{bankaccountdetails.viewBehaviorBean('OD Limit','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{bankaccountdetails.viewBehaviorBean('OD Limit','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{bankaccountdetails.viewBehaviorBean('OD Limit','MAX_VALUE')}" />
+												<p:ajax update="odlimitMsg" event="blur" />
+												<p:message id="odlimitMsg" for="odlimit" display="text" />
+											</p:inputText>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText
+												value="#{msg['lbl.glno']} #{bankaccountdetails.viewBehaviorBean('GL No','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="glno" value="#{bankaccountdetails.glNo}"
+												required="#{bankaccountdetails.viewBehaviorBean('GL No','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('GL No','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('GL No','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.glno']}"
+												validator="RegularExpressionValidation">
+
+												<f:attribute name="regexValue"
+													value="#{bankaccountdetails.viewBehaviorBean('GL No','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{bankaccountdetails.viewBehaviorBean('GL No','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{bankaccountdetails.viewBehaviorBean('GL No','MAX_VALUE')}" />
+												<p:ajax update="glnoMsg" event="blur" />
+												<p:message id="glnoMsg" for="glno" display="text" />
+											</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText
+												value="#{msg['lbl.fundglno']} #{bankaccountdetails.viewBehaviorBean('Fund GL No','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="fundgl"
+												value="#{bankaccountdetails.fundGlNo}"
+												required="#{bankaccountdetails.viewBehaviorBean('Fund GL No','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Fund GL No','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('Fund GL No','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.fundglno']}"
+												validator="RegularExpressionValidation">
+
+												<f:attribute name="regexValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Fund GL No','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Fund GL No','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Fund GL No','MAX_VALUE')}" />
+												<p:ajax update="fundglMsg" event="blur" />
+												<p:message id="fundglMsg" for="fundgl" display="text" />
+											</p:inputText>
+										</div>
+										<div class="ui-block-c" style="padding-top: 1.8% !important;">
+											<h:outputText
+												value="#{msg['lbl.intminbalance']} #{bankaccountdetails.viewBehaviorBean('Internal Minimum Balance','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="intminbal"
+												value="#{bankaccountdetails.internalMinBalance}"
+												required="#{bankaccountdetails.viewBehaviorBean('Internal Minimum Balance','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Internal Minimum Balance','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('Internal Minimum Balance','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.intminbalance']}"
+												validator="RegularExpressionValidation">
+
+												<f:attribute name="regexValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Internal Minimum Balance','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Internal Minimum Balance','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Internal Minimum Balance','MAX_VALUE')}" />
+												<p:ajax update="intminbalMsg" event="blur" />
+												<p:message id="intminbalMsg" for="intminbal" display="text" />
+											</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+									<h:panelGroup layout="block" styleClass="button_align">
+
+										<p:commandButton value="#{msg['lbl.next']}"
+											style="float:right;"
+											action="#{bankaccountdetails.nextAccountDetails}"
+											update="mainPanel">
+										</p:commandButton>
+
+										<div class="clearfix"></div>
+									</h:panelGroup>
+								</p:panel>
+
+
+								<div class="clearfix"></div>
+
+								<p:panel id="contperPanel"	style="padding:0px!important; border:none !important;"	rendered="#{bankaccountdetails.contactdetail}">
+<p:panel style="padding:0px!important; border:none !important;"	>
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText
+												value="#{msg['lbl.contperson']} #{bankaccountdetails.viewBehaviorBean('Contact Person','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="contper"
+												value="#{bankaccountdetails.contactPerson}"
+												required="#{bankaccountdetails.viewBehaviorBean('Contact Person','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Contact Person','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('Contact Person','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.contperson']}"
+												validator="RegularExpressionValidation">
+
+												<f:attribute name="regexValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Contact Person','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Contact Person','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Contact Person','MAX_VALUE')}" />
+
+												<p:ajax update="contperMsg" event="blur" />
+												<p:message id="contperMsg" for="contper" display="text" />
+											</p:inputText>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText
+												value="#{msg['lbl.department']} #{bankaccountdetails.viewBehaviorBean('Department','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="dep"
+												value="#{bankaccountdetails.department}"
+												required="#{bankaccountdetails.viewBehaviorBean('Department','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Department','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('Department','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.department']}"
+												validator="RegularExpressionValidation">
+
+												<f:attribute name="regexValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Department','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Department','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Department','MAX_VALUE')}" />
+
+												<p:ajax update="depMsg" event="blur" />
+												<p:message id="depMsg" for="dep" display="text" />
+											</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-a ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText
+												value="#{msg['lbl.designation']} #{bankaccountdetails.viewBehaviorBean('Designation','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="design"
+												value="#{bankaccountdetails.designation}"
+												required="#{bankaccountdetails.viewBehaviorBean('Designation','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Designation','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('Designation','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.designation']}"
+												validator="RegularExpressionValidation">
+
+												<f:attribute name="regexValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Designation','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Designation','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Designation','MAX_VALUE')}" />
+
+												<p:ajax update="desMsg" event="blur" />
+												<p:message id="desMsg" for="design" display="text" />
+											</p:inputText>
+										</div>
+
+										
+
+									</div>
+									<div class="clearfix"></div>
+									</p:panel>
+									
+									<p:panel id="contperlocalPanel"	style="padding:0px!important; border:none !important;" rendered="#{bankaccountdetails.contactdetaillocal}"> 
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.contpersonl']} #{bankaccountdetails.viewBehaviorBean('Contact Person Local','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="contperl"
+												value="#{bankaccountdetails.contPersonLocal}" 
+												required="#{bankaccountdetails.viewBehaviorBean('Contact Person Local','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Contact Person Local','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('Contact Person Local','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.contperson']}"
+												validator="RegularExpressionValidation">
+
+												<f:attribute name="regexValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Contact Person Local','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Contact Person Local','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Contact Person Local','MAX_VALUE')}" />
+
+												<p:ajax update="contperlMsg" event="blur" />
+												<p:message id="contperlMsg" for="contperl" display="text" />
+											</p:inputText>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.departmentl']} #{bankaccountdetails.viewBehaviorBean('Department Local','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="depart"
+												value="#{bankaccountdetails.departmentLocal}" 
+												required="#{bankaccountdetails.viewBehaviorBean('Department Local','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Department Local','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('Department Local','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.department']}"
+												validator="RegularExpressionValidation">
+
+												<f:attribute name="regexValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Department Local','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Department Local','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Department Local','MAX_VALUE')}" />
+
+												<p:ajax update="deplMsg" event="blur" />
+												<p:message id="deplMsg" for="depart" display="text" />
+											</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-a ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.designationl']} #{bankaccountdetails.viewBehaviorBean('Designation Local','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="designl"
+												value="#{bankaccountdetails.designationLocal}" 
+												required="#{bankaccountdetails.viewBehaviorBean('Designation Local','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Designation Local','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('Designation Local','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.designation']}"
+												validator="RegularExpressionValidation">
+
+												<f:attribute name="regexValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Designation Local','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Designation Local','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Designation Local','MAX_VALUE')}" />
+
+												<p:ajax update="deslMsg" event="blur" />
+												<p:message id="deslMsg" for="designl" display="text" />
+											</p:inputText>
+										</div>
+
+									</div>
+									<div class="clearfix"></div>
+
+
+
+
+
+									
+									<div class="clearfix"></div>
+								</p:panel>
+									
+									<p:panel style="padding:0px!important; border:none !important;"	>									
+									
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText
+												value="#{msg['lbl.mobile']} #{bankaccountdetails.viewBehaviorBean('Mobile No','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										<p:inputText id="mob" value="#{bankaccountdetails.mobile}"
+												required="#{bankaccountdetails.viewBehaviorBean('Mobile No','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Mobile No','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('Mobile No','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.mobile']}"
+												validatorMessage="#{msg['lbl.validminmobile']}"
+												validator="RegularExpressionValidation">
+
+												<f:attribute name="regexValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Mobile No','PATTERN')}" />
+												<f:attribute name="minValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Mobile No','MIN_VALUE')}" />
+												<f:attribute name="maxValue"
+													value="#{bankaccountdetails.viewBehaviorBean('Mobile No','MAX_VALUE')}" />
+
+												<f:validateRegex
+													pattern="#{bankaccountdetails.viewBehaviorBean('Mobile No','PATTERN')}" />
+
+												<p:ajax update="mobMsg" event="blur" />
+												<p:message id="mobMsg" for="mob" display="text" />
+											</p:inputText>
+										
+											
+										</div>
+
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.telephone']} #{bankaccountdetails.viewBehaviorBean('Telephone Number','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+										<p:inputText id="tel" value="#{bankaccountdetails.telephone}" 
+										required="#{bankaccountdetails.viewBehaviorBean('Telephone Number','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Telephone Number','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('Telephone Number','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.telephone']}"
+												validator="RegularExpressionValidation">
+											
+											<f:attribute name="regexValue" value="#{bankaccountdetails.viewBehaviorBean('Telephone Number','PATTERN')}"/>  
+								    		<f:attribute name="minValue" value="#{bankaccountdetails.viewBehaviorBean('Telephone Number','MIN_VALUE')}"/>  
+									    	<f:attribute name="maxValue" value="#{bankaccountdetails.viewBehaviorBean('Telephone Number','MAX_VALUE')}"/>	
+									    	
+									    	<p:ajax update="telephoneMsg" event="blur" />
+									    	<p:message id="telephoneMsg" for="tel" display="text"/>
+								    	</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.fax']} #{bankaccountdetails.viewBehaviorBean('Fax','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="fax" value="#{bankaccountdetails.fax}"
+									required="#{bankaccountdetails.viewBehaviorBean('Fax','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Fax','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('Fax','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.fax']}"
+												validator="RegularExpressionValidation">
+											
+											<f:attribute name="regexValue" value="#{bankaccountdetails.viewBehaviorBean('Fax','PATTERN')}"/>  
+								    		<f:attribute name="minValue" value="#{bankaccountdetails.viewBehaviorBean('Fax','MIN_VALUE')}"/>  
+									    	<f:attribute name="maxValue" value="#{bankaccountdetails.viewBehaviorBean('Fax','MAX_VALUE')}"/>	
+									    	
+									    	<p:ajax update="faxMsg" event="blur" />
+									    	<p:message id="faxMsg" for="fax" display="text"/>
+								    	</p:inputText>
+										</div>
+											<div class="ui-block-c">
+											<h:outputText
+												value="#{msg['lbl.email']} #{bankaccountdetails.viewBehaviorBean('Email','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="email" value="#{bankaccountdetails.email}"
+												required="#{bankaccountdetails.viewBehaviorBean('Email','REQUIRED')}"
+												disabled="#{bankaccountdetails.viewBehaviorBean('Email','ENABLE')}"
+												maxlength="#{bankaccountdetails.viewBehaviorBean('Email','MAX_VALUE')}"
+												requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.email']}"
+												validatorMessage="#{msg['lbl.validlemailformat']}">
+
+												<f:validateRegex
+													pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+
+												<p:ajax update="emailMsg" event="blur" />
+												<p:message id="emailMsg" for="email" display="text" />
+											</p:inputText>										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+
+									</div>
+									<div class="clearfix"></div>
+									<h:panelGroup layout="block" styleClass="button_align">
+
+										<p:commandButton value="#{msg['lbl.submit']}"
+											style="float:right;" update="mainPanel" process="mainPanel"
+											action="#{bankaccountdetails.save}">
+										</p:commandButton>
+										<p:commandButton value="#{msg['lbl.cancel']}"
+											action="#{bankaccountdetails.cancel}" immediate="true"
+											ajax="false" style="float:right; margin-right:10px; ">
+										</p:commandButton>
+										<p:commandButton value="#{msg['lbl.reset']}"
+											action="#{bankaccountdetails.reset}" update="mainPanel"
+											process="@this" style="float:right; margin-right:10px; ">
+											<p:resetInput target="@form" />
+										</p:commandButton>
+										<p:commandButton value="#{msg['lbl.back']}" 
+											action="#{bankaccountdetails.backAccountDetails}" update="mainPanel" process="@this"
+											style="float:right; margin-right:10px;"></p:commandButton>
+										<div class="clearfix"></div>
+									</h:panelGroup>
+									</p:panel>
+								</p:panel>
+
+								
+							</p:panel>
+
+
+
+
+						</p:panel>
+
+
+					</h:form>
+
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+		</h:panelGroup>
+
+
+		<ui:include src="#{facesBean.footer}"></ui:include>
+
+	</f:view>
+</h:body>
+</html>

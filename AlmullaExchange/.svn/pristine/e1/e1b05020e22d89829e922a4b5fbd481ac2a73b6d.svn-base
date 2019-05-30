@@ -1,0 +1,197 @@
+package com.amg.exchange.model;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+
+/*******************************************************************************************************************
+
+		 File		: BankAccount.java
+ 
+		 Project	: AlmullaExchange
+
+		 Package	: com.amg.exchange.model
+ 
+		 Created	:	
+ 						Date	: 29-May-2014 4:21:42 pm
+		 				By		: Justin Vincent
+ 						Revision:
+ 
+ 		 Last Change:
+ 						Date	: 29-May-2014 4:21:42 pm
+ 						By		: Justin Vincent
+		 				Revision:
+
+		 Description: TODO 
+
+********************************************************************************************************************/
+@SuppressWarnings("serial")
+@Entity
+@Table(name = "EX_BANK_ACCOUNT")
+public class BankAccount implements java.io.Serializable {
+
+	private BigDecimal bankAccountId;
+	private BankBranch bankBranch;
+	private BankMaster bankMaster;
+	private CompanyMaster fsCompanyMaster;
+	private CountryMaster fsCountryMaster;
+	private String currencyCode;
+	private String debitAcct;
+	private String recordStatus;
+	private Date createDate;
+	private Date updateDate;
+	private String creator;
+	private String modifier;
+
+	public BankAccount() {
+	}
+
+	public BankAccount(BigDecimal bankAccountId) {
+		this.bankAccountId = bankAccountId;
+	}
+
+	public BankAccount(BigDecimal bankAccountId, BankBranch bankBranch,
+			BankMaster bankMaster, CompanyMaster fsCompanyMaster,
+			CountryMaster fsCountryMaster, String currencyCode,
+			String debitAcct, String recordStatus, Date createDate,
+			Date updateDate, String creator, String modifier) {
+		this.bankAccountId = bankAccountId;
+		this.bankBranch = bankBranch;
+		this.bankMaster = bankMaster;
+		this.fsCompanyMaster = fsCompanyMaster;
+		this.fsCountryMaster = fsCountryMaster;
+		this.currencyCode = currencyCode;
+		this.debitAcct = debitAcct;
+		this.recordStatus = recordStatus;
+		this.createDate = createDate;
+		this.updateDate = updateDate;
+		this.creator = creator;
+		this.modifier = modifier;
+	}
+
+	@Id
+	@TableGenerator(name = "bankaccountid", table = "ex_bankaccountidpk", pkColumnName = "bankaccountidkey", pkColumnValue = "bankaccountidvalue", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "bankaccountid")
+	@Column(name = "BANK_ACCOUNT_ID", unique = true, nullable = false, precision = 22, scale = 0)
+	public BigDecimal getBankAccountId() {
+		return this.bankAccountId;
+	}
+
+	public void setBankAccountId(BigDecimal bankAccountId) {
+		this.bankAccountId = bankAccountId;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "BANK_BRANCH_ID")
+	public BankBranch getExBankBranch() {
+		return this.bankBranch;
+	}
+
+	public void setExBankBranch(BankBranch bankBranch) {
+		this.bankBranch = bankBranch;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "BANK_ID")
+	public BankMaster getExBankMaster() {
+		return this.bankMaster;
+	}
+
+	public void setExBankMaster(BankMaster bankMaster) {
+		this.bankMaster = bankMaster;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "COMPANY_ID")
+	public CompanyMaster getFsCompanyMaster() {
+		return this.fsCompanyMaster;
+	}
+
+	public void setFsCompanyMaster(CompanyMaster fsCompanyMaster) {
+		this.fsCompanyMaster = fsCompanyMaster;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "COUNTRY_ID")
+	public CountryMaster getFsCountryMaster() {
+		return this.fsCountryMaster;
+	}
+
+	public void setFsCountryMaster(CountryMaster fsCountryMaster) {
+		this.fsCountryMaster = fsCountryMaster;
+	}
+
+	@Column(name = "CURRENCY_CODE", length = 3)
+	public String getCurrencyCode() {
+		return this.currencyCode;
+	}
+
+	public void setCurrencyCode(String currencyCode) {
+		this.currencyCode = currencyCode;
+	}
+
+	@Column(name = "DEBIT_ACCT", length = 60)
+	public String getDebitAcct() {
+		return this.debitAcct;
+	}
+
+	public void setDebitAcct(String debitAcct) {
+		this.debitAcct = debitAcct;
+	}
+
+	@Column(name = "RECORD_STATUS", length = 1)
+	public String getRecordStatus() {
+		return this.recordStatus;
+	}
+
+	public void setRecordStatus(String recordStatus) {
+		this.recordStatus = recordStatus;
+	}
+
+	@Column(name = "CREATE_DATE")
+	public Date getCreateDate() {
+		return this.createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	@Column(name = "UPDATE_DATE")
+	public Date getUpdateDate() {
+		return this.updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	@Column(name = "CREATOR", length = 15)
+	public String getCreator() {
+		return this.creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
+	}
+
+	@Column(name = "MODIFIER", length = 15)
+	public String getModifier() {
+		return this.modifier;
+	}
+
+	public void setModifier(String modifier) {
+		this.modifier = modifier;
+	}
+
+}

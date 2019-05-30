@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Al Mulla Exchange - Online Remittance Systems</title>
+	<link rel="icon" type="../image/png" href="../images/favicon.png" />
+	<link href="../css/style1.css" rel="stylesheet" type="text/css" />
+	<link href="../css/jquery-mobile.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/jquery.slidepanel.js"></script>
+<link href="../css/jquery.slidepanel.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+      $(document).ready(function(){
+          $('[data-slidepanel]').slidepanel({
+              orientation: 'left',
+              mode: 'push'
+          });
+      });
+</script>
+
+</h:head>
+<h:body dir="#{facesBean.direction}">
+	<h:form>
+<h:panelGroup layout="block" class="menu_icon">
+					<a href="../common/left_menu.xhtml" data-slidepanel="panel"><h:graphicImage url="../images/menu_icon.png" width="20" height="60" /></a>
+				</h:panelGroup>
+		<h:panelGroup layout="block" class="header_container">
+			<h:panelGroup layout="block" class="header">
+			
+				<h:panelGroup layout="block" class="logo">
+					<h:graphicImage url="../images/logo1.jpg" width="311" height="87" />
+				</h:panelGroup>
+
+				<h:panelGroup  layout="block"  class="top_nav"><h:outputLabel value="#{msg['lbl.header']}" />
+					<h:panelGroup class="clearfix"></h:panelGroup>
+				</h:panelGroup>
+				
+
+				<h:panelGroup   layout="block"  class="top_nav_lang">
+				
+					<p:commandLink id="english"
+						actionListener="#{facesBean.getDirectionEnglish}"
+						
+						ajax="false">
+						<h:outputText value="English" />
+					</p:commandLink><p:spacer width="5px"/>
+					<p:commandLink>
+						<h:outputText value="/" />
+					</p:commandLink><p:spacer width="5px"/>
+
+					<p:commandLink id="arabic"
+						actionListener="#{facesBean.getDirectionArabic}"
+						 ajax="false">
+						<h:outputText value="#{msg['lbl.arabic']}" />
+					</p:commandLink>
+					<h:panelGroup class="clearfix"></h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+
+
+
+			</h:panelGroup>
+			<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+		</h:panelGroup>
+		<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+	
+	</h:form>
+
+</h:body>
+</html>

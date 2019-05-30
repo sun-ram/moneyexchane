@@ -1,0 +1,1120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link href="css/style1.css" rel="stylesheet" type="text/css" />
+</h:head>
+
+
+<h:body dir="#{facesBean.direction}">
+	<f:view locale="#{facesBean.locale}">
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<ui:include src="#{facesBean.menu}"></ui:include>
+		<h:panelGroup layout="block" class="container">
+			<h:panelGroup layout="block" class="main_div">
+
+				<h:panelGrid columns="1" width="100%" styleClass="heading1">
+					<h:outputText value="#{msg['lbl.corporateregistration']}"
+						style="text-align:center !important; display:block;" />
+				</h:panelGrid>
+				<h:panelGroup layout="block" class="table_bg">
+					<p:panel id="mainPanel" style="padding:10px!important;">
+
+						<h:form id="corporateregistrationfrm" enctype="multipart/form-data">
+							<p:panel id="mainPanel"
+								rendered="#{corpregisterBean.coAMLCommon}"
+								style="align: left; width:820px;border:none;">
+							
+								<p:panelGrid  cellpadding="0" cellspacing="15"
+									style="text-align:left;width:100%">
+									<p:row>
+									<p:column>
+									<h:outputText
+										value="#{msg['lbl.crnumber']} #{corpregisterBean.viewBehaviorBean('Cr Number','MANDATORY')}" />
+                                    </p:column>
+                                    <p:column>
+									<p:inputText id="cr" value="#{corpregisterBean.crno}"
+										readonly="#{corpregisterBean.readOnly}"
+										required="#{corpregisterBean.viewBehaviorBean('Cr Number','REQUIRED')}"
+										maxlength="#{corpregisterBean.viewBehaviorBean('Cr Number','MAX_VALUE')}"
+										minlength="#{corpregisterBean.viewBehaviorBean('Cr Number','MIN_VALUE')}"
+										validatorMessage="#{msg['lbl.validcrno']}" text-align="left"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.crnumber']}">
+										<p:ajax event="blur" listener="#{corpregisterBean.fetchData}"
+											update="mainPanel,mainPanel1" />
+										<p:message for="cr" display="text" />
+									</p:inputText>
+									</p:column>
+									<p:column></p:column>
+									<p:column></p:column>
+                                    </p:row>
+									<p:row>
+                                     <p:column>
+                                        <h:outputText
+										value="#{msg['lbl.companyname']} #{corpregisterBean.viewBehaviorBean('Company Name','MANDATORY')}" />
+                                     </p:column>
+									<p:column>
+									     <p:inputText id="name" value="#{corpregisterBean.compName}"
+										readonly="#{corpregisterBean.readOnly}"
+										required="#{corpregisterBean.viewBehaviorBean('Company Name','REQUIRED')}"
+										validatorMessage="#{msg['lbl.validcompanyname']}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.companyname']}"
+										maxlength="#{corpregisterBean.viewBehaviorBean('Company Name','MAX_VALUE')}"
+										minlength="#{corpregisterBean.viewBehaviorBean('Company Name','MIN_VALUE')}">
+										<f:validateRegex
+											pattern="#{corpregisterBean.viewBehaviorBean('Company Name','PATTERN')}" />
+										<p:message for="name" display="text" />
+								    	</p:inputText>
+									</p:column>
+									<p:column>
+									    <h:outputText
+										value="#{msg['lbl.companynamel']} #{corpregisterBean.viewBehaviorBean('Company Name(L)','MANDATORY')}" />
+									
+									</p:column>
+									<p:column>
+									   <p:inputText id="cnamel" value="#{corpregisterBean.compNameL}"
+										readonly="#{corpregisterBean.readOnly}"
+										required="#{corpregisterBean.viewBehaviorBean('Company Name(L)','REQUIRED')}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.companynamel']}"
+										maxlength="#{corpregisterBean.viewBehaviorBean('Company Name(L)','MAX_VALUE')}"
+										minlength="#{corpregisterBean.viewBehaviorBean('Company Name(L)','MIN_VALUE')}">
+										<p:message for="cnamel" display="text" />
+									</p:inputText>
+									</p:column>
+									</p:row>
+									<p:row>
+									 <p:column>
+									     <h:outputText
+										value="#{msg['lbl.companyaregdate']} #{corpregisterBean.viewBehaviorBean('Company Registration Date','MANDATORY')}" />
+									 </p:column>
+									 <p:column>
+									     <p:calendar id="regdate"
+										value="#{corpregisterBean.compRegDate}" autocomplete="off"
+										readonlyInput="true" pattern="dd/MM/yyyy" navigator="true"
+										required="#{corpregisterBean.viewBehaviorBean('Company Registration Date','REQUIRED')}"
+										requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.companyaregdate']}"
+										maxdate="#{corpregisterBean.dateAdderForReg}"
+										disabled="#{corpregisterBean.disableDate}"
+										readonly="#{corpregisterBean.readOnly}">
+
+										<p:message for="regdate" display="text" />
+									</p:calendar>
+									 </p:column>
+									<p:column>
+									   	
+									<h:outputText
+										value="#{msg['lbl.email']} #{corpregisterBean.viewBehaviorBean('Email','MANDATORY')}" />
+									</p:column>
+									<p:column>
+									    <p:inputText id="email" value="#{corpregisterBean.email}"
+										required="#{corpregisterBean.viewBehaviorBean('Email','REQUIRED')}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.email']}"
+										validatorMessage="#{msg['lbl.validlemailformat']}"
+										readonly="#{corpregisterBean.readOnly}">
+										<f:validateRegex
+											pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+										<p:message for="email" display="text" />
+								    	</p:inputText>
+									</p:column>
+									</p:row>
+									<p:row>
+									<p:column>
+									<h:outputText
+										value="#{msg['lbl.location']} #{corpregisterBean.viewBehaviorBean('Location','MANDATORY')}" />
+									</p:column>
+								
+									<p:column>
+										<p:message for="location" display="text"></p:message>
+									<p:selectOneMenu value="#{corpregisterBean.location}" id="location"
+										required="#{corpregisterBean.viewBehaviorBean('Location','REQUIRED')}"
+										style="width:175px;color:black" filter="true" requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.location']}"
+										filterMatchMode="startsWith">
+										<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+										<f:selectItems value="#{corpregisterBean.countryListFromDB}"
+											var="c" itemLabel="#{c.countryName}"
+											itemValue="#{c.countryId}"
+											readonly="#{corpregisterBean.viewBehaviorBean('Location','READ_ONLY')}"
+											disabled="#{corpregisterBean.viewBehaviorBean('Location','ENABLE')}"/>
+									</p:selectOneMenu>
+									</p:column>
+									<p:column>
+									<h:outputText
+										value="#{msg['lbl.amlstatus']} #{corpregisterBean.viewBehaviorBean('AML Status','MANDATORY')}" />
+									</p:column>
+									<p:column>
+									<p:inputText id="amlStatus"
+										value="#{corpregisterBean.AMLStatus}"
+										disabled="true">
+									</p:inputText>
+									</p:column>
+									</p:row>
+									<p:row>
+									<p:column>
+									</p:column>
+									<p:column>
+									</p:column>
+									<p:column>
+									</p:column>
+									<p:column>
+									   <p:commandButton value="#{msg['lbl.validate']}"
+										rendered="#{corpregisterBean.coValdtBtn}"
+										actionListener="#{corpregisterBean.checkCompanyAMLStatus}"
+										process="mainPanel" update="amlStatus,mainPanel1" 
+										id="ajax" ajax="false"></p:commandButton>
+									</p:column>
+									
+                                    </p:row>
+                                    <p:row>
+                                    <p:column>
+									<p:ajaxStatus id="corporatestatuspanel">
+										<f:facet name="start">
+											<h:graphicImage value="../images/ajax_loader.gif" />
+										</f:facet>
+										<f:facet name="start">
+											<h:graphicImage value="" />
+										</f:facet>
+									</p:ajaxStatus>
+									</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:panel>
+							
+							
+							
+							<p:panel id="mainPanel1"
+								rendered="#{corpregisterBean.coAMLCommon}"
+								style="align: left; width:820px;border:none;">
+								
+								<h:panelGrid columns="1"
+										rendered="#{corpregisterBean.coAMLPass}" styleClass="heading2">
+										<h:outputText value="#{msg['lbl.Objectives']}"
+											rendered="#{corpregisterBean.coAMLPass}" />
+									</h:panelGrid>
+								<p:panel id="panel4" rendered="#{corpregisterBean.coAMLPass}"
+									style="align: left; width:820px;  border:none; ">
+
+									<p:panelGrid cellpadding="0" cellspacing="15"
+										rendered="#{corpregisterBean.coAMLPass}"
+										style="text-align:left;width: 91%;">
+										<p:row>
+											<p:column>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.validselectt']} #{msg['lbl.primaryobjective']}"
+													rendered="#{corpregisterBean.primayObjVisibility}"
+													style="color:red;" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column style="width:192px;">
+												<h:outputText
+													value="#{msg['lbl.primaryobjective']} #{corpregisterBean.viewBehaviorBean('Primary Objective','MANDATORY')}"
+													rendered="#{corpregisterBean.coAMLPass}" />
+											</p:column>
+											<p:column>
+											    <p:message for="prmobj" display="text" />
+												<p:selectOneMenu value="#{corpregisterBean.primaryObjId}"  id="prmobj"
+													rendered="#{corpregisterBean.coAMLPass}"
+													required="#{corpregisterBean.viewBehaviorBean('Primary Objective','REQUIRED')}"
+													requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.primaryobjective']}" 
+													style="width: 300px; height: 25px; margin-top:15px;text-align:left"
+													readonly="#{corpregisterBean.viewBehaviorBean('Primary Objective','READ_ONLY')}"
+													disabled="#{corpregisterBean.viewBehaviorBean('Primary Objective','ENABLE')}">
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{corpregisterBean.objectivesFromDB}"
+														var="o" itemLabel="#{o.objectiveDesc}"
+														itemValue="#{o.objectiveId}" />
+														
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+
+
+									</p:panelGrid>
+
+									<p:panelGrid cellpadding="0" cellspacing="15"
+										rendered="#{corpregisterBean.coAMLPass}"
+										style="text-align:left;width: 100%;">
+										<p:row>
+											<p:column>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.validselectt']} #{msg['lbl.secondaryobjective']}"
+													rendered="#{corpregisterBean.secondaryObjVisibility}"
+													style="color:red;" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column style="width:192px;">
+												<h:outputText
+													value="#{msg['lbl.secondaryobjective']} #{corpregisterBean.viewBehaviorBean('Secondary Objective','MANDATORY')}"
+													rendered="#{corpregisterBean.coAMLPass}" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu value="#{corpregisterBean.seconObj}"
+													rendered="#{corpregisterBean.coAMLPass}"
+													 
+													style="width:300px; height: 25px; margin-top:15px;text-align:left"
+													readonly="#{corpregisterBean.viewBehaviorBean('Secondary Objective','READ_ONLY')}"
+													disabled="#{corpregisterBean.viewBehaviorBean('Secondary Objective','ENABLE')}">
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems
+														value="#{corpregisterBean.objectivesFromExistingList}"
+														var="o" itemLabel="#{o.objectiveDesc}"
+														itemValue="#{o.objectiveId}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+
+										<p:row>
+											<p:column>
+												<p:commandButton value="#{msg['lbl.add']}"
+													rendered="#{corpregisterBean.coAMLPass}"
+													actionListener="#{corpregisterBean.addSecondaryObjective}"
+													id="addTable4" update="panel4" process="panel4">
+												</p:commandButton>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.duplicatesecondaryobjective']}"
+													rendered="#{corpregisterBean.secondaryObjDuplicate}"
+													style="color:red;" />
+													<h:outputText
+													value="#{msg['lbl.atleastone']} #{msg['lbl.secondaryobjective']}"
+													rendered="#{corpregisterBean.secondaryListVisibility}"
+													style="color:red;" />
+											</p:column>
+											
+										</p:row>
+
+
+
+									</p:panelGrid>
+									<br />
+									<p:dataTable value="#{corpregisterBean.secondaryList}" var="s"
+										editable="true"
+										rendered="#{corpregisterBean.enableSecondaryObjDataTable}"
+										id="datatable4" emptyMessage="#{msg['lbl.norecordfound']}">
+										<!-- <p:ajax event="cellEdit"  listener="#{corpregisterBean. modifiedSecndryObj(s)}" /> -->
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.secondaryobjective']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{s.seconObj}"
+														style="text-align: left; font-size:13px;  height:20px; width: 98%;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+												</f:facet>
+												<f:facet name="input">
+													<p:selectOneMenu value="#{s.secondaryObjectId}"
+														rendered="#{corpregisterBean.coAMLPass}"
+														style="width: 175px; ">
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue="" />
+														<f:selectItems value="#{s.lstSecoundryObjective}" var="o"
+															itemLabel="#{o.objectiveDesc}"
+															itemValue="#{o.objectiveId}" />
+													</p:selectOneMenu>
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column style="width:50px; text-align:center !important;">
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.delete']}" />
+											</f:facet>
+											<p:commandButton styleClass="delete" value=""
+												actionListener="#{corpregisterBean.removeSecondaryObjective(s)}"
+												update="datatable4"></p:commandButton>
+										</p:column>
+									</p:dataTable>
+
+								</p:panel>
+								<p:panel id="panel" rendered="#{corpregisterBean.coAMLPass}"
+									style="align:left;width:820px;border:none;">
+
+									<h:panelGrid columns="1"
+										rendered="#{corpregisterBean.coAMLPass}" styleClass="heading2">
+										<h:outputText value="#{msg['lbl.contactdetails']}"
+											rendered="#{corpregisterBean.coAMLPass}" />
+									</h:panelGrid>
+
+
+									<p:panelGrid cellpadding="0" cellspacing="15"
+										rendered="#{corpregisterBean.coAMLPass}"
+										style="text-align:left;width: 100%;">
+
+										<p:row>
+											<p:column>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.validselectt']} #{msg['lbl.contacttype']}"
+													style="color:red;"
+													rendered="#{corpregisterBean.contactTypeVisibility}" />
+											</p:column>
+											<p:column>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.validselectt']} #{msg['lbl.country']}"
+													style="color:red;"
+													rendered="#{corpregisterBean.countryVisibility}" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.contacttype']} #{corpregisterBean.viewBehaviorBean('Contact Type','MANDATORY')}"
+													rendered="#{corpregisterBean.coAMLPass}" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu id="newContactType"
+													value="#{corpregisterBean.contType}"
+													rendered="#{corpregisterBean.coAMLPass}"
+													style="width: 175px; height: 25px; margin-top:15px;text-align:left"
+													 
+													readonly="#{corpregisterBean.viewBehaviorBean('Contact Type','READ_ONLY')}"
+													disabled="#{corpregisterBean.viewBehaviorBean('Contact Type','ENABLE')}">
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems
+														value="#{corpregisterBean.contactTypeListDB}" var="o"
+														itemLabel="#{o.contactType}"
+														itemValue="#{o.contactTypeId}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.country']} #{corpregisterBean.viewBehaviorBean('Country','MANDATORY')}"
+													rendered="#{corpregisterBean.coAMLPass}" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu value="#{corpregisterBean.countryId}"
+													rendered="#{corpregisterBean.coAMLPass}"
+													 
+													style="width:175px;" filter="true"
+													filterMatchMode="startsWith"
+													readonly="#{corpregisterBean.viewBehaviorBean('Country','READ_ONLY')}"
+													disabled="#{corpregisterBean.viewBehaviorBean('Country','ENABLE')}">
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems
+														value="#{corpregisterBean.countryListFromDB}" var="c"
+														itemLabel="#{c.countryName}" itemValue="#{c.countryId}" />
+													<p:ajax update="state" event="change"
+														listener="#{corpregisterBean.popState}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.validselectt']} #{msg['lbl.state']}"
+													style="color:red;"
+													rendered="#{corpregisterBean.stateVisibility}" />
+											</p:column>
+											<p:column>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.validselectt']} #{msg['lbl.district']}"
+													style="color:red;"
+													rendered="#{corpregisterBean.districtVisibility}" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.state']} #{corpregisterBean.viewBehaviorBean('State','MANDATORY')}" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu id="state"
+													value="#{corpregisterBean.stateId}" style="width:175px;"
+													 >
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{corpregisterBean.stateFromDb}"
+														var="c" itemLabel="#{c.stateName}"
+														itemValue="#{c.stateId}"
+														readonly="#{corpregisterBean.viewBehaviorBean('State','READ_ONLY')}"
+														disabled="#{corpregisterBean.viewBehaviorBean('State','ENABLE')}"/>
+
+													<p:ajax update="dist" event="change"
+														listener="#{corpregisterBean.popDistrict}" />
+
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.district']} #{corpregisterBean.viewBehaviorBean('Distict','MANDATORY')}   "
+													style="text-align:left;" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu value="#{corpregisterBean.distId}"
+													style="width:175px;" id="dist"
+													 >
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{corpregisterBean.districFromDb}"
+														var="c" itemLabel="#{c.districName}"
+														itemValue="#{c.districId}"
+														readonly="#{corpregisterBean.viewBehaviorBean('Distict','READ_ONLY')}"
+														disabled="#{corpregisterBean.viewBehaviorBean('Distict','ENABLE')}"/>
+
+													<p:ajax update="city" event="change"
+														listener="#{corpregisterBean.popCity}" />
+
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.validselectt']} #{msg['lbl.city']}"
+													style="color:red;"
+													rendered="#{corpregisterBean.cityVisibility}" />
+											</p:column>
+											<p:column>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.validationprefix']} #{msg['lbl.localarea']}"
+													style="color:red;"
+													rendered="#{corpregisterBean.areaVisibility}" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.city']}  #{corpregisterBean.viewBehaviorBean('City','MANDATORY')} " />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu id="city"
+													value="#{corpregisterBean.cityId}" style="width:175px;"
+													rendered="#{corpregisterBean.coAMLPass}"
+													 >
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""
+														readonly="#{corpregisterBean.viewBehaviorBean('City','READ_ONLY')}"
+														disabled="#{corpregisterBean.viewBehaviorBean('City','ENABLE')}"/>
+													<f:selectItems value="#{corpregisterBean.cityFromDb}"
+														var="c" itemLabel="#{c.cityName}" itemValue="#{c.cityId}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.localarea']} #{corpregisterBean.viewBehaviorBean('Area','MANDATORY')}"
+													rendered="#{corpregisterBean.coAMLPass}" />
+											</p:column>
+											<p:column>
+												<p:inputText id="area" value="#{corpregisterBean.area}"
+													requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.localarea']}"
+													rendered="#{corpregisterBean.coAMLPass}"
+													 
+													readonly="#{corpregisterBean.viewBehaviorBean('Area','READ_ONLY')}"
+													maxlength="#{corpregisterBean.viewBehaviorBean('Area','MAX_VALUE')}"
+													disabled="#{corpregisterBean.viewBehaviorBean('Area','ENABLE')}"
+													validator="RegularExpressionValidation">
+													<f:attribute name="regexValue"
+														value="#{corpregisterBean.viewBehaviorBean('Area','PATTERN')}" />
+													<f:attribute name="minValue"
+														value="#{corpregisterBean.viewBehaviorBean('Area','MIN_VALUE')}" />
+													<f:attribute name="maxValue"
+														value="#{corpregisterBean.viewBehaviorBean('Area','MAX_VALUE')}" />
+													<p:message for="area" display="text" />
+												</p:inputText>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.validationprefix']} #{msg['lbl.street']}"
+													style="color:red;"
+													rendered="#{corpregisterBean.streetVisibility}" />
+											</p:column>
+											<p:column>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.validationprefix']} #{msg['lbl.block']}"
+													style="color:red;"
+													rendered="#{corpregisterBean.blockVisibility}" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+											<h:outputText
+													value="#{msg['lbl.street']} #{corpregisterBean.viewBehaviorBean('Street','MANDATORY')}"
+													rendered="#{corpregisterBean.coAMLPass}" />
+												
+											</p:column>
+											<p:column>
+												<p:inputText id="str" value="#{corpregisterBean.street}"
+													rendered="#{corpregisterBean.coAMLPass}"
+													requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.street']}"
+													readonly="#{corpregisterBean.viewBehaviorBean('Street','READ_ONLY')}"
+													maxlength="#{corpregisterBean.viewBehaviorBean('Street','MAX_VALUE')}"
+													disabled="#{corpregisterBean.viewBehaviorBean('Street','ENABLE')}"
+													validator="RegularExpressionValidation">
+													<f:attribute name="regexValue"
+														value="#{corpregisterBean.viewBehaviorBean('Street','PATTERN')}" />
+													<f:attribute name="minValue"
+														value="#{corpregisterBean.viewBehaviorBean('Street','MIN_VALUE')}" />
+													<f:attribute name="maxValue"
+														value="#{corpregisterBean.viewBehaviorBean('Street','MAX_VALUE')}" />
+													<p:message for="str" display="text" />
+												</p:inputText>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.block']}  #{corpregisterBean.viewBehaviorBean('Block','MANDATORY')} "
+													rendered="#{corpregisterBean.coAMLPass}"></h:outputText>
+											</p:column>
+											<p:column>
+												<p:inputText value="#{corpregisterBean.block}" id="blk"
+													rendered="#{corpregisterBean.coAMLPass}"
+													readonly="#{corpregisterBean.viewBehaviorBean('Block','READ_ONLY')}"
+													maxlength="#{corpregisterBean.viewBehaviorBean('Block','MAX_VALUE')}"
+													disabled="#{corpregisterBean.viewBehaviorBean('Block','ENABLE')}"
+													validator="RegularExpressionValidation">
+													<f:attribute name="regexValue"
+														value="#{corpregisterBean.viewBehaviorBean('Block','PATTERN')}" />
+													<f:attribute name="minValue"
+														value="#{corpregisterBean.viewBehaviorBean('Block','MIN_VALUE')}" />
+													<f:attribute name="maxValue"
+														value="#{corpregisterBean.viewBehaviorBean('Block','MAX_VALUE')}" />
+													<p:message for="blk" display="text" />
+												</p:inputText>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.validationprefix']} #{msg['lbl.telephone']}"
+													style="color:red;"
+													rendered="#{corpregisterBean.telephoneVisibility}" />
+											</p:column>
+											<p:column>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.validationprefix']} #{msg['lbl.flatno']}"
+													style="color:red;"
+													rendered="#{corpregisterBean.flatVisibility}" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.telephone']}  #{corpregisterBean.viewBehaviorBean('Telephone Number','MANDATORY')}"
+													rendered="#{corpregisterBean.coAMLPass}"></h:outputText>
+											</p:column>
+											<p:column>
+												<p:inputText value="#{corpregisterBean.tel}" id="telp"
+													rendered="#{corpregisterBean.coAMLPass}"
+													requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.telephone']}"
+													readonly="#{corpregisterBean.viewBehaviorBean('Telephone Number','READ_ONLY')}"
+													maxlength="#{corpregisterBean.viewBehaviorBean('Telephone Number','MAX_VALUE')}"
+													disabled="#{corpregisterBean.viewBehaviorBean('Telephone Number','ENABLE')}"
+													validator="RegularExpressionValidation">
+													<f:attribute name="regexValue" value="#{corpregisterBean.viewBehaviorBean('Telephone Number','PATTERN')}" />
+													<f:attribute name="minValue" value="#{corpregisterBean.viewBehaviorBean('Telephone Number','MIN_VALUE')}" />
+													<f:attribute name="maxValue" value="#{corpregisterBean.viewBehaviorBean('Telephone Number','MAX_VALUE')}" />
+													
+													<p:message for="telp" display="text" />
+												</p:inputText>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.flatno']}  #{corpregisterBean.viewBehaviorBean('Flat','MANDATORY')}  "
+													rendered="#{corpregisterBean.coAMLPass}" />
+											</p:column>
+											<p:column>
+												<p:inputText value="#{corpregisterBean.flat}" id="flat"
+													rendered="#{corpregisterBean.coAMLPass}"
+													 
+													requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.flatno']}"
+													readonly="#{corpregisterBean.viewBehaviorBean('Flat','READ_ONLY')}"
+													maxlength="#{corpregisterBean.viewBehaviorBean('Flat','MAX_VALUE')}"
+													disabled="#{corpregisterBean.viewBehaviorBean('Flat','ENABLE')}"
+													validator="RegularExpressionValidation">
+													<f:attribute name="regexValue"
+														value="#{corpregisterBean.viewBehaviorBean('Flat','PATTERN')}" />
+													<f:attribute name="minValue"
+														value="#{corpregisterBean.viewBehaviorBean('Flat','MIN_VALUE')}" />
+													<f:attribute name="maxValue"
+														value="#{corpregisterBean.viewBehaviorBean('Flat','MAX_VALUE')}" />
+													<p:message for="flat" display="text" />
+												</p:inputText>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:commandButton value="#{msg['lbl.add']}"
+													rendered="#{corpregisterBean.coAMLPass}"
+													actionListener="#{corpregisterBean.addContactDataTable}"
+													id="addTable" process="panel" update="panel">
+												</p:commandButton>
+											</p:column>
+											<p:column>
+												<h:outputText value="#{msg['lbl.duplicate']}"
+													style="color:red;"
+													rendered="#{corpregisterBean.duplicateContact}" />
+													<h:outputText value="#{msg['lbl.atleastone']} #{msg['lbl.contactdetails']}"
+													style="color:red;"
+													rendered="#{corpregisterBean.contactListSizeVisibility}" />
+											</p:column>
+											 <!-- <p:column>
+												
+											</p:column> -->
+
+										</p:row>
+
+
+									</p:panelGrid>
+									<br />
+
+									<p:dataTable value="#{corpregisterBean.contactList}" var="o"
+										rendered="#{corpregisterBean.enableContactDataTable}"
+										style="width:1220;" editable="true" id="datatable"
+										emptyMessage="#{msg['lbl.norecordfound']}">
+
+										<!-- <p:ajax update="datatable" event="cellEdit"  listener="#{corpregisterBean.modified(o)}" /> -->
+
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.contacttype']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.contType}" />
+
+												</f:facet>
+												<f:facet name="input">
+
+													<p:selectOneMenu value="#{o.contactTypeId}"
+														style="width:175px;">
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue="" />
+														<f:selectItems
+															value="#{corpregisterBean.contactTypeListDB}" var="c"
+															itemLabel="#{c.contactType}"
+															itemValue="#{c.contactTypeId}" />
+													</p:selectOneMenu>
+
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+
+
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.country']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+
+													<h:outputText value="#{o.country}" />
+												</f:facet>
+												<f:facet name="input">
+													<!-- 	<p:inputText value="#{o.country}" 
+											style="width:100%" /> -->
+													<p:selectOneMenu value="#{o.countryId}"
+														style="width:175px;">
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue="" />
+														<f:selectItems value="#{o.lstCountryList}" var="c"
+															itemLabel="#{c.countryName}"
+															itemValue="#{c.fsCountryMaster.countryId}"
+															style="width:175px;height: 25px;text-align:left;" />
+													</p:selectOneMenu>
+
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.state']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.state}" />
+												</f:facet>
+												<f:facet name="input">
+													<!-- <p:inputText value="#{o.state}" style="width:100%" /> -->
+													<p:selectOneMenu value="#{o.stateId}">
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue="" />
+														<f:selectItems value="#{o.lstStateList}" var="c"
+															itemValue="#{c.fsStateMaster.stateId}"
+															itemLabel="#{c.stateName}" />
+													</p:selectOneMenu>
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.district']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.dist}" />
+												</f:facet>
+												<f:facet name="input">
+													<!-- <p:inputText value="#{o.dist}" style="width:100%" /> -->
+													<p:selectOneMenu value="#{o.districtId}">
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue="" />
+														<f:selectItems value="#{o.lstDistrictList}" var="c"
+															itemValue="#{c.fsDistrictMaster.districtId}"
+															itemLabel="#{c.district}" />
+													</p:selectOneMenu>
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.city']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.city}" />
+												</f:facet>
+												<f:facet name="input">
+													<!-- <p:inputText value="#{o.city}" style="width:100%" /> -->
+													<p:selectOneMenu value="#{o.cityId}">
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue="" />
+														<f:selectItems value="#{o.lstCityList}" var="c"
+															itemValue="#{c.fsCityMaster.cityId}"
+															itemLabel="#{c.cityName}" />
+													</p:selectOneMenu>
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.localarea']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.area}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{o.area}" style="width:100%" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.block']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.block}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{o.block}" style="width:100%" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.street']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.street}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{o.street}" style="width:100%" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.flatno']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.flat}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{o.flat}" style="width:100%" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.telephone']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.tel}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{o.tel}" style="width:100%" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column style="width:50px; text-align:center !important;">
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.delete']}" />
+											</f:facet>
+											<p:commandButton styleClass="delete" value=""
+												actionListener="#{corpregisterBean.removeContactDetail(o)}"
+												update="datatable"  immediate="true"></p:commandButton>
+										</p:column>
+									</p:dataTable>
+								</p:panel>
+
+
+
+								
+
+								<p:panel id="panel5" rendered="#{corpregisterBean.coAMLPass}"
+									style="align: left; width:820px;  border:none; margin-top:30px;">
+									<h:panelGrid columns="1" styleClass="heading2"
+										rendered="#{corpregisterBean.coAMLPass}">
+										<h:outputText value="#{msg['lbl.natureofbusiness']}" />
+									</h:panelGrid>
+
+
+									<p:panelGrid cellpadding="0" cellspacing="15"
+										rendered="#{corpregisterBean.coAMLPass}"
+										style="text-align:left;width:100%;">
+										<p:row>
+											<p:column>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.validselectt']} #{msg['lbl.natureofbusiness']}"
+													rendered="#{corpregisterBean.natureBussineesVisibility}"
+													style="color:red;" />
+											</p:column>
+										</p:row>
+
+										<p:row>
+											<p:column style="width:198px;">
+												<h:outputText
+													value="#{msg['lbl.natureofbusiness']} #{corpregisterBean.viewBehaviorBean('Business Nature','MANDATORY')}"
+													rendered="#{corpregisterBean.coAMLPass}" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu value="#{corpregisterBean.bussNature}"
+													rendered="#{corpregisterBean.coAMLPass}"
+													 
+													style="width:300px; height: 25px; margin-top:15px;text-align:left"
+													readonly="#{corpregisterBean.viewBehaviorBean('Business Nature','READ_ONLY')}"
+													disabled="#{corpregisterBean.viewBehaviorBean('Business Nature','ENABLE')}">
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems
+														value="#{corpregisterBean.bussineesNatureFromDB}" var="o"
+														itemLabel="#{o.natureOfBusinessDesc}"
+														itemValue="#{o.natureOfBusinessId}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+									<p:panelGrid cellpadding="0" cellspacing="15"
+										rendered="#{corpregisterBean.coAMLPass}"
+										style="text-align:left;width: 100%;">
+										<p:row>
+											<p:column>
+											</p:column>
+											<p:column>
+												<h:outputText
+													value="#{msg['lbl.validselectt']} #{msg['lbl.objePriSecon']}"
+													rendered="#{corpregisterBean.primaySecondaryBussnessVisibility}"
+													style="color:red;" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column style="width:198px;">
+												<h:outputText
+													value="#{msg['lbl.objePriSecon']} #{corpregisterBean.viewBehaviorBean('Primary/Secondary Objective','MANDATORY')}"
+													rendered="#{corpregisterBean.coAMLPass}" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu value="#{corpregisterBean.obj}"
+													style="width:300px;"
+													rendered="#{corpregisterBean.coAMLPass}"
+													 
+													readonly="#{corpregisterBean.viewBehaviorBean('Primary/Secondary Objective','READ_ONLY')}"
+													disabled="#{corpregisterBean.viewBehaviorBean('Primary/Secondary Objective','ENABLE')}">
+													<f:selectItem itemValue="" itemLabel="#{msg['lbl.select']}" />
+													<f:selectItem itemValue="#{msg['lbl.primary']}"
+														itemLabel="#{msg['lbl.primary']}" />
+													<f:selectItem itemValue="#{msg['lbl.secondary']}"
+														itemLabel="#{msg['lbl.secondary']}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:commandButton value="#{msg['lbl.add']}"
+													rendered="#{corpregisterBean.coAMLPass}"
+													actionListener="#{corpregisterBean.AddNatureofBussness}"
+													id="addTable6" process="panel5" update="panel5" >
+												</p:commandButton>
+											</p:column>
+											<p:column>
+												<h:outputText value="#{msg['lbl.duplicatebussnessnature']}"
+													rendered="#{corpregisterBean.bussenessDuplicateVisibility}"
+													style="color:red;" />
+													<h:outputText
+													value="#{msg['lbl.atleastone']} #{msg['lbl.natureofbusiness']}"
+													rendered="#{corpregisterBean.busenessListVisibility}"
+													style="color:red;" />
+											</p:column>
+										</p:row>
+
+									</p:panelGrid>
+									<br />
+									<p:dataTable value="#{corpregisterBean.bussnessList}" var="t"
+										rendered="#{corpregisterBean.enableBussineesDataTable}"
+										id="datatable6" editable="true"
+										emptyMessage="#{msg['lbl.norecordfound']}">
+										<!-- <p:ajax event="cellEdit"  listener="#{corpregisterBean.modifiedBussNutr(t)}" /> -->
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.objePriSecon']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{t.obj}"
+														style="text-align: left; font-size:13px;  height:20px; width: 100%;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+												</f:facet>
+												<f:facet name="input">
+													<p:selectOneMenu value="#{t.obj}" style="width:150px;"
+														rendered="#{corpregisterBean.coAMLPass}">
+														<f:selectItem itemValue="" itemLabel="" />
+														<f:selectItem itemValue="#{msg['lbl.primary']}"
+															itemLabel="#{msg['lbl.primary']}" />
+														<f:selectItem itemValue="#{msg['lbl.secondary']}"
+															itemLabel="#{msg['lbl.secondary']}" />
+													</p:selectOneMenu>
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.natureofbusiness']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{t.bussNature}"
+														style="text-align: left; font-size:13px;  height:20px; width: 100%;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;" />
+												</f:facet>
+												<f:facet name="input">
+													<p:selectOneMenu value="#{t.bussNatureId}"
+														rendered="#{corpregisterBean.coAMLPass}"
+														style="width: 175px; height: 25px; margin-top:15px;text-align:left">
+														<f:selectItem itemLabel="#{msg['lbl.select']}"
+															itemValue="" />
+														<f:selectItems value="#{t.lstBussineesNature}" var="o"
+															itemLabel="#{o.natureOfBusinessDesc}"
+															itemValue="#{o.natureOfBusinessId}" />
+													</p:selectOneMenu>
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column style="width:50px; text-align:center !important;">
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.delete']}" />
+											</f:facet>
+											<p:commandButton styleClass="delete" value=""
+												actionListener="#{corpregisterBean.removeBusenessNature(t)}"
+												update="datatable6"></p:commandButton>
+										</p:column>
+
+									</p:dataTable>
+
+								</p:panel>
+								<p:panel id="panel6" rendered="#{corpregisterBean.coAMLPass}"
+									style="align: left; width:750px;  border:none; ">
+									<p:spacer height="30" />
+									<p:commandButton value="#{msg['lbl.cancel']}"
+										action="#{corpregisterBean.cancel}"
+										rendered="#{corpregisterBean.coAMLPass}" id="branchHome"
+										immediate="true" ajax="false" />
+
+									<p:spacer width="50px" height="0px" />
+                                      
+									 <p:commandButton value="#{msg['lbl.clear']}" rendered="#{corpregisterBean.coAMLPass}" 
+									 		action="#{corpregisterBean.clearAction}" update="corporateregistrationfrm"
+										immediate="true"/>
+<!-- 									 <p:commandButton value="#{msg['lbl.clear']}" type="reset"/> -->
+						
+					<p:spacer width="50px" height="0px" /> 
+									<p:commandButton value="#{msg['lbl.next']}"
+										rendered="#{corpregisterBean.coAMLPass}"
+										action="#{corpregisterBean.saveData}" ajax="false"
+										update="mainPanel, mainPanel1">
+									</p:commandButton>
+								</p:panel>
+
+
+
+								<p:panel id="panel7" rendered="#{corpregisterBean.coAMLFail}"
+									style="align: left; width:750px; background-color:#ccffcc; border:none; font-size: 15px; text-align: left;">
+
+									<h:outputText value="#{msg['lbl.welcomealmulla']}"
+										style="font-size: 15px; color:black;"
+										rendered="#{corpregisterBean.coAMLFail}" />
+									<!-- <h:outputText value="Al Mulla Group,"  style="font-weight: bold;font-size: 15px; color:black; margin-right: 50px;"  rendered="#{corpregisterBean.coAMLFail}" /> -->
+
+									<h:panelGrid rendered="#{corpregisterBean.coAMLFail}">
+										<br />
+										<br />
+									</h:panelGrid>
+
+									<h:outputText value="#{msg['lbl.accountpending']}"
+										style="font-size: 15px; color:black;"
+										rendered="#{corpregisterBean.coAMLFail}" />
+
+									<h:panelGrid>
+										<br />
+										<br />
+									</h:panelGrid>
+
+									<h:outputText value="#{msg['lbl.messagemanualbranch1']}"
+										style="font-size: 15px; color:black;"
+										rendered="#{corpregisterBean.coAMLFail}" />
+									<h:outputText value="#{msg['lbl.remitterInfo']}"
+										style="font-weight: bold;font-size: 15px; color:black;"
+										rendered="#{corpregisterBean.coAMLFail}" />
+									<h:outputText value="#{msg['lbl.messagemanualbranch2']}"
+										style="font-size: 15px; color:black;"
+										rendered="#{corpregisterBean.coAMLFail}" />
+								</p:panel>
+							</p:panel>
+
+
+						</h:form>
+					</p:panel>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
+
+		<ui:include src="#{facesBean.footer}"></ui:include>
+	</f:view>
+</h:body>
+</html>

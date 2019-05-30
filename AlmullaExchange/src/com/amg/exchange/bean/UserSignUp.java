@@ -1,0 +1,640 @@
+package com.amg.exchange.bean;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import com.amg.exchange.mail.ApplicationMailer;
+import com.amg.exchange.model.BussComponentConfDetail;
+import com.amg.exchange.model.CountryMaster;
+import com.amg.exchange.model.CountryMasterDesc;
+import com.amg.exchange.model.CustomerLogin;
+import com.amg.exchange.model.LanguageType;
+import com.amg.exchange.model.SecurityQuestionMaster;
+import com.amg.exchange.service.IGeneralService;
+import com.amg.exchange.service.IUserSignUpService;
+import com.amg.exchange.util.CollectionUtil;
+import com.amg.exchange.util.SessionStateManage;
+import com.amg.exchange.util.iCypherSecurity;
+import com.amg.exchange.util.impl.CypherSecurityImpl;
+
+@Component(value = "onLineUsrRegBean")
+@Scope("session")
+public class UserSignUp<T> implements Serializable {
+	/**
+	 *Logger Added 
+	 */
+	Logger log = Logger.getLogger(UserSignUp.class);
+	
+	private static final long serialVersionUID = 1L;
+	private String userType;
+	private String userName;
+	private String checkAvailability;
+	private String password;
+	private String retypePassword;
+	private String secoundaryPassword;
+	private String retypeSecoundaryPassword;
+	private String email;
+	private String secureQuest1;
+	private String secureQuest2;
+	private String secureQuest3;
+	private String secureQuest4;
+	private String secureQuest5;
+	private String secureAnsr1;
+	private String secureAnsr2;
+	private String secureAnsr3;
+	private String secureAnsr4;
+	private String secureAnsr5;
+	private String country;
+	private List<CustomerLogin> userList;
+	
+	private List<SecurityQuestionMaster> questionsMasterList;
+	private int flag = 0;
+	private int status = 0;
+	private String statusMsg;
+	List<SecurityQuestionMaster> drpdList1 = new ArrayList<SecurityQuestionMaster>();
+	List<SecurityQuestionMaster> drpdList2 = new ArrayList<SecurityQuestionMaster>();
+	List<SecurityQuestionMaster> drpdList3 = new ArrayList<SecurityQuestionMaster>();
+	List<SecurityQuestionMaster> drpdList4 = new ArrayList<SecurityQuestionMaster>();
+	List<SecurityQuestionMaster> drpdList5 = new ArrayList<SecurityQuestionMaster>();
+	Map<String, BussComponentConfDetail> mapComponentBehavior = new HashMap<String,BussComponentConfDetail>();
+	
+	private boolean boopasswordChec = false;
+	
+	@Autowired
+	IUserSignUpService<T> iUserSignUp;
+
+	@Autowired
+	IGeneralService<T> generalService;
+	
+	@Autowired
+	ApplicationMailer mailService;
+	
+	public ApplicationMailer getMailService() {
+		return mailService;
+	}
+
+	public void setMailService(ApplicationMailer mailService) {
+		this.mailService = mailService;
+	}
+
+	public IGeneralService<T> getGeneralService() {
+		return generalService;
+	}
+
+	public void setGeneralService(IGeneralService<T> generalService) {
+		this.generalService = generalService;
+	}
+
+	public List<SecurityQuestionMaster> getQuestionsMasterList() {
+		return questionsMasterList;
+	}
+
+	public void setQuestionsMasterList(
+			List<SecurityQuestionMaster> questionsMasterList) {
+		this.questionsMasterList = questionsMasterList;
+	}
+
+	public IUserSignUpService<T> getiUserSignUp() {
+		return iUserSignUp;
+	}
+
+	public void setiUserSignUp(IUserSignUpService<T> iUserSignUp) {
+		this.iUserSignUp = iUserSignUp;
+	}
+
+	public List<SecurityQuestionMaster> getSecurityQuestionsDrpD2() {
+		return drpdList2;
+	}
+
+	public List<SecurityQuestionMaster> getSecurityQuestionsDrpD3() {
+		return drpdList3;
+	}
+
+	public List<SecurityQuestionMaster> getSecurityQuestionsDrpD4() {
+		return drpdList4;
+	}
+
+	public List<SecurityQuestionMaster> getSecurityQuestionsDrpD5() {
+		return drpdList5;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public String getStatusMsg() {
+		return statusMsg;
+	}
+	
+	public void setUserList(List<CustomerLogin> userList) {
+		this.userList = userList;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getCheckAvailability() {
+		return checkAvailability;
+	}
+
+	public void setCheckAvailability(String checkAvailability) {
+		this.checkAvailability = checkAvailability;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRetypePassword() {
+		return retypePassword;
+	}
+
+	public void setRetypePassword(String retypePassword) {
+		this.retypePassword = retypePassword;
+	}
+
+	public String getSecoundaryPassword() {
+		return secoundaryPassword;
+	}
+
+	public void setSecoundaryPassword(String secoundaryPassword) {
+		this.secoundaryPassword = secoundaryPassword;
+	}
+
+	public String getRetypeSecoundaryPassword() {
+		return retypeSecoundaryPassword;
+	}
+
+	public void setRetypeSecoundaryPassword(String retypeSecoundaryPassword) {
+		this.retypeSecoundaryPassword = retypeSecoundaryPassword;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getSecureQuest1() {
+		return secureQuest1;
+	}
+
+	public void setSecureQuest1(String secureQuest1) {
+		this.secureQuest1 = secureQuest1;
+	}
+
+	public String getSecureQuest2() {
+		return secureQuest2;
+	}
+
+	public void setSecureQuest2(String secureQuest2) {
+		this.secureQuest2 = secureQuest2;
+	}
+
+	public String getSecureQuest3() {
+		return secureQuest3;
+	}
+
+	public void setSecureQuest3(String secureQuest3) {
+		this.secureQuest3 = secureQuest3;
+	}
+
+	public String getSecureQuest5() {
+		return secureQuest5;
+	}
+
+	public void setSecureQuest5(String secureQuest5) {
+		this.secureQuest5 = secureQuest5;
+	}
+
+	public String getSecureQuest4() {
+		return secureQuest4;
+	}
+
+	public void setSecureQuest4(String secureQuest4) {
+		this.secureQuest4 = secureQuest4;
+	}
+
+	public String getSecureAnsr1() {
+		return secureAnsr1;
+	}
+
+	public void setSecureAnsr1(String secureAnsr1) {
+		this.secureAnsr1 = secureAnsr1;
+	}
+
+	public String getSecureAnsr2() {
+		return secureAnsr2;
+	}
+
+	public void setSecureAnsr2(String secureAnsr2) {
+		this.secureAnsr2 = secureAnsr2;
+	}
+
+	public String getSecureAnsr3() {
+		return secureAnsr3;
+	}
+
+	public void setSecureAnsr3(String secureAnsr3) {
+		this.secureAnsr3 = secureAnsr3;
+	}
+
+	public String getSecureAnsr4() {
+		return secureAnsr4;
+	}
+
+	public void setSecureAnsr4(String secureAnsr4) {
+		this.secureAnsr4 = secureAnsr4;
+	}
+
+	public String getSecureAnsr5() {
+		return secureAnsr5;
+	}
+
+	public void setSecureAnsr5(String secureAnsr5) {
+		this.secureAnsr5 = secureAnsr5;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public int getFlag() {
+		return flag;
+	}
+
+	public void setFlag(int flag) {
+		this.flag = flag;
+	}
+	
+	public void setStatusMsg(String statusMsg) {
+		this.statusMsg = statusMsg;
+	}
+	
+	public void cancel() {
+		try {
+			ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+			context.invalidateSession();
+			context.redirect("login.xhtml");
+		} catch(Exception e) {
+			log.info("Problem to Redirect the page : "+e);
+		}
+	}
+	
+	/* method to get Security Question from DataBase */
+	public List<SecurityQuestionMaster> getSecurityQuestions() {
+		
+		List<SecurityQuestionMaster> questions = new ArrayList<SecurityQuestionMaster>();
+		questions = getiUserSignUp().getQuestions();
+		
+		int questionsIdForDD1 = questions.size()/4;
+		int questionsIdForDD2 = questions.size()/4 + questionsIdForDD1;
+		int questionsIdForDD3 = questions.size()/4 + questionsIdForDD2;
+		int questionsIdForDD4 = questions.size()/4 + questionsIdForDD3;
+		
+		drpdList1.clear();
+		drpdList2.clear();
+		drpdList3.clear();
+		drpdList4.clear();
+		drpdList5.clear();
+		
+		int languageID = 1;
+		if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")){
+			languageID = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().equalsIgnoreCase("ar")?2:1;
+		}
+		
+		for (SecurityQuestionMaster securityQuestionMaster : questions) {
+			
+			if(securityQuestionMaster.getFsLanguageType().getLanguageId().intValue() == languageID){ //Check language id
+				if(Integer.parseInt(securityQuestionMaster.getQuestionId().toPlainString()) <= questionsIdForDD1) {
+					drpdList1.add(securityQuestionMaster);
+				} else if(Integer.parseInt(securityQuestionMaster.getQuestionId().toPlainString()) > questionsIdForDD1 && Integer.parseInt(securityQuestionMaster.getQuestionId().toPlainString()) <= questionsIdForDD2) {
+					drpdList2.add(securityQuestionMaster);
+				} else if(Integer.parseInt(securityQuestionMaster.getQuestionId().toPlainString()) > questionsIdForDD2 && Integer.parseInt(securityQuestionMaster.getQuestionId().toPlainString()) <= questionsIdForDD3){
+					drpdList3.add(securityQuestionMaster);
+				} else if(Integer.parseInt(securityQuestionMaster.getQuestionId().toPlainString()) > questionsIdForDD3 && Integer.parseInt(securityQuestionMaster.getQuestionId().toPlainString()) <= questionsIdForDD4) {
+					drpdList4.add(securityQuestionMaster);
+				} else if(Integer.parseInt(securityQuestionMaster.getQuestionId().toPlainString()) > questionsIdForDD4){
+					drpdList5.add(securityQuestionMaster);
+				}
+			}
+		}
+		
+		return drpdList1;
+	}
+	
+	public List<SecurityQuestionMaster> getSecurityQuestions2() {
+		return drpdList2;
+	}
+	
+	public List<SecurityQuestionMaster> getSecurityQuestions3() {
+		return drpdList3;
+	}
+	
+	public List<SecurityQuestionMaster> getSecurityQuestions4() {
+		return drpdList4;
+	}
+	
+	public List<SecurityQuestionMaster> getSecurityQuestions5() {
+		return drpdList5;
+	}
+	
+	/*
+	 * method to check the userName is exist or not
+	 */
+	public List<CustomerLogin> getUserList(String userName) {
+		userList = new ArrayList<CustomerLogin>();
+		userList.addAll(getiUserSignUp().searchUser(userName));
+		return userList;
+	}
+
+	/*
+	 * method to get the country Name name and country code from dataBase
+	 */
+	public List<CountryMasterDesc> getCountryNameList() {
+
+		try{
+			prepareBehavior();
+		}catch(Exception e){}
+		SessionStateManage sessionStateManage = new SessionStateManage();
+ 		return getGeneralService().getCountryList(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):"1"));
+	}
+
+	/*
+	 * method to save the form data in dataBase
+	 */
+	public String redirectLogin(){
+		return "login";
+	}
+	
+	public void saveOnlineUsrData() {
+		
+		setBoopasswordChec(validate());
+		boopasswordChec = validate();
+		String page = null;  
+		
+		if(isBoopasswordChec()){
+			page = "";
+		} else {
+			int languageID = 1;
+			if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")){
+				languageID = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().equalsIgnoreCase("ar")?2:1;
+			}
+			
+			iCypherSecurity cypherSecurity = new CypherSecurityImpl();
+			String secretKey = getUserName();
+			CustomerLogin objregusr = new CustomerLogin();
+			objregusr.setEmail(getEmail());
+			objregusr.setUserType("Individual");
+			objregusr.setUserName(getUserName());
+			objregusr.setPassword(cypherSecurity.encodePassword(getPassword(), secretKey));
+			objregusr.setSecondaryPassword(cypherSecurity.encodePassword(getSecoundaryPassword(), secretKey));
+			objregusr.setSecurityQuestion1(getSecureQuest1().equals("")?null:new BigDecimal(getSecureQuest1()));
+			objregusr.setSecurityQuestion2(getSecureQuest2().equals("")?null:new BigDecimal(getSecureQuest2()));
+			objregusr.setSecurityQuestion3(getSecureQuest3().equals("")?null:new BigDecimal(getSecureQuest3()));
+			objregusr.setSecurityQuestion4(getSecureQuest4().equals("")?null:new BigDecimal(getSecureQuest4()));
+			objregusr.setSecurityQuestion5(getSecureQuest5().equals("")?null:new BigDecimal(getSecureQuest5()));
+			objregusr.setSecurityAnswer1(cypherSecurity.encodePassword(getSecureAnsr1(), secretKey));
+			objregusr.setSecurityAnswer2(cypherSecurity.encodePassword(getSecureAnsr2(), secretKey));
+			objregusr.setSecurityAnswer3(cypherSecurity.encodePassword(getSecureAnsr3(), secretKey));
+			objregusr.setSecurityAnswer4(cypherSecurity.encodePassword(getSecureAnsr4(), secretKey));
+			objregusr.setSecurityAnswer5(cypherSecurity.encodePassword(getSecureAnsr5(), secretKey));
+			objregusr.setCreatedBy(getUserName());
+			objregusr.setCreationDate(new Date());
+			
+
+			//Insert Country ID
+			CountryMaster countryMaster = new CountryMaster();
+			countryMaster.setCountryId(getCountry().equals("")?null:new BigDecimal(getCountry()));
+			objregusr.setFsCountryMaster(countryMaster);
+			
+			//Insert Language ID from session   
+			LanguageType languageType = new LanguageType();
+			languageType.setLanguageId(new BigDecimal(languageID));
+			objregusr.setFsLanguageType(languageType);
+			
+			getiUserSignUp().saveOnlineUsrData(objregusr);
+			
+			/*if (flag == 1) {
+				getiUserSignUp().saveOnlineUsrData(objregusr);
+			} else {
+				currentStatus();
+				if (getStatus() == 1) {
+					getiUserSignUp().saveOnlineUsrData(objregusr);
+					setFlag(0);
+					return ("success");
+				} else {
+					setFlag(0);
+					return statusMsg;
+				}
+			}*/
+			
+		/*	String strEmail = "<html>"+
+					"<head>"+"<meta http-equiv=\"Content-type\" content=\"text/html;charset=\"utf-8\">"+
+					"</head>"+
+					"<body>"+
+					"Dear�<b>"+getUserName()
+					+"</b> ,"+
+					"<br>"+
+					"<br>"+
+					"<p style=\"font-size: 14pt\">Greetings from <b>Almulla Exchange!</b></p>"+
+					
+					"You received this email because you have successfully registered online account with us ."+
+					"<br>"+
+					"Your User Name : <b>"+getUserName()+"</b>"+
+					"<br>"+
+					"Please�contact us�should you have any questions or need further assistance."+
+					"<br>"+
+					"<br>"+
+					"<p style=\"font-size: 14pt\"><b>Thanks for register with us!</b></p>"+
+					
+					"</body>"+
+					"</html>";
+			*/
+			String s= "Dear " +getUserName()+",\n \tYou received this email because you have successfully registered online account with us ."+
+					  "\nYour User Name : "+getUserName()+"   \n\t Please contact us if you have any questions or need further assistance.\n\n\n\t\t\t\t"+"Thanks for register with us!";
+			
+			
+					//getMailService().sendMail(getEmail(), "Successfully Registered", s);
+					getMailService().sendRegistrationMail(getEmail(), "Successfully Registered", getUserName());
+			/*String strEmail = "<html>"+
+					"<head>"+
+					"</head>"+
+					"<body>"+
+					"Dear�<b>"+getUserName()
+					+"</b> ,"+
+					"<br>"+
+					"<br>"+
+					"<p style=\"font-size: 14pt\">Greetings from <b>Almulla Exchange!</b></p>"+
+					
+					"You received this email because you have successfully registered online account with us ."+
+					"<br>"+
+					"Your User Name : <b>"+getUserName()+"</b>"+
+					"<br>"+
+					"Please�contact us�should you have any questions or need further assistance."+
+					"<br>"+
+					"<br>"+
+					"<p style=\"font-size: 14pt\"><b>Thanks for register with us!</b></p>"+
+					
+					"</body>"+
+					"</html>";
+
+
+					getMailService().sendMail(getEmail(), "Successfully Registered", strEmail);*/
+					page = "success";
+		}
+		
+		try {
+			ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+			context.invalidateSession();
+			context.redirect("login.xhtml");
+		} catch(Exception e) {
+			log.info("Problem to Redirect the page : "+e);
+		}
+	}
+
+	/*
+	 * method to get all users name from data base and to check the user name is
+	 * exist or not
+	 */
+	public void currentStatus() {
+		try {
+			setFlag(1);
+			List<CustomerLogin> userList = getUserList(getUserName());
+			if (userList.size() == 0) {
+				setStatusMsg ("");
+				setStatus(1);
+			} else {
+				setStatusMsg ("User Already Exists... ");
+				setUserName("");
+				setStatus(0);
+				setFlag(0);
+			}
+		} catch (HibernateException he) {
+			he.printStackTrace();
+		
+		} catch(Exception e){
+			
+		}
+	}
+	
+	public void resetCurrentStatus() {
+		setStatusMsg ("");
+		setStatus(1);
+		setFlag(1);
+	}
+
+	private boolean validate(){
+		
+		boolean check = false;
+		
+		if(this.password.equalsIgnoreCase(this.secoundaryPassword)){
+			check = true;
+		} else {
+			check = false;
+		}
+		return check;
+	}
+
+	public boolean isBoopasswordChec() {
+		return boopasswordChec;
+	}
+
+	public void setBoopasswordChec(boolean boopasswordChec) {
+		this.boopasswordChec = boopasswordChec;
+	}
+	
+	public String viewBehaviorBean(String componentName, String type){
+
+		return new CollectionUtil().fetchBehavior(mapComponentBehavior, componentName, type);
+	}
+	
+	@Autowired
+	public UserSignUp(IGeneralService<T> generalService){
+		
+		setGeneralService(generalService);
+		
+		setPageIdIntoSession();
+		prepareBehavior();
+	}  
+	
+	private void setPageIdIntoSession(){
+	
+		String pageName = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+		pageName = pageName.substring(pageName.lastIndexOf('/')+1, pageName.indexOf(".xhtml"));
+		
+		try{
+			BigDecimal pageId = getGeneralService().getPageId(pageName);
+			new SessionStateManage().setSessionValue("pageId", pageId.toString());
+		}catch(Exception e){
+			System.out.println("Page id not found for pagename :: "+pageName+" :: "+e);
+		}
+	}
+	
+	private void prepareBehavior(){
+		
+		SessionStateManage manage = new SessionStateManage(); 
+		List<String> lstComponentName = Arrays.asList("Country","User Name","Password","Email","Security Question Answers");
+		mapComponentBehavior =  getGeneralService().getComponentBehavior(lstComponentName, manage.getLevel(),manage.getApplicationId(),manage.getCompanyId(),manage.getCountryId(),manage.getPageId());
+	}
+	
+	/**
+	 * Responsible to clear all type of components in page
+	 */
+	public void clear() {
+		setUserName("");
+		setPassword("");
+		setRetypePassword("");
+		setSecoundaryPassword("");
+		setRetypeSecoundaryPassword("");
+		setEmail("");
+		setCountry(null);
+		setSecureAnsr1("");
+		setSecureAnsr2("");
+		setSecureAnsr3("");
+		setSecureAnsr4("");
+		setSecureAnsr5("");
+	}
+	
+}

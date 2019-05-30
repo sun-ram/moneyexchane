@@ -1,0 +1,1371 @@
+package com.amg.exchange.bean;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.servlet.http.Part;
+import javax.sql.rowset.serial.SerialException;
+
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import com.amg.exchange.model.CityMaster;
+import com.amg.exchange.model.CityMasterDesc;
+import com.amg.exchange.model.CompanyMaster;
+import com.amg.exchange.model.ContactDetail;
+import com.amg.exchange.model.ContactType;
+import com.amg.exchange.model.CountryMaster;
+import com.amg.exchange.model.CountryMasterDesc;
+import com.amg.exchange.model.Customer;
+import com.amg.exchange.model.CustomerEmploymentInfo;
+import com.amg.exchange.model.DistrictMaster;
+import com.amg.exchange.model.DistrictMasterDesc;
+import com.amg.exchange.model.DocumentImg;
+import com.amg.exchange.model.EmploymentType;
+import com.amg.exchange.model.IdentityType;
+import com.amg.exchange.model.LanguageType;
+import com.amg.exchange.model.StateMaster;
+import com.amg.exchange.model.StateMasterDesc;
+import com.amg.exchange.service.ICustomerRegistrationBranchService;
+import com.amg.exchange.service.IGeneralService;
+import com.amg.exchange.util.SessionStateManage;
+
+
+@Component(value = "branchRegistration")  
+@Scope("session")
+public class CustomerRegistrationBranchBean<T> implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String idType = null;
+	private String selectType = null;
+	private String manual = null;
+	private String smartCard = null;
+	
+	private String idNumber = null;
+	private String title = null;
+	private String token = null;
+	private String firstName = null;
+	private String lastName = null;
+	private String middleName = null;
+	private String shortName = null;
+	private String titlel = null;
+	private String firstNamel = null;
+	private String lastNamel = null;
+	private String middleNamel = null;
+	private String shortNamel = null;
+	private String nationality = null;
+	private String gender = null;
+	private String mobile = null;
+	private String email = null;
+	private String alternativeEmail = null;
+	private String AMLStatus = null;
+	private String numberofhits = null;
+	 private BigDecimal contactTypeId = null;
+	private String localArea = null;
+	private BigDecimal countryId = null;
+	private String street = null;
+	private String block = null;
+	private String telephone = null;
+	private String area = null;
+	private BigDecimal cityId = null;
+	private String flat = null;
+	private String countryOfBirth = null;
+	private String birthPlace = null;
+	private String fatherName = null;
+	private String occupation = null;
+	private String employer = null;
+	private String employmentType = null;
+	private String empcategory = null;
+	private String originId = null;
+	private BigDecimal stateId = null;
+	private String stateEmployment = null;
+	private String postalCode = null;
+	private String officeTel = null;
+	private BigDecimal districtId = null;
+	private String idFor = null;
+	private String statusMessage = null;
+	private String introduceBy = null;
+	private String insurance = null;
+	private String rel = null;
+	private String dataTableContactTypeValue = null;
+	private String idnumberProof = null;
+	
+	private String empInfoCountry = null;
+	private String empInfoState = null;
+	private String empInfoDistrict = null;
+	private String empInfoBlock = null;
+	private String empInfoStreet = null;
+	private String empInfoCity = null;
+	private String empInfoEmploymentTypeId = null;
+	private String idTypeproof = null;
+	
+	private Date expDate = null;
+	private Date dateExp = null;
+	private Date dob = null;
+	
+	private Map<String,String>	idTypeMap = new HashMap<String,String>();
+	private List<IdentityType> identityTypeList = new ArrayList<IdentityType>();
+	private List<ContactType> contactTypeList = new ArrayList<ContactType>();
+	private List<AddContactDetailBean> contactList = new ArrayList<AddContactDetailBean>();
+	private List<AddContactDetailBean> contactListDelete = new ArrayList<AddContactDetailBean>();
+	private List<CreateProofTable> createProofList = new ArrayList<CreateProofTable>();
+	private List<CreateProofTable> createProofListDelete = new ArrayList<CreateProofTable>();
+	  private List<CountryMasterDesc>  countryList;
+	    private List<StateMasterDesc> lstState;
+		private List<CityMasterDesc>lstCity;
+		private List<DistrictMasterDesc>lstDistrict;
+		private SessionStateManage sessionStateManage = null;
+		
+		Map<BigDecimal,String> mapCountryList = new HashMap<BigDecimal,String>();
+		Map<BigDecimal,String> mapStateList = new HashMap<BigDecimal,String>();
+		Map<BigDecimal,String> mapDistirictList = new HashMap<BigDecimal,String>();
+		Map<BigDecimal,String> mapCityList = new HashMap<BigDecimal,String>();
+		private Map<String,String>	idForMap = new HashMap<String,String>();
+		
+		private Boolean booManual = false;
+		private Boolean booSmartcard = false;
+		private Boolean booIdDetail = true;
+		private Boolean booCustomerDetails = true;
+		private Boolean booRemitterInfo = false;
+		private Boolean booContactDetails = false;
+		private Boolean booEmploymentDetails = false;
+		private Boolean booProof = false;
+		private boolean contactDataTable = false;	
+		private Boolean booIdType = false;
+		private Boolean booIdNo = false;
+		private Boolean booIdTExpDate = false;
+		private Boolean booProfListDuplicate = false;
+		private Boolean booIdTypeCheck = false;
+		private Boolean booIdFor = false;
+		
+		private Boolean booUnEmp = false;
+		private Boolean enablePTbl;
+		private boolean approved;
+		private Boolean boolAdditional = false;
+		
+		private Part part;
+		private UIComponent tableForm;
+		private String DATE_FORMAT = "dd/MM/yyyy";
+		
+		private UploadedFile file;
+		private StreamedContent downloadFile;  
+		
+		private BigDecimal image_id; 
+		
+		private Boolean booBrowsedFile = false;
+
+		private Map<String, StreamedContent> imageMap = new HashMap<String, StreamedContent>();
+		
+		private String idTypeBranchPage = "";
+		//private String idTypeproof = null;
+		
+		private String hidden1 = "0";
+		
+		private Boolean booContactDetailsSize = false;
+		
+	public String getIdType() {
+		return idType;
+	}
+	public void setIdType(String idType) {
+		this.idType = idType;
+	}
+	
+	public String getSelectType() {
+		return selectType;
+	}
+	public void setSelectType(String selectType) {
+		this.selectType = selectType;
+	}
+	public String getManual() {
+		return manual;
+	}
+	public void setManual(String manual) {
+		this.manual = manual;
+	}
+	public String getSmartCard() {
+		return smartCard;
+	}
+	public void setSmartCard(String smartCard) {
+		this.smartCard = smartCard;
+	}
+	public String getIdNumber() {
+		return idNumber;
+	}
+	public void setIdNumber(String idNumber) {
+		this.idNumber = idNumber;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getMiddleName() {
+		return middleName;
+	}
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+	public String getShortName() {
+		return shortName;
+	}
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+	public String getTitlel() {
+		return titlel;
+	}
+	public void setTitlel(String titlel) {
+		this.titlel = titlel;
+	}
+	public String getFirstNamel() {
+		return firstNamel;
+	}
+	public void setFirstNamel(String firstNamel) {
+		this.firstNamel = firstNamel;
+	}
+	public String getLastNamel() {
+		return lastNamel;
+	}
+	public void setLastNamel(String lastNamel) {
+		this.lastNamel = lastNamel;
+	}
+	public String getMiddleNamel() {
+		return middleNamel;
+	}
+	public void setMiddleNamel(String middleNamel) {
+		this.middleNamel = middleNamel;
+	}
+	public String getShortNamel() {
+		return shortNamel;
+	}
+	public void setShortNamel(String shortNamel) {
+		this.shortNamel = shortNamel;
+	}
+	public String getNationality() {
+		return nationality;
+	}
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getMobile() {
+		return mobile;
+	}
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getAlternativeEmail() {
+		return alternativeEmail;
+	}
+	public void setAlternativeEmail(String alternativeEmail) {
+		this.alternativeEmail = alternativeEmail;
+	}
+	public String getAMLStatus() {
+		return AMLStatus;
+	}
+	public void setAMLStatus(String aMLStatus) {
+		AMLStatus = aMLStatus;
+	}
+	public String getNumberofhits() {
+		return numberofhits;
+	}
+	public void setNumberofhits(String numberofhits) {
+		this.numberofhits = numberofhits;
+	}
+	
+	
+	public BigDecimal getContactTypeId() {
+		return contactTypeId;
+	}
+	public void setContactTypeId(BigDecimal contactTypeId) {
+		this.contactTypeId = contactTypeId;
+	}
+	public String getLocalArea() {
+		return localArea;
+	}
+	public void setLocalArea(String localArea) {
+		this.localArea = localArea;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+	public void setStreet(String street) {
+		this.street = street;
+	}
+	public String getBlock() {
+		return block;
+	}
+	public void setBlock(String block) {
+		this.block = block;
+	}
+	public String getTelephone() {
+		return telephone;
+	}
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
+	}
+	
+	public String getFlat() {
+		return flat;
+	}
+	public void setFlat(String flat) {
+		this.flat = flat;
+	}
+	public String getCountryOfBirth() {
+		return countryOfBirth;
+	}
+	public void setCountryOfBirth(String countryOfBirth) {
+		this.countryOfBirth = countryOfBirth;
+	}
+	public String getBirthPlace() {
+		return birthPlace;
+	}
+	public void setBirthPlace(String birthPlace) {
+		this.birthPlace = birthPlace;
+	}
+	public String getFatherName() {
+		return fatherName;
+	}
+	public void setFatherName(String fatherName) {
+		this.fatherName = fatherName;
+	}
+	public String getOccupation() {
+		return occupation;
+	}
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
+	}
+	public String getEmployer() {
+		return employer;
+	}
+	public void setEmployer(String employer) {
+		this.employer = employer;
+	}
+	public String getEmploymentType() {
+		return employmentType;
+	}
+	public void setEmploymentType(String employmentType) {
+		this.employmentType = employmentType;
+	}
+	public String getEmpcategory() {
+		return empcategory;
+	}
+	public void setEmpcategory(String empcategory) {
+		this.empcategory = empcategory;
+	}
+	public String getOriginId() {
+		return originId;
+	}
+	public void setOriginId(String originId) {
+		this.originId = originId;
+	}
+
+	public String getStateEmployment() {
+		return stateEmployment;
+	}
+	public void setStateEmployment(String stateEmployment) {
+		this.stateEmployment = stateEmployment;
+	}
+	public String getPostalCode() {
+		return postalCode;
+	}
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
+	public String getOfficeTel() {
+		return officeTel;
+	}
+	public void setOfficeTel(String officeTel) {
+		this.officeTel = officeTel;
+	}
+	
+	public String getIdFor() {
+		return idFor;
+	}
+	public void setIdFor(String idFor) {
+		this.idFor = idFor;
+	}
+	public String getStatusMessage() {
+		return statusMessage;
+	}
+	public void setStatusMessage(String statusMessage) {
+		this.statusMessage = statusMessage;
+	}
+	public String getIntroduceBy() {
+		return introduceBy;
+	}
+	public void setIntroduceBy(String introduceBy) {
+		this.introduceBy = introduceBy;
+	}
+	public String getInsurance() {
+		return insurance;
+	}
+	public void setInsurance(String insurance) {
+		this.insurance = insurance;
+	}
+	public String getRel() {
+		return rel;
+	}
+	public void setRel(String rel) {
+		this.rel = rel;
+	}
+	public String getDataTableContactTypeValue() {
+		return dataTableContactTypeValue;
+	}
+	public void setDataTableContactTypeValue(String dataTableContactTypeValue) {
+		this.dataTableContactTypeValue = dataTableContactTypeValue;
+	}
+	public String getIdnumberProof() {
+		return idnumberProof;
+	}
+	public void setIdnumberProof(String idnumberProof) {
+		this.idnumberProof = idnumberProof;
+	}
+	public String getEmpInfoCountry() {
+		return empInfoCountry;
+	}
+	public void setEmpInfoCountry(String empInfoCountry) {
+		this.empInfoCountry = empInfoCountry;
+	}
+	public String getEmpInfoState() {
+		return empInfoState;
+	}
+	public void setEmpInfoState(String empInfoState) {
+		this.empInfoState = empInfoState;
+	}
+	public String getEmpInfoDistrict() {
+		return empInfoDistrict;
+	}
+	public void setEmpInfoDistrict(String empInfoDistrict) {
+		this.empInfoDistrict = empInfoDistrict;
+	}
+	public String getEmpInfoBlock() {
+		return empInfoBlock;
+	}
+	public void setEmpInfoBlock(String empInfoBlock) {
+		this.empInfoBlock = empInfoBlock;
+	}
+	public String getEmpInfoStreet() {
+		return empInfoStreet;
+	}
+	public void setEmpInfoStreet(String empInfoStreet) {
+		this.empInfoStreet = empInfoStreet;
+	}
+	public String getEmpInfoCity() {
+		return empInfoCity;
+	}
+	public void setEmpInfoCity(String empInfoCity) {
+		this.empInfoCity = empInfoCity;
+	}
+	public String getEmpInfoEmploymentTypeId() {
+		return empInfoEmploymentTypeId;
+	}
+	public void setEmpInfoEmploymentTypeId(String empInfoEmploymentTypeId) {
+		this.empInfoEmploymentTypeId = empInfoEmploymentTypeId;
+	}
+	
+	
+	
+	public String getIdTypeproof() {
+		return idTypeproof;
+	}
+	public void setIdTypeproof(String idTypeproof) {
+		this.idTypeproof = idTypeproof;
+	}
+	public Map<String, String> getIdTypeMap() {
+		return idTypeMap;
+	}
+	public void setIdTypeMap(Map<String, String> idTypeMap) {
+		this.idTypeMap = idTypeMap;
+	}
+
+
+
+
+
+
+	public List<IdentityType> getIdentityTypeList() {
+		return identityTypeList;
+	}
+	public void setIdentityTypeList(List<IdentityType> identityTypeList) {
+		this.identityTypeList = identityTypeList;
+	}
+
+
+	public BigDecimal getCountryId() {
+		return countryId;
+	}
+	public void setCountryId(BigDecimal countryId) {
+		this.countryId = countryId;
+	}
+	public BigDecimal getCityId() {
+		return cityId;
+	}
+	public void setCityId(BigDecimal cityId) {
+		this.cityId = cityId;
+	}
+	public BigDecimal getStateId() {
+		return stateId;
+	}
+	public void setStateId(BigDecimal stateId) {
+		this.stateId = stateId;
+	}
+	public BigDecimal getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(BigDecimal districtId) {
+		this.districtId = districtId;
+	}
+	public List<CountryMasterDesc> getCountryList() {
+		return countryList;
+	}
+	public void setCountryList(List<CountryMasterDesc> countryList) {
+		this.countryList = countryList;
+	}
+	public List<StateMasterDesc> getLstState() {
+		return lstState;
+	}
+	public void setLstState(List<StateMasterDesc> lstState) {
+		this.lstState = lstState;
+	}
+	public List<CityMasterDesc> getLstCity() {
+		return lstCity;
+	}
+	public void setLstCity(List<CityMasterDesc> lstCity) {
+		this.lstCity = lstCity;
+	}
+	public List<DistrictMasterDesc> getLstDistrict() {
+		return lstDistrict;
+	}
+	public void setLstDistrict(List<DistrictMasterDesc> lstDistrict) {
+		this.lstDistrict = lstDistrict;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+	public Boolean getBooManual() {
+		return booManual;
+	}
+	public void setBooManual(Boolean booManual) {
+		this.booManual = booManual;
+	}
+	public Boolean getBooSmartcard() {
+		return booSmartcard;
+	}
+	public void setBooSmartcard(Boolean booSmartcard) {
+		this.booSmartcard = booSmartcard;
+	}
+	public Boolean getBooIdDetail() {
+		return booIdDetail;
+	}
+	public void setBooIdDetail(Boolean booIdDetail) {
+		this.booIdDetail = booIdDetail;
+	}
+	public Boolean getBooCustomerDetails() {
+		return booCustomerDetails;
+	}
+	public void setBooCustomerDetails(Boolean booCustomerDetails) {
+		this.booCustomerDetails = booCustomerDetails;
+	}
+	public Boolean getBooRemitterInfo() {
+		return booRemitterInfo;
+	}
+	public void setBooRemitterInfo(Boolean booRemitterInfo) {
+		this.booRemitterInfo = booRemitterInfo;
+	}
+	public Boolean getBooContactDetails() {
+		return booContactDetails;
+	}
+	public void setBooContactDetails(Boolean booContactDetails) {
+		this.booContactDetails = booContactDetails;
+	}
+	public Boolean getBooEmploymentDetails() {
+		return booEmploymentDetails;
+	}
+	public void setBooEmploymentDetails(Boolean booEmploymentDetails) {
+		this.booEmploymentDetails = booEmploymentDetails;
+	}
+	public Boolean getBooProof() {
+		return booProof;
+	}
+	public void setBooProof(Boolean booProof) {
+		this.booProof = booProof;
+	}
+
+
+
+
+	public List<ContactType> getContactTypeList() {
+		return contactTypeList;
+	}
+	public void setContactTypeList(List<ContactType> contactTypeList) {
+		this.contactTypeList = contactTypeList;
+	}
+	public String getDATE_FORMAT() {
+		return DATE_FORMAT;
+	}
+	public void setDATE_FORMAT(String dATE_FORMAT) {
+		DATE_FORMAT = dATE_FORMAT;
+	}
+	public UploadedFile getFile() {
+		return file;
+	}
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
+	public StreamedContent getDownloadFile() {
+		return downloadFile;
+	}
+	public void setDownloadFile(StreamedContent downloadFile) {
+		this.downloadFile = downloadFile;
+	}
+	public BigDecimal getImage_id() {
+		return image_id;
+	}
+	public void setImage_id(BigDecimal image_id) {
+		this.image_id = image_id;
+	}
+	public Boolean getBooBrowsedFile() {
+		return booBrowsedFile;
+	}
+	public void setBooBrowsedFile(Boolean booBrowsedFile) {
+		this.booBrowsedFile = booBrowsedFile;
+	}
+	public Map<String, StreamedContent> getImageMap() {
+		return imageMap;
+	}
+	public void setImageMap(Map<String, StreamedContent> imageMap) {
+		this.imageMap = imageMap;
+	}
+	public String getIdTypeBranchPage() {
+		return idTypeBranchPage;
+	}
+	public void setIdTypeBranchPage(String idTypeBranchPage) {
+		this.idTypeBranchPage = idTypeBranchPage;
+	}
+	public String getHidden1() {
+		return hidden1;
+	}
+	public void setHidden1(String hidden1) {
+		this.hidden1 = hidden1;
+	}
+	public Boolean getBooContactDetailsSize() {
+		return booContactDetailsSize;
+	}
+	public void setBooContactDetailsSize(Boolean booContactDetailsSize) {
+		this.booContactDetailsSize = booContactDetailsSize;
+	}
+	public Date getExpDate() {
+		return expDate;
+	}
+	public void setExpDate(Date expDate) {
+		this.expDate = expDate;
+	}
+	public Date getDateExp() {
+		return dateExp;
+	}
+	public void setDateExp(Date dateExp) {
+		this.dateExp = dateExp;
+	}
+	public Date getDob() {
+		return dob;
+	}
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
+
+	public List<AddContactDetailBean> getContactList() {
+		return contactList;
+	}
+
+	public void setContactList(List<AddContactDetailBean> contactList) {
+		this.contactList = contactList;
+	}
+
+	
+
+	public boolean isContactDataTable() {
+		return contactDataTable;
+	}
+	public void setContactDataTable(boolean contactDataTable) {
+		this.contactDataTable = contactDataTable;
+	}
+
+
+
+	public List<AddContactDetailBean> getContactListDelete() {
+		return contactListDelete;
+	}
+	public void setContactListDelete(List<AddContactDetailBean> contactListDelete) {
+		this.contactListDelete = contactListDelete;
+	}
+
+
+
+	public List<CreateProofTable> getCreateProofList() {
+		return createProofList;
+	}
+	public void setCreateProofList(List<CreateProofTable> createProofList) {
+		this.createProofList = createProofList;
+	}
+	public List<CreateProofTable> getCreateProofListDelete() {
+		return createProofListDelete;
+	}
+	public void setCreateProofListDelete(
+			List<CreateProofTable> createProofListDelete) {
+		this.createProofListDelete = createProofListDelete;
+	}
+	public Boolean getBooIdType() {
+		return booIdType;
+	}
+	public void setBooIdType(Boolean booIdType) {
+		this.booIdType = booIdType;
+	}
+	public Boolean getBooIdNo() {
+		return booIdNo;
+	}
+	public void setBooIdNo(Boolean booIdNo) {
+		this.booIdNo = booIdNo;
+	}
+	public Boolean getBooIdTExpDate() {
+		return booIdTExpDate;
+	}
+	public void setBooIdTExpDate(Boolean booIdTExpDate) {
+		this.booIdTExpDate = booIdTExpDate;
+	}
+	public Boolean getBooProfListDuplicate() {
+		return booProfListDuplicate;
+	}
+	public void setBooProfListDuplicate(Boolean booProfListDuplicate) {
+		this.booProfListDuplicate = booProfListDuplicate;
+	}
+	public Boolean getBooIdTypeCheck() {
+		return booIdTypeCheck;
+	}
+	public void setBooIdTypeCheck(Boolean booIdTypeCheck) {
+		this.booIdTypeCheck = booIdTypeCheck;
+	}
+	public Boolean getBooIdFor() {
+		return booIdFor;
+	}
+	public void setBooIdFor(Boolean booIdFor) {
+		this.booIdFor = booIdFor;
+	}
+	public Boolean getBooUnEmp() {
+		return booUnEmp;
+	}
+	public void setBooUnEmp(Boolean booUnEmp) {
+		this.booUnEmp = booUnEmp;
+	}
+
+
+
+	public Boolean getEnablePTbl() {
+		return enablePTbl;
+	}
+	public void setEnablePTbl(Boolean enablePTbl) {
+		this.enablePTbl = enablePTbl;
+	}
+	public boolean getApproved() {
+		return approved;
+	}
+	public void setApproved(boolean approved) {
+		this.approved = approved;
+	}
+
+	
+	public Boolean getBoolAdditional() {
+		return boolAdditional;
+	}
+	public void setBoolAdditional(Boolean boolAdditional) {
+		this.boolAdditional = boolAdditional;
+	}
+
+
+	private String userName=FacesContext.getCurrentInstance()
+			.getExternalContext().getSessionMap().get("userName")
+			.toString();
+
+	@Autowired
+	IGeneralService<T> generalService;
+	@Autowired	
+	ICustomerRegistrationBranchService<T> icustomerRegistrationService;
+	
+	
+
+	
+	
+	public IGeneralService<T> getGeneralService() {
+		return generalService;
+	}
+	public void setGeneralService(IGeneralService<T> generalService) {
+		this.generalService = generalService;
+	}
+	public ICustomerRegistrationBranchService<T> getIcustomerRegistrationService() {
+		return icustomerRegistrationService;
+	}
+	public void setIcustomerRegistrationService(
+			ICustomerRegistrationBranchService<T> icustomerRegistrationService) {
+		this.icustomerRegistrationService = icustomerRegistrationService;
+	}
+	
+public Blob storeImage() throws IOException, SerialException, SQLException {
+        
+	   	InputStream stream = null;
+	   	
+	   	try {
+	   		stream =  file.getInputstream();
+	        }catch(Exception e){
+	           e.printStackTrace();
+	        }
+	   	return new javax.sql.rowset.serial.SerialBlob(readFully(stream));
+	}
+
+public void veryfiAllClick() {
+	if(getApproved()){
+		for (CreateProofTable element : createProofList) {
+			element.setChecked(true);
+		}
+	} else{
+		for (CreateProofTable element : createProofList) {
+			element.setChecked(false);
+		}
+	}
+}
+
+public  byte[] readFully(InputStream input) throws IOException {
+	byte[] buffer = new byte[8192];
+    int bytesRead;
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    
+    while ((bytesRead = input.read(buffer)) != -1) {
+    	output.write(buffer, 0, bytesRead);
+    }
+    return output.toByteArray();
+}
+	
+	
+	private BigDecimal individualIdType = new BigDecimal(1);
+	public List<IdentityType> getFetchIdType(){
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<IdentityType> idType = getGeneralService().getIdentityTypes(
+				new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):""+1),
+				new BigDecimal(sessionStateManage.getSessionValue("countryId")), individualIdType
+				);
+		/*
+		for (IdentityType identityType : idType) {
+			idTypeMap.put(identityType.getIdentityTypeId().toPlainString(), identityType.getIdentityType());
+		}
+		
+		setIdentityTypeList(idType);*/
+	
+		return idType;
+		
+	}
+	
+	public List<ContactType> getFetchContactTypeList() {
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		List<ContactType>  lstContactType =  getGeneralService().getContactTypes(
+				new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):""+1));
+		
+		/*for (ContactType contactType : lstContactType) {
+			conTypeMap.put(contactType.getContactTypeId().toPlainString(), contactType.getContactType());
+		}
+		
+		setLstContactType(lstContactType);*/
+		return lstContactType;
+	}
+	
+	public List<CountryMasterDesc> getNationalityNameList() {
+		SessionStateManage sessionStateManage = new SessionStateManage();
+		return getGeneralService().getNationalityList(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):"1"));
+	}
+	
+	/**
+	 * method is responsible to populate List of countries from DB 
+	 * @return
+	 */
+	public List<CountryMasterDesc> getCountryNameList() {
+		 sessionStateManage = new SessionStateManage(); 
+		countryList = new ArrayList<CountryMasterDesc>();
+		countryList.addAll( getGeneralService().getCountryList(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):"1")));
+		
+		for(CountryMasterDesc countryMasterDesc:countryList) {
+			mapCountryList.put(countryMasterDesc.getFsCountryMaster().getCountryId(), countryMasterDesc.getCountryName());
+		}
+ 		return countryList;
+	}
+	
+	/*
+	*
+	*method to get state from db and add all the state code and name will be mapped to hashMap
+	*/
+	public void popState(AjaxBehaviorEvent e) {
+	
+		lstState = new ArrayList<StateMasterDesc>();
+		lstState.addAll(getGeneralService().getStateList(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):"1"),getCountryId()));
+		for(StateMasterDesc stateMasterDesc:lstState) {
+			mapStateList.put(stateMasterDesc.getFsStateMaster().getStateId(), stateMasterDesc.getStateName());
+		}
+	}
+	public List<StateMasterDesc> getStateListFromDB() {
+		return lstState;
+	}
+	/*
+	*
+	*method to get District from db and add all the state code and name will be mapped to hashMap
+	*/
+	public void popDistrict(AjaxBehaviorEvent e) {
+		lstDistrict = new ArrayList<DistrictMasterDesc>();
+		lstDistrict.addAll(getGeneralService().getDistrictList(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):"1"),getCountryId(),getStateId()));
+		for(DistrictMasterDesc districtMasterDesc:lstDistrict) {
+			mapDistirictList.put(districtMasterDesc.getFsDistrictMaster().getDistrictId(), districtMasterDesc.getDistrict());
+		}
+	}
+	public List<DistrictMasterDesc> getDistrictListFromDB() {
+		return lstDistrict;
+		
+	}
+	/*
+	*
+	*method to get city from db and add all the state code and name will be mapped to hashMap
+	*/
+	public void popCity(AjaxBehaviorEvent e) {
+		lstCity = new ArrayList<CityMasterDesc>();
+		lstCity.addAll(getGeneralService().getCityList(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):"1"),getCountryId(),getStateId(),getDistrictId()));
+		for(CityMasterDesc cityMasterDesc:lstCity) {
+			mapCityList.put(cityMasterDesc.getFsCityMaster().getCityId(), cityMasterDesc.getCityName());
+		}
+	}
+	
+	public List<CityMasterDesc> getCityListFromDB() {
+		return lstCity;
+		
+	}
+	
+public List<EmploymentType> getEmploymentTypeList() {
+		
+		 sessionStateManage = new SessionStateManage();
+		return getGeneralService().getEmploymentTypes(new BigDecimal(sessionStateManage.isExists("languageId")?sessionStateManage.getSessionValue("languageId"):""+1));
+	}
+
+public void idInfo(){
+	
+	setBooRemitterInfo(false);
+	setBooIdDetail(true);
+	setBooCustomerDetails(false);
+	setBooContactDetails(false);
+	setBooEmploymentDetails(false);
+	setBooProof(false);
+}
+
+public void remitterInfo(){
+	
+	setBooRemitterInfo(true);
+	setBooIdDetail(false);
+	setBooCustomerDetails(false);
+	setBooContactDetails(false);
+	setBooEmploymentDetails(false);
+	setBooProof(false);
+}
+
+public void contactDetails(){
+	setBooRemitterInfo(false);
+	setBooIdDetail(false);
+	setBooCustomerDetails(false);
+	setBooContactDetails(true);
+	setBooEmploymentDetails(false);
+	setBooProof(false);
+
+}
+
+public void employmentDetails(){
+	setBooRemitterInfo(false);
+	setBooIdDetail(false);
+	setBooCustomerDetails(false);
+	setBooContactDetails(false);
+	setBooProof(false);
+	setBooEmploymentDetails(true);
+
+}
+
+public void proofDetails(){
+	setBooRemitterInfo(false);
+	setBooIdDetail(false);
+	setBooCustomerDetails(false);
+	setBooContactDetails(false);
+	setBooProof(true);
+	setBooEmploymentDetails(false);
+
+}
+
+public void appearCarddetail(){
+	//setBooSmartcard(false);
+	//setBooManual(true);
+}
+
+public String save() throws IOException, ParseException {
+	
+	Date currentDate = new Date();
+	Customer customer = new Customer();
+	
+	CountryMaster countryMaster =  new CountryMaster();
+	countryMaster.setCountryId(getCountryId());
+	customer.setFsCountryMasterByCountryId(countryMaster);
+	
+
+	CountryMaster countryMasterForNationality =  new CountryMaster();
+	countryMaster.setCountryId(new BigDecimal(getNationality()));
+	customer.setFsCountryMasterByNationality(countryMasterForNationality);
+	
+	CompanyMaster companyMaster = new CompanyMaster();
+	companyMaster.setCompanyId(new BigDecimal(1));
+	customer.setFsCompanyMaster(companyMaster);
+	
+
+	int languageID = 1;
+	if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("languageCode")){
+		languageID = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("languageCode").toString().equalsIgnoreCase("ar")?2:1;
+	}
+	
+	LanguageType languageType = new LanguageType();
+	languageType.setLanguageId(new BigDecimal(languageID));
+	customer.setFsLanguageType(languageType);
+	
+	customer.setShortName(getShortName());
+	customer.setShortNameLocal(getShortNamel());
+	customer.setAmlStatus(getAMLStatus());
+	customer.setTitle(getTitle());
+	customer.setFirstName(getFirstName());
+	customer.setMiddleName(getMiddleName());
+	customer.setLastName(getLastName());
+	customer.setTitleLocal(getTitlel());
+	customer.setFirstNameLocal(getFirstNamel());
+	customer.setMiddleNameLocal(getMiddleNamel());
+	customer.setLastNameLocal(getLastNamel());
+	customer.setGender(getGender());
+	customer.setDateOfBirth(getDob());
+	customer.setAlterEmailId(getAlternativeEmail());
+	customer.setMobile(getMobile());
+	customer.setEmail(getEmail());
+	customer.setCreatedBy(userName);
+	customer.setCreationDate(currentDate);
+	
+	if(getApproved()){
+		customer.setActivatedInd("1");
+		customer.setActivatedDate(new Date());
+		customer.setVerificationBy(userName);
+		customer.setVerificationDate(new Date());
+	} else {
+		customer.setActivatedInd("0");
+		customer.setInactivatedDate(new Date());
+	}
+	
+	if (boolAdditional) {
+		customer.setPlaceOfBirth(getBirthPlace());
+		customer.setFatherName(getFatherName());
+		customer.setCountryOfBirth(getCountryOfBirth());
+	}
+	
+	/**
+	 * Save in Contact Details
+	 */
+	
+	CountryMaster countMaster = new CountryMaster();
+	StateMaster stateMaster = new StateMaster();
+	DistrictMaster districtmaster = new DistrictMaster();
+	CityMaster cistyMaster = new CityMaster(); 
+	ContactType contactType =new ContactType();
+	
+	for (AddContactDetailBean details : contactList) {
+		
+		countMaster.setCountryId(details.getCountryId());
+		
+		if(details.getStateId() == null) {
+			stateMaster.setStateId(details.getStateId());
+		}else{
+			stateMaster.setStateId(new BigDecimal(1));
+		}
+		
+		if(details.getDistrictId() == null){
+			districtmaster.setDistrictId(new BigDecimal(1));
+		} else {
+			districtmaster.setDistrictId(details.getDistrictId());
+		}
+		
+		contactType.setContactTypeId(details.getContactTypeId());
+		
+		try{
+			cistyMaster.setCityId(details.getCityId());
+		} catch(Exception e){
+			cistyMaster.setCityId(new BigDecimal(1));
+		}
+		
+		ContactDetail adContact = new ContactDetail();
+		adContact.setFsContactType(contactType);
+		adContact.setFsCustomer(customer);
+		adContact.setFsCountryMaster(countryMaster);
+		adContact.setFsLanguageType(languageType);
+		adContact.setFsStateMaster(stateMaster);
+		adContact.setFsDistrictMaster(districtmaster);
+		adContact.setFsCityMaster(cistyMaster); 
+		
+		adContact.setArea(details.getArea());
+		adContact.setBlock(details.getBlock());
+		adContact.setFlat(details.getFlat());
+		adContact.setStreet(details.getStreet());
+		adContact.setTelephone(details.getTel());
+		
+		adContact.setCreatedBy(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userName").toString());
+		adContact.setCreationDate(new Date());
+		adContact.setActiveStatus("1");
+		
+		
+		
+		
+	
+	}
+	
+	/**
+	 * Save in CustomerEmployment Table
+	 */
+	CustomerEmploymentInfo custEmp = new CustomerEmploymentInfo();
+
+	EmploymentType employmentType = new EmploymentType();
+	employmentType.setEmploymentTypeId(new BigDecimal(getEmploymentType()));
+	//TODO hardCoded
+	//employmentType.setEmploymentTypeId(getEmploymentType().equals("") ? null : new BigDecimal(getEmploymentType()));
+	
+	custEmp.setFsCustomer(customer);
+	custEmp.setFsLanguageType(languageType);
+	custEmp.setFsCompanyMaster(companyMaster);
+	custEmp.setFsCountryMaster(countryMaster);
+	custEmp.setOccupation(getOccupation());
+	custEmp.setEmployerName(getEmployer());
+	custEmp.setFsEmploymentType(employmentType);
+	custEmp.setDepartment(getEmpcategory());
+	custEmp.setStateId(new BigDecimal(getEmpInfoState()));
+	custEmp.setDistrictId(getEmpInfoDistrict().equals("") ? null : new BigDecimal(getEmpInfoDistrict()));
+	custEmp.setCityId(new BigDecimal(getEmpInfoCity()));
+	custEmp.setArea(getArea());
+	custEmp.setBlock(getEmpInfoBlock());
+	custEmp.setStreet(getEmpInfoStreet().toString());
+	custEmp.setOfficeTelephone(getOfficeTel());
+	custEmp.setPostal(getPostalCode());
+	custEmp.setCreatedBy(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userName").toString());
+	custEmp.setCreationDate(new Date());
+
+	return "success";
+	
+}
+	
+
+public void clear(){
+	
+setIdType("");
+setIdNumber("");
+setSelectType("");
+setTitle("");
+setFirstName("");
+setLastName("");
+setMiddleName("");
+setShortName("");
+setTitlel("");
+setFirstNamel("");
+setLastNamel("");
+setMiddleNamel("");
+setShortNamel("");
+setNationality("");
+setGender("");
+setMobile("");
+setEmail("");
+setAlternativeEmail("");
+setDob(null);
+setContactTypeId(null);
+setLocalArea("");
+setCountryId(null);
+setStreet("");
+setStateId(null);
+setTelephone("");
+setDistrictId(null);
+setFlat("");
+setCityId(null);
+setBlock("");
+setEmploymentType("");
+setOccupation("");
+setEmployer("");
+setEmpInfoBlock("");
+setEmpInfoCountry("");
+
+
+
+
+}
+
+/*
+ * method is responsible to add contact in a dataTable
+ * 
+ */
+public void addContactDetailsDataTable() {
+	System.out.println("inside contact details");
+    AddContactDetailBean addContact = new AddContactDetailBean();
+    addContact.setContType("office");
+    addContact.setContactTypeId(new BigDecimal(1));
+    addContact.setCountryId(this.countryId);
+    addContact.setCountry(mapCountryList.get(this.countryId));
+    addContact.setStateId(this.stateId);
+    addContact.setState(mapStateList.get(this.stateId));
+    addContact.setDistrictId(this.districtId);
+    addContact.setDist(mapDistirictList.get(this.districtId));
+    addContact.setCityId(this.cityId);
+    addContact.setCity(mapCityList.get(this.cityId));
+    addContact.setArea(this.localArea);
+    addContact.setStreet(this.street);
+    addContact.setFlat(this.flat);
+    addContact.setTel(this.telephone);
+    addContact.setBlock(this.block);
+	contactList.add(addContact);
+	setContactTypeId(null);
+	setCountryId(null);
+	setStateId(null);
+	setDistrictId(null);
+	setCityId(null);
+	setLocalArea("");
+	setStreet("");
+	setBlock("");
+	setTelephone("");
+	setFlat("");
+	setContactDataTable(true);
+}
+
+public void addRows() {
+	
+	String fileName = getFile().getFileName();
+	if(fileName.contains(".doc") || fileName.contains(".docx") || fileName.contains(".jpg") || fileName.contains(".jpeg") || 
+						fileName.contains(".png") || fileName.contains(".pdf")) {
+	
+		for (CreateProofTable element : createProofList) {
+			
+			if(this.idFor.equalsIgnoreCase(element.getId_for())
+					&& this.idTypeproof.equalsIgnoreCase(element.getId_type())
+					&& this.idnumberProof.equalsIgnoreCase(element.getId_number())	) {
+				
+				
+					break;
+			}	
+		}
+		
+		if(!getBooProfListDuplicate()){
+			try {
+				Blob blob = storeImage();
+				int blobLength = (int) blob.length();  
+				byte[] blobAsBytes = blob.getBytes(1, blobLength);
+				InputStream stream=new ByteArrayInputStream(blobAsBytes);
+		        downloadFile = new DefaultStreamedContent(stream, "image/jpg", "image.jpg");
+		        
+				//Save Image
+				DocumentImg document = new DocumentImg();
+				try {
+					document.setImage(storeImage());
+				} catch (SerialException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				document.setUploadDate(new Date());
+				document.setImageName(getFile().getFileName());
+				
+				//getBranchpageService().saveImage(document);
+				image_id = document.getImgId(); 
+				setImage_id(image_id);
+		     			        
+				SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
+				String df = dateformat.format(this.dateExp);
+				CreateProofTable createProofTable = new CreateProofTable(this.idFor, this.idTypeproof, this.idnumberProof, df, "insert", 0, 
+																	idForMap.get(this.idFor), idTypeMap.get(this.idType), image_id);
+				createProofList.add(createProofTable);
+
+				setEnablePTbl(true);
+				
+				//setExpDate(null);
+				setDateExp(null);
+				setIdTypeproof("");
+				setIdnumberProof("");
+				setIdFor("");
+			} catch (Exception e) {
+
+			}
+		} else {
+			setBooProfListDuplicate(true);
+			FacesContext.getCurrentInstance().addMessage("Message", new FacesMessage(FacesMessage.SEVERITY_WARN, "", "Duplicate ID Proof !!!!!! "));
+		}
+}
+
+}}
+
+

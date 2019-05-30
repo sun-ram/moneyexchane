@@ -1,0 +1,276 @@
+package com.amg.exchange.serviceimpl;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.amg.exchange.dao.IBranchPageDao;
+import com.amg.exchange.model.Amlstatus;
+import com.amg.exchange.model.CityMaster;
+import com.amg.exchange.model.CompanyMaster;
+import com.amg.exchange.model.ContactDetail;
+import com.amg.exchange.model.CountryMaster;
+import com.amg.exchange.model.CountryMasterDesc;
+import com.amg.exchange.model.Customer;
+import com.amg.exchange.model.CustomerEmploymentInfo;
+import com.amg.exchange.model.CustomerIdProof;
+import com.amg.exchange.model.CustomerLogin;
+import com.amg.exchange.model.DistrictMaster;
+import com.amg.exchange.model.DocumentImg;
+import com.amg.exchange.model.NationalityMaster;
+import com.amg.exchange.model.RuleComponent;
+import com.amg.exchange.model.StateMaster;
+import com.amg.exchange.service.IBranchPageService;
+import com.amg.exchange.service.ICommonService;
+import com.amg.exchange.service.IMutualService;
+
+@Service("branchPageServiceImpl")
+public class BranchPageServiceImpl<T> implements IBranchPageService<T>,ICommonService<T>, IMutualService<T>{
+	
+	@Autowired
+	IBranchPageDao<T> branchPageDao;
+	
+	public IBranchPageDao<T> getBranchPageDao() {
+		return branchPageDao;
+	}
+
+	public void setBranchPageDao(IBranchPageDao<T> branchPageDao) {
+		this.branchPageDao = branchPageDao;
+	}
+
+	@Transactional
+	@Override
+	public List<NationalityMaster> getNationality() {
+		
+		return getBranchPageDao().getNationality();
+	}
+
+
+	@Override
+	public List<CityMaster> getCity(BigDecimal state) {
+
+		return getBranchPageDao().getCity(state);
+	}
+
+	@Override
+	public List<CountryMaster> getCountry() {
+
+		return null;
+	}
+
+	
+
+	@Override
+	public List<StateMaster> getState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void save(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void popUploadedData() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Transactional
+	@Override
+	public List<CustomerIdProof> popUploadedData(String id) {
+		
+		return getBranchPageDao().popUploadedData(id);
+	} 
+
+	@Transactional
+	@Override
+	public void saveCustomerEmploymentInfo(CustomerEmploymentInfo custEmp, BigDecimal customerid) {
+
+		getBranchPageDao().saveCustomerEmploymentInfo(custEmp, customerid);
+	}
+
+	@Transactional
+	@Override
+	public void saveApprove(BigDecimal customerId) {
+		
+		getBranchPageDao().saveApprove(customerId);
+	}
+
+	@Transactional
+	@Override
+	public void removeIdDetails(BigDecimal customerId) {
+		
+		getBranchPageDao().removeIdDetails(customerId);
+	}
+
+	@Transactional
+	@Override
+	public void saveCustomerEmploymentProofInfo(CustomerIdProof customerIdProof, BigDecimal customerId) {
+		
+		getBranchPageDao().saveCustomerEmploymentProofInfo(customerIdProof, customerId);
+	}
+
+	@Transactional
+	@Override
+	public void saveCustomer(Customer customer, BigDecimal customerId) {
+		
+		getBranchPageDao().saveCustomer(customer, customerId);
+	}
+
+	@Transactional
+	@Override
+	public void saveAdditionalInfo(Customer customer, BigDecimal customerId) {
+		
+		getBranchPageDao().saveAdditionalInfo(customer, customerId);
+	}
+
+	@Transactional
+	@Override
+	public void saveCustomerIndividual(Customer customer, BigDecimal customerId) {
+
+		getBranchPageDao().saveCustomerIndividual(customer, customerId);
+	}
+
+	@Transactional
+	@Override
+	public void addContactDetails(ContactDetail contactDetail,BigDecimal customerId) {
+
+		getBranchPageDao().addContactDetails(contactDetail, customerId);
+	}
+
+	@Transactional
+	@Override 
+	public void deleteContactDetails(BigDecimal customerId) {
+		
+		getBranchPageDao().deleteContactDetails(customerId);
+	}
+
+	@Transactional
+	@Override
+	public List<Amlstatus> getAmlStatus(String name) {
+		
+		return getBranchPageDao().getAmlStatus(name);
+	}
+
+	@Override
+	public List<CompanyMaster> getCompany(BigDecimal countryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<StateMaster> getState(BigDecimal countryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<DistrictMaster> getDistrict(BigDecimal stateId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Transactional
+	@Override
+	public List<RuleComponent> getComponentInfo(BigDecimal pageId) {
+		
+		return getBranchPageDao().getComponentInfo(pageId);
+	}
+
+	@Transactional
+	@Override
+	public List<CountryMasterDesc> getCountryList(BigDecimal languageId) {
+		return getBranchPageDao().getCountryList(languageId);
+	}
+
+	@Transactional
+	@Override
+	public List<CustomerIdProof> getCustomerIdProof(String idNumber) {
+		return getBranchPageDao().getCustomerIdProof(idNumber);
+	}
+
+	@Transactional
+	@Override
+	public List<CustomerIdProof> getCustomerIdProofList(BigDecimal customerId) {
+		return getBranchPageDao().getCustomerIdProofList(customerId);
+	}
+	
+	@Transactional
+	@Override
+	public List<CustomerIdProof> getCustomerIdProofListAll() {
+		return getBranchPageDao().getCustomerIdProofListAll();
+	}
+	
+	@Transactional
+	@Override
+	public List<Customer> getCustomerInfo(BigDecimal customerId) {
+		return getBranchPageDao().getCustomerInfo(customerId);
+	}
+
+	@Transactional
+	@Override
+	public List<ContactDetail> getCustomerContactDetails(BigDecimal customerId) {
+		return getBranchPageDao().getCustomerContactDetails(customerId);
+	}
+
+	@Transactional
+	@Override
+	public List<CustomerEmploymentInfo> getCustomerEmploymentInfo(BigDecimal customerId) {
+		return getBranchPageDao().getCustomerEmploymentInfo(customerId);
+	}
+
+	@Transactional
+	@Override
+	public List<CustomerLogin> getLoginInfoForCustomer(BigDecimal customerId) {
+		return getBranchPageDao().getLoginInfoForCustomer(customerId);
+	}
+	
+	//For Save Image
+	@Transactional
+	@Override
+	public void saveImage(DocumentImg document) {
+		getBranchPageDao().saveImage(document);
+	}
+	
+	@Transactional
+	@Override
+	public List<DocumentImg> getImage(BigDecimal id) {
+		return getBranchPageDao().getImage(id);
+	}
+	@Transactional
+	@Override
+	public void saveOrUpdateVerifiedCustomer(Customer customer) {
+		getBranchPageDao().saveOrUpdateVerifiedCustomer(customer);
+		
+	}
+
+   @Transactional
+   @Override
+   public void saveOrUpdateEmpInfo(CustomerEmploymentInfo custEmp) {
+	getBranchPageDao().saveOrUpdateEmpInfo(custEmp);
+	
+   }
+   @Transactional
+   @Override
+   public void saveOrUpdateCustomerIdProof(CustomerIdProof custProof) {
+	getBranchPageDao().saveOrUpdateCustomerIdProof(custProof);
+	
+   }
+} 

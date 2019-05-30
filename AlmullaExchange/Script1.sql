@@ -1,0 +1,6 @@
+select * from FS_CUSTOMER_LOGIN
+select * from FS_CUSTOMER_ID_PROOF
+select * from FS_CONTACT_TYPE
+select * from FS_CONTACT_DETAIL
+
+update FS_CUSTOMER_LOGIN set CUSTOMER_ID=42 WHERE CUST_LOGIN_ID=3

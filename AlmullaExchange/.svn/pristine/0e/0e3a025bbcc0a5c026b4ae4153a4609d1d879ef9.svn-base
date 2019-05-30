@@ -1,0 +1,900 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</h:head>
+
+<h:body>
+	<f:view>
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<ui:include src="#{facesBean.menu}"></ui:include>
+		<h:panelGroup layout="block" class="container">
+			<h:panelGroup layout="block" class="main_div">
+				<h1>
+					<h:outputText value="Bank Branch Details" />
+				</h1>
+				<h:panelGroup  layout="block" class="table_bg">
+					<h:form style="padding:0!important;">
+					<!-- Confirmation messages will come --> 
+						<!-- <p:growl id="msg" showDetail="true" sticky="true" globalOnly="true"/> -->
+						<!-- If idle 5 minute / 300 seconds, run 'idleDialog' -->
+						<p:idleMonitor timeout="300000" onidle="idleDialog.show()" />
+					 
+						<p:confirmDialog id="confirmDialog"
+							message="You have been idle for last 5 minutes, Please click ok to continue."
+							header="Are you there?" severity="alert" widgetVar="idleDialog">
+					 
+							<p:commandButton id="confirm" value="Stay" 
+								oncomplete="idleDialog.hide()"
+								actionListener="#{bankBranchDetails.welcomeListener}" process="@this"/>
+					 
+							<p:commandButton id="Logout" value="Leave" 
+								oncomplete="idleDialog.hide()"
+								actionListener="#{bankBranchDetails.logoutListener}" process="@this"/>
+						</p:confirmDialog>
+						<p:panel id="mainPanel" 
+							style="border: 0px; padding:0px!important;">
+							<p:panel style="padding:10px!important;">
+							<p:panel id="branchInfoPanel" style="padding:0px!important;border:none !important;" rendered="#{bankBranchDetails.isBranchInfo}">
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Bank #{bankBranchDetails.viewBehaviorBean('Bank','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+									<p:message for="bank" display="text"/>
+										<p:selectOneMenu id="bank" value="#{bankBranchDetails.bankID}"
+										required="#{bankBranchDetails.viewBehaviorBean('Bank','REQUIRED')}"
+											disabled="#{bankBranchDetails.viewBehaviorBean('Bank','ENABLE')}" requiredMessage="Select Bank"
+											filter="true" filterMatchMode="startsWith">
+											<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+											<f:selectItems value="#{bankBranchDetails.getBankNameList()}"
+												var="c" itemLabel="#{c.bankFullName}"
+												itemValue="#{c.bankId}" />
+												<p:ajax event="change"/>
+										</p:selectOneMenu>
+										
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Branch Code #{bankBranchDetails.viewBehaviorBean('Branch Code','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+									
+										<p:inputText id="branchCode"
+											value="#{bankBranchDetails.branchCode}" 
+											required="#{bankBranchDetails.viewBehaviorBean('Branch Code','REQUIRED')}"
+													disabled="#{bankBranchDetails.viewBehaviorBean('Branch Code','ENABLE')}"
+													maxlength="#{bankBranchDetails.viewBehaviorBean('Branch Code','MAX_VALUE')}"
+													requiredMessage="Enter Branch Code"
+													validator="RegularExpressionValidation">
+												
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Code','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Code','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Code','MAX_VALUE')}"/>	
+													
+													<p:ajax event="blur" listener="#{bankBranchDetails.validateBranchCode}" update="mainPanel"/>
+													
+													<p:message for="branchCode" display="text"/>
+													</p:inputText>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Full Name #{bankBranchDetails.viewBehaviorBean('Branch Full Name','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="fullName"
+											value="#{bankBranchDetails.fullName}" 
+											required="#{bankBranchDetails.viewBehaviorBean('Branch Full Name','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Branch Full Name','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Branch Full Name','MAX_VALUE')}"
+														requiredMessage="Enter Branch Full Name"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Full Name','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Full Name','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Full Name','MAX_VALUE')}"/>	
+													
+		                							<p:ajax update="fullNameMsg" event="blur" />
+													<p:message id="fullNameMsg" for="fullName" display="text"/>	
+												</p:inputText>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Short Name #{bankBranchDetails.viewBehaviorBean('Branch Short Name','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText id="shortName"
+											value="#{bankBranchDetails.shortName}" 
+														required="#{bankBranchDetails.viewBehaviorBean('Branch Short Name','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Branch Short Name','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Branch Short Name','MAX_VALUE')}"
+														requiredMessage="Enter Branch Short Name"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Short Name','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Short Name','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Short Name','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="shortNameMsg" event="blur" />
+													<p:message id="shortNameMsg" for="shortName" display="text"/>
+												</p:inputText>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Address1 #{bankBranchDetails.viewBehaviorBean('Branch first address','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="address1"
+											value="#{bankBranchDetails.address1}" required="#{bankBranchDetails.viewBehaviorBean('Branch first address','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Branch first address','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Branch first address','MAX_VALUE')}"
+														requiredMessage="Enter Branch First Address"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch first address','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch first address','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch first address','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="address1Msg" event="blur" />
+											    	<p:message id="address1Msg" for="address1" display="text"/>
+										    	</p:inputText>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Address2  #{bankBranchDetails.viewBehaviorBean('Branch second address','MANDATORY')}"/>
+									</div>
+									<div class="ui-block-d">
+										<p:inputText id="address2"
+											value="#{bankBranchDetails.address2}" required="#{bankBranchDetails.viewBehaviorBean('Branch second address','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Branch second address','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Branch second address','MAX_VALUE')}"
+														requiredMessage="Enter Branch Second Address"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch second address','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch second address','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch second address','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="address2Msg" event="blur" />
+											    	<p:message id="address2Msg" for="address2" display="text"/>
+											    </p:inputText>	
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Telephone No #{bankBranchDetails.viewBehaviorBean('Telephone Number','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="telephoneNumber"
+											value="#{bankBranchDetails.telephoneNumber}" 
+											required="#{bankBranchDetails.viewBehaviorBean('Telephone Number','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Telephone Number','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Telephone Number','MAX_VALUE')}"
+														requiredMessage="Enter Branch Telephone Number"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Telephone Number','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Telephone Number','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Telephone Number','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="telephoneMsg" event="blur" />
+											    	<p:message id="telephoneMsg" for="telephoneNumber" display="text"/>
+										    	</p:inputText>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Fax #{bankBranchDetails.viewBehaviorBean('Fax','MANDATORY')}"/>
+									</div>
+									<div class="ui-block-d">
+										<p:inputText id="fax" value="#{bankBranchDetails.fax}" 
+										required="#{bankBranchDetails.viewBehaviorBean('Fax','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Fax','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Fax','MAX_VALUE')}"
+														requiredMessage="Enter Bank Fax Number"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Fax','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Fax','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Fax','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="faxMsg" event="blur" />
+											    	<p:message id="faxMsg" for="fax" display="text"/>
+										    	</p:inputText>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+
+
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Email #{bankBranchDetails.viewBehaviorBean('Email','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="email" value="#{bankBranchDetails.email }" 
+										required="#{bankBranchDetails.viewBehaviorBean('Email','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Email','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Email','MAX_VALUE')}"
+														requiredMessage="Enter email Id" validatorMessage="Invalid Email Id">
+													
+													<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]"/>
+													
+													<p:ajax update="emailMsg" event="blur" />
+											    	<p:message id="emailMsg" for="email" display="text"/>	
+												</p:inputText>
+									</div>
+									
+								</div>
+								<div class="clearfix"></div>
+
+								
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Country #{bankMaster.viewBehaviorBean('Country','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:message for="country" display="text"/>
+												<p:selectOneMenu id="country" value="#{bankBranchDetails.countryId}" filter="true" filterMatchMode="startsWith" 
+														required="#{bankBranchDetails.viewBehaviorBean('Country','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Country','ENABLE')}"
+														requiredMessage="Select Country">
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+													<f:selectItems value="#{bankBranchDetails.countryNameList}" var="c" itemLabel="#{c.countryName}" itemValue="#{c.countryMasterId}"/>
+													<p:ajax event="change" update="state, district, city"  listener="#{bankBranchDetails.generateStateList}"/>
+												</p:selectOneMenu>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="State #{bankMaster.viewBehaviorBean('State','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+										<p:message for="state" display="text"/>
+												<p:selectOneMenu id="state" value="#{bankBranchDetails.stateId}" filter="true" filterMatchMode="startsWith" 
+														required="#{bankBranchDetails.viewBehaviorBean('State','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('State','ENABLE')}" 
+																	requiredMessage="Select State">
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+													<f:selectItems  value="#{bankBranchDetails.lstStateList}" var="c" itemLabel="#{c.stateName}" itemValue="#{c.fsStateMaster.stateId}"/>
+													<p:ajax event="change" update="district, city"  listener="#{bankBranchDetails.generateDistrictList}"/>
+												</p:selectOneMenu>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="City #{bankMaster.viewBehaviorBean('City','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:message for="district" display="text"/>
+												<p:selectOneMenu id="district" value="#{bankBranchDetails.districtId}" 
+													required="#{bankBranchDetails.viewBehaviorBean('District','REQUIRED')}"
+													disabled="#{bankBranchDetails.viewBehaviorBean('District','ENABLE')}" requiredMessage="Select District">
+													
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+													<f:selectItems  value="#{bankBranchDetails.lstDistrictList}" var="c" itemLabel="#{c.district}" itemValue="#{c.fsDistrictMaster.districtId}"/>
+													<p:ajax event="change" update="city"  listener="#{bankBranchDetails.generateCityList}" />
+												</p:selectOneMenu>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="District #{bankMaster.viewBehaviorBean('City','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+										<p:message for="city" display="text"/>
+												<p:selectOneMenu id="city" value="#{bankBranchDetails.cityId}" 
+													required="#{bankBranchDetails.viewBehaviorBean('City','REQUIRED')}"
+													disabled="#{bankBranchDetails.viewBehaviorBean('City','ENABLE')}" requiredMessage="Select City">
+													
+													<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+													<f:selectItems  value="#{bankBranchDetails.lstCityList}" var="c" itemLabel="#{c.cityName}" itemValue="#{c.fsCityMaster.cityId}"/>
+													<p:ajax event="change" listener="#{bankBranchDetails.getCity}"/>
+												</p:selectOneMenu>
+
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+								
+								
+								<h:panelGroup layout="block" styleClass="button_align">
+									
+									<p:commandButton value="NEXT" actionListener="#{bankBranchDetails.branchInfoPanelNext}" update="mainPanel"
+										style="float:right;">
+									</p:commandButton>
+									<!-- <p:commandButton value="RESET"
+										action="#{bankBranchDetails.resetBankBranch}"
+										update="mainPanel" process="@this"
+										style="float:right; margin-right:10px; ">
+									</p:commandButton>
+									<p:commandButton value="CANCEL"
+										style="float:right; margin-right:10px; ">
+									</p:commandButton> -->
+									<div class="clearfix"></div>
+								</h:panelGroup>
+
+							</p:panel>
+
+<p:panel id="branchLocalAddressPanel" style="padding:10px!important;border:none !important;" rendered="#{bankBranchDetails.isBranchLocalAddressPanel}">
+
+<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Contact Person #{bankBranchDetails.viewBehaviorBean('Branch Contact Person','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="contactPerson"
+											value="#{bankBranchDetails.contactPerson}" required="#{bankBranchDetails.viewBehaviorBean('Branch Contact Person','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Branch Contact Person','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Branch Contact Person','MAX_VALUE')}"
+														requiredMessage="Enter Branch First Address"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Contact Person','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Contact Person','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Contact Person','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="contactPersonMsg" event="blur" />
+											    	<p:message id="contactPersonMsg" for="contactPerson" display="text"/>
+										    	</p:inputText>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Mobile No #{bankBranchDetails.viewBehaviorBean('Mobile Number','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText id="mobileNo" value="#{bankBranchDetails.mobileNo}" disabled="#{bankBranchDetails.viewBehaviorBean('Mobile Number','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Mobile Number','MAX_VALUE')}"
+														requiredMessage="Enter Bank Telephone Number"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Mobile Number','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Mobile Number','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Mobile Number','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="mobileNoMsg" event="blur" />
+											    	<p:message id="mobileNoMsg" for="mobileNo" display="text"/>
+										    	</p:inputText>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+								
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Contact Designation #{bankBranchDetails.viewBehaviorBean('Branch Contact Designation','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="contactdesignation"
+											value="#{bankBranchDetails.contactdesignation}" required="#{bankBranchDetails.viewBehaviorBean('Branch Contact Designation','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Branch Contact Designation','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Branch Contact Designation','MAX_VALUE')}"
+														requiredMessage="Enter Contact Designation Address"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Contact Designation','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Contact Designation','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Contact Designation','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="contactDesignationMsg" event="blur" />
+											    	<p:message id="contactDesignationMsg" for="contactdesignation" display="text"/>
+										    	</p:inputText>
+
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Contact Department #{bankBranchDetails.viewBehaviorBean('Branch Contact Department','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText id="contactDepartment"
+											value="#{bankBranchDetails.contactDepartment}" required="#{bankBranchDetails.viewBehaviorBean('Branch Contact Department','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Branch Contact Designation','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Branch Contact Designation','MAX_VALUE')}"
+														requiredMessage="Enter Contact Designation Address"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Contact Department','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Contact Department','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Contact Department','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="contactDepartmentMsg" event="blur" />
+											    	<p:message id="contactDepartmentMsg" for="contactDepartment" display="text"/>
+										    	</p:inputText>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Full Name (L) #{bankBranchDetails.viewBehaviorBean('Branch Local Full Name','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="fullNameLocal"
+											value="#{bankBranchDetails.fullNameLocal}" 
+											required="#{bankBranchDetails.viewBehaviorBean('Bank Full Name','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Branch Local Full Name','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Branch Local Full Name','MAX_VALUE')}"
+														requiredMessage="Enter Branch Full Name"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Local Full Name','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Local Full Name','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Local Full Name','MAX_VALUE')}"/>	
+													
+		                							<p:ajax update="fullNameLocalMsg" event="blur" />
+													<p:message id="fullNameLocalMsg" for="fullNameLocal" display="text"/>	
+												</p:inputText>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Short Name (L) #{bankBranchDetails.viewBehaviorBean('Bank Local Short Name','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText id="shortNameLocal"
+											value="#{bankBranchDetails.shortNameLocal}" required="#{bankBranchDetails.viewBehaviorBean('Branch Local Short Name','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Branch Local Short Name','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Branch Local Short Name','MAX_VALUE')}"
+														requiredMessage="Enter Branch Local Short Name"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Local Short Name','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Local Short Name','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Local Short Name','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="localshortnameMsg" event="blur" />
+													<p:message id="localshortnameMsg" for="shortNameLocal" display="text"/>
+												</p:inputText>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Address1 (L) #{bankBranchDetails.viewBehaviorBean('Bank Local first Address Name','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="address1Local"
+											value="#{bankBranchDetails.address1Local}"  required="#{bankBranchDetails.viewBehaviorBean('Branch Local first address','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Branch Local first address','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Branch Local first address','MAX_VALUE')}"
+														requiredMessage="Enter Branch First Address"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Local first address','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Local first address','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Local first address','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="localaddress1Msg" event="blur" />
+											    	<p:message id="localaddress1Msg" for="address1Local" display="text"/>
+										    	</p:inputText>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Address2 (L) #{bankBranchDetails.viewBehaviorBean('Branch Local second address','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText id="address2Local"
+											 value="#{bankBranchDetails.address2Local}" required="#{bankBranchDetails.viewBehaviorBean('Branch Local second address','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Branch Local second address','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Branch Local second address','MAX_VALUE')}"
+														requiredMessage="Enter Bank Second Address"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Local second address','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Local second address','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Local second address','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="localaddress2Msg" event="blur" />
+											    	<p:message id="localaddress2Msg" for="address2Local" display="text"/>
+										    	</p:inputText>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+
+
+
+
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Contact Person (L) #{bankBranchDetails.viewBehaviorBean('Branch Local Contact Person','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="contactPersonLocal"
+											value="#{bankBranchDetails.contactPersonLocal}" required="#{bankBranchDetails.viewBehaviorBean('Branch Local Contact Person','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Branch Local Contact Person','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Branch Local Contact Person','MAX_VALUE')}"
+														requiredMessage="Enter Branch Contact Person"
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Local Contact Person','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Local Contact Person','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Local Contact Person','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="contactPersonLocalMsg" event="blur" />
+											    	<p:message id="contactPersonLocalMsg" for="contactPersonLocal" display="text"/>
+										    	</p:inputText>
+									</div>
+									<div class="ui-block-c" style="padding-top: 2%;">
+										<h:outputText value="Contact Designation (L) #{bankBranchDetails.viewBehaviorBean('Branch Local Contact Designation','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText id="contactdesignationLocal"
+											value="#{bankBranchDetails.contactdesignationLocal}" required="#{bankBranchDetails.viewBehaviorBean('Branch Contact Designation','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Branch Contact Designation','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Branch Contact Designation','MAX_VALUE')}"
+														requiredMessage="Enter Branch Contact Designation (L) "
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Contact Designation','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Contact Designation','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Contact Designation','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="contactDesignationLocalMsg" event="blur" />
+											    	<p:message id="contactDesignationLocalMsg" for="contactdesignationLocal" display="text"/>
+										    	</p:inputText>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a" style="padding-top: 2%;">
+										<h:outputText value="Contact Department (L) #{bankBranchDetails.viewBehaviorBean('Branch Contact Department','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="contactDepartmentLocal"
+											value="#{bankBranchDetails.contactDepartmentLocal}" required="#{bankBranchDetails.viewBehaviorBean('Branch Contact Department','REQUIRED')}"
+														disabled="#{bankBranchDetails.viewBehaviorBean('Branch Contact Department','ENABLE')}"
+														maxlength="#{bankBranchDetails.viewBehaviorBean('Branch Contact Department','MAX_VALUE')}"
+														requiredMessage="Enter Contact Department "
+														validator="RegularExpressionValidation">
+													
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Contact Department','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Contact Department','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch Contact Department','MAX_VALUE')}"/>	
+											    	
+											    	<p:ajax update="contactDepartmentLocalMsg" event="blur" />
+											    	<p:message id="contactDepartmentLocalMsg" for="contactDepartmentLocal" display="text"/>
+										    	</p:inputText>
+									</div>
+
+								</div>
+								<div class="clearfix"></div>
+								<h:panelGroup layout="block" styleClass="button_align">
+								<p:commandButton value="NEXT" actionListener="#{bankBranchDetails.branchLocalAddressPanelNext}" update="mainPanel" process="@this"
+										style="float:right;">
+									</p:commandButton>
+									<p:commandButton value="BACK" actionListener="#{bankBranchDetails.branchLocalAddressPanelBack}" update="mainPanel" process="@this"
+										style="float:right; margin-right:10px; ">
+									</p:commandButton>
+									
+									
+									<!-- <p:commandButton value="RESET"
+										action="#{bankBranchDetails.resetBankBranch}"
+										update="mainPanel" process="@this"
+										style="float:right; margin-right:10px; ">
+									</p:commandButton>
+									<p:commandButton value="CANCEL"
+										style="float:right; margin-right:10px; ">
+									</p:commandButton> -->
+									
+								</h:panelGroup>
+								
+								</p:panel>
+								
+								<p:panel id="branchTransactionPanel" style="padding:10px!important;border:none !important;" rendered="#{bankBranchDetails.isBranchTransactionPanel}">
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Swift #{bankBranchDetails.viewBehaviorBean('SWIFT','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="swift" value="#{bankBranchDetails.swift}"   required="#{bankBranchDetails.viewBehaviorBean('SWIFT','REQUIRED')}"
+													disabled="#{bankBranchDetails.viewBehaviorBean('SWIFT','ENABLE')}"
+													maxlength="#{bankBranchDetails.viewBehaviorBean('SWIFT','MAX_VALUE')}"
+													requiredMessage="Enter SWIFT"
+													validator="RegularExpressionValidation">
+												
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('SWIFT','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('SWIFT','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('SWIFT','MAX_VALUE')}"/>	
+													
+													<p:ajax event="blur"  update="mainPanel"/>
+													
+													<p:message for="swift" display="text"/>
+													</p:inputText>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Debit Branch ID #{bankBranchDetails.viewBehaviorBean('Debit Branch ID','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText id="debitBranchID"
+											value="#{bankBranchDetails.debitBranchID}" required="#{bankBranchDetails.viewBehaviorBean('Debit Branch ID','REQUIRED')}"
+													disabled="#{bankBranchDetails.viewBehaviorBean('Debit Branch ID','ENABLE')}"
+													maxlength="#{bankBranchDetails.viewBehaviorBean('Debit Branch ID','MAX_VALUE')}"
+													requiredMessage="Enter Debit Branch ID"
+													validator="RegularExpressionValidation">
+												
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Debit Branch ID','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Debit Branch ID','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Debit Branch ID','MAX_VALUE')}"/>	
+													
+													<p:ajax event="blur"  update="mainPanel"/>
+													
+													<p:message for="debitBranchID" display="text"/>
+													</p:inputText>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Branch IFSC" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="branchIFSC"
+											value="#{bankBranchDetails.branchIFSC}" required="#{bankBranchDetails.viewBehaviorBean('Branch IFSC','REQUIRED')}"
+													disabled="#{bankBranchDetails.viewBehaviorBean('Branch IFSC','ENABLE')}"
+													maxlength="#{bankBranchDetails.viewBehaviorBean('Branch IFSC','MAX_VALUE')}"
+													requiredMessage="Enter Branch IFSC"
+													validator="RegularExpressionValidation">
+												
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Branch IFSC','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Branch IFSC','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Branch IFSC','MAX_VALUE')}"/>	
+													
+													<p:ajax event="blur"  update="mainPanel"/>
+													
+													<p:message for="branchIFSC" display="text"/>
+													</p:inputText>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Routing ID #{bankBranchDetails.viewBehaviorBean('Routing ID','MANDATORY')}" />
+									</div>
+									<div class="ui-block-d">
+										<p:inputText id="routingID"
+											value="#{bankBranchDetails.routingID}" required="#{bankBranchDetails.viewBehaviorBean('Routing ID','REQUIRED')}"
+													disabled="#{bankBranchDetails.viewBehaviorBean('Routing ID','ENABLE')}"
+													maxlength="#{bankBranchDetails.viewBehaviorBean('Routing ID','MAX_VALUE')}"
+													requiredMessage="Enter Routing ID"
+													validator="RegularExpressionValidation">
+												
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('Routing ID','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('Routing ID','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('Routing ID','MAX_VALUE')}"/>	
+													
+													<p:ajax event="blur"  update="mainPanel"/>
+													
+													<p:message for="routingID" display="text"/>
+													</p:inputText>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+								
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="MIRC Code #{bankBranchDetails.viewBehaviorBean('MIRC Code','MANDATORY')}" />
+									</div>
+									<div class="ui-block-b">
+										<p:inputText id="micrCode"
+											value="#{bankBranchDetails.micrCode}" required="#{bankBranchDetails.viewBehaviorBean('MIRC Code','REQUIRED')}"
+													disabled="#{bankBranchDetails.viewBehaviorBean('MIRC Code','ENABLE')}"
+													maxlength="#{bankBranchDetails.viewBehaviorBean('MIRC Code','MAX_VALUE')}"
+													requiredMessage="Enter MIRC Code"
+													validator="RegularExpressionValidation">
+												
+													<f:attribute name="regexValue" value="#{bankBranchDetails.viewBehaviorBean('MIRC Code','PATTERN')}"/>  
+										    		<f:attribute name="minValue" value="#{bankBranchDetails.viewBehaviorBean('MIRC Code','MIN_VALUE')}"/>  
+											    	<f:attribute name="maxValue" value="#{bankBranchDetails.viewBehaviorBean('MIRC Code','MAX_VALUE')}"/>	
+													
+													<p:ajax event="blur"  update="mainPanel"/>
+													
+													<p:message for="micrCode" display="text"/>
+													</p:inputText>
+									</div>
+
+								</div>
+								<div class="clearfix"></div>
+								<h:panelGroup layout="block" styleClass="button_align">
+
+									<p:commandButton value="SUBMIT"
+										action="#{bankBranchDetails.saveBankBranchdetails}" ajax="false"
+										style="float:right;">
+									</p:commandButton> 
+									<p:commandButton value="CANCEL" action="#{bankMaster.cancelBranchDetail}" immediate="true" ajax="false"
+										style="float:right; margin-right:10px; ">
+									</p:commandButton>
+									<p:commandButton value="RESET"
+										action="#{bankBranchDetails.resetBankBranch}"
+										update="mainPanel" process="@this"
+										style="float:right; margin-right:10px; ">
+									</p:commandButton>
+									<p:commandButton value="BACK" action="#{bankBranchDetails.barnchTransactionBack}"
+										style="float:right; margin-right:10px; ">
+									</p:commandButton>
+									<div class="clearfix"></div>
+								</h:panelGroup>
+								<div class="clearfix"></div>
+
+</p:panel>
+
+
+								
+
+<!-- 								<h:panelGroup layout="block" styleClass="button_align">
+
+										<p:commandButton value="ADD" action="#{bankBranchDetails.addBankBranchDetail}" style="float:right;">
+									</p:commandButton>
+
+
+									<p:dataTable value="#{bankBranchDetails.bankBranchList}"
+									   editable="true"
+										var="branch" emptyMessage="No Branch Found"
+										rowClasses="order-table-odd-row,order-table-even-row"
+										paginator="true" rows="2" lazy="true"
+										rowsPerPageTemplate="2,4,6">
+
+
+										<p:column headerText="Branch Code"
+											sortBy="#{branch.branchCode}" filterMatchMode="contains"
+											filterBy="#{branch.branchCode}">
+											<f:facet name="header">Branch Code</f:facet>
+											#{branch.branchCode}
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{branch.branchCode}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{branch.branchCode}"
+														style="width:100%" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column headerText="Full Name"
+											sortBy="#{branch.branchFullName}" filterMatchMode="contains"
+											filterBy="#{branch.branchFullName}">
+												<f:facet name="header">Full Name</f:facet>
+											#{branch.branchFullName}
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{branch.branchFullName}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{branch.branchFullName}"
+														style="width:100%" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column headerText="Short Name"
+											sortBy="#{branch.branchShortName}" filterMatchMode="contains"
+											filterBy="#{branch.branchShortName}">
+											<f:facet name="header">Short Name</f:facet>
+											#{branch.branchShortName}
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{branch.branchShortName}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{branch.branchShortName}"
+														style="width:100%" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column>
+											<f:facet name="header">View</f:facet>
+											<p:column style="width:32px">
+												<p:commandButton value="" update=":display"
+													oncomplete="branchDialog.show();" styleClass="view">
+													<f:setPropertyActionListener value="#{branch}"
+														target="#{bankBranchDetails.selectedBankbranch}" />
+												</p:commandButton>
+											</p:column>
+										</p:column>
+										<p:column>
+											<f:facet name="header">Edit</f:facet>
+											<p:commandButton value="" styleClass="edit" />
+											<p:rowEditor />
+										</p:column>
+										<p:column>
+											<f:facet name="header">Delete</f:facet>
+											<p:commandButton value="" styleClass="delete" />
+										</p:column>
+
+										<p:column>
+
+											<f:facet name="header">Delete</f:facet>
+
+											<h:commandLink value="Delete"
+												action="#{bankBranchDetails.deleteBankBranchDetail(branch)}" />
+
+										</p:column>
+
+									</p:dataTable>
+
+									<div class="clearfix"></div>
+								</h:panelGroup>
+ -->
+
+
+							</p:panel>
+
+
+
+
+						</p:panel>
+
+
+					</h:form>
+					<!-- <p:dialog header="Branch Detail" widgetVar="branchDialog"
+						resizable="true" width="400" showEffect="explode"
+						hideEffect="explode">
+
+						<h:panelGrid id="display" columns="2" cellpadding="0"
+							cellspacing="0" width="100%">
+
+
+
+							<h:outputText value="Branch Code:"
+								style="background-color:#FFF !important; padding:7px !important; display:block !important;" />
+							<h:outputText
+								value="#{bankBranchDetails.selectedBankbranch.branchCode}"
+								style="background-color:#FFF !important; padding:7px !important; display:block !important;" />
+
+							<h:outputText value="Full Name:"
+								style="background-color:#F7F7F7 !important; padding:7px !important; display:block !important;" />
+							<h:outputText
+								value="#{bankBranchDetails.selectedBankbranch.branchFullName}"
+								style="background-color:#F7F7F7 !important; padding:7px !important; display:block !important;" />
+
+							<h:outputText value="Short Name:"
+								style="background-color:#FFF !important; padding:7px !important; display:block !important;" />
+							<h:outputText
+								value="#{bankBranchDetails.selectedBankbranch.branchShortName}"
+								style="background-color:#FFF !important; padding:7px !important; display:block !important;" />
+
+						</h:panelGrid>
+					</p:dialog> -->
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+		</h:panelGroup>
+
+
+		<ui:include src="#{facesBean.footer}"></ui:include>
+
+	</f:view>
+</h:body>
+</html>

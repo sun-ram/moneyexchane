@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</h:head>
+
+<h:body>
+	<f:view>
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<ui:include src="#{facesBean.menu}"></ui:include>
+		<h:panelGroup layout="block" class="container">
+			<h:panelGroup layout="block" class="main_div">
+				<h1>
+					<h:outputText value="DD Print Location" />
+				</h1>
+				<h:panelGroup layout="block" class="table_bg">
+					<h:form style="padding:0!important;">
+						<p:panel id="mainPanel"
+							style="border: 0px; padding:0px!important;" >
+							<p:panel style="padding:10px!important;" id="subPanel">
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="DD Agent" />
+									</div>
+									<div class="ui-block-b">
+									<p:inputText value="#{dDPrintLocationManagedBean.dDAgent}"/>
+										
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="#{msg['lbl.country']}"></h:outputText>
+									</div>
+									<div class="ui-block-d">
+										<p:message for="country" display="text"/>
+										<p:selectOneMenu id="country"  value ="#{dDPrintLocationManagedBean.countryId}" 
+										       filterMatchMode="startsWith" filter="true" 
+										        requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.country']}"
+										        >
+										        <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+										        <f:selectItems value="#{dDPrintLocationManagedBean.countryListFromDB}"
+										    	var="c" itemLabel="#{c.countryName}"
+										     	itemValue="#{c.fsCountryMaster.countryId}" />
+										    <p:ajax  event ="change" update="state,bank" listener="#{dDPrintLocationManagedBean.popState}"/>  
+										</p:selectOneMenu>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="Bank"></h:outputText>
+									</div>
+									<div class="ui-block-b">
+										<p:selectOneMenu  id="bank" value ="#{dDPrintLocationManagedBean.bankId}" filterMatchMode="startsWith" filter="true" >
+										 <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+										     <f:selectItems value="#{dDPrintLocationManagedBean.bankListFromDB}"
+											    var="c" itemLabel="#{c.bankFullName}"  itemValue="#{c.bankId}" />
+											     <p:ajax  event ="change" update="bankBranch" listener="#{dDPrintLocationManagedBean.popBankBranch}"/>
+										</p:selectOneMenu>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Bank Branch"></h:outputText>
+									</div>
+									<div class="ui-block-d">
+										
+										<p:selectOneMenu id="bankBranch" value ="#{dDPrintLocationManagedBean.bankBranchId}" filterMatchMode="startsWith" filter="true" >
+										 <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+										     <f:selectItems value="#{dDPrintLocationManagedBean.bankBranchListFromDB}"
+											    var="c" itemLabel="#{c.branchFullName}"  itemValue="#{c.bankBranchId}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+								
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="State" />
+									</div>
+									<div class="ui-block-b">
+										<p:selectOneMenu id="state" value ="#{dDPrintLocationManagedBean.stateId}" filterMatchMode="startsWith" filter="true">
+										    <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{dDPrintLocationManagedBean.stateListFromDB}"
+														var="c" itemLabel="#{c.stateName}" itemValue="#{c.fsStateMaster.stateId}"/>
+										</p:selectOneMenu> 
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="Disrict"></h:outputText>
+									</div>
+									<div class="ui-block-d">
+										
+										<p:selectOneMenu/>
+										
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+								
+								<div class="ui-grid-e ui-responsive">
+									<div class="ui-block-a">
+										<h:outputText value="City" />
+									</div>
+									<div class="ui-block-b">
+										<p:selectOneMenu/>
+									</div>
+									<div class="ui-block-c">
+										<h:outputText value="DD Location"></h:outputText>
+									</div>
+									<div class="ui-block-d">
+										
+										<p:inputText value="#{dDPrintLocationManagedBean.dDPrintLocation}"/>
+										
+									</div>
+									<div class="ui-block-e"></div>
+									<div class="ui-block-f"></div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="ui-grid-a ui-responsive">
+									<div class="ui-block-a">
+										
+									</div>
+									<div class="ui-block-b">
+										<p:commandButton value="ADD" action="#{dDPrintLocationManagedBean.addBankDDLocation}" process="subPanel" update="subPanel">
+							            </p:commandButton>
+									</div>
+								
+								</div>
+								<div class="clearfix"></div>
+								
+								<p:dataTable value="#{dDPrintLocationManagedBean.bankDdPrintLocationList}" var="t"
+										rendered="#{dDPrintLocationManagedBean.renderDDDataTable}"
+										id="idDatatable" editable="true"
+										emptyMessage="#{msg['lbl.norecordfound']}">
+										<p:column>
+										   <f:facet name="header">
+										      <h:outputText value="#{msg['lbl.country']}"/>
+										   </f:facet>
+										   <p:cellEditor>
+										       <f:facet name="output">
+										            <h:outputText value="#{t.countryName}" />
+										       </f:facet>
+										       <f:facet name="input">
+										           <p:inputText value="#{t.countryName}" style="width:100%" />
+										       </f:facet>
+										   </p:cellEditor>
+										</p:column>
+										<p:column>
+										   <f:facet name="header">
+										      <h:outputText value="DD Agent"/>
+										   </f:facet>
+										   <p:cellEditor>
+										       <f:facet name="output">
+										            <h:outputText value="#{t.dDAgent}" />   
+										       </f:facet>
+										       <f:facet name="input">
+										           <p:inputText value="#{t.dDAgent}" style="width:100%" />
+										       </f:facet>
+										   </p:cellEditor>
+										</p:column>
+										<p:column>
+										   <f:facet name="header">
+										      <h:outputText value="DD Print Location"/>
+										   </f:facet>
+										   <p:cellEditor>
+										       <f:facet name="output">
+										            <h:outputText value="#{t.dDPrintLocation}" />
+										       </f:facet>
+										       <f:facet name="input">
+										           <p:inputText value="#{t.dDPrintLocation}" style="width:100%" />
+										       </f:facet>
+										   </p:cellEditor>
+										</p:column>
+										<p:column>
+										   <f:facet name="header">
+										      <h:outputText value="delete"/>
+										   </f:facet>
+										   <p:commandButton styleClass="delete" value=""
+												actionListener="#{dDPrintLocationManagedBean.removeDdPrintLocFromList(t)}"
+												update="idDatatable"  immediate="true"></p:commandButton>
+										</p:column>
+								</p:dataTable>	
+								 <h:panelGroup layout="block"  styleClass="button_align">
+										<p:commandButton value="#{msg['lbl.submit']}" style="float:right;">
+							</p:commandButton>	
+									<p:commandButton value="#{msg['lbl.cancel']}" style="float:right; margin-right:10px;"  action="#{dDPrintLocationManagedBean.cancelBankDdPrintLocation}" immediate="true"  update="mainPanel" >
+							        </p:commandButton>  
+							        <p:commandButton value="#{msg['lbl.clear']}" style="float:right; margin-right:10px;" action="#{dDPrintLocationManagedBean.clearBankDdPrintLocation}" immediate="true"  update="mainPanel">
+						            </p:commandButton>
+							<div class="clearfix"></div>
+									</h:panelGroup>	
+							</p:panel>
+
+                          
+								<div class="clearfix"></div>
+						</p:panel>
+					</h:form>
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+		</h:panelGroup>
+
+
+		<ui:include src="#{facesBean.footer}"></ui:include>
+
+	</f:view>
+</h:body>
+</html>

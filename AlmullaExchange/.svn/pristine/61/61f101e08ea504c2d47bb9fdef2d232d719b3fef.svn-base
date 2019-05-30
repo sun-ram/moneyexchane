@@ -1,0 +1,54 @@
+package com.amg.exchange.service;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+import com.amg.exchange.model.Amlstatus;
+import com.amg.exchange.model.ArticleDetails;
+import com.amg.exchange.model.ArticleMaster;
+import com.amg.exchange.model.ContactDetail;
+import com.amg.exchange.model.CountryMasterDesc;
+import com.amg.exchange.model.Customer;
+import com.amg.exchange.model.CustomerEmploymentInfo;
+import com.amg.exchange.model.CustomerIdProof;
+import com.amg.exchange.model.CustomerLogin;
+import com.amg.exchange.model.DocumentImg;
+import com.amg.exchange.model.RuleComponent;
+
+
+public interface IBranchPageService<T> extends IMutualService<T>, ICommonService<T>  {
+	
+	
+	 public void saveApprove(BigDecimal customerId);
+	 public void saveCustomerEmploymentInfo(CustomerEmploymentInfo customerEmploymentInfo,BigDecimal customerId);
+	 public void removeIdDetails(BigDecimal customerId);
+	 public void saveCustomerEmploymentProofInfo(CustomerIdProof customerIdProof,BigDecimal customerId);
+	 public void saveCustomer(Customer customer,BigDecimal customerId);
+	 public void saveAdditionalInfo(Customer customer,BigDecimal customerId);
+	 public void saveCustomerIndividual(Customer customer,BigDecimal customerId);
+	 public void addContactDetails(ContactDetail contactDetail,BigDecimal customerId);
+	 public List<ArticleDetails> getLevelData(BigDecimal articleId);
+	 public List<ArticleMaster> getArtilces();
+	 public void deleteContactDetails(BigDecimal customerId);
+	 
+	 public List<Amlstatus> getAmlStatus(String name);
+	 public List<CustomerIdProof> popUploadedData(String customerId);
+	 public List<RuleComponent> getComponentInfo(BigDecimal pageId);
+	 public List<CountryMasterDesc> getCountryList(BigDecimal languageId);
+	 public List<CustomerIdProof> getCustomerIdProof(String idNumber);
+	 
+
+	 public List<Customer> getCustomerInfo(BigDecimal customerId);
+	 public List<ContactDetail> getCustomerContactDetails(BigDecimal customerId);
+	 public List<CustomerEmploymentInfo> getCustomerEmploymentInfo(BigDecimal customerId);
+	 public List<CustomerIdProof> getCustomerIdProofList(BigDecimal customerId);
+	 public List<CustomerIdProof> getCustomerIdProofListAll();
+	 public List<CustomerLogin> getLoginInfoForCustomer(BigDecimal customerId);
+	 public void saveImage(DocumentImg document);
+	 public List<DocumentImg> getImage(BigDecimal id);
+	public void saveOrUpdateVerifiedCustomer(Customer customer);
+	public void saveOrUpdateEmpInfo(CustomerEmploymentInfo custEmp);
+	public void saveOrUpdateCustomerIdProof(CustomerIdProof custProof);
+	public List<Customer> getCustomerInfoWithToken(BigDecimal customerId,String tokenNumber);
+	 
+}

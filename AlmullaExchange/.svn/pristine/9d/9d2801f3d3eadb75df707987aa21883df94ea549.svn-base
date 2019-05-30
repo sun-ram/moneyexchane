@@ -1,0 +1,323 @@
+package com.amg.exchange.serviceimpl;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.amg.exchange.dao.ICorporateRegDao;
+import com.amg.exchange.model.Amlstatus;
+import com.amg.exchange.model.CityMaster;
+import com.amg.exchange.model.CompanyMaster;
+import com.amg.exchange.model.ContactDetail;
+import com.amg.exchange.model.ContactType;
+import com.amg.exchange.model.CorporateBusinessNature;
+import com.amg.exchange.model.CountryMaster;
+import com.amg.exchange.model.CustCorporateAddlDetail;
+import com.amg.exchange.model.Customer;
+import com.amg.exchange.model.CustomerIdProof;
+import com.amg.exchange.model.DistrictMaster;
+import com.amg.exchange.model.DocumentImg;
+import com.amg.exchange.model.IdentityType;
+import com.amg.exchange.model.NationalityMaster;
+import com.amg.exchange.model.RuleBusinessNature;
+import com.amg.exchange.model.RuleObjective;
+import com.amg.exchange.model.StateMaster;
+import com.amg.exchange.service.ICommonService;
+import com.amg.exchange.service.ICorporateRegService;
+@SuppressWarnings("serial")
+@Service("corporateRegServiceImpl")
+public class CorporateRegServiceImpl<T> implements ICorporateRegService<T>,ICommonService<T>,Serializable {
+	@Autowired
+    ICorporateRegDao<T>  corporateRegDao;
+	
+	public ICorporateRegDao<T> getCorporateRegDao() {
+		return corporateRegDao;
+	}
+	public void setCorporateRegDao(ICorporateRegDao<T> corporateRegDao) {
+		this.corporateRegDao = corporateRegDao;
+	}
+	@Override
+	public List<NationalityMaster> getNationality() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public List<CompanyMaster> getCompany(String country) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	public List<StateMaster> getState(String country) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@Transactional
+	public List<CityMaster> getCity(BigDecimal state) {
+		
+		return corporateRegDao.getCity(state);
+	}
+
+	@Override
+	@Transactional
+	public List<CountryMaster> getCountry() {
+		
+		return corporateRegDao.getCountry();
+	}
+
+	/*@Override
+	public List<DistrictMaster> getDistrict(String state) {
+	
+		return null;
+	}*/
+
+	@Override
+	@Transactional
+	public List<StateMaster> getState() {
+		
+		return corporateRegDao.getState();
+	}
+
+	@Override
+	@Transactional
+	public void save(T entity) {
+		
+		 corporateRegDao.save(entity);
+	}
+
+	@Override
+	public void update(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	@Transactional
+	public List<Amlstatus> getAMLStatusList(String compName) {
+		
+		return corporateRegDao.getAMLStatusList(compName);
+	}
+
+	@Override
+	@Transactional
+	public List<IdentityType> getIdentitiesTypeList() {
+		
+		return corporateRegDao. getIdentitiesTypeList();
+	}
+
+	@Override
+	@Transactional
+	public void saveCorporateCustomer(Customer cust) {
+		 corporateRegDao.saveCorporateCustomer(cust);
+		
+	}
+
+	
+	@Override
+	@Transactional
+	public void saveCorporateContDtl(ContactDetail contdetail) {
+		
+		corporateRegDao.saveCorporateContDtl(contdetail);
+	}
+
+	@Override
+	@Transactional
+	public void saveCoIdentityDoc(CustomerIdProof custmrIdProof) {
+		corporateRegDao.saveCoIdentityDoc(custmrIdProof);
+		
+	}
+
+	@Override
+	@Transactional
+	public void savePartnerDtl(CustomerIdProof custmrIdProof) {
+		corporateRegDao.savePartnerDtl(custmrIdProof);
+		
+	}
+
+	@Override
+	@Transactional
+	public void saveAuthouSigDoc(CustomerIdProof custmrIdProof) {
+	   corporateRegDao.saveAuthouSigDoc(custmrIdProof);
+		
+	}
+	@Override
+	@Transactional
+	public void saveBussnessNature(CorporateBusinessNature corpBussnsNature) {
+		
+		corporateRegDao.saveBussnessNature(corpBussnsNature);
+	}
+
+	@Override
+	public List<CompanyMaster> getCompany(BigDecimal countryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@Transactional
+	public List<StateMaster> getState(BigDecimal countryId) {
+		
+		return corporateRegDao.getState(countryId);
+	}
+
+	@Override
+	@Transactional
+	public List<DistrictMaster> getDistrict(BigDecimal stateId) {
+		
+		return corporateRegDao.getDistrict(stateId);
+	}
+
+	@Override
+	@Transactional
+	public List<RuleObjective> getObjectiveList() {
+		
+		return corporateRegDao.getObjectiveList();
+	}
+
+
+	@Override
+	@Transactional
+	public List<RuleBusinessNature> getCorpBussinessNature() {
+		
+		return corporateRegDao.getCorpBussinessNature();
+	}
+
+	@Override
+	@Transactional
+	public List<ContactType> getContactTypeListFromDB() {
+		
+		return corporateRegDao.getContactTypeListFromDB();
+	}
+	@Override
+	@Transactional
+	public List<Customer> getCompanyRegistrationStatus(String crno) {
+		
+		return corporateRegDao.getCompanyRegistrationStatus(crno);
+	}
+	@Override
+	@Transactional
+	public List<ContactDetail> getContactDetail(BigDecimal customerId) {
+	
+		return corporateRegDao.getContactDetail(customerId); 
+	}
+	
+	@Override
+	@Transactional
+	public List<CustomerIdProof> getCustomerIdProof(BigDecimal languageId,BigDecimal customerId, BigDecimal customerTypeId) {
+
+		return corporateRegDao.getCustomerIdProof(languageId, customerId, customerTypeId); 
+	}
+	
+	@Override
+	@Transactional
+	public List<CustCorporateAddlDetail> getCustomerCorporateAdditionalDetail(BigDecimal languageId, BigDecimal customerId) {
+		
+		return corporateRegDao.getCustomerCorporateAdditionalDetail(languageId, customerId);
+	}
+	
+	@Override
+	@Transactional
+	public List<CorporateBusinessNature> getCorporateBusinessNatureDetails(BigDecimal customerId) {
+
+		return corporateRegDao.getCorporateBusinessNatureDetails(customerId);
+	}
+	@Override
+	@Transactional
+	public void updateCorpCustomer(Customer corprateCustomer) {
+		System.out.println("Customer id before ---------------------------------------- "+corprateCustomer.getCustomerId());
+		corporateRegDao.updateCorpCustomer(corprateCustomer);
+		System.out.println("Customer id after ---------------------------------------- "+corprateCustomer.getCustomerId());
+	}
+	@Override
+	@Transactional
+	public void updateContact(ContactDetail contdetail, BigDecimal customerId) {
+		corporateRegDao.updateContact(contdetail,customerId);
+		
+	}
+	
+	@Override
+	@Transactional
+	public void updateCompanyIdentityDocument(CustomerIdProof custmrIdProof,
+			BigDecimal customerId) {
+		corporateRegDao.updateCompanyIdentityDocument(custmrIdProof,customerId);
+		
+	}
+	@Override
+	@Transactional
+	public void updateBussnessNature(CorporateBusinessNature corpBussnsNature,BigDecimal customerId) {
+		corporateRegDao.updateBussnessNature(corpBussnsNature,customerId);
+	}
+
+	@Override
+    @Transactional
+	public void updatePartnerDetail(CustomerIdProof custmrIdProof,BigDecimal customerId) {
+		corporateRegDao.updatePartnerDetail(custmrIdProof,customerId);
+		
+	}
+	@Override
+	@Transactional
+	public void updateAutourSignatoriesDetail(CustomerIdProof custmrIdProof,BigDecimal customerId) {
+		corporateRegDao.updateAutourSignatoriesDetail(custmrIdProof,customerId);
+		
+	}
+	@Override
+	@Transactional
+	public void updateSecondaryObjective(CustCorporateAddlDetail custCorpAddDetail, BigDecimal customerId) {
+		corporateRegDao.updateSecondaryObjective(custCorpAddDetail,customerId);
+		
+	}
+	@Override
+	@Transactional
+	public List<IdentityType> getIdentityTypes(BigDecimal languageId,
+			BigDecimal bdCompanyIdType) {
+		
+		return corporateRegDao.getIdentityTypes(languageId,bdCompanyIdType);
+	}
+	@Override
+	@Transactional
+	public List<CustomerIdProof> getIdNoAvailabilityStatus(String idno,
+			BigDecimal bdCompanyIdType) {
+		
+		return corporateRegDao.getIdNoAvailabilityStatus(idno,bdCompanyIdType);
+	}
+	
+	//For Save Image
+	@Transactional
+	@Override
+	public void saveImage(DocumentImg document) {
+		corporateRegDao.saveImage(document);
+	}
+	
+	@Transactional
+	@Override
+	public void updateImage(DocumentImg document, BigDecimal custId) {
+		corporateRegDao.updateImage(document, custId);
+	}
+	@Transactional
+	@Override
+	public List<DocumentImg> getImage(BigDecimal id) {
+		return corporateRegDao.getImage(id);
+	}
+	@Transactional
+	@Override
+	public void commonSaveOrUpdateIdProof(CustomerIdProof custmrIdProof) {
+		getCorporateRegDao().commonSaveOrUpdateIdProof(custmrIdProof);
+	}
+	@Transactional
+	@Override
+	public void saveOrUpdateSecondaryObjective(CustCorporateAddlDetail custCorpAddDetail) {
+		getCorporateRegDao().saveOrUpdateSecondaryObjective(custCorpAddDetail);
+	}
+	
+}

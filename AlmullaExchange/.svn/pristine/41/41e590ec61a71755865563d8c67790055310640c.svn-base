@@ -1,0 +1,148 @@
+package com.amg.exchange.model;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+
+/*******************************************************************************************************************
+
+		 File		: BankAccountLength.java
+ 
+		 Project	: AlmullaExchange
+
+		 Package	: com.amg.exchange.model
+ 
+		 Created	:	
+ 						Date	: 29-May-2014 4:22:34 pm
+		 				By		: Justin Vincent
+ 						Revision:
+ 
+ 		 Last Change:
+ 						Date	: 29-May-2014 4:22:34 pm
+ 						By		: Justin Vincent
+		 				Revision:
+
+		 Description: TODO 
+
+********************************************************************************************************************/
+@SuppressWarnings("serial")
+@Entity
+@Table(name = "EX_BANK_ACCOUNT_LENGTH")
+public class BankAccountLength implements java.io.Serializable {
+
+	private BigDecimal accountLenId;
+	private BankMaster bankMaster;
+	private BigDecimal acLength;
+	private String recordStatus;
+	private Date createDate;
+	private Date updateDate;
+	private String creator;
+	private String modifier;
+
+	public BankAccountLength() {
+	}
+
+	public BankAccountLength(BigDecimal accountLenId) {
+		this.accountLenId = accountLenId;
+	}
+
+	public BankAccountLength(BigDecimal accountLenId, BankMaster bankMaster,
+			BigDecimal acLength, String recordStatus, Date createDate,
+			Date updateDate, String creator, String modifier) {
+		this.accountLenId = accountLenId;
+		this.bankMaster = bankMaster;
+		this.acLength = acLength;
+		this.recordStatus = recordStatus;
+		this.createDate = createDate;
+		this.updateDate = updateDate;
+		this.creator = creator;
+		this.modifier = modifier;
+	}
+
+	@Id
+	@TableGenerator(name = "accountlenid", table = "ex_accountlenidpk", pkColumnName = "accountlenidkey", pkColumnValue = "bankacctdetidvalue", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "accountlenid")
+	@Column(name = "ACCOUNT_LEN_ID", unique = true, nullable = false, precision = 22, scale = 0)
+	public BigDecimal getAccountLenId() {
+		return this.accountLenId;
+	}
+
+	public void setAccountLenId(BigDecimal accountLenId) {
+		this.accountLenId = accountLenId;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "BANK_ID")
+	public BankMaster getExBankMaster() {
+		return this.bankMaster;
+	}
+
+	public void setExBankMaster(BankMaster bankMaster) {
+		this.bankMaster = bankMaster;
+	}
+
+	@Column(name = "AC_LENGTH", precision = 22, scale = 0)
+	public BigDecimal getAcLength() {
+		return this.acLength;
+	}
+
+	public void setAcLength(BigDecimal acLength) {
+		this.acLength = acLength;
+	}
+
+	@Column(name = "RECORD_STATUS", length = 1)
+	public String getRecordStatus() {
+		return this.recordStatus;
+	}
+
+	public void setRecordStatus(String recordStatus) {
+		this.recordStatus = recordStatus;
+	}
+
+	@Column(name = "CREATE_DATE")
+	public Date getCreateDate() {
+		return this.createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	@Column(name = "UPDATE_DATE")
+	public Date getUpdateDate() {
+		return this.updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	@Column(name = "CREATOR", length = 15)
+	public String getCreator() {
+		return this.creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
+	}
+
+	@Column(name = "MODIFIER", length = 15)
+	public String getModifier() {
+		return this.modifier;
+	}
+
+	public void setModifier(String modifier) {
+		this.modifier = modifier;
+	}
+
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+	 
+      <h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+	  </h:head>
+	  
+
+<h:body dir="#{facesBean.direction}" scroll="no">
+<ui:include src="#{facesBean.header}"></ui:include>
+<h:panelGroup layout="block"  class="container">
+<h:panelGroup layout="block" class="main_div">
+<f:view locale="#{facesBean.locale}">
+
+	<h:form id="form"> 
+		 <p:layout style="min-height:500px;" id="layout" >
+			<p:layoutUnit position="east" size="300"  style="padding:10px; height:10px;background-color:#FFF !important;" >
+				<h:panelGrid rows="2">
+           			<h:outputLabel value="#{msg['lbl.weblogin']}" style="font-size: 15px; font-weight: Bold;background:url(../images/header_bg.jpg) right top no-repeat #00a53e;
+	border-bottom:1px solid #FFFFFF; width:250px; margin-bottom:10px; padding:10px; display:block; color:#FFF;"/>
+
+					<!-- <input type="radio" name="registration" value="customer"/>Customer
+					<input type="radio" name="registration" value="employee"/>Employee<br/> -->	
+					
+					<h:selectOneRadio id="loginType" value="#{loginBean.forReg}" required="true" requiredMessage="#{msg['lbl.validselect']}" >
+   							<f:selectItem itemValue="Customer" itemLabel="#{msg['lbl.customer']}" />
+   							<f:selectItem itemValue="Employee" itemLabel="#{msg['lbl.employee']}" />
+   					
+   							<p:message for="loginType" display="text"/>		
+					</h:selectOneRadio>
+
+				</h:panelGrid>
+				
+				<p:growl id="growl" showDetail="true" />  
+				
+				<h:panelGrid columns="3">
+				
+					<h:outputText value="#{msg['lbl.username']}" style="font-size: 13px; font-weight: Bold; padding-left:7px;"/>
+					<p:spacer width="5" height="0"/>
+                	<p:inputText id="uname" value="#{loginBean.username}" required="true" requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.username']}"  style="margin-bottom:7px; margin-top:7px;">
+				     	 <p:message for="uname" display="text"/> 
+               	 	</p:inputText>
+                	
+                	
+                	<h:outputText value="#{msg['lbl.password']}" style="font-size: 13px; font-weight: Bold; padding-left:7px;"/>
+                	<p:spacer width="5" height="0"/>
+                	<p:password id="pw" value="#{loginBean.password}" required="true" requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.password']}"  style="margin-bottom:7px; margin-top:7px;">
+                		<p:message for="pw" display="text"/>
+                	</p:password>
+                	
+                	<!-- <h:inputSecret id="pw" value="#{loginBean.password}" required="true" requiredMessage="Please Enter password">
+			    		<p:message for="pw" display="text"/> 
+			    	</h:inputSecret> -->
+                
+                </h:panelGrid>
+               
+               <h:panelGrid columns="2">
+               		<p:spacer width="110" height="0"/>
+               		<p:commandButton value="#{msg['lbl.login']}" action="#{loginBean.login}" ajax="false" style="font-size: 12px; font-weight: bold;">
+			   		</p:commandButton>
+               </h:panelGrid>
+					
+			   <br/>
+					
+               <h:panelGrid columns="4">
+               
+	               <p:spacer width="20" height="0"/>
+	               
+		 		   <h:commandLink action="#{loginBean.newUser}" value="#{msg['lbl.newuser']}?" immediate="true" style="font-size: 12px; font-weight: bold; text-align: right; border-bottom-width: thin; border-bottom-style: solid; border-bottom-color: #62E939; color:blue;"/>
+		 		   <p:spacer width="10" height="0"/>
+				   <h:commandLink action="#{loginBean.goForgotPasword}" value="#{msg['lbl.forgot']}?" immediate="true" style="font-size: 12px; font-weight: bold; text-align: right; border-bottom-width: thin; border-bottom-style: solid; border-bottom-color: #62E939;color:blue;"/> 
+				   </h:panelGrid>
+					
+				  <!--  <h:panelGrid columns="1" rendered="#{loginBean.isValidate}">
+				   <h:outputText value="#{msg['lbl.incorrecruserpassword']}" style="color:red"/> 
+				   
+				</h:panelGrid>-->
+				
+			</p:layoutUnit>
+      
+			<p:layoutUnit position="center" styleClass="loginbg" style="width:250px;">
+				
+					<p style="background-color:none !important; color:#FFF; padding:120px 20px 0px 20px;"><h:outputLabel value="#{msg['lbl.desc1']}" /></p>
+		            <p style="background-color:none !important; color:#FFF; padding:10px 20px 0px 20px;"><h:outputLabel value="#{msg['lbl.desc2']}" /></p>  
+		            <p style="background-color:none !important; color:#FFF; padding:10px 20px 0px 20px;"><h:outputLabel value="#{msg['lbl.desc3']}" /></p>
+            	
+			</p:layoutUnit>
+		</p:layout>
+		</h:form>
+
+	</f:view>
+	</h:panelGroup>
+	</h:panelGroup>
+</h:body>
+</html>

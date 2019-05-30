@@ -1,0 +1,513 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<script type="text/javascript" language="javascript">
+
+			document.onkeydown = function(e) {
+		      
+		      //Enter button pressed 
+		      if (e.keyCode === 13) {
+			        return false;
+			  }	
+		    };
+		</script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link href="css/style1.css" rel="stylesheet" type="text/css" />
+</h:head>
+<h:body dir="#{facesBean.direction}">
+	<f:view locale="#{facesBean.locale}">
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<table align="left" width="100%" style="height: 100%;">
+			<tr>
+				<td align="left" valign="top" style="height: 100%;"><ui:include src="../common/common_menu.xhtml"></ui:include></td>
+
+				<td class="rightColumn" valign="top"><h:panelGroup
+						layout="block" class="container">
+						<h:panelGroup layout="block" class="main_div">
+
+							<div id="common">
+								<div class="menu_button">
+									<img style="cursor: pointer; position: relative; left: 15px;"
+										id="HideHandle" name="HideHandle"
+										src="../images/toggle_plus.png" alt=""
+										onclick='hideLeftCol("leftCol");closeMenus();' />
+								</div>
+								<h1>#{msg['lbl.usersignup']}</h1>
+
+								<h:panelGroup layout="block" class="table_bg">
+									<p:panel id="mainPanel" style="padding:10px!important;">
+										<h:form title="User Signup" id="signup">
+											<p:panel styleClass="shadow">
+
+												<div class="ui-grid-a ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="#{msg['lbl.usertype']} *"
+															rendered="false" />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu id="usertype"
+															value="#{onLineUsrRegBean.userType}"
+															label="#{msg['lbl.usertype']}" rendered="false">
+															<f:selectItem itemValue="Individual"
+																itemLabel="#{msg['lbl.individual']}" />
+															<f:selectItem itemValue="Corporate" itemLabel="Corporate" />
+														</p:selectOneMenu>
+														<p:message for="usertype" display="text" rendered="false" />
+													</div>
+												</div>
+												<div class="clearfix"></div>
+
+
+												<div class="ui-grid-a ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText
+															value="#{msg['lbl.country']} #{onLineUsrRegBean.viewBehaviorBean('Country','MANDATORY')}"></h:outputText>
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu id="contry"
+															value="#{onLineUsrRegBean.country}" filter="true"
+															label="#{msg['lbl.country']}"
+															readonly="#{onLineUsrRegBean.viewBehaviorBean('Country','READ_ONLY')}"
+															disabled="#{onLineUsrRegBean.viewBehaviorBean('Country','ENABLE')}"
+															required="#{onLineUsrRegBean.viewBehaviorBean('Country','REQUIRED')}"
+															requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.country']}">
+															<f:selectItem itemValue=""
+																itemLabel="#{msg['lbl.select']}" />
+															<f:selectItems
+																value="#{onLineUsrRegBean.countryNameList}" var="c"
+																itemLabel="#{c.countryName}"
+																itemValue="#{c.fsCountryMaster.countryId}" />
+														</p:selectOneMenu>
+
+														<p:message for="contry" display="text" />
+													</div>
+												</div>
+												<div class="clearfix"></div>
+
+
+												<div class="ui-grid-a ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText
+															value="#{msg['lbl.email']} #{onLineUsrRegBean.viewBehaviorBean('Email','MANDATORY')}" />
+													</div>
+													<div class="ui-block-b">
+														<p:inputText value="#{onLineUsrRegBean.email}" id="email"
+															readonly="#{onLineUsrRegBean.viewBehaviorBean('Email','READ_ONLY')}"
+															disabled="#{onLineUsrRegBean.viewBehaviorBean('Email','ENABLE')}"
+															required="#{onLineUsrRegBean.viewBehaviorBean('Email','REQUIRED')}"
+															label="#{msg['lbl.email']}"
+															requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.email']}"
+															validatorMessage="#{msg['lbl.validlemailformat']}">
+															<f:validateRegex
+																pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+														</p:inputText>
+
+														<p:message for="email" display="text" />
+													</div>
+												</div>
+												<div class="clearfix"></div>
+
+
+
+												<div class="ui-grid-a ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText
+															value="#{msg['lbl.username']} #{onLineUsrRegBean.viewBehaviorBean('User Name','MANDATORY')}" />
+													</div>
+													<div class="ui-block-b">
+														<p:inputText id="username"
+															value="#{onLineUsrRegBean.userName}"
+															readonly="#{onLineUsrRegBean.viewBehaviorBean('User Name','READ_ONLY')}"
+															maxlength="#{onLineUsrRegBean.viewBehaviorBean('User Name','MAX_VALUE')}"
+															disabled="#{onLineUsrRegBean.viewBehaviorBean('User Name','ENABLE')}"
+															required="#{onLineUsrRegBean.viewBehaviorBean('User Name','REQUIRED')}"
+															validator="RegularExpressionValidation" rendered="true"
+															autocomplete="off" label="#{msg['lbl.username']}"
+															requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.username']}"
+															style="margin-top:-2px;">
+															<p:ajax event="blur" update="username,availableStatus"
+																listener="#{onLineUsrRegBean.currentStatus}" />
+															<p:ajax event="focus" update="availableStatus"
+																listener="#{onLineUsrRegBean.resetCurrentStatus}" />
+															<f:attribute name="regexValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('User Name','PATTERN')}" />
+															<f:attribute name="minValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('User Name','MIN_VALUE')}" />
+															<f:attribute name="maxValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('User Name','MAX_VALUE')}" />
+														</p:inputText>
+														<p:message for="username" display="text" />
+														<h:outputText id="availableStatus"
+															value="#{onLineUsrRegBean.statusMsg}" />
+													</div>
+												</div>
+												<div class="clearfix"></div>
+
+
+
+												<div class="ui-grid-a ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText
+															value="#{msg['lbl.primarypassword']} #{onLineUsrRegBean.viewBehaviorBean('Password','MANDATORY')}" />
+													</div>
+													<div class="ui-block-b">
+														<p:password value="#{onLineUsrRegBean.password}"
+															feedback="true" id="prmrypwd"
+															readonly="#{onLineUsrRegBean.viewBehaviorBean('Password','READ_ONLY')}"
+															maxlength="#{onLineUsrRegBean.viewBehaviorBean('Password','MAX_VALUE')}"
+															disabled="#{onLineUsrRegBean.viewBehaviorBean('Password','ENABLE')}"
+															required="#{onLineUsrRegBean.viewBehaviorBean('Password','REQUIRED')}"
+															validator="RegularExpressionValidation"
+															label="#{msg['lbl.primarypassword']}" match="rtprmrypwd"
+															requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.primarypassword']}">
+															<f:attribute name="regexValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Password','PATTERN')}" />
+															<f:attribute name="minValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Password','MIN_VALUE')}" />
+															<f:attribute name="maxValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Password','MAX_VALUE')}" />
+														</p:password>
+
+														<p:message for="prmrypwd" display="text" />
+													</div>
+												</div>
+												<div class="clearfix"></div>
+
+
+
+
+
+												<div class="ui-grid-a ui-responsive">
+													<div class="ui-block-a" style="padding-top: 10px;">
+														<h:outputText
+															value="#{msg['lbl.retypeprimarypassword']} #{onLineUsrRegBean.viewBehaviorBean('Password','MANDATORY')}" />
+													</div>
+													<div class="ui-block-b">
+														<p:password value="#{onLineUsrRegBean.retypePassword}"
+															readonly="#{onLineUsrRegBean.viewBehaviorBean('Password','READ_ONLY')}"
+															maxlength="#{onLineUsrRegBean.viewBehaviorBean('Password','MAX_VALUE')}"
+															disabled="#{onLineUsrRegBean.viewBehaviorBean('Password','ENABLE')}"
+															required="#{onLineUsrRegBean.viewBehaviorBean('Password','REQUIRED')}"
+															validator="RegularExpressionValidation"
+															label="#{msg['lbl.retypeprimarypassword']}"
+															id="rtprmrypwd"
+															requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.retypeprimarypassword']}">
+															<f:attribute name="regexValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Password','PATTERN')}" />
+															<f:attribute name="minValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Password','MIN_VALUE')}" />
+															<f:attribute name="maxValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Password','MAX_VALUE')}" />
+														</p:password>
+
+														<p:message for="rtprmrypwd" display="text" />
+													</div>
+												</div>
+												<div class="clearfix"></div>
+
+
+
+
+
+
+												<div class="ui-grid-a ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText
+															value="#{msg['lbl.secondarypassword']} #{onLineUsrRegBean.viewBehaviorBean('Password','MANDATORY')}" />
+													</div>
+													<div class="ui-block-b">
+														<p:password value="#{onLineUsrRegBean.secoundaryPassword}"
+															feedback="true"
+															readonly="#{onLineUsrRegBean.viewBehaviorBean('Password','READ_ONLY')}"
+															maxlength="#{onLineUsrRegBean.viewBehaviorBean('Password','MAX_VALUE')}"
+															disabled="#{onLineUsrRegBean.viewBehaviorBean('Password','ENABLE')}"
+															required="#{onLineUsrRegBean.viewBehaviorBean('Password','REQUIRED')}"
+															validator="RegularExpressionValidation"
+															label="#{msg['lbl.secondarypassword']}" id="scundrypwd"
+															match="rtypscundpwd"
+															requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.secondarypassword']}">
+															<f:attribute name="regexValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Password','PATTERN')}" />
+															<f:attribute name="minValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Password','MIN_VALUE')}" />
+															<f:attribute name="maxValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Password','MAX_VALUE')}" />
+														</p:password>
+
+														<p:message for="scundrypwd" display="text" />
+													</div>
+												</div>
+												<div class="clearfix"></div>
+
+												<div class="ui-grid-a ui-responsive">
+													<div class="ui-block-a" style="padding-top: 10px;">
+														<h:outputText
+															value="#{msg['lbl.retypesecondarypassword']} #{onLineUsrRegBean.viewBehaviorBean('Password','MANDATORY')}" />
+													</div>
+													<div class="ui-block-b">
+														<p:password
+															value="#{onLineUsrRegBean.retypeSecoundaryPassword}"
+															readonly="#{onLineUsrRegBean.viewBehaviorBean('Password','READ_ONLY')}"
+															maxlength="#{onLineUsrRegBean.viewBehaviorBean('Password','MAX_VALUE')}"
+															disabled="#{onLineUsrRegBean.viewBehaviorBean('Password','ENABLE')}"
+															required="#{onLineUsrRegBean.viewBehaviorBean('Password','REQUIRED')}"
+															validator="RegularExpressionValidation" id="rtypscundpwd"
+															label="#{msg['lbl.retypesecondarypassword']}"
+															requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.retypesecondarypassword']}">
+															<f:attribute name="regexValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Password','PATTERN')}" />
+															<f:attribute name="minValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Password','MIN_VALUE')}" />
+															<f:attribute name="maxValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Password','MAX_VALUE')}" />
+														</p:password>
+
+														<p:message for="rtypscundpwd" display="text" />
+
+
+														<p:outputLabel id="passMsg"
+															value="#{msg['lbl.passmatch']}"
+															rendered="#{onLineUsrRegBean.boopasswordChec}"
+															style="color: red"></p:outputLabel>
+													</div>
+												</div>
+												<div class="clearfix"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+												<h2>#{msg['lbl.securityquestion']}
+													#{onLineUsrRegBean.viewBehaviorBean('Security Question
+													Answers','MANDATORY')}</h2>
+
+
+												<div class="ui-grid-b ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="1."></h:outputText>
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu id="Qmenu1"
+															value="#{onLineUsrRegBean.secureQuest1}">
+															<f:selectItems
+																value="#{onLineUsrRegBean.securityQuestions}" var="c"
+																itemLabel="#{c.questionDesc}"
+																itemValue="#{c.questionId}" />
+														</p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<p:inputText value="#{onLineUsrRegBean.secureAnsr1}"
+															id="secAns1"
+															readonly="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','READ_ONLY')}"
+															maxlength="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','MAX_VALUE')}"
+															disabled="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','ENABLE')}"
+															required="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','REQUIRED')}"
+															validator="RegularExpressionValidation">
+															<f:attribute name="regexValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','PATTERN')}" />
+															<f:attribute name="minValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','MIN_VALUE')}" />
+															<f:attribute name="maxValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','MAX_VALUE')}" />
+														</p:inputText>
+														<p:message for="secAns1" display="text" />
+													</div>
+												</div>
+												<div class="clearfix"></div>
+
+												<div class="ui-grid-b ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="2."></h:outputText>
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu id="Qmenu2"
+															value="#{onLineUsrRegBean.secureQuest2}">
+															<f:selectItems
+																value="#{onLineUsrRegBean.securityQuestions2}" var="c"
+																itemLabel="#{c.questionDesc}"
+																itemValue="#{c.questionId}" />
+														</p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<p:inputText value="#{onLineUsrRegBean.secureAnsr2}"
+															id="secAns2"
+															readonly="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','READ_ONLY')}"
+															maxlength="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','MAX_VALUE')}"
+															disabled="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','ENABLE')}"
+															required="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','REQUIRED')}"
+															validator="RegularExpressionValidation">
+															<f:attribute name="regexValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','PATTERN')}" />
+															<f:attribute name="minValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','MIN_VALUE')}" />
+															<f:attribute name="maxValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','MAX_VALUE')}" />
+														</p:inputText>
+														<p:message for="secAns2" display="text" />
+													</div>
+												</div>
+												<div class="clearfix"></div>
+
+
+
+												<div class="ui-grid-b ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="3."></h:outputText>
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu id="Qmenu3"
+															value="#{onLineUsrRegBean.secureQuest3}">
+															<f:selectItems
+																value="#{onLineUsrRegBean.securityQuestions3}" var="c"
+																itemLabel="#{c.questionDesc}"
+																itemValue="#{c.questionId}" />
+														</p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<p:inputText value="#{onLineUsrRegBean.secureAnsr3}"
+															id="secAns3"
+															readonly="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','READ_ONLY')}"
+															maxlength="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','MAX_VALUE')}"
+															disabled="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','ENABLE')}"
+															required="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','REQUIRED')}"
+															validator="RegularExpressionValidation">
+															<f:attribute name="regexValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','PATTERN')}" />
+															<f:attribute name="minValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','MIN_VALUE')}" />
+															<f:attribute name="maxValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','MAX_VALUE')}" />
+														</p:inputText>
+														<p:message for="secAns3" display="text" />
+													</div>
+												</div>
+												<div class="clearfix"></div>
+
+
+
+												<div class="ui-grid-b ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="4."></h:outputText>
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu id="Qmenu4"
+															value="#{onLineUsrRegBean.secureQuest4}">
+															<f:selectItems
+																value="#{onLineUsrRegBean.securityQuestions4}" var="c"
+																itemLabel="#{c.questionDesc}"
+																itemValue="#{c.questionId}" />
+														</p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<p:inputText value="#{onLineUsrRegBean.secureAnsr4}"
+															id="secAns4"
+															readonly="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','READ_ONLY')}"
+															maxlength="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','MAX_VALUE')}"
+															disabled="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','ENABLE')}"
+															required="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','REQUIRED')}"
+															validator="RegularExpressionValidation"
+															>
+															<f:attribute name="regexValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','PATTERN')}" />
+															<f:attribute name="minValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','MIN_VALUE')}" />
+															<f:attribute name="maxValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','MAX_VALUE')}" />
+														</p:inputText>
+														<p:message for="secAns4" display="text" />
+													</div>
+												</div>
+												<div class="clearfix"></div>
+
+
+
+												<div class="ui-grid-b ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="5."></h:outputText>
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu id="Qmenu5"
+															value="#{onLineUsrRegBean.secureQuest5}">
+															<f:selectItems
+																value="#{onLineUsrRegBean.securityQuestions5}" var="c"
+																itemLabel="#{c.questionDesc}"
+																itemValue="#{c.questionId}" />
+														</p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<p:inputText value="#{onLineUsrRegBean.secureAnsr5}"
+															id="secAns5"
+															readonly="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','READ_ONLY')}"
+															maxlength="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','MAX_VALUE')}"
+															disabled="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','ENABLE')}"
+															required="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','REQUIRED')}"
+															validator="RegularExpressionValidation"
+															>
+															<f:attribute name="regexValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','PATTERN')}" />
+															<f:attribute name="minValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','MIN_VALUE')}" />
+															<f:attribute name="maxValue"
+																value="#{onLineUsrRegBean.viewBehaviorBean('Security Question Answers','MAX_VALUE')}" />
+														</p:inputText>
+														<p:message for="secAns5" display="text" />
+													</div>
+												</div>
+												<div class="clearfix"></div>
+
+											</p:panel>
+
+											<p:panel styleClass="shadow_button">
+
+												<p:commandButton value="#{msg['lbl.cancel']}" style="margin-right:10px;"
+													action="#{onLineUsrRegBean.cancel}" immediate="true" />
+
+
+
+												<p:commandButton value="#{msg['lbl.clear']}" type="reset" style="margin-right:10px;">
+												</p:commandButton>
+
+												<p:commandButton value="#{msg['lbl.submit']}"
+													action="#{onLineUsrRegBean.saveOnlineUsrData()}"
+													ajax="false" process="mainPanel">
+
+												</p:commandButton>
+											</p:panel>
+
+										</h:form>
+									</p:panel>
+								</h:panelGroup>
+							</div>
+
+						</h:panelGroup>
+					</h:panelGroup>
+					<div class="clearfix"></div></td>
+			</tr>
+		</table>
+
+		<ui:include src="#{facesBean.footer}"></ui:include>
+
+	</f:view>
+</h:body>
+
+
+</html>

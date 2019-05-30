@@ -1,0 +1,51 @@
+package com.amg.exchange.service;
+
+import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import com.amg.exchange.model.BankBranch;
+import com.amg.exchange.model.BankMaster;
+import com.amg.exchange.model.BusinessComponent;
+import com.amg.exchange.model.BussComponentConfDetail;
+import com.amg.exchange.model.CityMasterDesc;
+import com.amg.exchange.model.CompanyMasterDesc;
+import com.amg.exchange.model.ContactType;
+import com.amg.exchange.model.CountryMasterDesc;
+import com.amg.exchange.model.DistrictMasterDesc;
+import com.amg.exchange.model.EmploymentType;
+import com.amg.exchange.model.IdentityType;
+import com.amg.exchange.model.RuleApplicationMaster;
+import com.amg.exchange.model.RulePageMaster;
+import com.amg.exchange.model.StateMasterDesc;
+
+public interface IGeneralService<T> extends IMutualService<T>,ICommonService<T> {
+
+	public List<CountryMasterDesc> getCountryList(BigDecimal languageId);
+	public List<CountryMasterDesc> getNationalityList(BigDecimal languageId);
+	public List<StateMasterDesc> getStateList(BigDecimal languageId, BigDecimal countryId);
+	public List<DistrictMasterDesc> getDistrictList(BigDecimal languageId, BigDecimal countryId, BigDecimal stateId);
+	public List<CityMasterDesc> getCityList(BigDecimal languageId, BigDecimal countryId, BigDecimal stateId, BigDecimal districtId);
+	
+	public List<ContactType> getContactTypes(BigDecimal languageId);
+	public List<EmploymentType> getEmploymentTypes(BigDecimal languageId);
+	public List<IdentityType> getIdentityTypes(BigDecimal languageId, BigDecimal countryId);
+	public List<IdentityType> getIdentityTypes(BigDecimal languageId, BigDecimal countryId, BigDecimal customerTypeId);
+	
+	public List<StateMasterDesc> getStateList(BigDecimal languageId);
+	public List<DistrictMasterDesc> getDistrictList(BigDecimal languageId);
+	public List<CityMasterDesc> getCityList(BigDecimal languageId);
+	
+	public List<BusinessComponent> getAllComponentList();
+	public List<RuleApplicationMaster> getAllApplicationList();
+	public List<CompanyMasterDesc> getAllCompanyList(BigDecimal languageId);
+	public List<RulePageMaster> getAllPageList();
+	public BigDecimal getPageId(String pageName);
+	public Map<String,BussComponentConfDetail> getComponentBehavior(List<String> componentList, BigDecimal levelId, BigDecimal applicationId, BigDecimal companyId, BigDecimal countryId, BigDecimal pageId);
+	public Map<BigDecimal, String> getAllComponentComboData(BigDecimal componentConfId, BigDecimal languageId);
+	public Map<BigDecimal, String> getAllCountry(BigDecimal languageId);
+	public Map<BigDecimal, String> getAllNationality(BigDecimal languageId);
+	public List<BankMaster> getAllBankList(BigDecimal languageId,BigDecimal countryId);
+	public List<BankBranch> getBankBranchList(BigDecimal countryId);
+}

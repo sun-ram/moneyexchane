@@ -1,0 +1,70 @@
+package com.amg.exchange.common;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public final class DeclareConstants {
+
+	public DeclareConstants() {
+
+	}
+
+	public static final String REGEX_NUMERIC = "0-9";
+	public static final String REGEX_ALPHA = "a-zA-Z+\\s";
+	public static final String REGEX_SPECIAL = "~!@#$%^*&()_+\\s .";
+	public static final String REGEX_ALL = "^["+REGEX_NUMERIC+REGEX_ALPHA+REGEX_SPECIAL+"]*$";
+	
+	public static final Map<String, String> REGEX_NUMERIC_LABEL = new HashMap<String, String>(2);
+	public static final Map<String, String> REGEX_ALPHA_LABEL = new HashMap<String, String>(2);
+	public static final Map<String, String> REGEX_SPECIAL_LABEL = new HashMap<String, String>(2);
+	
+	public static final Map<String, String> REGEX_MIN_LENGTH_LABEL = new HashMap<String, String>(2);
+	public static final Map<String, String> REGEX_MAX_LENGTH_LABEL = new HashMap<String, String>(2);
+
+	public static final Map<String, String> REGEX_ALLOW_LABEL = new HashMap<String, String>(2);
+	public static final Map<String, String> REGEX_NOT_ALLOW_LABEL = new HashMap<String, String>(2);
+	public static final Map<String, String> REGEX_ONLY_LABEL = new HashMap<String, String>(2);
+	public static final Map<String, String> REGEX_AND_LABEL = new HashMap<String, String>(2);
+	
+	public static final Map<String, String> REGEX_DIGIT = new HashMap<String, String>(2);
+	public static final Map<String, String> REGEX_CHAR = new HashMap<String, String>(2);
+	public static final Map<String, String> REGEX_SYMBOL = new HashMap<String, String>(2);
+		
+	static{
+		REGEX_NUMERIC_LABEL.put("EN", " Numbers");
+		REGEX_NUMERIC_LABEL.put("AR", "\u0623\u0631\u0642\u0627\u0645");
+		
+		REGEX_ALPHA_LABEL.put("EN", " Alphabet");
+		REGEX_ALPHA_LABEL.put("AR", "\u0623\u0644\u0641\u0627 \u0631\u0642\u0645\u064A\u0629");
+		
+		REGEX_SPECIAL_LABEL.put("EN", " Special symbols");
+		REGEX_SPECIAL_LABEL.put("AR", "\u0627\u0644\u0631\u0645\u0648\u0632 \u0627\u0644\u062E\u0627\u0635\u0629");
+		
+		REGEX_MIN_LENGTH_LABEL.put("EN", "Please enter at least {0} {1}");
+		REGEX_MIN_LENGTH_LABEL.put("AR", "\u0645\u0646 \u0641\u0636\u0644\u0643 \u0627\u062F\u062E\u0644 \u0639\u0644\u0649 \u0627\u0644\u0623\u0642\u0644 {0} \u0623\u0631\u0642\u0627\u0645 {1}");
+		
+		REGEX_MAX_LENGTH_LABEL.put("EN", "Maximum {1} limit {0}");
+		REGEX_MAX_LENGTH_LABEL.put("AR", "\u0639\u062F\u062F \u0627\u0644\u0623\u062D\u0631\u0641 \u0627\u0644\u0645\u0633\u0645\u0648\u062D \u0627\u0644\u0623\u0642\u0635\u0649 {0}");
+		
+		REGEX_ALLOW_LABEL.put("EN", "Allow");
+		REGEX_ALLOW_LABEL.put("AR", "");
+
+		REGEX_NOT_ALLOW_LABEL.put("EN", "Not Allowed");
+		REGEX_NOT_ALLOW_LABEL.put("AR", "");
+
+		REGEX_ONLY_LABEL.put("EN", "only");
+		REGEX_ONLY_LABEL.put("AR", "");
+
+		REGEX_AND_LABEL.put("EN", "and");
+		REGEX_AND_LABEL.put("AR", "");
+		
+		REGEX_DIGIT.put("EN", "digits");
+		REGEX_DIGIT.put("AR", "\u0623\u0631\u0642\u0627\u0645");
+		
+		REGEX_CHAR.put("EN", "charactors");
+		REGEX_CHAR.put("AR", "\u0627\u0644\u0623\u062D\u0631\u0641");
+		
+		REGEX_SYMBOL.put("EN", "symbols");
+		REGEX_SYMBOL.put("AR", "\u0631\u0645\u0648\u0632");
+	}
+}

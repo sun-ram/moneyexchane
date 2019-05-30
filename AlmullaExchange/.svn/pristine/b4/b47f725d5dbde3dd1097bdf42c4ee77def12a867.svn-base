@@ -1,0 +1,487 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+		
+	<h:head>
+	<script type="text/javascript">
+   		function setHiddenValue(){
+			document.getElementById('inputForm:hidden1').value = "1";
+ 		 }
+	</script>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link href="css/style1.css" rel="stylesheet" type="text/css" />
+	  </h:head>
+
+		<h:body dir="#{facesBean.direction}">
+<f:view locale="#{facesBean.locale}">
+<ui:include src="#{facesBean.header}"></ui:include>
+<ui:include src="#{facesBean.menu}"></ui:include>
+<h:panelGroup layout="block"  class="container">
+  <h:panelGroup layout="block" class="main_div">
+  
+   <h1><h:outputText value="#{msg['lbl.customerinfo']}"/></h1>
+  <h:panelGroup layout="block" class="table_bg">
+   <p:panel id="mainPanel" style="padding:10px!important;">
+			<h:form enctype="multipart/form-data" id="inputForm">
+				<h:inputHidden id="hidden1" value="#{branchReg.hidden1}" />
+				<!-- <div id="common"> -->
+				<p:panel id="mainpanel"
+					style="width:100%;border:none;">
+					
+					<h:panelGrid columns="1" styleClass="heading2">
+						<h:outputText value="#{msg['lbl.employementdetails']}"
+							/>
+					</h:panelGrid>
+					
+					<p:spacer width="15" height="0"/>
+					<h:outputText value="#{msg['lbl.employmenttype']}" />
+					<p:spacer width="35" height="0"/>
+						<p:selectOneMenu id="employmentType" value="#{branchReg.employmentType}"	 style="width:180px;">
+							 
+							<f:selectItems  value="#{branchReg.employmentTypeList}" var="c" itemLabel="#{c.employmentType}" itemValue="#{c.employmentTypeId}"  />
+							<p:ajax event="change" update="emp"  listener="#{branchReg.getEmploymentStatus}" /> 
+						</p:selectOneMenu>
+					<p:spacer />
+					<p:spacer />
+
+					<h:panelGrid  id="emp" columns="4" width="100%" cellpadding="0" cellspacing="15" style="text-align: left;">
+						
+						<h:outputText id="occupation"  value="#{msg['lbl.occupation']}" rendered="#{branchReg.booUnEmp}"/>
+						<!-- <p:inputText id="occupation" value="#{branchReg.occupation}" required="true" requiredMessage="Enter Occupation">
+							<p:message for="occupation" display="text"/>
+						</p:inputText> -->
+						<p:selectOneMenu id="occupationI" value="#{branchReg.occupation}" style="width:180px;" rendered="#{branchReg.booUnEmp}">
+						    <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+							<f:selectItem itemLabel="#{msg['lbl.doctor']}" itemValue="1" />
+							<f:selectItem itemLabel="#{msg['lbl.teacher']}" itemValue="2" />
+						</p:selectOneMenu>
+
+						<h:outputText value="#{msg['lbl.employer']} #{remmiterInfo.viewBehaviorBean('Employer Name','MANDATORY')}" id="employer" rendered="#{branchReg.booUnEmp}"/>
+						<p:inputText id="employerI" value="#{branchReg.employer}" 
+										readonly="#{branchReg.viewBehaviorBean('Employer Name','READ_ONLY')}" 
+										maxlength="#{branchReg.viewBehaviorBean('Employer Name','MAX_VALUE')}" 
+										disabled="#{branchReg.viewBehaviorBean('Employer Name','ENABLE')}" 
+										required="#{branchReg.viewBehaviorBean('Employer Name','REQUIRED')}"	
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.employer']}" 
+										rendered="#{branchReg.booUnEmp}"
+										validator="RegularExpressionValidation">
+										
+								<f:attribute name="regexValue" value="#{branchReg.viewBehaviorBean('Employer Name','PATTERN')}"/>  
+							    <f:attribute name="minValue" value="#{branchReg.viewBehaviorBean('Employer Name','MIN_VALUE')}"/>  
+							    <f:attribute name="maxValue" value="#{branchReg.viewBehaviorBean('Employer Name','MAX_VALUE')}"/>
+							    
+							<p:message for="employerI" display="text" />
+						</p:inputText>
+
+						<!-- <h:outputText value="#{msg['lbl.employementcategory']}"  id="empCatg"  rendered="#{branchReg.booUnEmp}"/>
+						<p:selectOneMenu id="empCatgI" value="#{branchReg.empcategory}" style="width:180px;" rendered="#{branchReg.booUnEmp}">
+							<f:selectItem itemLabel="#{msg['lbl.doctor']}" itemValue="#{msg['lbl.doctor']}" />
+							<f:selectItem itemLabel="#{msg['lbl.teacher']}" itemValue="#{msg['lbl.teacher']}" />
+						</p:selectOneMenu> -->
+
+						<h:outputText value="#{msg['lbl.block']} #{remmiterInfo.viewBehaviorBean('Block online rem','MANDATORY')}" rendered="#{branchReg.booUnEmp}" id="blk_no"/>
+						<p:inputText id="blk_noI"
+							value="#{branchReg.empInfoBlock}" 
+							required="#{branchReg.viewBehaviorBean('Block online rem','REQUIRED')}"
+							requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.block']}" 
+							rendered="#{branchReg.booUnEmp}"
+							validator="RegularExpressionValidation">
+							
+							<f:attribute name="regexValue" value="#{branchReg.viewBehaviorBean('Block online rem','PATTERN')}"/>  
+						    <f:attribute name="minValue" value="#{branchReg.viewBehaviorBean('Block online rem','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchReg.viewBehaviorBean('Block online rem','MAX_VALUE')}"/>
+									    
+							<p:message for="blk_noI" display="text"/>
+						</p:inputText>
+
+
+						<h:outputText value="#{msg['lbl.street']} #{remmiterInfo.viewBehaviorBean('Street online rem','MANDATORY')}" rendered="#{branchReg.booUnEmp}"  id="street"/>
+						<p:inputText id="streetI"
+							value="#{branchReg.empInfoStreet}" 
+							required="#{branchReg.viewBehaviorBean('Street online rem','REQUIRED')}"
+							requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.street']}" rendered="#{branchReg.booUnEmp}"
+							validator="RegularExpressionValidation">
+							
+							<f:attribute name="regexValue" value="#{branchReg.viewBehaviorBean('Street online rem','PATTERN')}"/>  
+						    <f:attribute name="minValue" value="#{branchReg.viewBehaviorBean('Street online rem','MIN_VALUE')}"/>  
+						    <f:attribute name="maxValue" value="#{branchReg.viewBehaviorBean('Street online rem','MAX_VALUE')}"/>
+							
+							<p:message for="streetI" display="text" />
+						</p:inputText>
+
+
+						<h:outputText value="#{msg['lbl.area']} #{remmiterInfo.viewBehaviorBean('area online rem','MANDATORY')}" rendered="#{branchReg.booUnEmp}" id="area"/>
+						<p:inputText id="areaI" value="#{branchReg.area}"
+							required="#{branchReg.viewBehaviorBean('area online rem','REQUIRED')}" 
+							requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.area']}"  
+							rendered="#{branchReg.booUnEmp}"
+							validator="RegularExpressionValidation">
+							
+							<f:attribute name="regexValue" value="#{branchReg.viewBehaviorBean('area online rem','PATTERN')}"/>  
+						    <f:attribute name="minValue" value="#{branchReg.viewBehaviorBean('area online rem','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchReg.viewBehaviorBean('area online rem','MAX_VALUE')}"/>
+									    
+							<p:message for="areaI" display="text" />
+						</p:inputText>
+
+
+
+						<!-- <h:outputText value="City" />
+						<p:inputText id="city" value="#{branchReg.city}" required="true" requiredMessage="Enter City">
+							<p:message for="city" display="text"/>
+						</p:inputText>
+						<p:selectOneMenu id="city" value="#{branchReg.city}" style="width: 130px; height: 25px; text-align: left; margin-top: 12px;">  
+							        <f:selectItems value="#{branchReg.cityFromDb}" var="c"
+   												itemLabel="#{c.city_name}" itemValue="#{c.city_code}" />
+						</p:selectOneMenu> -->
+
+						<h:outputText value="#{msg['lbl.officetelno']} #{remmiterInfo.viewBehaviorBean('officetel online rem','MANDATORY')}"  rendered="#{branchReg.booUnEmp}" id="off_tel_no"/>
+						<p:inputText id="off_tel_noI"
+							value="#{branchReg.officeTel}" 
+							required="#{branchReg.viewBehaviorBean('officetel online rem','REQUIRED')}"
+							requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.officetelno']}" style="font-weight: normal;" rendered="#{branchReg.booUnEmp}"
+							validator="RegularExpressionValidation">
+							
+							<f:attribute name="regexValue" value="#{branchReg.viewBehaviorBean('officetel online rem','PATTERN')}"/>  
+						    <f:attribute name="minValue" value="#{branchReg.viewBehaviorBean('officetel online rem','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchReg.viewBehaviorBean('officetel online rem','MAX_VALUE')}"/>
+							
+							<p:message for="off_tel_noI" display="text" />
+						</p:inputText>
+
+
+						<!-- <h:outputText value="Origin Id." />
+						<p:inputText id="origin_id"
+							value="#{branchReg.originId}" required="true"
+							requiredMessage="Enter Origin ID">
+							<p:message for="origin_id" display="text" />
+						</p:inputText> -->
+
+						<h:outputText value="#{msg['lbl.country']} " rendered="#{branchReg.booUnEmp}" id="empInfoCountry"/>
+						<p:selectOneMenu id="empInfoCountryI" value="#{branchReg.empInfoCountry}" style="width: 180px;text-align:left" rendered="#{branchReg.booUnEmp}">
+							<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+							<f:selectItems  value="#{branchReg.countryNameList}" var="c" itemLabel="#{c.countryName}" itemValue="#{c.fsCountryMaster.countryId}"  />
+							<p:ajax event="change" update="empInfoState,idType"  listener="#{branchReg.generateEmpInfoStateList}" />
+							<p:ajax event="change" update="idType"  listener="#{branchReg.generateIdentityTypeList}" /> 
+				   		</p:selectOneMenu> 
+
+						<h:outputText value="#{msg['lbl.state']} " rendered="#{branchReg.booUnEmp}" id="empInfoState"/>
+						<p:selectOneMenu id="empInfoStateI" value="#{branchReg.empInfoState}" style="width: 180px;text-align:left" rendered="#{branchReg.booUnEmp}">
+							<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+							<f:selectItems  value="#{branchReg.lstEmpInfoStateList}" var="c" itemLabel="#{c.stateName}" itemValue="#{c.fsStateMaster.stateId}"  />
+							<p:ajax event="change" update="empInfoDistrict,idType"  listener="#{branchReg.generateEmpInfoDistrictList}" />
+				  		</p:selectOneMenu>
+						
+						<h:outputText value="#{msg['lbl.district']} " rendered="#{branchReg.booUnEmp}" id="empInfoDistrict"/>
+						<p:selectOneMenu id="empInfoDistrictI" value="#{branchReg.empInfoDistrict}"  style="width:180px;" rendered="#{branchReg.booUnEmp}">
+							<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+							<f:selectItems value="#{branchReg.lstEmpInfoDistrictList}" var="c" itemLabel="#{c.district}" itemValue="#{c.fsDistrictMaster.districtId}" />
+							<p:ajax event="change" update="empInfoCity"  listener="#{branchReg.generateEmpInfoCityList}" />
+						</p:selectOneMenu>
+
+						<h:outputText value="#{msg['lbl.city']}"  rendered="#{branchReg.booUnEmp}" id="empInfoCity"/>
+						<p:selectOneMenu id="empInfoCityI" value="#{branchReg.empInfoCity}" style="width: 180px;text-align:left" rendered="#{branchReg.booUnEmp}">
+							<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+							<f:selectItems  value="#{branchReg.lstEmpInfoCityList}" var="c" itemLabel="#{c.cityName}" itemValue="#{c.fsCityMaster.cityId}"  />
+				   		</p:selectOneMenu>
+
+						<h:outputText value="#{msg['lbl.postalcode']} #{remmiterInfo.viewBehaviorBean('postal online rem','MANDATORY')}" id="postalCode" rendered="#{branchReg.booUnEmp}"/>
+						<p:inputText id="postalCodeI"
+							value="#{branchReg.postalCode}"
+							required="#{branchReg.viewBehaviorBean('postal online rem','REQUIRED')}"
+							requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.postalcode']}" style="font-weight: normal;" 
+							rendered="#{branchReg.booUnEmp}"
+							validator="RegularExpressionValidation">
+							
+							<f:attribute name="regexValue" value="#{branchReg.viewBehaviorBean('postal online rem','PATTERN')}"/>  
+						    <f:attribute name="minValue" value="#{branchReg.viewBehaviorBean('postal online rem','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchReg.viewBehaviorBean('postal online rem','MAX_VALUE')}"/>
+									    
+							<p:message for="postalCodeI" display="text" />
+							
+						</p:inputText>
+						
+						<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
+						    <f:facet name="start">
+						        <h:graphicImage value="../images/ajax_loader.gif" />
+						    </f:facet>
+						     
+						    <f:facet name="complete">
+						        <h:outputText value="" />
+						    </f:facet>
+						</p:ajaxStatus>
+
+					</h:panelGrid>
+				</p:panel>
+				<!-- </div> -->
+
+				<!-- <div id="pass"> -->
+				<p:panel id="panelIdProof" style="width:100%;border:none;">
+					<h:panelGrid columns="1" styleClass="heading2" >
+					<h:outputText value="#{msg['lbl.prooff']}"/>
+					</h:panelGrid>
+
+					<p:spacer />
+					<p:spacer />
+					<p:spacer />
+					
+					<p:panelGrid cellpadding="0" cellspacing="15" style="text-align: left; width:98%;" id="dProofdoc">
+					
+					<p:row>
+                         <p:column/>          
+                         <p:column><h:outputText value="#{msg['lbl.validselectt']} #{msg['lbl.idfor']}" rendered="#{branchReg.booIdFor}" style="color: red;"/></p:column>
+                         <p:column/>
+                          <p:column>
+                              <h:outputText value="#{msg['lbl.validselectt']} #{msg['lbl.idtype']}" rendered="#{branchReg.booIdType}" style="color: red;" />
+                         </p:column>
+                    </p:row>
+                    
+					<p:row>
+						<p:column><h:outputText value="#{msg['lbl.idfor']}" style="padding-right:50px;"/></p:column>
+						<p:column>
+							<p:selectOneMenu value="#{branchReg.idFor}"  style="width:180px;">
+							    <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+								<f:selectItem itemLabel="#{msg['lbl.addressproof']}" itemValue="1" />
+								<f:selectItem itemLabel="#{msg['lbl.identityproof']}" itemValue="2" />
+							</p:selectOneMenu>
+						</p:column>
+						
+						<p:column><h:outputText value="#{msg['lbl.idtype']}"/></p:column>
+						<p:column>
+							<p:selectOneMenu id="idType" value="#{branchReg.idTypeproof}" style="width:180px;">
+							    <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+								<!-- <f:selectItem itemValue="" itemLabel="#{msg['lbl.select']}"/> -->
+								<f:selectItems value="#{branchReg.fetchIdType}" var="c" itemValue="#{c.identityTypeId}" itemLabel="#{c.identityType}" />
+							</p:selectOneMenu>
+						</p:column>	
+					</p:row>
+					
+					<p:row>
+						 <p:column/>    
+                         <p:column><h:outputText value="#{msg['lbl.validationprefix']} #{msg['lbl.idnumber']}" rendered="#{branchReg.booIdNo}" style="color: red;"/></p:column>
+                         <p:column/>
+                         <p:column>
+                         	<h:outputText value="#{msg['lbl.validationprefix']} #{msg['lbl.dateofexpiry']}" rendered="#{branchReg.booIdTExpDate}" style="color: red;"/>
+                         </p:column>
+                    </p:row>
+					
+					<p:row>
+						<p:column><h:outputText value="#{msg['lbl.idnumber']}"/></p:column>
+						<p:column>
+							<p:inputText id="idNumber" value="#{branchReg.idnumberProof}" 
+														readonly="#{branchReg.viewBehaviorBean('Id Number','READ_ONLY')}"
+														maxlength="#{branchReg.viewBehaviorBean('Id Number','MAX_VALUE')}"
+														disabled="#{branchReg.viewBehaviorBean('Id Number','ENABLE')}"
+														validator="RegularExpressionValidation">
+														
+									<f:attribute name="regexValue" value="#{branchReg.viewBehaviorBean('Id Number','PATTERN')}" />
+									<f:attribute name="minValue" value="#{branchReg.viewBehaviorBean('Id Number','MIN_VALUE')}" />
+									<f:attribute name="maxValue" value="#{branchReg.viewBehaviorBean('Id Number','MAX_VALUE')}" />
+									
+									<p:message for="idNumber" display="text" />
+							</p:inputText>
+						</p:column>
+
+						<p:column><h:outputText value="#{msg['lbl.dateofexpiry']}"/></p:column>
+						<p:column>
+							<p:calendar id="dateOfExp" size="24" value="#{branchReg.dateExp}" mode="popup" 
+										readonlyInput="true"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.dateofexpiry']}"
+										pattern="dd/MM/yyyy" navigator="true" mindate="#{branchReg.expDateCheck}"/>
+						</p:column>											
+					</p:row>
+					
+					<p:row>
+						 <p:column/>    
+                         <p:column>
+                         	<h:outputText value="Choose a file(.doc/.docx/pdf/.jpg/.png)" rendered="#{branchReg.booBrowsedFile}" style="color: red;"/>
+                         </p:column>
+                         <p:column/>
+                         <p:column/>
+                    </p:row>
+                    
+					<p:row>
+						<p:column><p:column><h:outputText value="#{msg['lbl.uploadfile']}"/></p:column></p:column>
+						<p:column>
+        					<p:fileUpload  value="#{branchReg.file}" mode="simple" dragDropSupport="false" required="true" id="fileUplod"   
+                  								 sizeLimit="10000" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|pdf)$/" label="Choose File">
+                  								<p:message for="fileUplod" value="File Not Selected" style="color:red;"/>
+							</p:fileUpload><br/>
+							<!-- <h:outputText value="(jpeg, png, gif, bmp, doc, docx, pdf)" style="color:#999; font-size:11px;"/> -->
+                  		</p:column>
+						<p:column><h:outputText value="#{msg['lbl.duplicateidproof']}" rendered="#{branchReg.booProfListDuplicate}" style="color: red;"/></p:column>
+						<p:column style="text-align:right; padding:10px 60px 10px 0px;">
+						
+							<p:commandButton value="#{msg['lbl.add']}" actionListener="#{branchReg.addRows}"
+													id="btnGlobal" process="panelIdProof" update="panelIdProof" ajax="false"/>
+																					
+						</p:column>															
+					</p:row>
+					</p:panelGrid>
+		
+					<!-- <p:growl id="messages" showDetail="true" sticky="true" /> -->
+					
+					<p:dataTable value="#{branchReg.createProofList}" var="o" widgetVar="50" style="width: 780px; font-size:12px;" editable="true" 
+						id="datatable">
+						
+						<!-- <p:ajax update="datatable" event="cellEdit"  listener="#{branchReg.modifiedProofList(o)}" /> -->
+						
+						<p:column>
+						<h:outputText/>
+							<f:facet name="header"><h:outputText value="#{msg['lbl.idfor']}"/></f:facet>
+
+							<p:cellEditor>
+								<f:facet name="output" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"><h:outputText value="#{o.idFor}"/></f:facet>
+								
+								<f:facet name="input" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;">
+									<h:selectOneMenu value="#{o.id_for}" >
+										<f:selectItem itemLabel="#{msg['lbl.addressproof']}"	itemValue="1" />
+										<f:selectItem itemLabel="#{msg['lbl.identityproof']}" itemValue="2" />
+									</h:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column>
+							<!-- <h:outputText value="#{o.idType}"/> -->
+							<f:facet name="header">
+								<h:outputText value="#{msg['lbl.idtype']}" />
+							</f:facet>
+							<p:cellEditor>
+								<f:facet name="output" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;">
+									<h:outputText value="#{o.idType}"  />
+								</f:facet>
+								<f:facet name="input" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;">
+									<h:selectOneMenu value="#{o.id_type}" >
+										<!-- <f:selectItem itemLabel="#{msg['lbl.civilid']}" itemValue="1" />
+										<f:selectItem itemLabel="#{msg['lbl.passport']}" itemValue="2" /> -->
+										<f:selectItems value="#{branchReg.fetchIdType}" var="c" itemValue="#{c.identityTypeId}" itemLabel="#{c.identityType}" />
+									</h:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column>
+							<f:facet name="header"><h:outputText value="#{msg['lbl.idnumber']}" /></f:facet>
+							<p:cellEditor>
+								<f:facet name="output"><h:outputText value="#{o.id_number}" style="text-align: left; font-size:13px;  height:20px; width:100px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+								<f:facet name="input"><p:inputText value="#{o.id_number}" style="text-align: left; font-size:13px;  height:20px; width:100px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column>
+							<f:facet name="header"><h:outputText value="#{msg['lbl.dateofexpiry']}" /></f:facet>
+							<p:cellEditor>
+								<f:facet name="output"><h:outputText value="#{o.date_expiary}" style="text-align: left; font-size:13px;  height:20px; width: 90px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+								<f:facet name="input"><p:inputText value="#{o.date_expiary}" style="text-align: left; font-size:13px;  height:20px; width: 90px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+							</p:cellEditor>
+						</p:column>
+						
+						<p:column headerText="#{msg['lbl.download']}" style="text-align:center; width:50px;">
+								<p:commandLink id="downloadLink" title="download"  ajax="false" action="PrimeFaces.monitorDownload(start, stop)"   
+        															icon="ui-icon-arrowthichk-s">  
+        									<p:graphicImage value="../images/download.png"/>
+    										<p:fileDownload value="#{branchReg.downloadFile(o.imageId)}" />  
+								</p:commandLink>   
+						</p:column>
+								 
+						<p:column headerText="#{msg['lbl.verified']}" style="text-align:center; width:50px;">
+							<h:selectBooleanCheckbox value="#{o.checked}" />
+						</p:column>
+						
+						<p:column  style="text-align:center; width:50px;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['lbl.delete']}" />
+								</f:facet>
+								<p:commandButton  value="" styleClass="delete" actionListener="#{branchReg.removeIdProof(o)}" ajax="false"/>
+							</p:column>
+
+					</p:dataTable>
+				</p:panel>
+				<p:panel id="panel"
+					style="width:750px; border:none;">
+					<h:panelGrid columns="2" border="0" style="width: 800px;" cellpadding="0" cellspacing="15">
+						<h:outputText value="#{msg['lbl.fingureprint']}" style="font-weight:bold;" />
+						<h:outputText value="#{msg['lbl.digisign']}"  style="font-weight:bold;"  />
+
+						<h:graphicImage height="100" width=" 370" />
+						<h:graphicImage height="100" width=" 370" />
+
+						<h:button value="#{msg['lbl.scan']}" style="padding:3px 10px !important;" />
+						<h:button value="#{msg['lbl.sign']}"  style="padding:3px 10px !important;" />
+
+					</h:panelGrid>
+
+
+					<!-- <h:panelGrid columns="4" style="width: 640px;">
+						<h:outputText value="Introduced By" />
+						<p:inputText id="intro_by"
+							value="#{branchReg.introduce_by}">
+						</p:inputText>
+
+						<h:outputText value="Insurance" />
+						<p:selectOneMenu value="#{branchReg.insurance}"
+							style="width: 130px; height: 25px; margin-top: 15px;">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItem itemLabel="Yes" itemValue="Yes" />
+							<f:selectItem itemLabel="No" itemValue="No" />
+						</p:selectOneMenu>
+
+						<h:outputText value="Relationship" />
+						<p:selectOneMenu value="#{branchReg.rel}"
+							style="width: 130px; height: 25px; margin-top: 15px;">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItem itemLabel="Father" itemValue="Father" />
+							<f:selectItem itemLabel="Son" itemValue="Son" />
+							<f:selectItem itemLabel="Daughter" itemValue="Daughter" />
+							<f:selectItem itemLabel="Mother" itemValue="Mother" />
+
+							<f:selectItem itemLabel="Brother" itemValue="Brother" />
+							<f:selectItem itemLabel="Sister" itemValue="Sister" />
+							<f:selectItem itemLabel="Friend" itemValue="Friend" />
+							<f:selectItem itemLabel="Other" itemValue="Other" />
+						</p:selectOneMenu>
+
+					</h:panelGrid> -->
+
+					<!-- <h:commandButton value="Cancel" id="cancel" style="cursor: pointer; font-size: 15px; font-weight: bold;font-style: italic;color: #FFFFFF;width: 120px;height: 30px;
+						   															background-color: #0099FF;	border-style: none; border:2px solid #a1a1a1; padding:3px 10px; border-radius:25px;">
+						</h:commandButton> -->
+					<h:panelGroup layout="block" style="padding-left:20px; text-align:right; width:760px;">
+					<!-- <h:selectBooleanCheckbox value="#{branchReg.approved}" onchange="submit()" /> -->
+					
+					<p:selectBooleanCheckbox value="#{branchReg.approved}">
+						<p:ajax event="change" update="panelIdProof" listener="#{branchReg.veryfiAllClick}"/>
+					</p:selectBooleanCheckbox>
+					
+					<p:spacer width="5" height="0" />
+					<h:outputText value="#{msg['lbl.verifiedall']}" style="color: green; font-weight: bold;" />
+
+					<p:spacer width="20" height="0" />
+
+					<p:commandButton value="#{msg['lbl.cancel']}" action="#{branchReg.cancel}" ajax="false"/>
+
+					<p:spacer width="5" height="10" />
+					<p:commandButton value="#{msg['lbl.back']}"	action="#{branchReg.back}" ajax="false"/>
+
+					<!-- <h:commandButton value="Save" action="#{branchReg.save}" id="save" style="cursor: pointer; font-size: 15px; font-weight: bold;font-style: italic;color: #FFFFFF;width: 120px;height: 30px;
+						   															background-color: #0099FF;	border-style: none; border:2px solid #a1a1a1; padding:3px 10px; border-radius:25px;">
+						</h:commandButton>  -->
+					<p:spacer width="5" height="10" />	
+					<p:commandButton value="#{msg['lbl.save']}" action="#{branchReg.save}" ajax="false" process="mainpanel" onclick="setHiddenValue();">
+					</p:commandButton>
+</h:panelGroup>
+				</p:panel>
+				<!-- </div> -->
+			</h:form></p:panel></h:panelGroup></h:panelGroup></h:panelGroup>
+			<ui:include src="#{facesBean.footer}"></ui:include>
+			</f:view>
+		</h:body>
+
+</html>
+

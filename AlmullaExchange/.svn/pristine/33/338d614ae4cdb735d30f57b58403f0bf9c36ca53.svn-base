@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</h:head>
+<h:body dir="#{facesBean.direction}">
+	<f:view locale="#{facesBean.locale}">
+		<ui:include src="#{facesBean.header}"></ui:include>
+<ui:include src="#{facesBean.menu}"></ui:include>
+		<h:panelGroup layout="block" class="container">
+			<h:panelGroup layout="block" class="main_div1">
+
+				<h1><h:outputLabel value="#{msg['lbl.changepassword']}"></h:outputLabel>  </h1>
+				<h:panelGroup layout="block" class="table_bg">
+					<h:panelGroup layout="block" class="table_bg">
+						<h:panelGroup layout="block"
+							style="width:80%; margin:0 auto; border:none !important; background-color:none !important;">
+							<h:form id="changePasswordForm">
+								<p:panel id="panel-changepassword" style="border:none !important; background-color:none !important;">
+									<p:panelGrid id="Grid" style="width:100%; border:none !important; background-color:none !important;" >
+										<p:row>
+											<p:column>
+												<p:spacer height="40px" />
+											</p:column>
+											<p:column style="width:25%">
+												<p:outputLabel value="#{msg['lbl.oldpassword']} *"/>
+											</p:column>
+											<p:column style="width:25%">
+												<p:password id="oldpassword" required="true"
+													label="#{msg['lbl.oldpassword']}" 
+													requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.oldpassword']}"
+													value="#{changepassword.oldPassword}">
+												</p:password>
+												<p:watermark for="oldpassword" value="Password *" />
+											</p:column>
+											<p:column style="width:50%;white-space:nowrap;">
+												<p:message for="oldpassword" display="text"/>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:spacer height="40px" />
+											</p:column>
+											<p:column>
+												<p:outputLabel value="#{msg['lbl.newpassword']} *"/>
+											</p:column>
+											<p:column>
+												<p:password id="newpassword" required="true"
+													label="#{msg['lbl.newpassword']}" feedback="true" match="confirmPassword"
+													requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.newpassword']}"
+													value="#{changepassword.newPassword}" maxlength="20"
+													validator="RegularExpressionValidation"
+													>
+													<f:attribute name="regexValue" value="^[0-9a-zA-Z~!@#$%^*_+\\s .]*$" />
+													<f:attribute name="minValue" value="6" />
+													<f:attribute name="maxValue" value="20" />
+													<p:watermark for="newpassword" value="New Password *" />
+												</p:password>
+											</p:column>
+											<p:column style="width:50%;white-space:nowrap;">
+												<p:message for="newpassword" display="text" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:spacer height="40px" />
+											</p:column>
+											<p:column>
+												<p:outputLabel style="white-space:nowrap;" value="#{msg['lbl.retypepassword']} *"/>
+											</p:column>
+											<p:column>
+												<p:password id="confirmPassword" required="true"
+													requiredMessage="#{msg['lbl.conformpassword']}"
+													label="#{msg['lbl.retypepassword']}" feedback="true"
+													value="#{changepassword.retypePassword}" maxlength="20">
+												</p:password>
+												<p:watermark for="confirmPassword" value="Retype New Password *" />
+											</p:column>
+											<p:column style="width:50%;white-space:nowrap;"> 
+												<p:message for="confirmPassword" display="text" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:spacer height="40px" />
+											</p:column>
+											<p:column><p:spacer/></p:column>
+											<p:column>
+												<p:commandButton value="#{msg['lbl.reset']}" style="margin-left:10px;" type="reset" ajax="false"/>
+												<p:spacer/><p:spacer/><p:spacer/>
+												<p:commandButton value="#{msg['lbl.save']}" update="changepassword" action="#{changepassword.updatePassword}" ajax="false" />
+											</p:column>
+											<p:column><p:spacer/></p:column>
+										</p:row>
+									</p:panelGrid>
+									<br></br>
+								</p:panel>
+
+							</h:form>
+						</h:panelGroup>
+					</h:panelGroup>
+
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
+		<ui:include src="#{facesBean.footer}"></ui:include>
+	</f:view>
+</h:body>
+
+
+</html>

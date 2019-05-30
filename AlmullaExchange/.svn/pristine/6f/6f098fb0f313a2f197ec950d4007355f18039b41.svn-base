@@ -1,0 +1,131 @@
+/**
+ * "@author Arul JayaSingh
+ */
+package com.amg.exchange.treasury.daoimpl;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
+import org.springframework.stereotype.Repository;
+
+import com.amg.exchange.dao.INomineeDao;
+import com.amg.exchange.daoimpl.CustomHibernateDaoSupport;
+import com.amg.exchange.model.CityMaster;
+import com.amg.exchange.model.CompanyMaster;
+import com.amg.exchange.model.CountryMaster;
+import com.amg.exchange.model.Customer;
+import com.amg.exchange.model.DistrictMaster;
+import com.amg.exchange.model.NationalityMaster;
+import com.amg.exchange.model.Nominee;
+import com.amg.exchange.model.StateMaster;
+
+/**
+ * @author exim07
+ *
+ */
+@Repository
+public class NomineeDaoImpl extends CustomHibernateDaoSupport implements INomineeDao,Serializable {
+
+	/* (non-Javadoc)
+	 * @see com.amg.exchange.dao.IMutualDao#getNationality()
+	 */
+	@Override
+	public List<NationalityMaster> getNationality() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.amg.exchange.dao.IMutualDao#getCity(java.math.BigDecimal)
+	 */
+	@Override
+	public List<CityMaster> getCity(BigDecimal districtId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.amg.exchange.dao.IMutualDao#getCountry()
+	 */
+	@Override
+	public List<CountryMaster> getCountry() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.amg.exchange.dao.IMutualDao#getState()
+	 */
+	@Override
+	public List<StateMaster> getState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.amg.exchange.dao.IMutualDao#getCompany(java.math.BigDecimal)
+	 */
+	@Override
+	public List<CompanyMaster> getCompany(BigDecimal countryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.amg.exchange.dao.IMutualDao#getState(java.math.BigDecimal)
+	 */
+	@Override
+	public List<StateMaster> getState(BigDecimal countryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.amg.exchange.dao.IMutualDao#getDistrict(java.math.BigDecimal)
+	 */
+	@Override
+	public List<DistrictMaster> getDistrict(BigDecimal stateId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.amg.exchange.dao.INomineeDao#getNomineeDetail(java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Customer> getNomineeDetail(String civilID) {
+	/*	System.out.println("getNomineeDetail  ..");
+		List<Customer> result=null;
+		result=getSession().createQuery("from Customer as c, CustomerIdProof as cip where c.customerId=c..customerId AND cip.identityInt="+civilID).list();
+		System.out.println("getNomineeDetail  size"+result.size());*/
+		DetachedCriteria criteria = DetachedCriteria.forClass(Customer.class, "customer");
+		
+		criteria.setFetchMode("customer.fsCustomerIdProofs", FetchMode.JOIN);
+		criteria.createAlias("customer.fsCustomerIdProofs", "fsCustomerIdProofs", JoinType.LEFT_OUTER_JOIN);
+		criteria.add(Restrictions.eq("fsCustomerIdProofs.identityInt", civilID));
+		
+		criteria.setFetchMode("customer.fsCountryMasterByNationality", FetchMode.JOIN); 
+		criteria.createAlias("customer.fsCountryMasterByNationality", "fsCountryMasterByNationality", JoinType.INNER_JOIN);
+		
+		criteria.setResultTransformer(DetachedCriteria.DISTINCT_ROOT_ENTITY);
+		
+		return (List<Customer>)criteria.getExecutableCriteria(getSession()).list();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.amg.exchange.dao.INomineeDao#saveNomineeDetail(com.amg.exchange.model.Nominee)
+	 */
+	@Override
+	public void saveNomineeDetail(Nominee nominee) {
+		getSession().saveOrUpdate(nominee);
+		
+	}
+
+	
+}

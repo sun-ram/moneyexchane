@@ -1,0 +1,1619 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</h:head>
+
+<h:body>
+	<f:view>
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<ui:include src="#{facesBean.menu}"></ui:include>
+		<table align="left" width="100%" style="height: 100%;">
+			<tr>
+				<td align="left" valign="top" style="height: 100%;"><div
+						id="left" class="leftColumn">
+						<div style="display: none; width: 150px;" id="leftCol">
+							<p:accordionPanel>
+								<p:tab title="My Profile"
+									titleStyle="background: url(../images/menu_icon5.png) no-repeat scroll 6px 8px;  border-top:none !important;">
+									<h:outputLink value="../login/forgotpassword.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Change Password" />
+									</h:outputLink>
+									<h:outputLink value="../login/login.xhtml" target="_self"
+										styleClass="left_menu" style=" border-bottom:none !important;">
+										<h:outputText value="Logout" />
+									</h:outputLink>
+
+								</p:tab>
+								<p:tab title="About"
+									titleStyle="background: url(../images/menu_icon1.png) no-repeat scroll 6px 8px;">
+
+									<h:outputLink value="http://www.almullagroup.com/"
+										target="_blank" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Al Mulla Group" />
+									</h:outputLink>
+									<h:outputLink
+										value="http://www.almullagroup.com/finance/exchange.aspx"
+										target="_blank" styleClass="left_menu">
+										<h:outputText value="Exchange" />
+									</h:outputLink>
+									<h:outputLink
+										value="http://www.almullagroup.com/finance/finance.aspx"
+										target="_blank" styleClass="left_menu">
+										<h:outputText value="Finance" />
+									</h:outputLink>
+									<h:outputLink value="http://www.autoalmulla.com/index.php/"
+										target="_blank" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Automobiles" />
+									</h:outputLink>
+
+								</p:tab>
+								<p:tab title="Services"
+									titleStyle="background: url(../images/menu_icon2.png) no-repeat scroll 6px 8px;">
+									<h:outputLink value="../registration/custmanualbranchRegistration.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Individual" />
+									</h:outputLink>
+									<h:outputLink
+										value="../registration/corporateregistration.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Non Individual" />
+									</h:outputLink>
+
+								</p:tab>
+								<p:tab title="Branch"
+									titleStyle="background: url(../images/menu_icon3.png) no-repeat scroll 6px 8px;">
+
+									<h:outputLink value="../search/searchcustomer.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Search Customer" />
+									</h:outputLink>
+									<h:outputLink value="../registration/branchhome.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Branch Home" />
+									</h:outputLink>
+
+
+								</p:tab>
+								<p:tab title="Rule Engine"
+									titleStyle="background: url(../images/menu_icon4.png) no-repeat scroll 6px 8px;">
+
+									<h:outputLink value="../ruleengine/businesscomponent.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Business Component" />
+									</h:outputLink>
+
+									<h:outputLink value="../ruleengine/businesscomponentconf.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Business Component Config" />
+									</h:outputLink>
+
+								</p:tab>
+							</p:accordionPanel>
+						</div>
+					</div></td>
+
+				<td class="rightColumn" valign="top">
+		<h:panelGroup layout="block" class="container">
+			<h:panelGroup layout="block" class="main_div">
+			<div class="menu_button">
+								<img style="cursor: pointer; position: relative; left: 15px;"
+									id="HideHandle" name="HideHandle"
+									src="../images/toggle_plus.png" alt=""
+									onclick='hideLeftCol("leftCol");closeMenus();' />
+							</div>
+				<h1>
+					<h:outputText value="Customer Registration" />
+				</h1>
+				<h:panelGroup layout="block" class="table_bg">
+					<h:form enctype="multipart/form-data" style="padding:0!important;" >
+						<p:panel id="mainPanel"
+							style="border: 0px; padding:0px!important;">
+							<p:panel 
+							style="border: 0px; padding:0px!important;">
+							<p:panel id="iddetails" style="padding:10px!important;" rendered="#{branchRegistration.booIdDetail}">
+								<p:panel styleClass="shadow">
+								<p:panel  style="padding:0px !important; border:none !important;">
+								<div class="ui-grid-a ui-responsive">
+										<div class="ui-block-a" style="padding-top: 20px;">
+											<h:outputText value="#{msg['lbl.validselect']} *" />
+										</div>
+										<div class="ui-block-b">
+											<p:selectOneMenu id="stype" value="#{branchRegistration.selectType}">
+										<!-- 	<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" /> -->
+								
+												<f:selectItem itemLabel="#{msg['lbl.manual']}" itemValue="1" />
+													<f:selectItem itemLabel="#{msg['lbl.smartcard']}" itemValue="2"/>
+												<p:ajax event="change" listener="#{branchRegistration.appearCarddetail}" update="mainPanel"/>
+											</p:selectOneMenu>
+										</div>
+										</div>
+											<div class="clearfix"></div>
+											</p:panel>
+											<p:panel id="idPanel"  style="padding:0px !important; border:none !important;" rendered="#{branchRegistration.booManual}">
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.idtype']} *" />
+										</div>
+										<div class="ui-block-b">
+										 <p:message for="idType" display="text"/>
+											<p:selectOneMenu id="idType"   
+								value="#{branchRegistration.idType}" style="width:180px;" required="true"  requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.idtype']}">
+								<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+							 <f:selectItems value="#{branchRegistration.fetchIdType}" var="c" itemValue="#{c.identityTypeId}" itemLabel="#{c.identityType}" />  
+							<p:ajax event="change" listener="#{branchRegistration.getIDTypeValue}" update="mainPanel"/>
+							</p:selectOneMenu>
+										</div>
+<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.idnumber']}  #{branchRegistration.viewBehaviorBean('Id Number','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											 <p:outputLabel value="#{msg['lbl.validwrongcivil']}" rendered="#{branchRegistration.booIdTypeCheck}" style="color: red; font-weight:bold;"/>
+											<p:inputText value="#{branchRegistration.idNumber}" id="idn"
+										
+											required="#{branchRegistration.viewBehaviorBean('Id Number','REQUIRED')}"
+										disabled="#{branchRegistration.viewBehaviorBean('Id Number','ENABLE')}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.idnumber']}" >
+										 <p:message for="idn" display="text"/>
+											<p:ajax event="blur" listener="#{branchRegistration.onblurId}" update="mainPanel" /> 
+											
+											</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									
+									<div class="clearfix"></div>
+									
+				
+
+									</p:panel>
+									</p:panel>
+									
+									<h:panelGroup layout="block" styleClass="shadow_button">
+										
+
+										<p:commandButton value="#{msg['lbl.clear']}" style="margin-right:10px;" action="#{branchRegistration.clearFirst}" update="mainPanel">
+										</p:commandButton>
+										<p:commandButton value="Go" action="#{branchRegistration.remitterInfo}" update="mainPanel">
+										</p:commandButton>
+
+										<div class="clearfix"></div>
+									</h:panelGroup>
+
+								</p:panel>
+								<p:panel id="customdetail" rendered="#{branchRegistration.booCustomerDetails}">
+								<p:panel styleClass="shadow">
+								
+								<p:panel style="padding:0px!important; border:none !important;">
+									<h2><h:outputText value="#{msg['lbl.customerdetails']}"/></h2>
+
+
+
+									<div class="ui-grid-a ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.title']} " />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText />
+										</div>
+
+									</div>
+									<div class="clearfix"></div>
+
+
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.firstname']}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText />
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.midname']}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText />
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.lastname']}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText />
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.shortname']}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText />
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.firstnameL']}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText />
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.middlenameL']}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText />
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.lastnameL']}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText />
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.shortnameL']}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText />
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.nationality']}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText />
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.gender']} " />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText />
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+								</p:panel>
+
+								<p:panel style="padding:0px !important; border:none !important;">
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="ID Expiry Date:" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText />
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.dob']}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText />
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+									
+								</p:panel>
+
+								</p:panel>
+								
+								<h:panelGroup layout="block" styleClass="shadow_button" rendered="#{branchRegistration.booCustomerDetails}">
+
+										<p:commandButton value="#{msg['lbl.save']}" style="float:right;" action="#{branchRegistration.panelSaveController}" update="false">
+										</p:commandButton>
+										<p:commandButton value="#{msg['lbl.next']}" action="#{branchRegistration.contactDetails}" update="mainPanel" 
+											style="float:right; margin-right:10px; ">
+										</p:commandButton>
+										<p:commandButton value="#{msg['lbl.back']}" action="#{branchRegistration.idInfo}" update="mainPanel" 
+											style="float:right; margin-right:10px; ">
+										</p:commandButton>
+										<div class="clearfix"></div>
+									</h:panelGroup>
+</p:panel>
+
+<p:panel  id="remitterinfo" rendered="#{branchRegistration.booRemitterInfo}">
+								<p:panel styleClass="shadow">
+								<p:panel style="padding:0px !important; border:none !important;" >
+									<h2><h:outputText value="#{msg['lbl.remitterInfo']} " /></h2>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.title']} *" />
+										</div>
+										<div class="ui-block-b">
+										<p:message for="title1" display="text" />
+											<p:selectOneMenu id="title1" value="#{branchRegistration.title}"  requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.title']}" required="true">
+											<f:selectItem itemLabel="Select" itemValue=""/>
+							<f:selectItem itemValue="#{msg['lbl.mr']}" itemLabel="#{msg['lbl.mr']}" />
+							<f:selectItem itemValue="#{msg['lbl.mrs']}" itemLabel="#{msg['lbl.mrs']}" />
+							<f:selectItem itemValue="#{msg['lbl.ms']}" itemLabel="#{msg['lbl.ms']}" />
+						</p:selectOneMenu>
+										</div>
+										<!-- <div class="ui-block-c">
+											<h:outputText value="Token" />
+										</div> 
+										<div class="ui-block-d">
+											<p:inputText />
+										</div> -->
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.firstname']} #{branchRegistration.viewBehaviorBean('First Name','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="fname" value="#{branchRegistration.firstName}"
+											required="#{branchRegistration.viewBehaviorBean('First Name','REQUIRED')}"
+											
+							disabled="#{branchRegistration.viewBehaviorBean('First Name','ENABLE')}"
+							maxlength="#{branchRegistration.viewBehaviorBean('First Name','MAX_VALUE')}"  
+							requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.firstname']}"
+							validator="RegularExpressionValidation">
+							
+							<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('First Name','PATTERN')}"/>  
+				    		<f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('First Name','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('First Name','MAX_VALUE')}"/>
+							<p:ajax update="fnameMsg" event="blur" />
+							<p:message id="fnameMsg" for="fname" display="text" />
+						</p:inputText>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.midname']} #{branchRegistration.viewBehaviorBean('Middle Name','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="middlename" value="#{branchRegistration.middleName}"
+										required="#{branchRegistration.viewBehaviorBean('Middle Name','REQUIRED')}"
+									
+							disabled="#{branchRegistration.viewBehaviorBean('Middle Name','ENABLE')}"
+							maxlength="#{branchRegistration.viewBehaviorBean('Middle Name','MAX_VALUE')}"	
+							validator="RegularExpressionValidation"
+							requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.midname']}"
+							>
+							
+							<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Middle Name','PATTERN')}"/>  
+				    		<f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Middle Name','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Middle Name','MAX_VALUE')}"/>
+							
+						<p:ajax update="middlenameMsg" event="blur" />
+							<p:message id="middlenameMsg" for="middlename" display="text" />
+							
+						</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.lastname']} #{branchRegistration.viewBehaviorBean('Last Name','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="lname" value="#{branchRegistration.lastName}"
+										required="#{branchRegistration.viewBehaviorBean('Last Name','REQUIRED')}"
+										
+										disabled="#{branchRegistration.viewBehaviorBean('Last Name','ENABLE')}"
+										maxlength="#{branchRegistration.viewBehaviorBean('Last Name','MAX_VALUE')}" 
+									
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.lastname']}"
+										validator="RegularExpressionValidation">
+							
+							<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Last Name','PATTERN')}"/>  
+				    		<f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Last Name','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Last Name','MAX_VALUE')}"/>
+							
+								
+						<p:ajax update="lnameMsg" event="blur" />
+							<p:message id="lnameMsg" for="lname" display="text" />
+							
+						</p:inputText>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.shortname']} #{branchRegistration.viewBehaviorBean('Short Name','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="sname" value="#{branchRegistration.shortName}"
+											required="#{branchRegistration.viewBehaviorBean('Short Name','REQUIRED')}"
+										disabled="#{branchRegistration.viewBehaviorBean('Short Name','ENABLE')}"
+										maxlength="#{branchRegistration.viewBehaviorBean('Short Name','MAX_VALUE')}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.shortname']}"
+										validator="RegularExpressionValidation">
+										
+							<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Short Name','PATTERN')}"/>  
+				    		<f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Short Name','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Short Name','MAX_VALUE')}"/>
+							
+								<p:ajax update="snameMsg" event="blur" />
+							<p:message id="snameMsg" for="sname" display="text" />
+							
+						</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+								</p:panel>
+								<p:panel style="padding:0px !important; border:none !important;">
+									<div class="ui-grid-a ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.titleL']}" />
+										</div>
+										<div class="ui-block-b">
+											<p:selectOneMenu id="tit" value="#{branchRegistration.titlel}" requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.titleL']}">
+											<f:selectItem itemLabel="Select" itemValue=""/>
+							<f:selectItem itemValue="#{msg['lbl.mr']}" itemLabel="#{msg['lbl.mr']}"/>
+							<f:selectItem itemValue="#{msg['lbl.mrs']}" itemLabel="#{msg['lbl.mrs']}"/>
+							<f:selectItem itemValue="#{msg['lbl.ms']}" itemLabel="#{msg['lbl.ms']}"/>
+						</p:selectOneMenu>
+						
+										</div>
+
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.firstnameL']} #{branchRegistration.viewBehaviorBean('Local First Name','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="fnamel" value="#{branchRegistration.firstNamel}"
+												required="#{branchRegistration.viewBehaviorBean('Local First Name','REQUIRED')}"
+										disabled="#{branchRegistration.viewBehaviorBean('Local First Name','ENABLE')}"
+										maxlength="#{branchRegistration.viewBehaviorBean('Local First Name','MAX_VALUE')}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.firstnameL']}"
+										validator="RegularExpressionValidation"
+										>
+							
+							<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Local First Name','PATTERN')}"/>  
+				    		<f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Local First Name','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Local First Name','MAX_VALUE')}"/>
+							
+						<p:ajax update="fnamelMsg" event="blur" />
+							<p:message id="fnamelMsg" for="fnamel" display="text" />
+							
+						</p:inputText>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.middlenameL']} #{branchRegistration.viewBehaviorBean('Local Middle name','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="mnamel" value="#{branchRegistration.middleNamel}"
+										disabled="#{branchRegistration.viewBehaviorBean('Local Middle name','ENABLE')}"
+										maxlength="#{branchRegistration.viewBehaviorBean('Local Middle name','MAX_VALUE')}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.middlenameL']}"
+										validator="RegularExpressionValidation"
+										>
+							
+							<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Local Middle name','PATTERN')}"/>  
+				    		<f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Local Middle name','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Local Middle name','MAX_VALUE')}"/>
+						<p:ajax update="mnamelMsg" event="blur" />
+							<p:message id="mnamelMsg" for="mnamel" display="text" />
+						</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.lastnameL']} #{branchRegistration.viewBehaviorBean('Local Last Name','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="lnamel" value="#{branchRegistration.lastNamel}"
+											required="#{branchRegistration.viewBehaviorBean('Local Last Name','REQUIRED')}"
+										disabled="#{branchRegistration.viewBehaviorBean('Local Last Name','ENABLE')}"
+										
+										maxlength="#{branchRegistration.viewBehaviorBean('Local Last Name','MAX_VALUE')}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.lastnameL']}"
+										validator="RegularExpressionValidation"
+										>
+							
+							<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Local Last Name','PATTERN')}"/>  
+				    		<f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Local Last Name','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Local Last Name','MAX_VALUE')}"/>
+							
+							<p:ajax update="lnamelMsg" event="blur" />
+							<p:message id="lnamelMsg" for="lnamel" display="text" />
+							</p:inputText>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.shortnameL']} #{branchRegistration.viewBehaviorBean('Local Short Name','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="snamel" value="#{branchRegistration.shortNamel}"
+											disabled="#{branchRegistration.viewBehaviorBean('Local Short Name','ENABLE')}"
+										maxlength="#{branchRegistration.viewBehaviorBean('Local Short Name','MAX_VALUE')}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.shortnameL']}"
+										validator="RegularExpressionValidation"
+										
+										>
+							
+							<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Local Short Name','PATTERN')}"/>  
+				    		<f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Local Short Name','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Local Short Name','MAX_VALUE')}"/>
+							
+							<p:ajax update="snamelMsg" event="blur" />
+							<p:message id="snamelMsg" for="snamel" display="text" />
+							
+						</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+								</p:panel>
+
+								<p:panel style="padding:0px !important; border:none !important;">
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.nationality']} #{branchRegistration.viewBehaviorBean('Nationality','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										 <p:message for="national" display="text"/>
+										<p:selectOneMenu value="#{branchRegistration.nationality}" filter="true" filterMatchMode="startsWith" id="national"
+										  readonly="#{branchRegistration.viewBehaviorBean('Nationality','READ_ONLY')}" 
+									disabled="#{branchRegistration.viewBehaviorBean('Nationality','ENABLE')}" 
+									required="#{branchRegistration.viewBehaviorBean('Nationality','REQUIRED')}" 
+							         requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.country']}" style="width:185px;text-align:left;" >
+										<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+												<f:selectItems value="#{branchRegistration.nationalityNameList}"
+													var="c" itemLabel="#{c.nationality}"
+													itemValue="#{c.fsCountryMaster.countryId}" />
+													</p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.gender']} *" />
+										</div>
+										<div class="ui-block-d">
+										 <p:message for="gender" display="text"/>
+											<p:selectOneMenu id="gender" value="#{branchRegistration.gender}" required="true"  requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.gender']}">
+											<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+							<f:selectItem itemValue="#{msg['lbl.male']} " itemLabel="#{msg['lbl.male']}" />
+							<f:selectItem itemValue="#{msg['lbl.female']}" itemLabel="#{msg['lbl.female']}" />
+						</p:selectOneMenu>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.mobile']} #{branchRegistration.viewBehaviorBean('Mobile No','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="mob" value="#{branchRegistration.mobile}"
+											 required="#{branchRegistration.viewBehaviorBean('Mobile No','REQUIRED')}"
+							disabled="#{branchRegistration.viewBehaviorBean('Mobile No','ENABLE')}"
+							maxlength="#{branchRegistration.viewBehaviorBean('Mobile No','MAX_VALUE')}"  
+							requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.mobile']}" 
+							
+							validator="RegularExpressionValidation">
+							
+							<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Mobile No','PATTERN')}"/>  
+				    		<f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Mobile No','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Mobile No','MAX_VALUE')}"/>
+													
+								<p:ajax update="mobMsg" event="blur" />
+							<p:message id="mobMsg" for="mob" display="text" /> 
+						</p:inputText>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.email']} #{branchRegistration.viewBehaviorBean('Email','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="email" value="#{branchRegistration.email}"
+											
+										disabled="#{branchRegistration.viewBehaviorBean('Email','ENABLE')}" 
+										required="#{branchRegistration.viewBehaviorBean('Email','REQUIRED')}" 
+						            	requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.email']}" 
+						            	validatorMessage="#{msg['lbl.validlemailformat']}" style="">
+				            
+				            <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+				           					
+								<p:ajax update="emailMsg" event="blur" />
+							<p:message id="emailMsg" for="email" display="text" />
+						</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.alternatemail']} #{branchRegistration.viewBehaviorBean('Alternate Email Id','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="alternateemail" value="#{branchRegistration.alternativeEmail}"
+											required="#{branchRegistration.viewBehaviorBean('Alternate Email Id','REQUIRED')}"
+											
+										disabled="#{branchRegistration.viewBehaviorBean('Alternate Email Id','ENABLE')}"
+										maxlength="#{branchRegistration.viewBehaviorBean('Alternate Email Id','MAX_VALUE')}"
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.alternatemail']}"
+										validatorMessage="#{msg['lbl.validationprefix']} #{msg['lbl.validalternatemail']}">
+							
+							<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+							
+						<p:ajax update="alternateemailMsg" event="blur" />
+							<p:message id="alternateemailMsg" for="alternateemail" display="text" />
+						</p:inputText>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.dob']} #{branchRegistration.viewBehaviorBean('DOB','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:calendar id="dob" value="#{branchRegistration.dob}"
+											required="#{branchRegistration.viewBehaviorBean('DOB','REQUIRED')}" 
+                        		style="font-weight :normal; text-align: left;" 
+                        		requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.dob']}" navigator="true"
+								maxdate="#{branchRegistration.minDob}">
+							<p:ajax update="dobMsg" event="blur" />
+							<p:message id="dobMsg" for="dob" display="text" />					
+						</p:calendar>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.amlstatus']}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="aml" value="#{branchRegistration.AMLStatus}" readonly="true"/>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.numberHits']}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="noh" value="#{branchRegistration.numberofhits}" readonly="true"/>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+									
+
+								</p:panel>
+                              </p:panel>
+                              
+                              <h:panelGroup layout="block" styleClass="shadow_button">
+
+										<p:commandButton value="#{msg['lbl.save']}" style="float:right;" action="#{branchRegistration.panelSaveController}" update="mainPanel">
+										</p:commandButton>
+										<p:commandButton value="#{msg['lbl.next']}" action="#{branchRegistration.contactDetails}" update="mainPanel" 
+											style="float:right; margin-right:10px; ">
+										</p:commandButton>
+										<p:commandButton value="#{msg['lbl.back']}" action="#{branchRegistration.idInfo}" update="mainPanel" immediate="true"
+											style="float:right; margin-right:10px; ">
+										</p:commandButton>
+										<div class="clearfix"></div>
+									</h:panelGroup>
+									
+									</p:panel>
+								
+									<div class="clearfix"></div>
+									
+									<p:panel id="contdetails" rendered="#{branchRegistration.booContactDetails}">
+								<p:panel styleClass="shadow" >
+									<h2>	<h:outputText value="#{msg['lbl.contactdetails']}"/></h2>
+
+
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.contacttype']} #{branchRegistration.viewBehaviorBean('Contact Type','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										 <p:message for="contacttype" display="text"/>
+											<p:selectOneMenu id="contacttype" value="#{branchRegistration.contactTypeId}" style="width: 180px;text-align:left;" 
+											 readonly="#{branchRegistration.viewBehaviorBean('Contact Type','READ_ONLY')}" 
+									disabled="#{branchRegistration.viewBehaviorBean('Contact Type','ENABLE')}" 
+									required="#{branchRegistration.viewBehaviorBean('Contact Type','REQUIRED')}" 
+							         requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.contacttype']}">
+								<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+								<f:selectItems value="#{branchRegistration.fetchContactTypeList}" var="c" itemValue="#{c.contactTypeId}" itemLabel="#{c.contactType}"/>
+								<!-- <p:message for="contacttype" display="text" rendered="#{branchRegistration.booContactType}"/> -->
+							</p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.localarea']} #{branchRegistration.viewBehaviorBean('Local Area','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="larea" value="#{branchRegistration.localArea}"
+											maxlength="#{branchRegistration.viewBehaviorBean('Local Area','MAX_VALUE')}"
+													disabled="#{branchRegistration.viewBehaviorBean('Local Area','ENABLE')}"
+													requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.localarea']}"
+													validator="RegularExpressionValidation">
+							
+							<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Local Area','PATTERN')}" />
+							<f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Local Area','MIN_VALUE')}" />
+							<f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Local Area','MAX_VALUE')}" />
+							
+							<p:ajax update="lareaMsg" event="blur" />
+							                        <p:message id="lareaMsg" for="larea" display="text" />	
+							</p:inputText>
+							
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.country']} #{branchRegistration.viewBehaviorBean('Country','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										 <p:message for="counid" display="text"/>
+											<p:selectOneMenu id="counid" filterMatchMode="startsWith" filter="true"  value ="#{branchRegistration.countryId}" 
+											
+											 readonly="#{branchRegistration.viewBehaviorBean('Country','READ_ONLY')}" 
+									disabled="#{branchRegistration.viewBehaviorBean('Country','ENABLE')}" 
+									required="#{branchRegistration.viewBehaviorBean('Country','REQUIRED')}" 
+							         requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.country']}" style="width:185px;text-align:left;">
+											<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+								<f:selectItems  value="#{branchRegistration.countryNameList}" var="c" itemLabel="#{c.countryName}" itemValue="#{c.fsCountryMaster.countryId}"  />
+							 <p:ajax  event ="change" update="state" listener="#{branchRegistration.popState}"/> 
+					 
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.street']} #{branchRegistration.viewBehaviorBean('Street','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="str" value ="#{branchRegistration.street}"
+											requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.street']}"
+						
+													maxlength="#{branchRegistration.viewBehaviorBean('Street','MAX_VALUE')}"
+													disabled="#{branchRegistration.viewBehaviorBean('Street','ENABLE')}"
+													validator="RegularExpressionValidation">
+													<f:attribute name="regexValue"
+														value="#{branchRegistration.viewBehaviorBean('Street','PATTERN')}" />
+													<f:attribute name="minValue"
+														value="#{branchRegistration.viewBehaviorBean('Street','MIN_VALUE')}" />
+													<f:attribute name="maxValue"
+														value="#{branchRegistration.viewBehaviorBean('Street','MAX_VALUE')}" />
+													<p:ajax update="strMsg" event="blur" />
+							                        <p:message id="strMsg" for="str" display="text" />
+													</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.state']} #{branchRegistration.viewBehaviorBean('State','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										 <p:message for="state" display="text"/>
+										<p:selectOneMenu id="state" value ="#{branchRegistration.stateId}" filterMatchMode="startsWith" filter="true"
+										        readonly="#{branchRegistration.viewBehaviorBean('State','READ_ONLY')}" 
+									disabled="#{branchRegistration.viewBehaviorBean('State','ENABLE')}" 
+									required="#{branchRegistration.viewBehaviorBean('State','REQUIRED')}" 
+							         requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.state']}" style="width:185px;text-align:left;" >
+										    <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{branchRegistration.stateListFromDB}"
+														var="c" itemLabel="#{c.stateName}" itemValue="#{c.fsStateMaster.stateId}"/>
+											<p:ajax update ="district" listener="#{branchRegistration.popDistrict}"/>			
+										</p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.telephone']} #{branchRegistration.viewBehaviorBean('Telephone Number','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="tel" value="#{branchRegistration.telephone}"
+											requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.telephone']}"
+											disabled="#{branchRegistration.viewBehaviorBean('Telephone Number','ENABLE')}"
+											maxlength="#{branchRegistration.viewBehaviorBean('Telephone Number','MAX_VALUE')}"
+											validator="RegularExpressionValidation">
+											<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Telephone Number','PATTERN')}" />
+
+											<p:ajax update="telMsg" event="blur" />
+							                        <p:message id="telMsg" for="tel" display="text" />	
+							</p:inputText>				
+							
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.district']} #{branchRegistration.viewBehaviorBean('District','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										 <p:message for="district" display="text"/>
+											<p:selectOneMenu  id="district" value ="#{branchRegistration.districtId}" filterMatchMode="startsWith" filter="true"
+										      readonly="#{branchRegistration.viewBehaviorBean('Nationality','READ_ONLY')}" 
+									disabled="#{branchRegistration.viewBehaviorBean('Nationality','ENABLE')}" 
+									required="#{branchRegistration.viewBehaviorBean('Nationality','REQUIRED')}" 
+							         requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.district']}" style="width:185px;text-align:left;" >
+										              <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{branchRegistration.districtListFromDB}"
+														var="c" itemLabel="#{c.district}" itemValue="#{c.fsDistrictMaster.districtId}"/>
+											<p:ajax update ="city" listener="#{branchRegistration.popCity}"/>			
+										</p:selectOneMenu> 
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.flatno']} #{branchRegistration.viewBehaviorBean('Flat','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="flat" value ="#{branchRegistration.flat}"
+											requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.flatno']}"
+													
+													maxlength="#{branchRegistration.viewBehaviorBean('Flat','MAX_VALUE')}"
+													disabled="#{branchRegistration.viewBehaviorBean('Flat','ENABLE')}"
+													validator="RegularExpressionValidation">
+													<f:attribute name="regexValue"
+														value="#{branchRegistration.viewBehaviorBean('Flat','PATTERN')}" />
+													<f:attribute name="minValue"
+														value="#{branchRegistration.viewBehaviorBean('Flat','MIN_VALUE')}" />
+													<f:attribute name="maxValue"
+														value="#{branchRegistration.viewBehaviorBean('Flat','MAX_VALUE')}" />
+													 <p:ajax update="flatMsg" event="blur" />
+			 <p:message id="flatMsg" for="flat" display="text" />	
+												</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.city']} #{branchRegistration.viewBehaviorBean('City','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										 <p:message for="city" display="text"/>
+											<p:selectOneMenu  id="city" value ="#{branchRegistration.cityId}" filterMatchMode="startsWith" filter="true" 
+											 readonly="#{branchRegistration.viewBehaviorBean('City','READ_ONLY')}" 
+									disabled="#{branchRegistration.viewBehaviorBean('City','ENABLE')}" 
+									required="#{branchRegistration.viewBehaviorBean('City','REQUIRED')}" 
+										     requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.city']}"  style="width:185px;text-align:left;">
+										    <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{branchRegistration.cityListFromDB}"
+														var="c" itemLabel="#{c.cityName}" itemValue="#{c.fsCityMaster.cityId}"/>
+										</p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.block']} #{branchRegistration.viewBehaviorBean('Block','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="blk" value ="#{branchRegistration.block}"
+											 requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.block']}"
+							
+													maxlength="#{branchRegistration.viewBehaviorBean('Block','MAX_VALUE')}"
+													disabled="#{branchRegistration.viewBehaviorBean('Block','ENABLE')}"
+													validator="RegularExpressionValidation">
+													<f:attribute name="regexValue"
+														value="#{branchRegistration.viewBehaviorBean('Block','PATTERN')}" />
+													<f:attribute name="minValue"
+														value="#{branchRegistration.viewBehaviorBean('Block','MIN_VALUE')}" />
+													<f:attribute name="maxValue"
+														value="#{branchRegistration.viewBehaviorBean('Block','MAX_VALUE')}" />
+												 <p:ajax update="blkMsg" event="blur" />
+			                      <p:message id="blkMsg" for="blk" display="text" />	
+												</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<h:panelGroup layout="block" styleClass="button_align">
+
+										<p:commandButton value="#{msg['lbl.add']}" style="float:right;" action="#{branchRegistration.addContactDetailsDataTable}" update="mainPanel">
+										</p:commandButton><p:spacer width="10px"/>
+										<div>
+										<h:outputText value="#{msg['lbl.contactDetailsSize']}" rendered="#{branchRegistration.contactlistcheck}" style="white-space:nowrap !important; color:red;font-weight:bold;"/>
+									</div>
+								
+								<div class="clearfix"></div>
+								<p:dataTable value="#{branchRegistration.contactList}" var="o"
+										
+										style="width:1220;" editable="true" id="datatable"
+										emptyMessage="#{msg['lbl.norecordfound']}">
+										
+										<!-- <p:ajax update="datatable" event="cellEdit"  listener="#{customerInfoBranch.modified(o)}" /> -->
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.contacttype']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.contType}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{o.contType}" style="width:100%"/>
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.country']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.country}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{o.country}" 	style="width:100%" /> 
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.state']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.state}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{o.state}" style="width:100%" /> 
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.district']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.dist}" />
+												</f:facet>
+												<f:facet name="input">
+													 <p:inputText value="#{o.dist}" style="width:100%" /> 
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.city']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.city}" />
+												</f:facet>
+												<f:facet name="input">
+													 <p:inputText value="#{o.city}" style="width:100%" /> 
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.localarea']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.area}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{o.area}" style="width:100%" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.block']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.block}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{o.block}" style="width:100%" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.street']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.street}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{o.street}" style="width:100%" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.flatno']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.flat}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{o.flat}" style="width:100%" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.telephone']}" />
+											</f:facet>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{o.tel}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{o.tel}" style="width:100%" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column style="width:50px; text-align:center !important;">
+											<f:facet name="header">
+												<h:outputText value="#{msg['lbl.delete']}" />
+											</f:facet>
+											<p:commandButton styleClass="delete" value=""
+												actionListener="#{branchRegistration.removeContactDetail(o)}"
+															update="datatable" immediate="true"></p:commandButton>
+										</p:column>
+									
+									</p:dataTable>
+										
+
+										<div class="clearfix"></div>
+									</h:panelGroup>
+
+
+								</p:panel>
+								
+								
+
+									<h:panelGroup layout="block" styleClass="shadow_button">
+
+										<p:commandButton value="#{msg['lbl.save']}" style="float:right;" action="#{branchRegistration.panelSaveController}" ajax="false">
+										</p:commandButton>
+										<p:commandButton value="#{msg['lbl.next']}" action="#{branchRegistration.employmentDetails}" update="mainPanel" immediate="true"
+											style="float:right; margin-right:10px; ">
+										</p:commandButton>
+										<p:commandButton value="#{msg['lbl.back']}" action="#{branchRegistration.remitterInfo}" update="mainPanel" 
+											style="float:right; margin-right:10px; ">
+										</p:commandButton>
+										<div class="clearfix"></div>
+									</h:panelGroup>
+									<div class="clearfix"></div>
+									</p:panel>
+									
+									<p:panel rendered="#{branchRegistration.booEmploymentDetails}" id="empdetails">
+
+								<p:panel  styleClass="shadow" >
+									<h2><h:outputText value="#{msg['lbl.employementdetails']}" /></h2>
+									<div class="ui-grid-a ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.employmenttype']} #{branchRegistration.viewBehaviorBean('Employement Type','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										 <p:message for="employmentType" display="text"/>
+										<p:selectOneMenu id="employmentType" value="#{branchRegistration.employmentType}"	
+									 
+									required="#{branchRegistration.viewBehaviorBean('Employement Type','REQUIRED')}" 
+							         requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.employmenttype']}" style="width:185px;text-align:left;" >
+							 <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+							<f:selectItems  value="#{branchRegistration.employmentTypeList}" var="c" itemLabel="#{c.employmentType}" itemValue="#{c.employmentTypeId}"  />
+							<p:ajax event="change" update="mainPanel"  listener="#{branchRegistration.getEmploymentStatus}" /> 
+						</p:selectOneMenu>
+										</div>
+
+									</div>
+									<div class="clearfix"></div>
+
+<p:panel  style="padding:0px !important; border:none !important;" rendered="#{branchRegistration.booEmploymentPanel}">
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.occupation']}" />
+										</div>
+										<div class="ui-block-b">
+											<p:selectOneMenu id="occupationI" value="#{branchRegistration.occupation}" style="width:180px;">
+						    <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+							<f:selectItem itemLabel="#{msg['lbl.doctor']}" itemValue="1" />
+							<f:selectItem itemLabel="#{msg['lbl.teacher']}" itemValue="2" />
+						</p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.employer']} #{branchRegistration.viewBehaviorBean('Employer Name','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="emp" value="#{branchRegistration.employer}"
+										 
+										maxlength="#{branchRegistration.viewBehaviorBean('Employer Name','MAX_VALUE')}" 
+										disabled="#{branchRegistration.viewBehaviorBean('Employer Name','ENABLE')}" 
+										required="#{branchRegistration.viewBehaviorBean('Employer Name','REQUIRED')}"	
+										requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.employer']}" 
+									
+										validator="RegularExpressionValidation">
+										
+								<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Employer Name','PATTERN')}"/>  
+							    <f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Employer Name','MIN_VALUE')}"/>  
+							    <f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Employer Name','MAX_VALUE')}"/>
+							    
+							  <p:ajax update="empMsg" event="blur" />
+			                      <p:message id="empMsg" for="emp" display="text" />	
+						</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.block']} #{branchRegistration.viewBehaviorBean('Block','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="empblk" value="#{branchRegistration.empInfoBlock}"
+											required="#{branchRegistration.viewBehaviorBean('Block','REQUIRED')}"
+							requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.block']}" 
+						
+							validator="RegularExpressionValidation">
+							
+							<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Block','PATTERN')}"/>  
+						    <f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Block','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Block','MAX_VALUE')}"/>
+									    
+						  <p:ajax update="empblkMsg" event="blur" />
+			                      <p:message id="empblkMsg" for="empblk" display="text" />	
+						</p:inputText>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.street']} #{branchRegistration.viewBehaviorBean('Street','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="empstr" value="#{branchRegistration.empInfoStreet}"
+											required="#{branchRegistration.viewBehaviorBean('Street','REQUIRED')}"
+							requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.street']}" 
+							validator="RegularExpressionValidation">
+							
+							<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Street','PATTERN')}"/>  
+						    <f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Street','MIN_VALUE')}"/>  
+						    <f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Street','MAX_VALUE')}"/>
+							
+							  <p:ajax update="empstrMsg" event="blur" />
+			                      <p:message id="empstrMsg" for="empstr" display="text" />	
+						</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.area']} #{branchRegistration.viewBehaviorBean('Area','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="emparea" value="#{branchRegistration.emparea}"
+											maxlength="#{branchRegistration.viewBehaviorBean('Area','MAX_VALUE')}"
+													disabled="#{branchRegistration.viewBehaviorBean('Area','ENABLE')}"
+													requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.localarea']}"
+													validator="RegularExpressionValidation">
+							
+							<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Area','PATTERN')}" />
+							<f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Area','MIN_VALUE')}" />
+							<f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Area','MAX_VALUE')}" />
+							
+							<p:ajax update="empareaMsg" event="blur" />
+							                        <p:message id="empareaMsg" for="emparea" display="text" />	
+							</p:inputText>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.officetelno']} #{branchRegistration.viewBehaviorBean('Office Telephone','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText id="emptel" value="#{branchRegistration.officeTel}"
+											required="#{branchRegistration.viewBehaviorBean('Office Telephone','REQUIRED')}"
+							requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.officetelno']}" style="font-weight: normal;"
+							validator="RegularExpressionValidation">
+							
+							<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Office Telephone','PATTERN')}"/>  
+						    <f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Office Telephone','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Office Telephone','MAX_VALUE')}"/>
+							
+						    <p:ajax update="emptelMsg" event="blur" />
+			                      <p:message id="emptelMsg" for="emptel" display="text" />
+						</p:inputText>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.country']} #{branchRegistration.viewBehaviorBean('Country','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										 <p:message for="empcountry" display="text"/>
+										<p:selectOneMenu id="empcountry" filterMatchMode="startsWith" filter="true"  value ="#{branchRegistration.empCountryId}" 
+										 readonly="#{branchRegistration.viewBehaviorBean('Country','READ_ONLY')}" 
+									disabled="#{branchRegistration.viewBehaviorBean('Country','ENABLE')}" 
+									required="#{branchRegistration.viewBehaviorBean('Country','REQUIRED')}" 
+							         requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.country']}" style="width:185px;text-align:left;">
+											<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+								<f:selectItems  value="#{branchRegistration.countryNameList}" var="c" itemLabel="#{c.countryName}" itemValue="#{c.fsCountryMaster.countryId}"  />
+							 <p:ajax  event ="change" update="stateemp" listener="#{branchRegistration.popEmpState}"/> 
+					 
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.state']} #{branchRegistration.viewBehaviorBean('State','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+										 <p:message for="stateemp" display="text"/>
+										<p:selectOneMenu id="stateemp" value ="#{branchRegistration.empStateId}" filterMatchMode="startsWith" filter="true"
+										         readonly="#{branchRegistration.viewBehaviorBean('State','READ_ONLY')}" 
+									disabled="#{branchRegistration.viewBehaviorBean('State','ENABLE')}" 
+									required="#{branchRegistration.viewBehaviorBean('State','REQUIRED')}" 
+							         requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.state']}" style="width:185px;text-align:left;" >
+										    <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{branchRegistration.lstEmpStateList}"
+														var="c" itemLabel="#{c.stateName}" itemValue="#{c.fsStateMaster.stateId}"/>
+											<p:ajax update ="districtemp" listener="#{branchRegistration.popEmpDistrict}"/>			
+										</p:selectOneMenu>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.district']} #{branchRegistration.viewBehaviorBean('District','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+										 <p:message for="districtemp" display="text"/>
+											<p:selectOneMenu  id="districtemp" value ="#{branchRegistration.empDistrictId}" filterMatchMode="startsWith" filter="true"
+										       readonly="#{branchRegistration.viewBehaviorBean('Nationality','READ_ONLY')}" 
+									disabled="#{branchRegistration.viewBehaviorBean('Nationality','ENABLE')}" 
+									required="#{branchRegistration.viewBehaviorBean('Nationality','REQUIRED')}" 
+							         requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.district']}" style="width:185px;text-align:left;" >
+										              <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{branchRegistration.lstEmpDistrictList}"
+														var="c" itemLabel="#{c.district}" itemValue="#{c.fsDistrictMaster.districtId}"/>
+											<p:ajax update ="cityemp" listener="#{branchRegistration.popEmpCity}"/>			
+										</p:selectOneMenu> 
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.city']} #{branchRegistration.viewBehaviorBean('City','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+										 <p:message for="cityemp" display="text"/>
+											<p:selectOneMenu  id="cityemp" value ="#{branchRegistration.empCityId}" filterMatchMode="startsWith" filter="true" 
+										    readonly="#{branchRegistration.viewBehaviorBean('City','READ_ONLY')}" 
+									disabled="#{branchRegistration.viewBehaviorBean('City','ENABLE')}" 
+									required="#{branchRegistration.viewBehaviorBean('City','REQUIRED')}" 
+										     requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.city']}"  style="width:185px;text-align:left;">
+										    <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{branchRegistration.lstEmpCityList}"
+														var="c" itemLabel="#{c.cityName}" itemValue="#{c.fsCityMaster.cityId}"/>
+											<p:ajax event="change" listener="#{branchRegistration.getCity}"/>			
+										</p:selectOneMenu>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-a ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.postalcode']} #{branchRegistration.viewBehaviorBean('Postal Code','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="postal" value ="#{branchRegistration.postalCode}"
+											required="#{branchRegistration.viewBehaviorBean('Postal Code','REQUIRED')}"
+							requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.postalcode']}" style="font-weight: normal;" 
+							
+							validator="RegularExpressionValidation">
+							
+							<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Postal Code','PATTERN')}"/>  
+						    <f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Postal Code','MIN_VALUE')}"/>  
+							<f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Postal Code','MAX_VALUE')}"/>
+									    
+							 <p:ajax update="postalMsg" event="blur" />
+			                      <p:message id="postalMsg" for="postal" display="text" />	
+							
+						</p:inputText>
+										</div>
+
+									</div>
+									<div class="clearfix"></div>
+									
+								</p:panel>
+								</p:panel>
+								<h:panelGroup layout="block" styleClass="shadow_button">
+								
+									<p:commandButton value="#{msg['lbl.save']}" action="#{branchRegistration.panelSaveController}" ajax="false"
+											style="float:right; margin-right:10px; ">
+										</p:commandButton>
+
+										<p:commandButton value="#{msg['lbl.next']}" action="#{branchRegistration.proofDetails}" update="mainPanel" style="float:right;" >
+										</p:commandButton>
+									
+										<p:commandButton value="#{msg['lbl.back']}" action="#{branchRegistration.contactDetails}" update="mainPanel" 
+											style="float:right; margin-right:10px; ">
+										</p:commandButton>
+										<div class="clearfix"></div>
+									</h:panelGroup>
+									<div class="clearfix"></div>
+									
+									</p:panel>
+									
+									<p:panel id="idproofs"  rendered="#{branchRegistration.booProof}">
+
+								<p:panel styleClass="shadow" >
+									<h2>Proof</h2>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.idfor']} *" />
+										</div>
+										<div class="ui-block-b">
+										  <p:message for="idfor" display="text" />
+											<p:selectOneMenu id="idfor" value="#{branchRegistration.idFor}" required="true" requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.idfor']}" style="width:180px;">
+							    <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+								<f:selectItem itemLabel="#{msg['lbl.addressproof']}" itemValue="1" />
+								<f:selectItem itemLabel="#{msg['lbl.identityproof']}" itemValue="2" />
+							</p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.idtype']} #{branchRegistration.viewBehaviorBean('ID Type','MANDATORY')}" />
+										</div>
+										<div class="ui-block-d">
+										 <p:message for="idTypes" display="text"/>
+										<p:selectOneMenu id="idTypes" value="#{branchRegistration.idTypeproof}"
+										 readonly="#{branchRegistration.viewBehaviorBean('ID Type','READ_ONLY')}" 
+									disabled="#{branchRegistration.viewBehaviorBean('ID Type','ENABLE')}" 
+									required="#{branchRegistration.viewBehaviorBean('ID Type','REQUIRED')}" 
+							         requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.idtype']}" style="width:185px;text-align:left;">
+							    <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+								<!-- <f:selectItem itemValue="" itemLabel="#{msg['lbl.select']}"/> -->
+								<f:selectItems value="#{branchRegistration.fetchIdType}" var="c" itemValue="#{c.identityTypeId}" itemLabel="#{c.identityType}" />
+							</p:selectOneMenu>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.idnumber']} #{branchRegistration.viewBehaviorBean('ID Number','MANDATORY')}" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText id="idnos" value="#{branchRegistration.idnumberProof}"
+											readonly="#{branchRegistration.viewBehaviorBean('Id Number','READ_ONLY')}"
+														maxlength="#{branchRegistration.viewBehaviorBean('Id Number','MAX_VALUE')}"
+														disabled="#{branchRegistration.viewBehaviorBean('Id Number','ENABLE')}"
+														required="#{branchRegistration.viewBehaviorBean('Id Number','REQUIRED')}" 
+														requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.idnumber']}"
+														validator="RegularExpressionValidation">
+														
+									<f:attribute name="regexValue" value="#{branchRegistration.viewBehaviorBean('Id Number','PATTERN')}" />
+									<f:attribute name="minValue" value="#{branchRegistration.viewBehaviorBean('Id Number','MIN_VALUE')}" />
+									<f:attribute name="maxValue" value="#{branchRegistration.viewBehaviorBean('Id Number','MAX_VALUE')}" />
+									
+								  <p:ajax update="idnosMsg" event="blur" />
+			                      <p:message id="idnosMsg" for="idnos" display="text" />	
+							</p:inputText>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.dateofexpiry']}" />
+										</div>
+										<div class="ui-block-d">
+										 <p:calendar id="dateOfExp" size="24" value="#{branchRegistration.dateExp}" mode="popup" 
+									                    	readonlyInput="true"
+										                  requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.dateofexpiry']}"
+										                  pattern="dd/MM/yyyy" navigator="true" mindate="#{branchRegistration.expDateCheck}"/>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-a ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="Scan &amp; Upload *" />
+										</div>
+										<div class="ui-block-b">
+										<p:fileUpload  value="#{branchRegistration.file}" mode="simple" dragDropSupport="false" required="true" id="fileUplod"   
+                  								        sizeLimit="10000" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|pdf)$/" label="Choose File">
+                  								        <p:message for="fileUplod" value="File Not Selected" style="color:red;"/>
+						                     	</p:fileUpload>
+										</div>
+									</div>
+									<div class="clearfix"></div>
+									<h:panelGroup layout="block" styleClass="button_align">
+
+										<p:commandButton value="#{msg['lbl.add']}" action="#{branchRegistration.addRows}" ajax="false" update="mainPanel" style="float:right;" id="btnGlobal">
+										</p:commandButton>
+         
+										<div class="clearfix"></div>
+									</h:panelGroup>
+
+									 <p:dataTable value="#{branchRegistration.createProofList}" var="o" widgetVar="50" style="width: 780px; font-size:12px;" editable="true" 
+						id="datatable1">
+						
+						 <p:ajax update="datatable1" event="cellEdit"  listener="#{branchRegistration.modifiedProofList(o)}" />
+						
+					<p:column>
+						<h:outputText/>
+							<f:facet name="header"><h:outputText value="#{msg['lbl.idfor']}"/></f:facet>
+
+							<p:cellEditor>
+								<f:facet name="output" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"><h:outputText value="#{o.idFor}"/></f:facet>
+								
+								<f:facet name="input" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;">
+									<h:selectOneMenu value="#{o.id_for}" >
+										<f:selectItem itemLabel="#{msg['lbl.addressproof']}"	itemValue="1" />
+										<f:selectItem itemLabel="#{msg['lbl.identityproof']}" itemValue="2" />
+									</h:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column>
+							<!-- <h:outputText value="#{o.idType}"/> -->
+							<f:facet name="header">
+								<h:outputText value="#{msg['lbl.idtype']}" />
+							</f:facet>
+							<p:cellEditor>
+								<f:facet name="output" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;">
+									<h:outputText value="#{o.idType}"  />
+								</f:facet>
+								<f:facet name="input" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;">
+									<p:inputText value="#{o.idType}"  />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column>
+							<f:facet name="header"><h:outputText value="#{msg['lbl.idnumber']}" /></f:facet>
+							<p:cellEditor>
+								<f:facet name="output"><h:outputText value="#{o.id_number}" style="text-align: left; font-size:13px;  height:20px; width:100px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+								<f:facet name="input"><p:inputText value="#{o.id_number}" style="text-align: left; font-size:13px;  height:20px; width:100px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column>
+							<f:facet name="header"><h:outputText value="#{msg['lbl.dateofexpiry']}" /></f:facet>
+							<p:cellEditor>
+								<f:facet name="output"><h:outputText value="#{o.date_expiary}" style="text-align: left; font-size:13px;  height:20px; width: 90px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+								<f:facet name="input"><p:inputText value="#{o.date_expiary}" style="text-align: left; font-size:13px;  height:20px; width: 90px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+							</p:cellEditor>
+						</p:column>
+						
+						<p:column headerText="#{msg['lbl.download']}" style="text-align:center; width:50px;">
+								<p:commandLink id="downloadLink" title="download"  ajax="false" action="PrimeFaces.monitorDownload(start, stop)"   
+        															icon="ui-icon-arrowthichk-s">  
+        									<p:graphicImage value="../images/download.png"/>
+    										<p:fileDownload value="#{branchRegistration.downloadFile(o.imageId)}" />  
+								</p:commandLink>   
+						</p:column>
+								 
+						<p:column headerText="#{msg['lbl.verified']}" style="text-align:center; width:50px;">
+							<h:selectBooleanCheckbox value="#{o.checked}" />
+						</p:column>
+						
+						<p:column  style="text-align:center; width:50px;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['lbl.delete']}" />
+								</f:facet>
+								<p:commandButton  value="" styleClass="delete" actionListener="#{branchRegistration.removeIdProof(o)}" ajax="false"/>
+							</p:column>
+
+					</p:dataTable>
+									
+								</p:panel>
+								<div class="clearfix"></div>
+									
+									<p:panel  styleClass="shadow" >
+									<h2><h:outputText value="Digital Sign" /></h2>
+									
+									
+									<p:commandButton value="Sign"/>
+									
+									</p:panel>
+								
+<h:panelGroup layout="block" styleClass="shadow_button">
+                                <p:selectBooleanCheckbox value="#{branchRegistration.approved}">
+						<p:ajax event="change" update="mainPanel" listener="#{branchRegistration.veryfiAllClick}"/>
+					</p:selectBooleanCheckbox>
+												<p:spacer width="10px;" />
+												<h:outputText value="Verified All" />
+												<p:spacer width="20px;" />
+									<p:commandButton value="#{msg['lbl.submit']}" style="float:right;" action="#{branchRegistration.panelSaveController}" ajax="false">
+										</p:commandButton>
+                                     <p:commandButton value="#{msg['lbl.back']}" action="#{branchRegistration.employmentDetails}" update="mainPanel" ajax="false" immediate="true"
+											style="float:right; margin-right:10px; ">
+										</p:commandButton>
+										<p:commandButton value="#{msg['lbl.clear']}" action="#{branchRegistration.clear}" update="mainPanel"
+											style="float:right; margin-right:10px; ">
+										</p:commandButton>
+										
+
+										<div class="clearfix"></div>
+									</h:panelGroup>
+									</p:panel>
+
+							</p:panel>
+
+
+
+
+						</p:panel>
+
+
+					</h:form>
+
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+		</h:panelGroup>
+</td>
+			</tr>
+		</table>
+		<div class="clearfix"></div>
+
+		<ui:include src="#{facesBean.footer}"></ui:include>
+
+	</f:view>
+</h:body>
+</html>

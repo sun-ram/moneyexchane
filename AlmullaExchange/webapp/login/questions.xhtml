@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link href="css/style1.css" rel="stylesheet" type="text/css" />
+	  </h:head>
+	  <h:body dir="#{facesBean.direction}">
+<f:view locale="#{facesBean.locale}">
+<ui:include src="#{facesBean.header}"></ui:include>
+<h:panelGroup layout="block"  class="container">
+  <h:panelGroup layout="block" class="main_div1" style="margin-top:8px;"> 
+	
+	  	<div id="common"> 
+	  		<h1>#{msg['lbl.usersignup']}</h1>  	
+			
+			<h:panelGroup layout="block" class="table_bg">	
+				<p:panel id="mainPanel" style="padding:50px !important;">
+			 		<h:form title="User Signup" id="signup" >
+					     <h:panelGrid id="grid1" columns="3" cellpadding="15" cellspacing="15" >
+				                <h:outputText value="Type Your Questions"  style="text-align:left;" />
+				                <p:panel style="border:0px;" >
+							        <p:inputText id="username" value="">
+							           
+							        </p:inputText>
+							      
+							        <br /> 
+						            <h:outputText id="availableStatus" value="#{onLineUsrRegBean.statusMsg}" style="color:red;" />
+				                </p:panel>
+					            <p:message for="username" display="text"/>
+					      </h:panelGrid>
+<p:spacer width="150px" height="50px"/>
+					     <p:commandButton   value="#{msg['lbl.cancel']}"  action="#{onLineUsrRegBean.cancel}"  immediate="true" />
+					   
+			   			<p:spacer width="20px" height="0px"/>
+			   			
+			   			 <p:commandButton value="#{msg['lbl.clear']}"  type="reset" >  
+			                       
+			             </p:commandButton>
+			   			
+			   															
+			  			<!-- <h:commandButton  value="Clear"  type="reset" style="cursor: pointer; font-size: 15px; font-weight: bold;font-style: italic;color: #FFFFFF;width: 120px;height: 30px;
+				   															background-color: #0099FF;
+				   															border-style: none; border:2px solid #a1a1a1; padding:3px 10px; border-radius:25px;"/> -->
+			             <p:spacer width="20px" height="0px"/>	   															
+				         <p:commandButton value="#{msg['lbl.submit']}" action="#{onLineUsrRegBean.saveOnlineUsrData()}" ajax="false">
+				           
+				   		</p:commandButton>  
+	   			<!-- </p:panel> -->														
+		      </h:form>  
+		      </p:panel>
+		      </h:panelGroup>
+	   </div> 
+	   
+</h:panelGroup></h:panelGroup>
+		    
+                 <ui:include src="#{facesBean.footer}"></ui:include>
+            
+	       </f:view>
+     </h:body> 
+
+
+  </html>

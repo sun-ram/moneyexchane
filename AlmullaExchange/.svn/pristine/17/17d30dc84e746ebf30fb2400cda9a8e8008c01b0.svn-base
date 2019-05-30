@@ -1,0 +1,173 @@
+package com.amg.exchange.model;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+
+
+/*******************************************************************************************************************
+
+		 File		: BankDdPrintLoc.java
+ 
+		 Project	: AlmullaExchange
+
+		 Package	: com.amg.exchange.model
+ 
+		 Created	:	
+ 						Date	: 29-May-2014 4:24:46 pm
+		 				By		: Justin Vincent
+ 						Revision:
+ 
+ 		 Last Change:
+ 						Date	: 29-May-2014 4:24:46 pm
+ 						By		: Justin Vincent
+		 				Revision:
+
+		 Description: TODO 
+
+********************************************************************************************************************/
+@Entity
+@Table(name = "EX_BANK_DD_PRINT_LOC")
+public class BankDdPrintLoc implements java.io.Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private BigDecimal ddPrintLocId;
+	private CompanyMaster fsCompanyMaster;
+	private CountryMaster fsCountryMaster;
+	private String ddAgent;
+	private String ddPrintLocation;
+	private String recordStatus;
+	private Date createDate;
+	private Date updateDate;
+	private String creator;
+	private String modifier;
+
+	public BankDdPrintLoc() {
+	}
+
+	public BankDdPrintLoc(BigDecimal ddPrintLocId) {
+		this.ddPrintLocId = ddPrintLocId;
+	}
+
+	public BankDdPrintLoc(BigDecimal ddPrintLocId,
+			CompanyMaster fsCompanyMaster, CountryMaster fsCountryMaster,
+			String ddAgent, String ddPrintLocation, String recordStatus,
+			Date createDate, Date updateDate, String creator, String modifier) {
+		this.ddPrintLocId = ddPrintLocId;
+		this.fsCompanyMaster = fsCompanyMaster;
+		this.fsCountryMaster = fsCountryMaster;
+		this.ddAgent = ddAgent;
+		this.ddPrintLocation = ddPrintLocation;
+		this.recordStatus = recordStatus;
+		this.createDate = createDate;
+		this.updateDate = updateDate;
+		this.creator = creator;
+		this.modifier = modifier;
+	}
+
+	@Id
+	@TableGenerator(name = "ddprintlocid", table = "ex_ddprintlocidpk", pkColumnName = "ddprintlocidkey", pkColumnValue = "ddprintlocidvalue", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "ddprintlocid")
+	@Column(name = "DD_PRINT_LOC_ID", unique = true, nullable = false, precision = 22, scale = 0)
+	public BigDecimal getDdPrintLocId() {
+		return this.ddPrintLocId;
+	}
+
+	public void setDdPrintLocId(BigDecimal ddPrintLocId) {
+		this.ddPrintLocId = ddPrintLocId;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "COMPANY_ID")
+	public CompanyMaster getFsCompanyMaster() {
+		return this.fsCompanyMaster;
+	}
+
+	public void setFsCompanyMaster(CompanyMaster fsCompanyMaster) {
+		this.fsCompanyMaster = fsCompanyMaster;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "COUNTRY_ID")
+	public CountryMaster getFsCountryMaster() {
+		return this.fsCountryMaster;
+	}
+
+	public void setFsCountryMaster(CountryMaster fsCountryMaster) {
+		this.fsCountryMaster = fsCountryMaster;
+	}
+
+	@Column(name = "DD_AGENT", length = 30)
+	public String getDdAgent() {
+		return this.ddAgent;
+	}
+
+	public void setDdAgent(String ddAgent) {
+		this.ddAgent = ddAgent;
+	}
+
+	@Column(name = "DD_PRINT_LOCATION", length = 40)
+	public String getDdPrintLocation() {
+		return this.ddPrintLocation;
+	}
+
+	public void setDdPrintLocation(String ddPrintLocation) {
+		this.ddPrintLocation = ddPrintLocation;
+	}
+
+	@Column(name = "RECORD_STATUS", length = 1)
+	public String getRecordStatus() {
+		return this.recordStatus;
+	}
+
+	public void setRecordStatus(String recordStatus) {
+		this.recordStatus = recordStatus;
+	}
+
+	@Column(name = "CREATE_DATE")
+	public Date getCreateDate() {
+		return this.createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	@Column(name = "UPDATE_DATE")
+	public Date getUpdateDate() {
+		return this.updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	@Column(name = "CREATOR", length = 15)
+	public String getCreator() {
+		return this.creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
+	}
+
+	@Column(name = "MODIFIER", length = 15)
+	public String getModifier() {
+		return this.modifier;
+	}
+
+	public void setModifier(String modifier) {
+		this.modifier = modifier;
+	}
+
+}

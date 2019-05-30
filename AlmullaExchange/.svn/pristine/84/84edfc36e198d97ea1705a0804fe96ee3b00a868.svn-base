@@ -1,0 +1,99 @@
+package com.amg.exchange.model;
+
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+
+/*******************************************************************************************************************
+
+		 File		: Employee.java
+ 
+		 Project	: AlmullaExchange
+
+		 Package	: com.amg.exchange.model
+ 
+		 Created	:	
+ 						Date	: 29-May-2014 5:13:45 pm
+		 				By		: Justin Vincent
+ 						Revision:
+ 
+ 		 Last Change:
+ 						Date	: 29-May-2014 5:13:45 pm
+ 						By		: Justin Vincent
+		 				Revision:
+
+		 Description: TODO 
+
+********************************************************************************************************************/
+
+@Entity
+@Table(name = "FS_EMPLOYEE" )
+public class Employee implements java.io.Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private BigDecimal employeeId;
+	private String employeeName;
+	private String userName;
+	private String password;
+
+	public Employee() {
+	}
+
+	public Employee(BigDecimal employeeId) {
+		this.employeeId = employeeId;
+	}
+
+	public Employee(BigDecimal employeeId, String employeeName,
+			String userName, String password) {
+		this.employeeId = employeeId;
+		this.employeeName = employeeName;
+		this.userName = userName;
+		this.password = password;
+	}
+
+	@Id
+	@TableGenerator(name="employeeid",table="fs_employeeidpk",pkColumnName="employeeidkey",pkColumnValue="employeeidvalue",allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.TABLE,generator="employeeid")
+	@Column(name = "EMPLOYEE_ID", unique = true, nullable = false, precision = 22, scale = 0)
+	public BigDecimal getEmployeeId() {
+		return this.employeeId;
+	}
+
+	public void setEmployeeId(BigDecimal employeeId) {
+		this.employeeId = employeeId;
+	}
+
+	@Column(name = "EMPLOYEE_NAME", length = 50)
+	public String getEmployeeName() {
+		return this.employeeName;
+	}
+
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
+
+	@Column(name = "USER_NAME", length = 20)
+	public String getUserName() {
+		return this.userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	@Column(name = "PASSWORD", length = 20)
+	public String getPassword() {
+		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+}

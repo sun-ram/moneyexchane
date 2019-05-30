@@ -1,0 +1,101 @@
+package com.amg.exchange.model;
+
+ 
+
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+
+/**
+ * FsCompanyMasterDesc Created by Chennai ODC
+ */
+@Entity
+@Table(name = "FS_COMPANY_MASTER_DESC" )
+public class CompanyMasterDesc implements java.io.Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private BigDecimal companyMasterId;
+	private LanguageType fsLanguageType;
+	//private BigDecimal companyId;
+	private String companyName;
+	private CompanyMaster fsCompanyMaster;
+
+	public CompanyMasterDesc() {
+	}
+
+	public CompanyMasterDesc(BigDecimal companyMasterId) {
+		this.companyMasterId = companyMasterId;
+	}
+
+	public CompanyMasterDesc(BigDecimal companyMasterId,
+			LanguageType fsLanguageType, CompanyMaster fsCompanyMaster,
+			String companyName) {
+		this.companyMasterId = companyMasterId;
+		this.fsLanguageType = fsLanguageType;
+		this.fsCompanyMaster = fsCompanyMaster;
+		this.companyName = companyName;
+	}
+
+	@Id
+	@TableGenerator(name="companymasterid",table="fs_companymasteridpk",pkColumnName="companymasteridkey",pkColumnValue="companymasteridvalue",allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.TABLE,generator="companymasterid")
+	@Column(name = "COMPANY_MASTER_ID", unique = true, nullable = false, precision = 22, scale = 0)
+	public BigDecimal getCompanyMasterId() {
+		return this.companyMasterId;
+	}
+
+	public void setCompanyMasterId(BigDecimal companyMasterId) {
+		this.companyMasterId = companyMasterId;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "LANGUAGE_ID")
+	public LanguageType getFsLanguageType() {
+		return this.fsLanguageType;
+	}
+
+	public void setFsLanguageType(LanguageType fsLanguageType) {
+		this.fsLanguageType = fsLanguageType;
+	}
+
+	/*@Column(name = "COMPANY_ID", precision = 22, scale = 0)
+	public BigDecimal getCompanyId() {
+		return this.companyId;
+	}
+
+	public void setCompanyId(BigDecimal companyId) {
+		this.companyId = companyId;
+	}*/
+
+	@Column(name = "COMPANY_NAME", length = 245)
+	public String getCompanyName() {
+		return this.companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "COMPANY_ID")
+	public CompanyMaster getFsCompanyMaster() {
+		return fsCompanyMaster;
+	}
+
+	public void setFsCompanyMaster(CompanyMaster fsCompanyMaster) {
+		this.fsCompanyMaster = fsCompanyMaster;
+	}
+
+}

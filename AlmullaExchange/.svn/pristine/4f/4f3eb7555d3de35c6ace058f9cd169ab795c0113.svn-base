@@ -1,0 +1,1204 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</h:head>
+
+<h:body>
+	<f:view>
+		<ui:include src="#{facesBean.header}"></ui:include>
+		<ui:include src="#{facesBean.menu}"></ui:include>
+		<table align="left" width="100%" style="height: 100%;">
+			<tr>
+				<td align="left" valign="top" style="height: 100%;"><div
+						id="left" class="leftColumn">
+						<div style="display: none; width: 150px;" id="leftCol">
+							<p:accordionPanel>
+								<p:tab title="My Profile"
+									titleStyle="background: url(../images/menu_icon5.png) no-repeat scroll 6px 8px;  border-top:none !important;">
+									<h:outputLink value="../login/forgotpassword.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Change Password" />
+									</h:outputLink>
+									<h:outputLink value="../login/login.xhtml" target="_self"
+										styleClass="left_menu" style=" border-bottom:none !important;">
+										<h:outputText value="Logout" />
+									</h:outputLink>
+
+								</p:tab>
+								<p:tab title="About"
+									titleStyle="background: url(../images/menu_icon1.png) no-repeat scroll 6px 8px;">
+
+									<h:outputLink value="http://www.almullagroup.com/"
+										target="_blank" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Al Mulla Group" />
+									</h:outputLink>
+									<h:outputLink
+										value="http://www.almullagroup.com/finance/exchange.aspx"
+										target="_blank" styleClass="left_menu">
+										<h:outputText value="Exchange" />
+									</h:outputLink>
+									<h:outputLink
+										value="http://www.almullagroup.com/finance/finance.aspx"
+										target="_blank" styleClass="left_menu">
+										<h:outputText value="Finance" />
+									</h:outputLink>
+									<h:outputLink value="http://www.autoalmulla.com/index.php/"
+										target="_blank" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Automobiles" />
+									</h:outputLink>
+
+								</p:tab>
+								<p:tab title="Services"
+									titleStyle="background: url(../images/menu_icon2.png) no-repeat scroll 6px 8px;">
+									<h:outputLink value="../registration/custmanualcustomerInfoBranch.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Individual" />
+									</h:outputLink>
+									<h:outputLink
+										value="../registration/corporateregistration.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Non Individual" />
+									</h:outputLink>
+
+								</p:tab>
+								<p:tab title="Branch"
+									titleStyle="background: url(../images/menu_icon3.png) no-repeat scroll 6px 8px;">
+
+									<h:outputLink value="../search/searchcustomer.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Search Customer" />
+									</h:outputLink>
+									<h:outputLink value="../registration/branchhome.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Branch Home" />
+									</h:outputLink>
+
+
+								</p:tab>
+								<p:tab title="Rule Engine"
+									titleStyle="background: url(../images/menu_icon4.png) no-repeat scroll 6px 8px;">
+
+									<h:outputLink value="../ruleengine/businesscomponent.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-top:none !important;">
+										<h:outputText value="Business Component" />
+									</h:outputLink>
+
+									<h:outputLink value="../ruleengine/businesscomponentconf.xhtml"
+										target="_self" styleClass="left_menu"
+										style=" border-bottom:none !important;">
+										<h:outputText value="Business Component Config" />
+									</h:outputLink>
+
+								</p:tab>
+							</p:accordionPanel>
+						</div>
+					</div></td>
+
+				<td class="rightColumn" valign="top"><h:panelGroup
+						layout="block" class="container">
+						<h:panelGroup layout="block" class="main_div">
+							<div class="menu_button">
+								<img style="cursor: pointer; position: relative; left: 15px;"
+									id="HideHandle" name="HideHandle"
+									src="../images/toggle_plus.png" alt=""
+									onclick='hideLeftCol("leftCol");closeMenus();' />
+							</div>
+							<h1>
+								<h:outputText value="Customer Information Verification" />
+							</h1>
+							<h:panelGroup layout="block" class="table_bg">
+								<h:form enctype="multipart/form-data" style="padding:0!important;">
+									<p:panel id="mainPanel"
+										style="border: 0px; padding:0px!important;">
+										<p:panel style="padding:10px!important;">
+											<p:panel styleClass="shadow" rendered="#{customerInfoBranch.renderBasicInfo}">
+												<p:panel
+													style="padding:0px !important; border:none !important;"
+													>
+													<div class="ui-grid-a ui-responsive">
+														<div class="ui-block-a" style="padding-top: 20px;">
+															<h:outputText value="#{msg['lbl.validselect']} *" />
+														</div>
+														<div class="ui-block-b">
+															<p:selectOneMenu
+																value="#{customerInfoBranch.methodTypeId}">
+																<f:selectItem itemLabel="#{msg['lbl.select']}"
+																	itemValue="" />
+																<f:selectItem itemLabel="#{msg['lbl.smartcard']}"
+																	itemValue="1" />
+																<f:selectItem itemLabel="#{msg['lbl.manual']}"
+																	itemValue="2" />
+															</p:selectOneMenu>
+														</div>
+
+													</div>
+													<div class="clearfix"></div>
+												</p:panel>
+
+												<p:panel
+													style="padding:0px !important; border:none !important;"
+													>
+													<div class="ui-grid-e ui-responsive">
+														<div class="ui-block-a">
+															<h:outputText value="Token Number" />
+														</div>
+														<div class="ui-block-b">
+															<p:inputText value="#{customerInfoBranch.tokenNumber}">
+															</p:inputText>
+														</div>
+														<div class="ui-block-c">
+															<h:outputText value="ID Number *" />
+														</div>
+														<div class="ui-block-d">
+															<p:inputText value="#{customerInfoBranch.idNumber}">
+															</p:inputText>
+														</div>
+														<div class="ui-block-e"></div>
+														<div class="ui-block-f"></div>
+													</div>
+													<div class="clearfix"></div>
+
+												</p:panel>
+											</p:panel>
+											<h:panelGroup layout="block" styleClass="shadow_button" rendered="#{customerInfoBranch.renderBasicInfo}">
+
+
+												<p:commandButton value="clear" style="margin-right:10px;"
+													action="#{customerInfoBranch.clearBasicInfo}"
+													update="mainPanel">
+												</p:commandButton>
+												<p:commandButton value="Go"
+													action="#{customerInfoBranch.fetchCustomerInfo}"
+													update="mainPanel">
+												</p:commandButton>
+
+												<div class="clearfix"></div>
+											</h:panelGroup>
+
+
+											<p:panel styleClass="shadow" rendered="#{customerInfoBranch.renderCustomerDetails}">
+												<p:panel    
+													style="padding:0px !important; border:none !important;"
+													>
+													<h2>Customer Details</h2>
+
+
+
+													<div class="ui-grid-a ui-responsive">
+														<div class="ui-block-a">
+															<h:outputText value="Title" />
+														</div>
+														<div class="ui-block-b">
+															<p:inputText value="#{customerInfoBranch.title}" readonly="true">
+															</p:inputText>
+														</div>
+
+													</div>
+													<div class="clearfix"></div>
+
+
+
+													<div class="ui-grid-e ui-responsive">
+														<div class="ui-block-a">
+															<h:outputText value="First Name *" />
+														</div>
+														<div class="ui-block-b">
+															<p:inputText value="#{customerInfoBranch.firstName}" readonly="true">
+															</p:inputText>
+														</div>
+														<div class="ui-block-c">
+															<h:outputText value="Middle Name *" />
+														</div>
+														<div class="ui-block-d">
+															<p:inputText value="#{customerInfoBranch.middleName}" readonly="true">
+															</p:inputText>
+														</div>
+														<div class="ui-block-e"></div>
+														<div class="ui-block-f"></div>
+													</div>
+													<div class="clearfix"></div>
+
+													<div class="ui-grid-e ui-responsive">
+														<div class="ui-block-a">
+															<h:outputText value="Last Name *" />
+														</div>
+														<div class="ui-block-b">
+															<p:inputText value="#{customerInfoBranch.lastName}" readonly="true">
+															</p:inputText>
+														</div>
+														<div class="ui-block-c">
+															<h:outputText value="Short Name *" />
+														</div>
+														<div class="ui-block-d">
+															<p:inputText value="#{customerInfoBranch.shortName}" readonly="true">
+															</p:inputText>
+														</div>
+														<div class="ui-block-e"></div>
+														<div class="ui-block-f"></div>
+													</div>
+													<div class="clearfix"></div>
+
+
+													<p:panel
+														style="padding:0px !important; border:none !important;"
+														rendered="#{customerInfoBranch.renderCustomeInfoLocal}">
+														<div class="ui-grid-e ui-responsive">
+															<div class="ui-block-a">
+																<h:outputText value="First Name (L)*" />
+															</div>
+															<div class="ui-block-b">
+																<p:inputText value="#{customerInfoBranch.firstNameL}" readonly="true">
+																</p:inputText>
+															</div>
+															<div class="ui-block-c">
+																<h:outputText value="Middle Name (L)*" />
+															</div>
+															<div class="ui-block-d">
+																<p:inputText value="#{customerInfoBranch.middleNameL}" readonly="true">
+																</p:inputText>
+															</div>
+															<div class="ui-block-e"></div>
+															<div class="ui-block-f"></div>
+														</div>
+														<div class="clearfix"></div>
+
+														<div class="ui-grid-e ui-responsive">
+															<div class="ui-block-a">
+																<h:outputText value="Last Name (L)*" />
+															</div>
+															<div class="ui-block-b">
+																<p:inputText value="#{customerInfoBranch.lastNameL}" readonly="true">
+																</p:inputText>
+															</div>
+															<div class="ui-block-c">
+																<h:outputText value="Short Name (L)*" />
+															</div>
+															<div class="ui-block-d">
+																<p:inputText value="#{customerInfoBranch.shortNameL}" readonly="true">
+																</p:inputText>
+															</div>
+															<div class="ui-block-e"></div>
+															<div class="ui-block-f"></div>
+														</div>
+														<div class="clearfix"></div>
+													</p:panel>
+
+													<div class="ui-grid-e ui-responsive">
+														<div class="ui-block-a">
+															<h:outputText value="Nationality *" />
+														</div>
+														<div class="ui-block-b">
+															<p:selectOneMenu
+																value="#{customerInfoBranch.nationalityId}"
+																filterMatchMode="startsWith" filter="true" >
+																<f:selectItem itemLabel="#{msg['lbl.select']}"
+																	itemValue="" />
+																<f:selectItems
+																	value="#{customerInfoBranch.nationalityNameList}" var="c"
+																	itemLabel="#{c.nationality}"
+																	itemValue="#{c.fsCountryMaster.countryId}" />
+															</p:selectOneMenu>
+														</div>
+														<div class="ui-block-c">
+															<h:outputText value="Gender *" />
+														</div>
+														<div class="ui-block-d">
+															<p:selectOneMenu value="#{customerInfoBranch.gender}" disabled="true">
+																<f:selectItem itemLabel="#{msg['lbl.select']}"
+																	itemValue="" />
+																<f:selectItem itemValue="#{msg['lbl.male']}"
+																	itemLabel="#{msg['lbl.male']}" />
+																<f:selectItem itemValue="#{msg['lbl.female']}"
+																	itemLabel="#{msg['lbl.female']}" />
+															</p:selectOneMenu>
+														</div>
+														<div class="ui-block-e"></div>
+														<div class="ui-block-f"></div>
+													</div>
+													<div class="clearfix"></div>
+												</p:panel>
+
+												<p:panel  
+													style="padding:0px !important; border:none !important;"
+													rendered="#{customerInfoBranch.renderCustomeInfoEditable}">
+													<div class="ui-grid-e ui-responsive">
+														<div class="ui-block-a">
+															<h:outputText value="Date of Birth" />
+														</div>
+														<div class="ui-block-b">
+															<p:calendar value="#{customerInfoBranch.dateOfBirth}" />
+														</div>
+														<div class="ui-block-c">
+															<h:outputText value="Mobile No *" />
+														</div>
+														<div class="ui-block-d">
+															<p:inputText value="#{customerInfoBranch.mobileNo}">
+															</p:inputText>
+														</div>
+														<div class="ui-block-e"></div>
+														<div class="ui-block-f"></div>
+													</div>
+													<div class="clearfix"></div>
+													<div class="ui-grid-a ui-responsive">
+														<div class="ui-block-a">
+															<h:outputText value="Email *" />
+														</div>
+														<div class="ui-block-b">
+															<p:inputText value="#{customerInfoBranch.email}">
+															</p:inputText>
+														</div>
+
+													</div>
+													<div class="clearfix"></div>
+
+												</p:panel>
+
+												<p:panel
+													style="padding:0px !important; border:none !important;"
+													rendered="#{customerInfoBranch.renderCustomeInfoLocal}">
+													<div class="ui-grid-e ui-responsive">
+														<div class="ui-block-a">
+															<h:outputText value="AML Status" />
+														</div>
+														<div class="ui-block-b">
+															<p:inputText value="#{customerInfoBranch.amlStatus}"  readonly="true"/>
+														</div>
+														<div class="ui-block-c">
+															<h:outputText value="Number of Hits" />
+														</div>
+														<div class="ui-block-d">
+															<p:inputText value="#{customerInfoBranch.numberOfHits}" readonly="true" />
+
+														</div>
+														<div class="ui-block-e"></div>
+														<div class="ui-block-f"></div>
+													</div>
+													<div class="clearfix"></div>
+
+
+												</p:panel>
+											</p:panel>
+											<h:panelGroup layout="block" styleClass="shadow_button" rendered="#{customerInfoBranch.renderCustomerDetails}">
+												<p:commandButton value="Back" style="margin-right:10px;"
+													action="#{customerInfoBranch.backCustomerInfoToBasicInfo}"
+													update="mainPanel">
+												</p:commandButton>
+
+												<p:commandButton value="Save" style="margin-right:10px;"
+													action="#{customerInfoBranch.panelSaveController}"
+													update="mainPanel">
+												</p:commandButton>
+												<p:commandButton value="Next"
+													action="#{customerInfoBranch.nextContactDetails}"
+													update="mainPanel">
+												</p:commandButton>
+
+												<div class="clearfix"></div>
+											</h:panelGroup>
+
+											<p:panel styleClass="shadow"
+												rendered="#{customerInfoBranch.renderContactDetails}">
+												<h2>Contact Details</h2>
+
+
+
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="Contact Type" />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu />
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Local Area" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText />
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="Country" />
+													</div>
+													<div class="ui-block-b">
+														<p:inputText />
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Street No" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText />
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="State/Province" />
+													</div>
+													<div class="ui-block-b">
+														<p:inputText />
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Telephone No" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText />
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="District/Region" />
+													</div>
+													<div class="ui-block-b">
+														<p:inputText />
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Flat No" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText />
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="City" />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu />
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Block No" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText />
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<h:panelGroup layout="block" style="padding:20px;">
+													<p:selectBooleanCheckbox />
+													<p:spacer width="10px;" />
+													<h:outputText value="Contact details is not matching." />
+												</h:panelGroup>
+												<div class="clearfix"></div>
+
+											</p:panel>
+
+											<h:panelGroup layout="block" styleClass="shadow_button" rendered="#{customerInfoBranch.renderContactDetails}">
+												<p:commandButton value="Back" style="margin-right:10px;"
+													action="#{customerInfoBranch.backBasicInfo}"
+													update="mainPanel">
+												</p:commandButton>
+												<p:commandButton value="clear" style="margin-right:10px;"
+													action="#{customerInfoBranch.clearBasicInfo}"
+													update="mainPanel">
+												</p:commandButton>
+												<p:commandButton value="Next"
+													action="#{customerInfoBranch.nextContactDetails}"
+													update="mainPanel">
+												</p:commandButton>
+
+												<div class="clearfix"></div>
+											</h:panelGroup>
+
+											<p:panel styleClass="shadow"
+												rendered="#{customerInfoBranch.renderContactDetailsMatch}">
+												<h2>Contact Details</h2>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="Contact Type" />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu value="#{customerInfoBranch.contactTypeId}">
+														  <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems
+														value="#{customerInfoBranch.contactTypeListDB}" var="o"
+														itemLabel="#{o.contactType}"
+														itemValue="#{o.contactTypeId}" />
+														</p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Local Area" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText value="#{customerInfoBranch.localArea}">
+														</p:inputText>
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="Country" />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu id="country"
+															value="#{customerInfoBranch.countryId}"
+															filterMatchMode="startsWith" filter="true">
+															<f:selectItem itemLabel="#{msg['lbl.select']}"
+																itemValue="" />
+															<f:selectItems
+																value="#{customerInfoBranch.countryListFromDB}" var="c"
+																itemLabel="#{c.countryName}"
+																itemValue="#{c.fsCountryMaster.countryId}" />
+															<p:ajax event="change" update="state"
+																listener="#{customerInfoBranch.popState}" />
+														</p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Street No" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText value="#{customerInfoBranch.streetNo}">
+														</p:inputText>
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="State/Province" />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu id="state"
+															value="#{customerInfoBranch.stateId}"
+															filterMatchMode="startsWith" filter="true"
+															requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.state']}">
+															<f:selectItem itemLabel="#{msg['lbl.select']}"
+																itemValue="" />
+															<f:selectItems
+																value="#{customerInfoBranch.stateListFromDB}" var="c"
+																itemLabel="#{c.stateName}"
+																itemValue="#{c.fsStateMaster.stateId}" />
+															<p:ajax update="district"
+																listener="#{customerInfoBranch.popDistrict}" />
+														</p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Telephone No" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText value="#{customerInfoBranch.telephoneNo}">
+														</p:inputText>
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="District/Region" />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu id="district"
+															value="#{customerInfoBranch.districtId}"
+															filterMatchMode="startsWith" filter="true"
+															requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.district']}">
+															<f:selectItem itemLabel="#{msg['lbl.select']}"
+																itemValue="" />
+															<f:selectItems
+																value="#{customerInfoBranch.districtListFromDB}" var="c"
+																itemLabel="#{c.district}"
+																itemValue="#{c.fsDistrictMaster.districtId}" />
+															<p:ajax update="city"
+																listener="#{customerInfoBranch.popCity}" />
+														</p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Flat No" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText value="#{customerInfoBranch.flatNo}">
+														</p:inputText>
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="City" />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu id="city"
+															value="#{customerInfoBranch.cityId}"
+															filterMatchMode="startsWith" filter="true"
+															requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.city']}">
+															<f:selectItem itemLabel="#{msg['lbl.select']}"
+																itemValue="" />
+															<f:selectItems
+																value="#{customerInfoBranch.cityListFromDB}" var="c"
+																itemLabel="#{c.cityName}"
+																itemValue="#{c.fsCityMaster.cityId}" />
+														</p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="Block No" />
+													</div>
+													<div class="ui-block-d">
+														<p:inputText value="#{customerInfoBranch.blockNo}">
+														</p:inputText>
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+
+												<div class="ui-grid-a ui-responsive">
+													<div class="ui-block-a"></div>
+													<div class="ui-block-b" style="width: 34%;">
+														<p:commandButton value="Add" style="float:left;"
+															action="#{customerInfoBranch.addContactDataTable}"
+															update="mainPanel">
+														</p:commandButton>
+														<p:spacer width="10px" />
+														<h:outputText
+															value="Please enter atleast one contact details"
+															style="white-space:nowrap !important; color:red;" />
+													</div>
+												</div>
+												<div class="clearfix"></div>
+												<p:dataTable value="#{customerInfoBranch.contactList}"
+													var="o"
+													rendered="#{customerInfoBranch.enableContactDataTable}"
+													style="width:1220;" editable="true" id="datatable"
+													emptyMessage="#{msg['lbl.norecordfound']}">
+													<!-- <p:ajax update="datatable" event="cellEdit"  listener="#{customerInfoBranch.modified(o)}" /> -->
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.contacttype']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.contType}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.contType}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.country']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.country}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.country}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.state']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.state}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.state}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.district']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.dist}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.dist}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.city']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.city}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.city}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.localarea']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.area}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.area}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.block']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.block}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.block}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.street']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.street}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.street}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.flatno']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.flat}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.flat}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.telephone']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{o.tel}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{o.tel}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column style="width:50px; text-align:center !important;">
+														<f:facet name="header">
+															<h:outputText value="#{msg['lbl.delete']}" />
+														</f:facet>
+														<p:commandButton styleClass="delete" value="" actionListener="#{customerInfoBranch.removeContactDetail(o)}"
+															update="datatable" immediate="true"></p:commandButton>
+													</p:column>
+													 
+												</p:dataTable>
+												<div class="clearfix"></div>
+
+											</p:panel>
+											<h:panelGroup layout="block" styleClass="shadow_button" rendered="#{customerInfoBranch.renderContactDetailsMatch}">
+												<p:commandButton value="Back" style="margin-right:10px;"
+													action="#{customerInfoBranch.backToCustomerInfo}" update="mainPanel">
+												</p:commandButton>
+												<p:commandButton value="save" style="margin-right:10px;"
+													action="#{customerInfoBranch.panelSaveController}" update="mainPanel">
+												</p:commandButton>
+												<!-- <p:commandButton value="SaveClose"
+													style="margin-right:10px;">
+												</p:commandButton> -->
+												<p:commandButton value="Next"
+													action="#{customerInfoBranch.nextToEmpInfo}"
+													update="mainPanel">
+												</p:commandButton>
+												<div class="clearfix"></div>
+											</h:panelGroup>
+											<p:panel styleClass="shadow" rendered="#{customerInfoBranch.renderEmployeementInfo}">
+												<h2><h:outputText value="#{msg['lbl.employementdetails']}" /></h2>
+									<div class="ui-grid-a ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.employmenttype']}" />
+										</div>
+										<div class="ui-block-b">
+										    <p:selectOneMenu id="employmentType" value="#{customerInfoBranch.empInfoEmploymentTypeId}"	 style="width:180px;">
+							                  <f:selectItems  value="#{customerInfoBranch.employmentTypeList}" var="c" itemLabel="#{c.employmentType}" itemValue="#{c.employmentTypeId}"  />
+					                        	<!-- 	<p:ajax event="change" update="emp"  listener="#{customerInfoBranch.getEmploymentStatus}" />  -->
+						                    </p:selectOneMenu>
+										</div>
+
+									</div>
+									<div class="clearfix"></div>
+
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.occupation']}" />
+										</div>
+										<div class="ui-block-b">
+											<p:selectOneMenu id="occupationI" value="#{customerInfoBranch.occupation}" style="width:180px;">
+						                            <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+							                        <f:selectItem itemLabel="#{msg['lbl.doctor']}" itemValue="1" />
+							                        <f:selectItem itemLabel="#{msg['lbl.teacher']}" itemValue="2" />
+						                    </p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="#{msg['lbl.employer']} " />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText value="#{customerInfoBranch.employer}" />
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+									
+									
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.country']}" />
+										</div>
+										<div class="ui-block-b">
+										<p:selectOneMenu  filterMatchMode="startsWith" filter="true"  value ="#{customerInfoBranch.empInfoCountry}" >
+											<f:selectItem itemLabel="#{msg['lbl.select']}" itemValue=""/>
+								        <f:selectItems  value="#{customerInfoBranch.countryNameList}" var="c" itemLabel="#{c.countryName}" itemValue="#{c.fsCountryMaster.countryId}"  />
+							           <p:ajax  event ="change" update="stateemp" listener="#{customerInfoBranch.popStateEmp}"/> 
+					 
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="Block No *" />
+										</div>
+										<div class="ui-block-d">
+										<p:inputText value="#{customerInfoBranch.empInfoBlock}" />
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+									
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.state']}" />
+										</div>
+										<div class="ui-block-b">
+										<p:selectOneMenu id="stateemp" value ="#{customerInfoBranch.empInfoState}" filterMatchMode="startsWith" filter="true"
+										         requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.state']}">
+										    <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{customerInfoBranch.lstStateEmpList}"
+														var="c" itemLabel="#{c.stateName}" itemValue="#{c.fsStateMaster.stateId}"/>
+											<p:ajax update ="districtemp" listener="#{customerInfoBranch.popDistrictEmp}"/>			
+										</p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="Street No *" />
+										</div>
+										<div class="ui-block-d">
+										<p:inputText value="#{customerInfoBranch.empInfoStreet}"/>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.district']}" />
+										</div>
+										<div class="ui-block-b">
+											<p:selectOneMenu  id="districtemp" value ="#{customerInfoBranch.empInfoDistrict}" filterMatchMode="startsWith" filter="true"
+										       requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.district']}">
+										              <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{customerInfoBranch.lstDistrictEmpList}"
+														var="c" itemLabel="#{c.district}" itemValue="#{c.fsDistrictMaster.districtId}"/>
+											<p:ajax update ="cityemp" listener="#{customerInfoBranch.popCityEmp}"/>			
+										</p:selectOneMenu> 
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="Area *" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText value="#{customerInfoBranch.empInfoArea}" />
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="#{msg['lbl.city']}" />
+										</div>
+										<div class="ui-block-b">
+											<p:selectOneMenu  id="cityemp" value ="#{customerInfoBranch.empInfoCity}" filterMatchMode="startsWith" filter="true" 
+										     requiredMessage="#{msg['lbl.validselectt']} #{msg['lbl.city']}">
+										    <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+													<f:selectItems value="#{customerInfoBranch.lstCityEmpList}"
+														var="c" itemLabel="#{c.cityName}" itemValue="#{c.fsCityMaster.cityId}"/>
+										</p:selectOneMenu>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="Office Tel. No. *" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText  value="#{customerInfoBranch.empInfoOfficeTel}"/>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+									<div class="clearfix"></div>
+									<div class="ui-grid-e ui-responsive">
+										<div class="ui-block-a">
+											<h:outputText value="Postal Code *" />
+										</div>
+										<div class="ui-block-b">
+											<p:inputText  value ="#{customerInfoBranch.postalCode}"/>
+										</div>
+										<div class="ui-block-c">
+											<h:outputText value="Department" />
+										</div>
+										<div class="ui-block-d">
+											<p:inputText value ="#{customerInfoBranch.department}"/>
+										</div>
+										<div class="ui-block-e"></div>
+										<div class="ui-block-f"></div>
+									</div>
+												<div class="clearfix"></div>
+											</p:panel>
+											<h:panelGroup layout="block" styleClass="shadow_button" rendered="#{customerInfoBranch.renderEmployeementInfo}">
+
+
+												<p:commandButton value="save"  action="#{customerInfoBranch.panelSaveController}" style="margin-right:10px; " update="mainPanel">
+												</p:commandButton>
+												<p:commandButton value="back" action="#{customerInfoBranch.bactToContactMatch}" style="margin-right:10px;" update="mainPanel">
+												</p:commandButton>
+												<p:commandButton value="next" action="#{customerInfoBranch.nextToScanDoc}" update="mainPanel">
+												</p:commandButton>
+												<div class="clearfix"></div>
+											</h:panelGroup>
+											<div class="clearfix"></div>
+
+
+											<p:panel styleClass="shadow" rendered="#{customerInfoBranch.renderIdProof}" id="panelIdProof">
+												<h2>Proof</h2>
+
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText  value="#{msg['lbl.idfor']}"  />
+													</div>
+													<div class="ui-block-b">
+														<p:selectOneMenu value="#{customerInfoBranch.idFor}"  style="width:180px;">
+							                                  <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+								                              <f:selectItem itemLabel="#{msg['lbl.addressproof']}" itemValue="1" />
+								                              <f:selectItem itemLabel="#{msg['lbl.identityproof']}" itemValue="2" />
+							                            </p:selectOneMenu>
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="#{msg['lbl.idtype']}" />
+													</div>
+													<div class="ui-block-d">
+														<p:selectOneMenu id="idType" value="#{customerInfoBranch.idTypeproof}" style="width:180px;">
+							                                   <f:selectItem itemLabel="#{msg['lbl.select']}" itemValue="" />
+								                               <f:selectItems value="#{customerInfoBranch.fetchIdType}" var="c" itemValue="#{c.identityTypeId}" itemLabel="#{c.identityType}" />
+							                             </p:selectOneMenu>
+													</div>
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+												<div class="ui-grid-e ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="#{msg['lbl.idnumber']}"/> 
+													</div>
+													<div class="ui-block-b">
+														<p:inputText id="idNumber" value="#{customerInfoBranch.idnumberProof}" ></p:inputText>
+													</div>
+													<div class="ui-block-c">
+														<h:outputText value="#{msg['lbl.dateofexpiry']}" />
+													</div>
+													<div class="ui-block-d">
+														 <p:calendar id="dateOfExp" size="24" value="#{customerInfoBranch.dateExp}" mode="popup" 
+									                    	readonlyInput="true"
+										                  requiredMessage="#{msg['lbl.validationprefix']} #{msg['lbl.dateofexpiry']}"
+										                  pattern="dd/MM/yyyy" navigator="true"  mindate="#{customerInfoBranch.expDateAdder}"/>
+													</div>
+													<!--mindate="#{customerInfoBranch.expDateCheck}"  -->
+													<div class="ui-block-e"></div>
+													<div class="ui-block-f"></div>
+												</div>
+												<div class="clearfix"></div>
+
+												<div class="ui-grid-a ui-responsive">
+													<div class="ui-block-a">
+														<h:outputText value="#{msg['lbl.uploadfile']}" />
+													</div>
+													<div class="ui-block-b">
+													<p:fileUpload  value="#{customerInfoBranch.file}" mode="simple" dragDropSupport="false" required="true" id="fileUplod"   
+                  								        sizeLimit="10000" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|pdf)$/" label="Choose File">
+                  								        <p:message for="fileUplod" value="File Not Selected" style="color:red;"/>
+						                     	</p:fileUpload>
+													</div>
+												</div>
+												<div class="clearfix"></div>
+												<h:panelGroup layout="block" styleClass="button_align">
+                                                    <p:commandButton value="#{msg['lbl.add']}" actionListener="#{customerInfoBranch.addRows}"
+													id="btnGlobal"  update="mainpanel" ajax="false"/>
+													<div class="clearfix"></div>
+												</h:panelGroup>
+                                                <p:dataTable value="#{customerInfoBranch.createProofList}" var="o" widgetVar="50" style="width: 780px; font-size:12px;" editable="true" 
+						id="datatable1">
+						
+						 <p:ajax update="datatable1" event="cellEdit"  listener="#{customerInfoBranch.modifiedProofList(o)}" /> 
+						
+						<p:column>
+						<h:outputText/>
+							<f:facet name="header"><h:outputText value="#{msg['lbl.idfor']}"/></f:facet>
+
+							<p:cellEditor>
+								<f:facet name="output" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"><h:outputText value="#{o.idFor}"/></f:facet>
+								
+								<f:facet name="input" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;">
+									<h:selectOneMenu value="#{o.id_for}" >
+										<f:selectItem itemLabel="#{msg['lbl.addressproof']}"	itemValue="1" />
+										<f:selectItem itemLabel="#{msg['lbl.identityproof']}" itemValue="2" />
+									</h:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column>
+							<!-- <h:outputText value="#{o.idType}"/> -->
+							<f:facet name="header">
+								<h:outputText value="#{msg['lbl.idtype']}" />
+							</f:facet>
+							<p:cellEditor>
+								<f:facet name="output" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;">
+									<h:outputText value="#{o.idType}"  />
+								</f:facet>
+								<f:facet name="input" style="text-align: left; font-size:13px;  height:20px; width: 70px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;">
+									<p:inputText value="#{o.idType}"  />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column>
+							<f:facet name="header"><h:outputText value="#{msg['lbl.idnumber']}" /></f:facet>
+							<p:cellEditor>
+								<f:facet name="output"><h:outputText value="#{o.id_number}" style="text-align: left; font-size:13px;  height:20px; width:100px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+								<f:facet name="input"><p:inputText value="#{o.id_number}" style="text-align: left; font-size:13px;  height:20px; width:100px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column>
+							<f:facet name="header"><h:outputText value="#{msg['lbl.dateofexpiry']}" /></f:facet>
+							<p:cellEditor>
+								<f:facet name="output"><h:outputText value="#{o.date_expiary}" style="text-align: left; font-size:13px;  height:20px; width: 90px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+								<f:facet name="input"><p:inputText value="#{o.date_expiary}" style="text-align: left; font-size:13px;  height:20px; width: 90px;border:none !important;box-shadow:none !important; padding:0 !important;margin:0px !important;"/></f:facet>
+							</p:cellEditor>
+						</p:column>
+						
+						<p:column headerText="#{msg['lbl.download']}" style="text-align:center; width:50px;">
+								<p:commandLink id="downloadLink" title="download"  ajax="false" action="PrimeFaces.monitorDownload(start, stop)"   
+        															icon="ui-icon-arrowthichk-s">  
+        									<p:graphicImage value="../images/download.png"/>
+    										<p:fileDownload value="#{customerInfoBranch.downloadFile(o.imageId)}" />  
+								</p:commandLink>   
+						</p:column>
+								 
+						<p:column headerText="#{msg['lbl.verified']}" style="text-align:center; width:50px;">
+							<h:selectBooleanCheckbox value="#{o.checked}" />
+						</p:column>
+						
+						<p:column  style="text-align:center; width:50px;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['lbl.delete']}" />
+								</f:facet>
+								<p:commandButton  value="" styleClass="delete" actionListener="#{customerInfoBranch.removeIdProof(o)}" ajax="false"/>
+							</p:column>
+
+					</p:dataTable>
+
+
+												<h2>Digital Sign</h2>
+												<h:panelGroup layout="block" styleClass="button_align">
+													<p:commandButton value="Sign">
+													</p:commandButton>
+													<div class="clearfix"></div>
+												</h:panelGroup>
+
+												<div class="clearfix"></div>
+											</p:panel>
+
+											<h:panelGroup layout="block" styleClass="shadow_button" rendered="#{customerInfoBranch.renderIdProof}">
+												<p:selectBooleanCheckbox   value="#{branchReg.approved}">
+					                            	<p:ajax event="change" update="panelIdProof" listener="#{customerInfoBranch.veryfiAllClick}"/>
+				                         	</p:selectBooleanCheckbox>
+												<p:spacer width="10px;" />
+												<h:outputText value="Verified All" />
+												<p:spacer width="20px;" />
+												<p:commandButton value="Back" style="margin-right:10px;"
+													action="#{customerInfoBranch.bactToEmpInfo()}" update="mainPanel" ajax="false">
+												</p:commandButton>
+												<p:commandButton value="clear" style="margin-right:10px;"
+													action="#{customerInfoBranch.clearBasicInfo}" ajax="false">
+												</p:commandButton>
+												<p:commandButton value="Submit"
+													action="#{customerInfoBranch.panelSaveController}"
+													update="mainPanel" ajax="false">
+												</p:commandButton>
+												<div class="clearfix"></div>
+											</h:panelGroup>
+											<div class="clearfix"></div>
+										</p:panel>
+									</p:panel>
+								</h:form>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" class="clearfix"></h:panelGroup>
+					</h:panelGroup></td>
+			</tr>
+		</table>
+		<div class="clearfix"></div>
+		<ui:include src="#{facesBean.footer}"></ui:include>
+	</f:view>
+</h:body>
+</html>

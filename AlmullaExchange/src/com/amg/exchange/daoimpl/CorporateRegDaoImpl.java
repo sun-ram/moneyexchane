@@ -1,0 +1,525 @@
+package com.amg.exchange.daoimpl;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
+import org.springframework.stereotype.Repository;
+
+import com.amg.exchange.dao.ICommonDao;
+import com.amg.exchange.dao.ICorporateRegDao;
+import com.amg.exchange.model.Amlstatus;
+import com.amg.exchange.model.CityMaster;
+import com.amg.exchange.model.CompanyMaster;
+import com.amg.exchange.model.ContactDetail;
+import com.amg.exchange.model.ContactType;
+import com.amg.exchange.model.CorporateBusinessNature;
+import com.amg.exchange.model.CountryMaster;
+import com.amg.exchange.model.CustCorporateAddlDetail;
+import com.amg.exchange.model.Customer;
+import com.amg.exchange.model.CustomerIdProof;
+import com.amg.exchange.model.DistrictMaster;
+import com.amg.exchange.model.DocumentImg;
+import com.amg.exchange.model.IdentityType;
+import com.amg.exchange.model.NationalityMaster;
+import com.amg.exchange.model.RuleBusinessNature;
+import com.amg.exchange.model.RuleObjective;
+import com.amg.exchange.model.StateMaster;
+@SuppressWarnings("serial")
+@Repository
+public class CorporateRegDaoImpl<T> extends CustomHibernateDaoSupport implements ICorporateRegDao<T>,ICommonDao<T> {
+
+	@Override
+	public void save(T entity) {
+		getSession().save(entity);
+		
+	}
+
+	@Override
+	public void update(T entity) {
+		
+		getSession().saveOrUpdate(entity);
+	}
+
+	@Override
+	public void delete(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	@Override
+	public List<T> findByName(String name) {
+		
+		return null;
+	}
+
+	@Override
+	public List<T> findById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<T> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findAll(DetachedCriteria criteria) {
+		
+		return criteria.getExecutableCriteria(getSession()).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Amlstatus> getAMLStatusList(String compName) {
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(Amlstatus.class);
+		dCriteria.add(Restrictions.eq("remName", compName));
+		return (List<Amlstatus>)findAll(dCriteria);
+	}
+
+	@Override
+	public List<NationalityMaster> getNationality() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+/*
+	@Override
+	public List<CompanyMaster> getCompany(String country) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StateMaster> getState(String country) {
+		return null;
+		
+	}*/
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CityMaster> getCity(BigDecimal state) {
+		
+		return  (List<CityMaster>) getSession().createQuery("from CityMaster where District_Id="+state).list();
+	
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CountryMaster> getCountry() {
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(CountryMaster.class);
+		return (List<CountryMaster>) findAll(dCriteria);
+	}
+
+/*	@SuppressWarnings("unchecked")
+	@Override
+	public List<DistrictMaster> getDistrict(String state) {
+		return null;
+		
+	}*/
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StateMaster> getState() {
+		DetachedCriteria stateCriteria = DetachedCriteria.forClass(StateMaster.class);
+		return (List<StateMaster>) findAll(stateCriteria);
+	}
+
+	@SuppressWarnings({ "unchecked" })
+	@Override
+	public List<IdentityType> getIdentitiesTypeList() {
+		DetachedCriteria IdentityCreteria = DetachedCriteria.forClass(IdentityType.class);
+		return (List<IdentityType>) findAll(IdentityCreteria);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void saveCorporateCustomer(Customer cust) {
+		save((T) cust);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void saveCorporateContDtl(ContactDetail contdetail) {
+		getSession().saveOrUpdate(contdetail);
+		//save((T)  contdetail);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void saveCoIdentityDoc(CustomerIdProof custmrIdProof) {
+		save((T)  custmrIdProof);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void savePartnerDtl(CustomerIdProof custmrIdProof) {
+		save((T)custmrIdProof);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void saveAuthouSigDoc(CustomerIdProof custmrIdProof) {
+		save((T)custmrIdProof);
+	}
+
+	@Override
+	public List<CompanyMaster> getCompany(BigDecimal countryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@SuppressWarnings({ "unchecked" })
+	@Override
+	public List<StateMaster> getState(BigDecimal countryId) {
+		/*System.out.println("corpImpl of country is"+ countryId);
+		 DetachedCriteria detachedCriteria = DetachedCriteria.forClass(StateMaster.class,"fsStateMaster");
+		 detachedCriteria.setFetchMode("fsStateMaster.fsCountryMaster", FetchMode.JOIN);
+		 detachedCriteria.createAlias("fsCountryMaster.countryId", "countryId", CriteriaSpecification.INNER_JOIN);
+		 return  (List<StateMaster>)findAll(detachedCriteria);
+		 */
+		
+       return (List<StateMaster>) getSession().createQuery("from StateMaster where Country_Id="+countryId).list(); 
+		 
+	}
+	
+	
+	/*DetachedCriteria detachedCriteria = DetachedCriteria.forClass(CountryMasterDesc.class,"countryMasterDesc");
+	  
+	  // Join Language Type table
+	  detachedCriteria.setFetchMode("countryMasterDesc.fsLanguageType", FetchMode.JOIN);
+	  detachedCriteria.createAlias("countryMasterDesc.fsLanguageType", "fsLanguageType", CriteriaSpecification.INNER_JOIN);
+	  
+	  // Add Language Condition
+	  detachedCriteria.add(Restrictions.eq("fsLanguageType.languageId", languageId));
+	  
+	  // Join Country Master Table
+	  detachedCriteria.setFetchMode("countryMasterDesc.fsCountryMaster", FetchMode.JOIN);
+	  detachedCriteria.createAlias("countryMasterDesc.fsCountryMaster", "fsCountryMaster", CriteriaSpecification.INNER_JOIN);
+	  
+	  // Join Rule Application Description Table
+	  detachedCriteria.setFetchMode("fsCountryMaster.fsRuleApplicationDescs", FetchMode.JOIN);
+	  detachedCriteria.createAlias("fsCountryMaster.fsRuleApplicationDescs", "fsRuleApplicationDescs", CriteriaSpecification.INNER_JOIN);
+	   
+	  return (List<CountryMasterDesc>)findAll(detachedCriteria);*/
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DistrictMaster> getDistrict(BigDecimal stateId) {
+		
+		return  (List<DistrictMaster>) getSession().createQuery("from DistrictMaster where State_Id="+stateId).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<RuleObjective> getObjectiveList() {
+		
+		DetachedCriteria IdentityCreteria = DetachedCriteria.forClass(RuleObjective.class);
+		return (List<RuleObjective>) findAll(IdentityCreteria);
+	}
+
+	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<RuleBusinessNature> getCorpBussinessNature() {
+		DetachedCriteria IdentityCreteria = DetachedCriteria.forClass(RuleBusinessNature.class);
+		return (List<RuleBusinessNature>) findAll(IdentityCreteria);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ContactType> getContactTypeListFromDB() {
+
+		DetachedCriteria IdentityCreteria = DetachedCriteria.forClass(ContactType.class);
+		//IdentityCreteria.add(Restrictions.eq("contactTypeId", new BigDecimal(2)));
+		return (List<ContactType>) findAll(IdentityCreteria);
+	}
+
+	@Override
+	public void saveBussnessNature(CorporateBusinessNature corpBussnsNature) {
+		getSession().saveOrUpdate(corpBussnsNature);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Customer> getCompanyRegistrationStatus(String crno) {
+		DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Customer.class,"customer");
+		
+		detachedCriteria.add(Restrictions.eq("customer.crNo", crno));
+		
+		return (List<Customer>) findAll(detachedCriteria);
+	}
+
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	@Override
+	public List<ContactDetail> getContactDetail(BigDecimal customerId) { 
+		
+		System.out.println("Cistomer Id : "+customerId);
+		
+		DetachedCriteria creteria = DetachedCriteria.forClass(ContactDetail.class, "contactDetail");
+		
+		creteria.setFetchMode("contactDetail.fsCustomer", FetchMode.JOIN);
+		creteria.createAlias("contactDetail.fsCustomer", "fsCustomer", CriteriaSpecification.INNER_JOIN);
+		
+		creteria.add(Restrictions.eq("fsCustomer.customerId", customerId));
+		creteria.add(Restrictions.eq("contactDetail.activeStatus", "1"));
+
+		creteria.setFetchMode("contactDetail.fsContactType", FetchMode.JOIN);
+		creteria.createAlias("contactDetail.fsContactType", "fsContactType", CriteriaSpecification.LEFT_JOIN);
+
+		creteria.setFetchMode("contactDetail.fsCountryMaster", FetchMode.JOIN);
+		creteria.createAlias("contactDetail.fsCountryMaster", "fsCountryMaster", CriteriaSpecification.LEFT_JOIN);
+
+		creteria.setFetchMode("contactDetail.fsStateMaster", FetchMode.JOIN);
+		creteria.createAlias("contactDetail.fsStateMaster", "fsStateMaster", CriteriaSpecification.LEFT_JOIN);
+
+		creteria.setFetchMode("contactDetail.fsDistrictMaster", FetchMode.JOIN);
+		creteria.createAlias("contactDetail.fsDistrictMaster", "fsDistrictMaster", CriteriaSpecification.LEFT_JOIN);
+
+		creteria.setFetchMode("contactDetail.fsCityMaster", FetchMode.JOIN);
+		creteria.createAlias("contactDetail.fsCityMaster", "fsCityMaster", CriteriaSpecification.LEFT_JOIN);
+		
+		creteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		
+		
+		return (List<ContactDetail>) findAll(creteria);
+	}
+
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public List<CustomerIdProof> getCustomerIdProof(BigDecimal languageId,BigDecimal customerId, BigDecimal customerTypeId) {
+		
+		DetachedCriteria detachedCriteria = DetachedCriteria.forClass(CustomerIdProof.class, "customerIdProof");
+		
+		detachedCriteria.setFetchMode("customerIdProof.fsLanguageType", FetchMode.JOIN);
+		detachedCriteria.createAlias("customerIdProof.fsLanguageType", "fsLanguageType", CriteriaSpecification.INNER_JOIN);
+		
+		detachedCriteria.add(Restrictions.eq("fsLanguageType.languageId", languageId));
+		detachedCriteria.add(Restrictions.eq("customerIdProof.identityStatus", "1"));
+
+		detachedCriteria.setFetchMode("customerIdProof.fsCustomer", FetchMode.JOIN);
+		detachedCriteria.createAlias("customerIdProof.fsCustomer", "fsCustomer", CriteriaSpecification.INNER_JOIN);
+		
+		detachedCriteria.add(Restrictions.eq("fsCustomer.customerId", customerId));
+
+		detachedCriteria.setFetchMode("customerIdProof.fsCustomerType", FetchMode.JOIN);
+		detachedCriteria.createAlias("customerIdProof.fsCustomerType", "fsCustomerType", CriteriaSpecification.INNER_JOIN);
+		
+		detachedCriteria.add(Restrictions.eq("fsCustomerType.customerTypeId", customerTypeId));
+
+		detachedCriteria.setFetchMode("customerIdProof.fsIdentityType", FetchMode.JOIN);
+		detachedCriteria.createAlias("customerIdProof.fsIdentityType", "fsIdentityType", CriteriaSpecification.INNER_JOIN);
+		
+		detachedCriteria.setFetchMode("customerIdProof.fsDocumentImg", FetchMode.JOIN);
+		detachedCriteria.createAlias("customerIdProof.fsDocumentImg", "fsDocumentImg", CriteriaSpecification.INNER_JOIN);
+		
+		detachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		
+		return (List<CustomerIdProof>)findAll(detachedCriteria);
+	}
+
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public List<CustCorporateAddlDetail> getCustomerCorporateAdditionalDetail(BigDecimal languageId, BigDecimal customerId) {
+
+		DetachedCriteria detachedCriteria = DetachedCriteria.forClass(CustCorporateAddlDetail.class, "custCorporateAddlDetail");
+		
+		detachedCriteria.setFetchMode("custCorporateAddlDetail.fsLanguageType", FetchMode.JOIN);
+		detachedCriteria.createAlias("custCorporateAddlDetail.fsLanguageType", "fsLanguageType", CriteriaSpecification.INNER_JOIN);
+		
+		detachedCriteria.add(Restrictions.eq("fsLanguageType.languageId", languageId)); 
+		detachedCriteria.add(Restrictions.eq("custCorporateAddlDetail.addlStatus", "1"));
+		detachedCriteria.setFetchMode("custCorporateAddlDetail.fsCustomer", FetchMode.JOIN);
+		detachedCriteria.createAlias("custCorporateAddlDetail.fsCustomer", "fsCustomer", CriteriaSpecification.INNER_JOIN);
+		
+		detachedCriteria.add(Restrictions.eq("fsCustomer.customerId", customerId));
+		
+		detachedCriteria.setFetchMode("custCorporateAddlDetail.fsRuleObjective", FetchMode.JOIN);
+		detachedCriteria.createAlias("custCorporateAddlDetail.fsRuleObjective", "fsRuleObjective", CriteriaSpecification.INNER_JOIN);
+		
+		detachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		 
+		return (List<CustCorporateAddlDetail>)findAll(detachedCriteria);
+	}
+
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public List<CorporateBusinessNature> getCorporateBusinessNatureDetails(BigDecimal customerId) {
+		
+		DetachedCriteria detachedCriteria = DetachedCriteria.forClass(CorporateBusinessNature.class, "corporateBusinessNature");
+		
+		detachedCriteria.setFetchMode("corporateBusinessNature.fsCustomer", FetchMode.JOIN);
+		detachedCriteria.createAlias("corporateBusinessNature.fsCustomer", "fsCustomer", CriteriaSpecification.INNER_JOIN);
+		
+		detachedCriteria.add(Restrictions.eq("fsCustomer.customerId", customerId));
+		detachedCriteria.add(Restrictions.eq("corporateBusinessNature.businessStatus", "1"));
+		
+		detachedCriteria.setFetchMode("corporateBusinessNature.fsRuleBusinessNature", FetchMode.JOIN);
+		detachedCriteria.createAlias("corporateBusinessNature.fsRuleBusinessNature", "fsRuleBusinessNature", CriteriaSpecification.INNER_JOIN);
+		
+		detachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		return (List<CorporateBusinessNature>)findAll(detachedCriteria);
+	}
+
+	@Override
+	public void updateCorpCustomer(Customer corprateCustomer) {
+		getSession().saveOrUpdate(corprateCustomer);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void updateContact(ContactDetail contdetail, BigDecimal customerId) {
+		update((T) contdetail);
+	}
+
+	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void updateCompanyIdentityDocument(CustomerIdProof custmrIdProof,BigDecimal customerId) {
+	update((T) custmrIdProof);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void updateBussnessNature(CorporateBusinessNature corpBussnsNature,BigDecimal customerId) {
+		update((T) corpBussnsNature);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void updatePartnerDetail(CustomerIdProof custmrIdProof,BigDecimal customerId) {
+		update((T)custmrIdProof);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void updateAutourSignatoriesDetail(CustomerIdProof custmrIdProof,BigDecimal customerId) {
+		update((T)custmrIdProof);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void updateSecondaryObjective(CustCorporateAddlDetail custCorpAddDetail, BigDecimal customerId) {
+		update((T)custCorpAddDetail);
+		
+	}
+
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	@Override
+	public List<IdentityType> getIdentityTypes(BigDecimal languageId,
+			BigDecimal bdCompanyIdType) {
+		
+		
+		DetachedCriteria criteria = DetachedCriteria.forClass(IdentityType.class, "identityType");
+
+		criteria.setFetchMode("identityType.fsLanguageType", FetchMode.JOIN);
+		criteria.createAlias("identityType.fsLanguageType", "fsLanguageType", CriteriaSpecification.INNER_JOIN);
+		criteria.add(Restrictions.eq("fsLanguageType.languageId", languageId));
+
+		criteria.setFetchMode("identityType.fsCustomerType", FetchMode.JOIN);
+		criteria.createAlias("identityType.fsCustomerType", "fsCustomerType", CriteriaSpecification.INNER_JOIN);
+		criteria.add(Restrictions.eq("fsCustomerType.customerTypeId", bdCompanyIdType));
+		
+		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		
+		return (List<IdentityType>)findAll(criteria);
+		
+		
+	}
+
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	@Override
+	public List<CustomerIdProof> getIdNoAvailabilityStatus(String idno,BigDecimal bdCompanyIdType) {
+		
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(CustomerIdProof.class,"customerIdProof");
+		dCriteria.add(Restrictions.eq("identityInt", idno));
+		dCriteria.setFetchMode("customerIdProof.fsCustomerType", FetchMode.JOIN);
+		dCriteria.createAlias("customerIdProof.fsCustomerType", "fsCustomerType", CriteriaSpecification.INNER_JOIN);
+		dCriteria.add(Restrictions.eq("fsCustomerType.customerTypeId", bdCompanyIdType));
+		return (List<CustomerIdProof>)findAll(dCriteria);
+	}
+
+	//Save Image 
+	@SuppressWarnings("unchecked")
+	@Override
+	public void saveImage(DocumentImg document) {
+		save((T)document);
+	}
+	
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	@Override
+	public void updateImage(DocumentImg document, BigDecimal custId) {
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(CustomerIdProof.class, "customerIdProof");
+		dCriteria.setFetchMode("customerIdProof.fsCustomer", FetchMode.JOIN);
+		dCriteria.createAlias("customerIdProof.fsCustomer", "fsCustomer", CriteriaSpecification.INNER_JOIN);
+		
+		dCriteria.add(Restrictions.eq("fsCustomer.customerId", custId));
+		
+		List<CustomerIdProof> proof = (List<CustomerIdProof>) findAll(dCriteria);
+		
+		DocumentImg docImage = proof.get(0).getFsDocumentImg();
+		docImage.setImage(document.getImage());
+		docImage.setImageName(document.getImageName());
+		docImage.setUploadDate(new Date());
+		save((T)docImage);
+	}
+	//Retive Image 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DocumentImg> getImage(BigDecimal imageId) {
+		/*DetachedCriteria dCriteria = DetachedCriteria.forClass(DocumentImg.class, "docImage");
+		dCriteria.add(Restrictions.eq("docImage.imgId", imageId));
+		return (List<DocumentImg>) findAll(dCriteria);*/System.out.println("Dao ImageId"+imageId);
+		return  (List<DocumentImg>) getSession().createQuery("from DocumentImg where imgId="+imageId).list();
+	}
+
+	@Override
+	public void commonSaveOrUpdateIdProof(CustomerIdProof custmrIdProof) {
+		getSession().saveOrUpdate(custmrIdProof);
+		
+	}
+
+	@Override
+	public void saveOrUpdateSecondaryObjective(CustCorporateAddlDetail custCorpAddDetail) {
+		getSession().saveOrUpdate(custCorpAddDetail);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CustomerIdProof> getRegisterId(String registerId) {
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(CustomerIdProof.class);
+		dCriteria.add(Restrictions.eq("identityInt", registerId));
+	   return (List<CustomerIdProof>) findAll(dCriteria);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Customer> getCustomerNameFromCustomer(BigDecimal customerIdLocal) {
+		DetachedCriteria dCriteria = DetachedCriteria.forClass(Customer.class);
+		dCriteria.add(Restrictions.eq("customerId",customerIdLocal));
+	   return (List<Customer>) findAll(dCriteria);
+	}
+}
